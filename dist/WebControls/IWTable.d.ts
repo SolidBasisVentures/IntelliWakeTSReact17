@@ -14,7 +14,7 @@ export interface IIWTableProps {
     sortable?: boolean;
     tabIndex?: number;
     hidden?: boolean;
-    style?: React.StyleHTMLAttributes<HTMLTableElement>;
+    style?: React.StyleHTMLAttributes<HTMLTableElement> | React.StyleHTMLAttributes<any>;
     ref?: any;
     children?: any;
     onKeyDown?: React.KeyboardEventHandler;
