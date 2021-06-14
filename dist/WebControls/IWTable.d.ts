@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 export interface IIWTableProps {
     bordered?: boolean;
     borderless?: boolean;
@@ -14,5 +14,6 @@ export interface IIWTableProps {
     tabIndex?: number;
     ref?: any;
     children?: any;
+    onKeyDown?: React.KeyboardEventHandler;
 }
 export declare const IWTable: (props: IIWTableProps) => JSX.Element;

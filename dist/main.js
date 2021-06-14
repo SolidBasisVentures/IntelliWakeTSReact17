@@ -2422,7 +2422,7 @@ var IWTable = function (props) {
             'table-sm': props.size !== 'lg',
             'small': !!props.textSmall,
             'table-sticky': !!props.sticky
-        }), tabIndex: props.tabIndex, ref: props.ref },
+        }), tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown },
         !!props.caption && React__default['default'].createElement("caption", null, props.caption),
         props.children));
 };

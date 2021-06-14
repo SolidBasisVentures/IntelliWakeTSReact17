@@ -16,6 +16,7 @@ export interface IIWTableProps {
 	tabIndex?: number
 	ref?: any
 	children?: any
+	onKeyDown?: React.KeyboardEventHandler
 }
 
 export const IWTable = (props: IIWTableProps) => {
@@ -33,7 +34,8 @@ export const IWTable = (props: IIWTableProps) => {
 			'table-sticky': !!props.sticky
 		})}
 		tabIndex={props.tabIndex}
-		ref={props.ref}>
+		ref={props.ref}
+		onKeyDown={props.onKeyDown}>
 			{!!props.caption && <caption>{props.caption}</caption>}
 			{props.children}
 		</table>
