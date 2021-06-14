@@ -1,4 +1,3 @@
-import { FormControlProps } from 'react-bootstrap';
 import React, { ReactNode } from 'react';
 export declare type TChangeValueFunction<T = any, V = any> = (value: V, name?: T extends object ? keyof T : string, shiftKey?: boolean, ctrlKey?: boolean, altKey?: boolean) => void;
 export interface IIWInputAddProps<T = any, V = any> {
@@ -12,18 +11,18 @@ export interface IIWInputAddProps<T = any, V = any> {
     prepend?: ReactNode;
     append?: ReactNode;
 }
-export interface IIWInputProps<T = any, V = any> extends Omit<FormControlProps, 'value'>, IIWInputAddProps<T, V> {
+export interface IIWInputProps<T = any, V = any> extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'value'>, IIWInputAddProps<T, V> {
     value?: V;
     style?: any;
     name?: string;
     isInvalid?: boolean;
     required?: boolean;
-    onFocus?: (e: React.FocusEvent) => void;
+    onFocus?: (e: React.FocusEvent<any>) => void;
     inputIsValid?: any;
-    onBlur?: (e: React.FocusEvent) => void;
+    onBlur?: (e: React.FocusEvent<any>) => void;
     valueOnInvalid?: any;
     placeholder?: string;
-    onKeyDown?: (e: React.KeyboardEvent) => void;
+    onKeyDown?: (e: React.KeyboardEvent<any>) => void;
     autoComplete?: string;
     autoFocus?: boolean;
 }

@@ -14,7 +14,6 @@ export interface IPropsInputSearch {
     iconPrefix?: boolean | FontAwesomeIconProps;
     reactPrefix?: ReactNode;
     inputGroupClass?: string;
-    size?: 'lg' | 'sm';
     autoFocus?: boolean;
     onKeyDown?: (e: React.KeyboardEvent) => void;
     onFocus?: (e: React.FocusEvent) => void;
