@@ -19,8 +19,8 @@ export interface IPropsInputSearch {
 	reactPrefix?: ReactNode
 	inputGroupClass?: string
 	autoFocus?: boolean
-	onKeyDown?: (e: React.KeyboardEvent) => void
-	onFocus?: (e: React.FocusEvent) => void
+	onKeyDown?: (e: React.KeyboardEvent<any>) => void
+	onFocus?: (e: React.FocusEvent<any>) => void
 	noSelectOnFocus?: boolean
 	autoCompleteOn?: boolean
 }
