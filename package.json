@@ -1,7 +1,7 @@
 {
-  "name": "@solidbasisventures/intelliwaketsreact",
+  "name": "@solidbasisventures/intelliwaketsreact17",
   "version": "2.0.330",
-  "description": "NPM package for IntelliWake React Components",
+  "description": "NPM package for IntelliWake React 17 Components",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "scripts": {
@@ -17,7 +17,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SolidBasisVentures/IntelliWakeTSReact.git"
+    "url": "https://github.com/SolidBasisVentures/IntelliWakeTSReact17.git"
   },
   "peerDependencies": {},
   "devDependencies": {
