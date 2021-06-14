@@ -43,6 +43,7 @@ export * from './WebControls/InputTimeZone';
 export * from './WebControls/InputUrl';
 export * from './WebControls/InputWrapper';
 export * from './WebControls/InputZip';
+export * from './WebControls/IWButton';
 export * from './WebControls/IWInputProps';
 export * from './WebControls/IWServerData';
 export * from './WebControls/IWTable';
