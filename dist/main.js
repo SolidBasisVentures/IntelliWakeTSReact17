@@ -2409,6 +2409,24 @@ var IWServerData = function (props) {
             ((_l = props.loadingReactNodes) !== null && _l !== void 0 ? _l : React__default['default'].createElement(ActivityOverlayControl, { show: true }))));
 };
 
+var IWTable = function (props) {
+    var _a;
+    return (React__default['default'].createElement("table", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' ' + ClassNames({
+            table: true,
+            'table-bordered': !!props.bordered,
+            'border-0': !!props.borderless,
+            'table-striped': !!props.striped,
+            'table-dark': !!props.dark,
+            'table-hover': !!props.hover,
+            'table-responsive': !!props.responsive,
+            'table-sm': props.size !== 'lg',
+            'small': !!props.textSmall,
+            'table-sticky': !!props.sticky
+        }), tabIndex: props.tabIndex, ref: props.ref },
+        !!props.caption && React__default['default'].createElement("caption", null, props.caption),
+        props.children));
+};
+
 function StyleControl(props) {
     return !props.css ? React__default['default'].createElement(React__default['default'].Fragment, null) : React__default['default'].createElement("style", { dangerouslySetInnerHTML: { __html: props.css } });
 }
@@ -2918,6 +2936,7 @@ exports.GetPathThrough = GetPathThrough;
 exports.HandleChangeValue = HandleChangeValue;
 exports.HasPathComponent = HasPathComponent;
 exports.IWServerData = IWServerData;
+exports.IWTable = IWTable;
 exports.InputCheckBox = InputCheckBox;
 exports.InputColor = InputColor;
 exports.InputDate = InputDate;
