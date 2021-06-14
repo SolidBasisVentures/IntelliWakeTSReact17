@@ -1,7 +1,8 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
-import {Button, Modal, ModalBody, ModalFooter} from 'react-bootstrap'
+import {Modal, ModalBody, ModalFooter} from 'react-bootstrap'
 import {EvaluateString, TVariables} from '@solidbasisventures/intelliwaketsfoundation'
 import {KEY_STRING_ENTER} from '../Functions'
+import {IWButton} from './IWButton'
 
 export interface IModalPromptResponse {
 	label: ReactNode
@@ -117,32 +118,32 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 			<Modal.Header className={'alert-' + (props.color ?? 'primary')}>{title}</Modal.Header>
 			{!!messageBody && <ModalBody>{messageBody}</ModalBody>}
 			<ModalFooter>
-				<Button
+				<IWButton
 					type="button"
 					onClick={() => dismiss(true)}
-					variant={
-						(props.cancelOutline ? 'outline-' : '') + props.cancelColor ??
-						(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
-							? props.color ?? 'primary'
-							: 'link')
-					}>
+					outline={props.cancelOutline}
+					color={props.cancelColor ??
+					(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+						? props.color ?? 'primary'
+						: 'link')}>
 					{props.cancelLabel ??
 						(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')}
-				</Button>
+				</IWButton>
 				{promptResponsesAsArray.map((promptResponse, idx) => (
-					<Button
+					<IWButton
 						key={idx}
 						onClick={() => {
 							promptResponse.action()
 							dismiss(false)
 						}}
-						variant={(promptResponse.outline ? 'outline-' : '') + (promptResponse.color ?? props.color ?? 'primary')}
+						outline={promptResponse.outline}
+						color={(promptResponse.color ?? props.color ?? 'primary')}
 						className="ml-1">
 						{promptResponse.label}
-					</Button>
+					</IWButton>
 				))}
 				{!!props.okLabel && !!props.okAction && (
-					<Button
+					<IWButton
 						onClick={okAction}
 						color={props.color ?? props.color ?? 'primary'}
 						className="ml-1"
@@ -150,7 +151,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 						autoFocus
 						tabIndex={0}>
 						{props.okLabel}
-					</Button>
+					</IWButton>
 				)}
 			</ModalFooter>
 		</Modal>

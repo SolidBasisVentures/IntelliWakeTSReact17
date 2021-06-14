@@ -2419,6 +2419,7 @@ var IWTable = function (props) {
             'table-dark': !!props.dark,
             'table-hover': !!props.hover,
             'table-responsive': !!props.responsive,
+            'table-sortable': !!props.sortable,
             'table-sm': props.size !== 'lg',
             'small': !!props.textSmall,
             'table-sticky': !!props.sticky
@@ -2714,6 +2715,11 @@ var MessageBox = function (props) {
             React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))) : null));
 };
 
+var IWButton = function (props) {
+    var _a, _b, _c;
+    return (React__default['default'].createElement("button", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (" btn btn-" + (props.outline ? 'outline-' : '') + ((_b = props.color) !== null && _b !== void 0 ? _b : 'secondary') + " "), type: (_c = props.type) !== null && _c !== void 0 ? _c : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus }, props.children));
+};
+
 /**
  * A wrapper for Bootstrap's Modal that handles all the actions.
  *
@@ -2796,16 +2802,16 @@ var ModalPrompt = function (props) {
         React__default['default'].createElement(reactBootstrap.Modal.Header, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
         !!messageBody && React__default['default'].createElement(reactBootstrap.ModalBody, null, messageBody),
         React__default['default'].createElement(reactBootstrap.ModalFooter, null,
-            React__default['default'].createElement(reactBootstrap.Button, { type: "button", onClick: function () { return dismiss(true); }, variant: (_b = (props.cancelOutline ? 'outline-' : '') + props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+            React__default['default'].createElement(IWButton, { type: "button", onClick: function () { return dismiss(true); }, outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
                     ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary' : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
             promptResponsesAsArray.map(function (promptResponse, idx) {
                 var _a, _b;
-                return (React__default['default'].createElement(reactBootstrap.Button, { key: idx, onClick: function () {
+                return (React__default['default'].createElement(IWButton, { key: idx, onClick: function () {
                         promptResponse.action();
                         dismiss(false);
-                    }, variant: (promptResponse.outline ? 'outline-' : '') + ((_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary'), className: "ml-1" }, promptResponse.label));
+                    }, outline: promptResponse.outline, color: ((_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary'), className: "ml-1" }, promptResponse.label));
             }),
-            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(reactBootstrap.Button, { onClick: okAction, color: (_f = (_e = props.color) !== null && _e !== void 0 ? _e : props.color) !== null && _f !== void 0 ? _f : 'primary', className: "ml-1", onKeyPress: okKeyPress, autoFocus: true, tabIndex: 0 }, props.okLabel)))));
+            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(IWButton, { onClick: okAction, color: (_f = (_e = props.color) !== null && _e !== void 0 ? _e : props.color) !== null && _f !== void 0 ? _f : 'primary', className: "ml-1", onKeyPress: okKeyPress, autoFocus: true, tabIndex: 0 }, props.okLabel)))));
 };
 
 function NumberFormat(props) {

@@ -11,6 +11,7 @@ export interface IIWTableProps {
     textSmall?: boolean;
     className?: string;
     sticky?: boolean;
+    sortable?: boolean;
     tabIndex?: number;
     ref?: any;
     children?: any;

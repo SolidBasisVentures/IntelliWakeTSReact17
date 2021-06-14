@@ -13,6 +13,7 @@ export interface IIWTableProps {
 	textSmall?: boolean
 	className?: string
 	sticky?: boolean
+	sortable?: boolean
 	tabIndex?: number
 	ref?: any
 	children?: any
@@ -29,6 +30,7 @@ export const IWTable = (props: IIWTableProps) => {
 			'table-dark': !!props.dark,
 			'table-hover': !!props.hover,
 			'table-responsive': !!props.responsive,
+			'table-sortable': !!props.sortable,
 			'table-sm': props.size !== 'lg',
 			'small': !!props.textSmall,
 			'table-sticky': !!props.sticky
