@@ -6,7 +6,7 @@ export interface IIWButtonProps {
     hidden?: boolean;
     disabled?: boolean;
     block?: boolean;
-    style?: React.StyleHTMLAttributes<HTMLButtonElement> | React.StyleHTMLAttributes<HTMLTableElement>;
+    style?: React.StyleHTMLAttributes<HTMLButtonElement> | React.StyleHTMLAttributes<HTMLElement>;
     type?: 'button' | 'submit' | 'reset';
     autoFocus?: boolean;
     className?: string;
