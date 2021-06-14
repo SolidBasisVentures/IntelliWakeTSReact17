@@ -18,6 +18,7 @@ export interface IIWButtonProps {
 	children?: any
 	onKeyDown?: React.KeyboardEventHandler
 	onKeyPress?: React.KeyboardEventHandler
+	title?: string
 }
 
 export const IWButton = (props: IIWButtonProps) => {
@@ -35,7 +36,8 @@ export const IWButton = (props: IIWButtonProps) => {
 		        autoFocus={props.autoFocus}
 		        hidden={props.hidden}
 		        disabled={props.disabled}
-		        style={props.style}>
+		        style={props.style}
+		        title={props.title}>
 			{props.children}
 		</button>
 	)

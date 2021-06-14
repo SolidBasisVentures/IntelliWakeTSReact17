@@ -2022,7 +2022,7 @@ function InputTextArea(props) {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } })) }),
-            React__default['default'].createElement("input", __assign({ type: "textarea" }, inputProps)))));
+            React__default['default'].createElement("textarea", __assign({}, inputProps)))));
 }
 
 var originalValue$1 = ' ';
@@ -2131,7 +2131,7 @@ var IWButton = function (props) {
     return (React__default['default'].createElement("button", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
             " btn " + (props.color === 'inline' ? 'btn btn-link btn-link-inline ' : "btn-" + (props.outline ? 'outline-' : '') + ((_b = props.color) !== null && _b !== void 0 ? _b : 'secondary') + " ") +
             ("" + (!!props.size ? "btn-" + props.size : '')) + ' ' +
-            ClassNames({ 'btn-block': !!props.block }), type: (_c = props.type) !== null && _c !== void 0 ? _c : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style }, props.children));
+            ClassNames({ 'btn-block': !!props.block }), type: (_c = props.type) !== null && _c !== void 0 ? _c : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title }, props.children));
 };
 
 /**

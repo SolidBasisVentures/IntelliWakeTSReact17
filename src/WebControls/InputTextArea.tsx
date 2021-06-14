@@ -34,7 +34,7 @@ export function InputTextArea<T>(props: IProps<T>) {
 						}}
 					/>
 				}>
-				<input type="textarea" {...inputProps} />
+				<textarea {...inputProps} />
 			</InputWrapper>
 		</>
 	)
