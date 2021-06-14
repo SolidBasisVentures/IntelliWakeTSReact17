@@ -4,8 +4,10 @@ export interface IIWButtonProps {
     color?: string;
     outline?: boolean;
     hidden?: boolean;
-    style?: React.StyleHTMLAttributes<HTMLButtonElement>;
-    type?: 'button' | 'submit';
+    disabled?: boolean;
+    block?: boolean;
+    style?: React.StyleHTMLAttributes<HTMLButtonElement> | React.StyleHTMLAttributes<HTMLTableElement>;
+    type?: 'button' | 'submit' | 'reset';
     autoFocus?: boolean;
     className?: string;
     onClick?: React.MouseEventHandler;

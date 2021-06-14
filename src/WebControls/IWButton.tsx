@@ -6,9 +6,10 @@ export interface IIWButtonProps {
 	color?: string
 	outline?: boolean
 	hidden?: boolean
+	disabled?: boolean
 	block?: boolean
-	style?: React.StyleHTMLAttributes<HTMLButtonElement>
-	type?: 'button' | 'submit'
+	style?: React.StyleHTMLAttributes<HTMLButtonElement> | React.StyleHTMLAttributes<HTMLTableElement>
+	type?: 'button' | 'submit' | 'reset'
 	autoFocus?: boolean
 	className?: string
 	onClick?: React.MouseEventHandler
@@ -33,6 +34,7 @@ export const IWButton = (props: IIWButtonProps) => {
 		        onKeyPress={props.onKeyPress}
 		        autoFocus={props.autoFocus}
 		        hidden={props.hidden}
+		        disabled={props.disabled}
 		        style={props.style}>
 			{props.children}
 		</button>
