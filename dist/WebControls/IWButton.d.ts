@@ -3,6 +3,8 @@ export interface IIWButtonProps {
     size?: 'sm' | 'lg';
     color?: string;
     outline?: boolean;
+    hidden?: boolean;
+    style?: React.StyleHTMLAttributes<HTMLButtonElement>;
     type?: 'button' | 'submit';
     autoFocus?: boolean;
     className?: string;

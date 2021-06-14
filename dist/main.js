@@ -2131,7 +2131,7 @@ function InputZip(props) {
 var IWButton = function (props) {
     var _a, _b, _c;
     return (React__default['default'].createElement("button", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
-            (" btn btn-" + (props.outline ? 'outline-' : '') + ((_b = props.color) !== null && _b !== void 0 ? _b : 'secondary') + " " + (!!props.size ? "btn-" + props.size : '')), type: (_c = props.type) !== null && _c !== void 0 ? _c : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus }, props.children));
+            (" btn btn-" + (props.outline ? 'outline-' : '') + ((_b = props.color) !== null && _b !== void 0 ? _b : 'secondary') + " " + (!!props.size ? "btn-" + props.size : '')), type: (_c = props.type) !== null && _c !== void 0 ? _c : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, style: props.style }, props.children));
 };
 
 /**
@@ -2429,7 +2429,7 @@ var IWTable = function (props) {
             'table-sm': props.size !== 'lg',
             'small': !!props.textSmall,
             'table-sticky': !!props.sticky
-        }), tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown },
+        }), tabIndex: props.tabIndex, hidden: props.hidden, style: props.style, ref: props.ref, onKeyDown: props.onKeyDown },
         !!props.caption && React__default['default'].createElement("caption", null, props.caption),
         props.children));
 };

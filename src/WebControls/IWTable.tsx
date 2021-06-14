@@ -15,6 +15,8 @@ export interface IIWTableProps {
 	sticky?: boolean
 	sortable?: boolean
 	tabIndex?: number
+	hidden?: boolean
+	style?: React.StyleHTMLAttributes<HTMLTableElement>
 	ref?: any
 	children?: any
 	onKeyDown?: React.KeyboardEventHandler
@@ -35,9 +37,11 @@ export const IWTable = (props: IIWTableProps) => {
 			'small': !!props.textSmall,
 			'table-sticky': !!props.sticky
 		})}
-		tabIndex={props.tabIndex}
-		ref={props.ref}
-		onKeyDown={props.onKeyDown}>
+		       tabIndex={props.tabIndex}
+		       hidden={props.hidden}
+		       style={props.style}
+		       ref={props.ref}
+		       onKeyDown={props.onKeyDown}>
 			{!!props.caption && <caption>{props.caption}</caption>}
 			{props.children}
 		</table>

@@ -13,6 +13,8 @@ export interface IIWTableProps {
     sticky?: boolean;
     sortable?: boolean;
     tabIndex?: number;
+    hidden?: boolean;
+    style?: React.StyleHTMLAttributes<HTMLTableElement>;
     ref?: any;
     children?: any;
     onKeyDown?: React.KeyboardEventHandler;
