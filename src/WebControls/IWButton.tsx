@@ -17,7 +17,8 @@ export interface IIWButtonProps {
 
 export const IWButton = (props: IIWButtonProps) => {
 	return (
-		<button className={(props.className ?? '') + ` btn btn-${props.outline ? 'outline-' : ''}${props.color ?? 'secondary'} `}
+		<button className={(props.className ?? '') +
+		` btn btn-${props.outline ? 'outline-' : ''}${props.color ?? 'secondary'} ${!!props.size ? `btn-${props.size}` : ''}`}
 		        type={props.type ?? 'button'}
 		        onClick={props.onClick}
 		tabIndex={props.tabIndex}
