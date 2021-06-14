@@ -99,7 +99,7 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 								(props.children.props.className ?? '') +
 								' ' +
 								(props.className ?? '') +
-								(props.children.props.invalid || props.isInvalid ? ' is_invalid' : '') +
+								(props.children.props.isInvalid || props.isInvalid ? ' is_invalid' : '') +
 								(props.children.props.required ? ' is-required' : '')
 							).trim(),
 							onFocus: (e: React.FocusEvent<HTMLInputElement>) => {

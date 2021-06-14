@@ -1,3 +1,4 @@
+/// <reference types="react" />
 interface IProps {
     email?: string | null;
     label?: string | null;

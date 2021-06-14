@@ -28,7 +28,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		delete subset.upperBound
 		delete subset.currency
 		delete subset.hideZero
-		delete subset.invalid
+		delete subset.isInvalid
 		delete subset.decimalScaleDisplay
 
 		return subset
