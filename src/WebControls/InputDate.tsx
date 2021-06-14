@@ -7,7 +7,6 @@ import {
 	MomentTimeString,
 	RandomString
 } from '@solidbasisventures/intelliwaketsfoundation'
-import {Form} from 'react-bootstrap'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	showTime?: boolean
@@ -71,9 +70,9 @@ export function InputDate<T>(props: IProps<T>) {
 						: MomentDisplayDayDate(props.value as string)}
 				</div>
 			) : (
-				<Form.Control
+				<input
 					type="date"
-					className="inputDate"
+					className="form-control inputDate"
 					{...inputProps}
 					placeholder="yyyy-mm-dd"
 					value={overrideValue ?? ''}

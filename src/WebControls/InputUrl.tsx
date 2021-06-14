@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {Form} from 'react-bootstrap'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 import {EllipsesTruncate} from './EllipsesTruncate'
@@ -25,7 +24,7 @@ export function InputUrl<T>(props: IProps<T>) {
 						<EllipsesTruncate text={props.value} />
 					</a>
 				}>
-				<Form.Control
+				<input
 					type="url"
 					pattern="https://.*"
 					inputMode="url"

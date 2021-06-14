@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {Form} from 'react-bootstrap'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 
@@ -24,7 +23,7 @@ export function InputSSN<T>(props: IProps<T>) {
 			{...ReduceToInputAddProps(props)}
 			className="inputSSN"
 			plainTextControl={!!props.plainTextLast4Only ? '...-' + (props.value ?? '').toString().substr(-4) : props.value}>
-			<Form.Control type="text" {...inputProps} pattern="\d{3}-?\d{2}-?\d{4}" />
+			<input type="text" {...inputProps} pattern="\d{3}-?\d{2}-?\d{4}" />
 		</InputWrapper>
 	)
 }

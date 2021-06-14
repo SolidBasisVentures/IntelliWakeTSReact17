@@ -2,8 +2,7 @@ import React, {ReactNode, useEffect, useRef, useState} from 'react'
 import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import {faSearch} from '@fortawesome/pro-regular-svg-icons'
-import {Form, InputGroup} from 'react-bootstrap'
-import {FormControlProps} from 'react-bootstrap/FormControl'
+import {InputGroup} from 'react-bootstrap'
 
 export interface IPropsInputSearch {
 	initialValue?: string
@@ -19,7 +18,6 @@ export interface IPropsInputSearch {
 	iconPrefix?: boolean | FontAwesomeIconProps
 	reactPrefix?: ReactNode
 	inputGroupClass?: string
-	size?: 'lg' | 'sm'
 	autoFocus?: boolean
 	onKeyDown?: (e: React.KeyboardEvent) => void
 	onFocus?: (e: React.FocusEvent) => void
@@ -93,19 +91,8 @@ export const InputSearch = (props: IPropsInputSearch) => {
 		}
 	}
 
-	const inputProps: FormControlProps & {
-		inputMode?: any
-		onBlur?: any
-		innerRef?: any
-		style?: any
-		placeholder?: any
-		onKeyDown?: any
-		autoFocus?: any
-		onFocus?: any
-		autoComplete?: any
-	} = {
+	const inputProps = {
 		type: 'search',
-		inputMode: 'search',
 		className: `inputSearch ${props.className ?? ''} ${!!props.bordered ? '' : 'bg-transparent border-0'}`,
 		value: currentText,
 		onChange: handleInputChange,
@@ -117,7 +104,6 @@ export const InputSearch = (props: IPropsInputSearch) => {
 
 			inputRef.current = ref
 		},
-		size: props.size,
 		style: props.style,
 		placeholder: props.placeholder,
 		onKeyDown: handleKeyDown,
@@ -145,9 +131,9 @@ export const InputSearch = (props: IPropsInputSearch) => {
 					)}
 				</InputGroup.Text>
 			)}
-			<Form.Control {...inputProps} />
+			<input {...inputProps} />
 		</InputGroup>
 	) : (
-		<Form.Control {...inputProps} />
+		<input {...inputProps} />
 	)
 }

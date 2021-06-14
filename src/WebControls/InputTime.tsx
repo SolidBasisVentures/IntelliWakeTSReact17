@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {Form} from 'react-bootstrap'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
 	MOMENT_FORMAT_TIME_NO_SECONDS,
@@ -77,7 +76,7 @@ export function InputTime<T>(props: IProps<T>) {
 					{MomentDisplayTime(props.value as string)}
 				</div>
 			) : (
-				<Form.Control
+				<input
 					type="time"
 					className="inputTime"
 					{...inputProps}

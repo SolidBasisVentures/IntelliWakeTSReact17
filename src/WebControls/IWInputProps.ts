@@ -1,4 +1,3 @@
-import {FormControlProps} from 'react-bootstrap'
 import React, {ReactNode} from 'react'
 import {ElementCustomValue} from '../Functions'
 
@@ -22,7 +21,7 @@ export interface IIWInputAddProps<T = any, V = any> {
 	append?: ReactNode
 }
 
-export interface IIWInputProps<T = any, V = any> extends Omit<FormControlProps, 'value'>, IIWInputAddProps<T, V> {
+export interface IIWInputProps<T = any, V = any> extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'value'>, IIWInputAddProps<T, V> {
 	value?: V
 	style?: any
 	name?: string

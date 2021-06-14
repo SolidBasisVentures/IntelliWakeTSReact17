@@ -95,7 +95,7 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 						props.children,
 						ReduceInputProps({
 							...props.children.props,
-							className: (
+							className: 'form-control ' + (
 								(props.children.props.className ?? '') +
 								' ' +
 								(props.className ?? '') +
