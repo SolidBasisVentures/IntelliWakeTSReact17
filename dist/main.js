@@ -648,8 +648,11 @@ var ResizeBase64 = function (base64Str, maxSize) {
 var Alert = function (props) {
     var _a, _b;
     var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    var classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
-    classes += !!props.color ? " alert-" + props.color : '';
+    var clearTime = React.useRef(setTimeout(function () { }, 100));
+    var isMounted = React.useRef(false);
+    var _c = React.useState(null), showState = _c[0], setShowState = _c[1];
+    var classes = (_b = showState === null || showState === void 0 ? void 0 : showState.className) !== null && _b !== void 0 ? _b : '';
+    classes += !!(showState === null || showState === void 0 ? void 0 : showState.color) ? " alert-" + (showState === null || showState === void 0 ? void 0 : showState.color) : '';
     classes +=
         ' ' +
             ClassNames({
@@ -658,6 +661,25 @@ var Alert = function (props) {
                 'fade': true,
                 'show': !!props.isOpen
             });
+    React.useEffect(function () {
+        isMounted.current = true;
+        if (!!props.isOpen) {
+            setShowState(props);
+        }
+        else {
+            if (showState === null || showState === void 0 ? void 0 : showState.isOpen) {
+                clearTimeout(clearTime.current);
+                clearTime.current = setTimeout(function () {
+                    if (isMounted.current) {
+                        setShowState(null);
+                    }
+                }, 1500);
+            }
+        }
+        return function () {
+            isMounted.current = false;
+        };
+    }, [props.isOpen]);
     return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className'), { className: classes.trim(), onClick: function () {
             if (!!props.toggle)
                 props.toggle();
