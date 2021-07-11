@@ -2833,21 +2833,21 @@ function InputState(props) {
 function InputSwitch(props) {
     var _a, _b, _c, _d, _e;
     var handleInputChange = function (checked, e) {
-        if (!!props.onChange) {
-            props.onChange(e);
-        }
+        // if (!!props.onChange) {
+        // 	props.onChange(e)
+        // }
         if (!!props.changeValue) {
-            props.changeValue(checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+            props.changeValue(checked, props.name, !!e.shiftKey, !!e.ctrlKey, !!e.altKey);
         }
     };
     var height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
     var width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
-    return (React__default['default'].createElement("label", { className: !props.plainText ? "cursor-pointer" : '' },
+    return (React__default['default'].createElement("label", { className: !props.plainText ? 'cursor-pointer' : '', hidden: props.hidden },
         React__default['default'].createElement(Switch__default['default'], { onChange: function (checked, e) {
                 if (!props.plainText) {
                     handleInputChange(checked, e);
                 }
-            }, name: props.name, className: 'inputSwitch react-switch ' + ((_c = props.className) !== null && _c !== void 0 ? _c : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_d = props.checkedIcon) !== null && _d !== void 0 ? _d : false, uncheckedIcon: (_e = props.uncheckedIcon) !== null && _e !== void 0 ? _e : false, height: height, width: width }),
+            }, name: props.name, className: 'inputSwitch react-switch ' + ((_c = props.className) !== null && _c !== void 0 ? _c : '') + (props.plainText ? ' plainText' : '') + (props.noPadding ? '' : ' mr-1'), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_d = props.checkedIcon) !== null && _d !== void 0 ? _d : false, uncheckedIcon: (_e = props.uncheckedIcon) !== null && _e !== void 0 ? _e : false, height: height, width: width }),
         props.label));
 }
 
