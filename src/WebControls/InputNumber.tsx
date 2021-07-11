@@ -1,11 +1,10 @@
 import React, {useMemo} from 'react'
 import Cleave from 'cleave.js/react'
 import {CleanNumber, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
-import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
+import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {CleaveOptions} from 'cleave.js/options'
 import {ClassNames} from '../Functions'
 import {InputWrapper} from './InputWrapper'
-import {InputProps} from 'reactstrap'
 
 export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V> {
 	htmlRef?: (ref: any) => void
@@ -20,7 +19,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
-	const inputProps = useMemo<InputProps>(() => {
+	const inputProps = useMemo<ILegacyInputProps>(() => {
 		const subset = ReduceInputProps(props)
 		delete subset.decimalScale
 		delete subset.integerScale
