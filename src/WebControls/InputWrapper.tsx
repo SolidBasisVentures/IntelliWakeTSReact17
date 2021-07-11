@@ -167,7 +167,7 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 									}
 									if (!!props.changeValue) {
 										props.changeValue(
-											newState.value,
+											newState.value as V,
 											newState.name,
 											newState.shiftKey,
 											newState.ctrlKey,
@@ -186,7 +186,7 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 												lateState.current.value !== props.children.props.value
 											) {
 												props.changeValueLate(
-													lateState.current.value,
+													lateState.current.value as V,
 													lateState.current.name,
 													lateState.current.shiftKey,
 													lateState.current.ctrlKey,
