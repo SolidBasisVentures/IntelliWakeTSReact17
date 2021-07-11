@@ -2276,7 +2276,7 @@ function InputCheckBox(props) {
 
 var ReduceInputProps = function (props, classNameAdd) {
     var _a, _b, _c;
-    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid');
+    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = (((_a = subset.className) !== null && _a !== void 0 ? _a : '') + " " + classNameAdd).trim();
@@ -2906,7 +2906,7 @@ function InputTel(props) {
 
 var InputText = function (props) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
+        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.ref }))));
 };
 
 function InputTextArea(props) {
