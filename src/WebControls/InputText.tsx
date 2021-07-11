@@ -1,13 +1,13 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 
-interface IProps<T = unknown> extends IIWInputProps<T> {}
+interface IProps<T = any, V = any, H = HTMLInputElement> extends IIWInputProps<T, V, H> {}
 
-export function InputText<T>(props: IProps<T>) {
+export const InputText = forwardRef<HTMLInputElement, IProps>((props, ref ) => {
 	return (
 		<InputWrapper {...ReduceToInputAddProps(props)} className="inputText">
-			<input type="text" {...ReduceInputProps(props, 'form-control')} required={props.required} />
+			<input type="text" {...ReduceInputProps(props, 'form-control')} required={props.required} ref={ref} />
 		</InputWrapper>
 	)
-}
+})

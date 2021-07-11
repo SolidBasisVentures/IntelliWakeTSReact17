@@ -2276,7 +2276,7 @@ function InputCheckBox(props) {
 
 var ReduceInputProps = function (props, classNameAdd) {
     var _a, _b, _c;
-    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend');
+    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = (((_a = subset.className) !== null && _a !== void 0 ? _a : '') + " " + classNameAdd).trim();
@@ -2299,7 +2299,8 @@ var ReduceToInputAddProps = function (props) {
         changeValueLate: props.changeValueLate,
         autoCompleteOn: props.autoCompleteOn,
         prepend: props.prepend,
-        append: props.append
+        append: props.append,
+        invalid: props.invalid
     };
 };
 var HandleChangeValue = function (e, changeValue, onChange) {
@@ -2452,6 +2453,7 @@ var InputWrapper = function (props) {
             setInternalState(props.children.props.value);
         }
     }, [props.children.props.value]);
+    // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", __assign({ className: "form-control-plaintext " }, props.plainTextProps),
             React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' cursor-pointer' : '') }, props.plainTextProps, { onClick: function () {
@@ -2461,7 +2463,8 @@ var InputWrapper = function (props) {
         React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(__assign(__assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
             ' ' +
             ((_d = props.className) !== null && _d !== void 0 ? _d : '') +
-            (props.children.props.invalid || props.isInvalid ? ' is_invalid' : '') +
+            (props.children.props.invalid || props.isInvalid ? ' is-invalid' : '') +
+            (props.children.props.invalid === false ? ' is-valid' : '') +
             (props.children.props.required ? ' is-required' : '')).trim(), onFocus: function (e) {
             if (!props.doNotSelectOnFocus && 'select' in e.target)
                 e.target.select();
@@ -2481,17 +2484,17 @@ var InputWrapper = function (props) {
             var _a;
             clearTimeout(lateTrigger.current);
             if (!props.children.props.plainText && !props.children.props.disabled) {
-                var isValid = !props.children.props.inputIsValid || props.children.props.inputIsValid(e.target.value);
+                var isValid = !props.inputIsValid || props.inputIsValid(e.target.value);
                 isManagingDirtyState.current = !isValid;
                 var customValue = (!isValid
-                    ? !!props.children.props.valueOnInvalid
-                        ? props.children.props.valueOnInvalid(e.target.value)
+                    ? !!props.valueOnInvalid
+                        ? props.valueOnInvalid(e.target.value)
                         : ''
                     : (!props.transformToValid ? e.target.value : props.transformToValid(e.target.value, e)));
                 if (verbose) {
                     console.log('targetValue', e.target.value);
                     console.log('isValid', isValid);
-                    console.log('valueOnInvalid', !!props.children.props.valueOnInvalid);
+                    console.log('valueOnInvalid', !!props.valueOnInvalid);
                     console.log('props.transformToValid', !!props.transformToValid);
                     console.log('customValue', customValue);
                 }
@@ -2913,10 +2916,10 @@ function InputTel(props) {
         React__default['default'].createElement("input", __assign({ type: "tel", inputMode: "tel" }, inputProps))));
 }
 
-function InputText(props) {
+var InputText = React.forwardRef(function (props, ref) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
-}
+        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: ref }))));
+});
 
 function InputTextArea(props) {
     var inputProps = React.useMemo(function () {

@@ -11,19 +11,14 @@ export interface IIWInputAddProps<T = any, V = any> {
     autoCompleteOn?: boolean;
     prepend?: ReactNode;
     append?: ReactNode;
+    invalid?: boolean;
 }
 export declare type THTMLChangeElements = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 export declare type TLegacyInputType = 'text' | 'email' | 'select' | 'file' | 'radio' | 'checkbox' | 'textarea' | 'button' | 'reset' | 'submit' | 'date' | 'datetime-local' | 'hidden' | 'image' | 'month' | 'number' | 'range' | 'search' | 'tel' | 'url' | 'week' | 'password' | 'datetime' | 'time' | 'color';
 export interface ILegacyInputProps<T = THTMLChangeElements> extends React.InputHTMLAttributes<T> {
-    [key: string]: any;
     type?: TLegacyInputType;
-    bsSize?: 'lg' | 'sm';
-    valid?: boolean;
     invalid?: boolean;
-    tag?: React.ElementType;
-    innerRef?: React.Ref<T>;
     plaintext?: boolean;
-    addon?: boolean;
 }
 export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements> extends Omit<ILegacyInputProps<H>, 'value'>, IIWInputAddProps<T, V> {
     value?: V;
