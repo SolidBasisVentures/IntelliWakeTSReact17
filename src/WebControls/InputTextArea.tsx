@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
-import {CleanScripts, ReplaceLinks} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanScripts, OmitProperty, ReplaceLinks} from '@solidbasisventures/intelliwaketsfoundation'
 import {InputWrapper} from './InputWrapper'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
@@ -10,8 +10,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {
 
 export function InputTextArea<T>(props: IProps<T>) {
 	const inputProps = useMemo(() => {
-		let subset = ReduceInputProps(props)
-		delete subset.bordered
+		let subset = ReduceInputProps(OmitProperty(props, 'bordered'))
 
 		subset.value = props.value ?? ''
 

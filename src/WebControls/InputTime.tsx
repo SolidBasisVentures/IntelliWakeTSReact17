@@ -6,7 +6,7 @@ import {
 	MomentDateString,
 	MomentDisplayTime,
 	MomentFormatString,
-	MomentTimeString
+	MomentTimeString, OmitProperty
 } from '@solidbasisventures/intelliwaketsfoundation'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
@@ -21,14 +21,7 @@ export function InputTime<T>(props: IProps<T>) {
 	const nextTimeValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
 
-	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
-		delete subset.value
-		delete subset.onChange
-		delete subset.editSeconds
-
-		return subset
-	}, [props])
+	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props])
 
 	useEffect(() => {
 		if (![lastTimeValue.current, nextTimeValue.current].includes(MomentTimeString(props.value as string) ?? '')) {

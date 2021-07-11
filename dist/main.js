@@ -9,10 +9,10 @@ var reactFontawesome = require('@fortawesome/react-fontawesome');
 var faSpinnerThird = require('@fortawesome/pro-solid-svg-icons/faSpinnerThird');
 var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
 var ReactDOM = require('react-dom');
-var reactstrap = require('reactstrap');
 var reactRouterDom = require('react-router-dom');
 var ReactDatePicker = require('react-datepicker');
 var Cleave = require('cleave.js/react');
+var Switch = require('react-switch');
 var axios = require('axios');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -22,6 +22,7 @@ var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 var ReactDatePicker__default = /*#__PURE__*/_interopDefaultLegacy(ReactDatePicker);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
+var Switch__default = /*#__PURE__*/_interopDefaultLegacy(Switch);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 
 // ----------------------------
@@ -642,6 +643,25 @@ var ResizeBase64 = function (base64Str, maxSize) {
     var ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, width, height);
     return canvas.toDataURL();
+};
+
+var Alert = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    var classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
+    classes += !!props.color ? " alert-" + props.color : '';
+    classes +=
+        ' ' +
+            ClassNames({
+                alert: true,
+                'alert-dismissible': !!props.toggle,
+                'fade': true,
+                'show': !!props.isOpen
+            });
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className'), { className: classes.trim(), onClick: function () {
+            if (!!props.toggle)
+                props.toggle();
+        } }));
 };
 
 var Badge = function (props) {
@@ -1336,30 +1356,10 @@ var ModalPrompt = function (props) {
         !!props.okAction && props.okAction();
         dismiss(false);
     };
-    // const okKeyPress = (e: React.KeyboardEvent) => {
-    // 	if (!!props.okKeys) {
-    // 		if (Array.isArray(props.okKeys)) {
-    // 			for (const okKey of props.okKeys) {
-    // 				if (e.key === okKey) {
-    // 					okAction()
-    // 					break
-    // 				}
-    // 			}
-    // 		} else {
-    // 			if (e.key === KEY_STRING_ENTER) {
-    // 				okAction()
-    // 			} else if (e.key === props.okKeys) {
-    // 				okAction()
-    // 			}
-    // 		}
-    // 	} else if (e.key === KEY_STRING_ENTER) {
-    // 		okAction()
-    // 	}
-    // }
-    return (React__default['default'].createElement(reactstrap.Modal, { backdrop: true, keyboard: true, isOpen: isOpen, toggle: function () { return dismiss(true); }, autoFocus: false },
-        React__default['default'].createElement(reactstrap.ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary'), toggle: function () { return dismiss(true); }, close: React__default['default'].createElement("button", { className: "close", onClick: function () { return dismiss(true); } }, "\u00D7") }, title),
-        !!messageBody && React__default['default'].createElement(reactstrap.ModalBody, null, messageBody),
-        React__default['default'].createElement(reactstrap.ModalFooter, null,
+    return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: function () { return dismiss(true); } },
+        React__default['default'].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
+        !!messageBody && React__default['default'].createElement(ModalBody, null, messageBody),
+        React__default['default'].createElement(ModalFooter, null,
             React__default['default'].createElement(Button, { type: "button", onClick: function () { return dismiss(true); }, outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
                     ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary' : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
             promptResponsesAsArray.map(function (promptResponse, idx) {
@@ -2271,7 +2271,8 @@ function InputCheckBox(props) {
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(reactstrap.CustomInput, { type: "checkbox", label: props.label, name: props.name, className: 'inputCheckbox ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick }));
+    return (React__default['default'].createElement("label", { className: "cursor-pointer" },
+        React__default['default'].createElement("input", { type: "checkbox", name: props.name, className: 'inputCheckbox ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick })));
 }
 
 var ReduceInputProps = function (props, classNameAdd) {
@@ -2316,8 +2317,7 @@ var HandleChangeValue = function (e, changeValue, onChange) {
 function InputColor(props) {
     var _a, _b, _c;
     var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.className;
+        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'className'));
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
@@ -2337,12 +2337,7 @@ function InputDate(props) {
     var lastDateValue = React.useRef(originalValue);
     var nextDateValue = React.useRef(originalValue);
     var _b = React.useState(originalValue), overrideValue = _b[0], setOverrideValue = _b[1];
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.value;
-        delete subset.onChange;
-        return subset;
-    }, [props]);
+    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')); }, [props]);
     React.useEffect(function () {
         var _a, _b, _c, _d, _e;
         if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
@@ -2367,9 +2362,9 @@ function InputDate(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
         ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: "date", className: "inputDate" }, inputProps, { placeholder: "yyyy-mm-dd", value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
+        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: 'date', className: 'inputDate' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
 }
 
 /**
@@ -2548,8 +2543,7 @@ var InputWrapper = function (props) {
 
 function InputEmail(props) {
     var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.plaintext;
+        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainText'));
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
@@ -2562,21 +2556,8 @@ function InputEmail(props) {
 
 function InputSelect(props) {
     var _a;
-    var inputProps = React.useMemo(function () {
-        var subset = __assign({}, ReduceInputProps(props));
-        delete subset.isNumeric;
-        delete subset.isNumericOrNull;
-        delete subset.isStringOrNull;
-        delete subset.plainOnClick;
-        return subset;
-    }, [props]);
-    var wrapperProps = React.useMemo(function () {
-        var subset = __assign({}, ReduceToInputAddProps(props));
-        delete subset.plainTextURL;
-        delete subset.plainText;
-        delete subset.plainTextProps;
-        return subset;
-    }, [props]);
+    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull')); }, [props]);
+    var wrapperProps = React.useMemo(function () { return ReduceToInputAddProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')); }, [props]);
     return (React__default['default'].createElement(InputWrapper, __assign({}, wrapperProps, { className: 'inputSelect' + (props.plainText ? ' disabledLink' : ''), transformToValid: function (val, e) {
             if (!!props.multiple) {
                 if (!!props.isNumeric) {
@@ -2834,8 +2815,7 @@ var InputSelectStep = function (props) {
 function InputSSN(props) {
     var _a;
     var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.plainTextLast4Only;
+        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextLast4Only'));
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
@@ -2856,43 +2836,27 @@ function InputSwitch(props) {
         props.name,
         props.id
     ]);
-    var handleInputChange = function (e) {
+    var handleInputChange = function (checked, e) {
         e.target.value = e.target.checked.toString();
         e.target.customValue = e.target.checked;
         if (!!props.onChange) {
             props.onChange(e);
         }
         if (!!props.changeValue) {
-            props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+            props.changeValue(checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(reactstrap.CustomInput, { type: "switch", label: props.label, name: props.name, className: 'inputSwitch cursor-pointer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick }));
+    return (React__default['default'].createElement("label", { className: !props.plainText ? "cursor-pointer" : '' },
+        React__default['default'].createElement(Switch__default['default'], { onChange: function (checked, e) {
+                if (!props.plainText) {
+                    handleInputChange(checked, e);
+                }
+            }, name: props.name, className: 'inputSwitch react-switch ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, disabled: props.plainText, onClick: props.onClick, onColor: props.onColor, offColor: props.offColor, checkedIcon: props.checkedIcon, uncheckedIcon: props.uncheckedIcon }),
+        props.label));
 }
 
-var InputSwitchAlternate = function (props) {
-    var _a, _b;
-    var newID = React.useMemo(function () { var _a; return (_a = props.id) !== null && _a !== void 0 ? _a : 'sw' + props.name + Math.floor(Math.random() * 100000 + 1); }, [
-        props.name,
-        props.id
-    ]);
-    var valuesOnOff = (_a = props.valuesOnOff) !== null && _a !== void 0 ? _a : [1, 0];
-    var handleInputChange = function (e) {
-        e.target.value = (e.target.checked ? valuesOnOff[0] : valuesOnOff[1]).toString();
-        e.target.customValue = e.target.checked ? valuesOnOff[0] : valuesOnOff[1];
-        if (!!props.onChange)
-            props.onChange(e);
-        if (!!props.changeValue)
-            props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
-    };
-    return (React__default['default'].createElement(reactstrap.CustomInput, { type: "switch", label: props.label, name: props.name, className: 'inputSwitch ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), id: newID, checked: props.value === valuesOnOff[0], onChange: !props.plainText ? handleInputChange : function () { } }));
-};
-
 function InputTel(props) {
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props, 'form-control');
-        delete subset.showFAIcon;
-        return subset;
-    }, [props]);
+    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'showFAIcon'), 'form-control'); }, [props]);
     var faIconToShow = React.useMemo(function () {
         if (!props.showFAIcon)
             return null;
@@ -2912,8 +2876,7 @@ var InputText = function (props) {
 function InputTextArea(props) {
     var inputProps = React.useMemo(function () {
         var _a;
-        var subset = ReduceInputProps(props);
-        delete subset.bordered;
+        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered'));
         subset.value = (_a = props.value) !== null && _a !== void 0 ? _a : '';
         return subset;
     }, [props]);
@@ -2930,13 +2893,7 @@ function InputTime(props) {
     var lastTimeValue = React.useRef(originalValue$1);
     var nextTimeValue = React.useRef(originalValue$1);
     var _a = React.useState(originalValue$1), overrideValue = _a[0], setOverrideValue = _a[1];
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.value;
-        delete subset.onChange;
-        delete subset.editSeconds;
-        return subset;
-    }, [props]);
+    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')); }, [props]);
     React.useEffect(function () {
         var _a, _b, _c, _d, _e, _f;
         if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
@@ -3017,11 +2974,7 @@ function InputUrl(props) {
 
 function InputZip(props) {
     var _a;
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.withNine;
-        return subset;
-    }, [props]);
+    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'withNine')); }, [props]);
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputZip", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
         React__default['default'].createElement("input", __assign({ type: "text" }, inputProps))));
 }
@@ -3583,24 +3536,30 @@ var initialMessageBoxState = {
  * An alert box that appears when a message is passed as a prop,and dismisses after three seconds.
  */
 var MessageBox = function (props) {
-    var _a, _b;
-    var propsMessageBoxState = (typeof props.messageBoxState === 'string' || props.messageBoxState instanceof String) ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
-    var dismissTimeout = React.useRef(setTimeout(function () { }, 1));
-    var messageBoxHTML = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : "");
+    var _a;
+    var lastMessage = React.useRef();
+    var lastMessageBody = React.useRef();
+    var propsMessageBoxState = typeof props.messageBoxState === 'string' ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
+    var dismissTimeout = React.useRef(setTimeout(function () {
+    }, 1));
     var dismissMessageBox = React.useCallback(props.dismissMessageBox, [props.dismissMessageBox]);
     React.useEffect(function () {
+        var _a;
         clearTimeout(dismissTimeout.current);
-        if (!!propsMessageBoxState.message && !propsMessageBoxState.noDismiss) {
-            dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
+        if (!!propsMessageBoxState.message) {
+            lastMessage.current = propsMessageBoxState.message;
+            lastMessageBody.current = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : '');
+            if (!propsMessageBoxState.noDismiss) {
+                dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
+            }
         }
     }, [propsMessageBoxState.message, propsMessageBoxState.noDismiss, dismissMessageBox]);
-    return (React__default['default'].createElement(reactstrap.Alert, { className: "System_MessageBox", color: (_b = propsMessageBoxState.color) !== null && _b !== void 0 ? _b : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
-        propsMessageBoxState.message,
-        !!propsMessageBoxState.messageBody ?
+    return (React__default['default'].createElement(Alert, { className: 'System_MessageBox', color: (_a = propsMessageBoxState.color) !== null && _a !== void 0 ? _a : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
+        lastMessage.current,
+        !!lastMessageBody.current &&
             React__default['default'].createElement("small", null,
                 React__default['default'].createElement("hr", null),
-                React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))
-            : null));
+                React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: lastMessageBody.current } }))));
 };
 
 function NumberFormat(props) {
@@ -3625,9 +3584,8 @@ function NumberFormat(props) {
 }
 
 var SelectDD = function (props) {
-    var _a;
-    var _b, _c, _d, _e, _f;
-    var _g = React.useState((_b = props.items.find(function (item) { return props.selectedID === undefined || item.id === props.selectedID; })) !== null && _b !== void 0 ? _b : undefined), selectedItem = _g[0], setSelectedItem = _g[1];
+    var _a, _b, _c, _d;
+    var _e = React.useState((_a = props.items.find(function (item) { return props.selectedID === undefined || item.id === props.selectedID; })) !== null && _a !== void 0 ? _a : undefined), selectedItem = _e[0], setSelectedItem = _e[1];
     var handleSelect = function (item) {
         var _a, _b;
         setSelectedItem(item);
@@ -3645,21 +3603,13 @@ var SelectDD = function (props) {
         var _a;
         setSelectedItem((_a = props.items.find(function (item) { return props.selectedID === undefined || item.id === props.selectedID; })) !== null && _a !== void 0 ? _a : undefined);
     }, [props.selectedID, props.items]);
-    return (React__default['default'].createElement(reactstrap.UncontrolledDropdown, { size: props.size, className: ((_c = props.className) !== null && _c !== void 0 ? _c : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : '') },
-        React__default['default'].createElement(reactstrap.DropdownToggle, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.inline ? 'primary-outline' : 'primary'), caret: !!props.caret, className: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : '') },
-            !!(props !== null && props !== void 0 ? props : {}).faIcon ? (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: props.faIcon, className: "mr-1" })) : (!!selectedItem &&
-                selectedItem.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: selectedItem.faIcon, className: ClassNames((_a = {
-                        'mr-1': true
-                    },
-                    _a[(_e = 'text-' + selectedItem.faIconColor) !== null && _e !== void 0 ? _e : ''] = !!selectedItem.faIconColor,
-                    _a)) }))), (_f = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _f !== void 0 ? _f : 'No Selection'),
-        React__default['default'].createElement(reactstrap.DropdownMenu, null, (props !== null && props !== void 0 ? props : {}).items.map(function (item) {
-            var _a;
-            var _b, _c;
-            return (React__default['default'].createElement(reactstrap.DropdownItem, { key: ((_b = item.id) !== null && _b !== void 0 ? _b : -1).toString(), onClick: function () { return handleSelect(item); } },
-                item.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames((_a = {}, _a[(_c = 'text-' + item.faIconColor) !== null && _c !== void 0 ? _c : ''] = !!item.faIconColor, _a)) })),
-                item.name));
-        }))));
+    return (React__default['default'].createElement(Dropdown, { size: props.size, className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : ''), color: (_c = props.color) !== null && _c !== void 0 ? _c : (!!props.inline ? 'primary-outline' : 'primary'), noCaret: !props.caret, buttonClassName: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : ''), buttonFAProps: props.faIcon, buttonLabel: (_d = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _d !== void 0 ? _d : 'No Selection' }, (props !== null && props !== void 0 ? props : {}).items.map(function (item) {
+        var _a;
+        var _b, _c;
+        return (React__default['default'].createElement(DropdownItem, { key: ((_b = item.id) !== null && _b !== void 0 ? _b : -1).toString(), onClick: function () { return handleSelect(item); } },
+            item.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames((_a = {}, _a[(_c = 'text-' + item.faIconColor) !== null && _c !== void 0 ? _c : ''] = !!item.faIconColor, _a)) })),
+            item.name));
+    })));
 };
 
 var initialTextStatusState = {
@@ -3693,6 +3643,7 @@ var TextStatus = function (props) {
 exports.ActivityOverlay = ActivityOverlay;
 exports.ActivityOverlayControl = ActivityOverlayControl;
 exports.AddActivityOverlay = AddActivityOverlay;
+exports.Alert = Alert;
 exports.ApplyColumnProp = ApplyColumnProp;
 exports.ArrayTable = ArrayTable;
 exports.BRAfter = BRAfter;
@@ -3766,7 +3717,6 @@ exports.InputSelect = InputSelect;
 exports.InputSelectStep = InputSelectStep;
 exports.InputState = InputState;
 exports.InputSwitch = InputSwitch;
-exports.InputSwitchAlternate = InputSwitchAlternate;
 exports.InputTel = InputTel;
 exports.InputText = InputText;
 exports.InputTextArea = InputTextArea;

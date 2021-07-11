@@ -1,11 +1,11 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {HandleChangeValue, IIWInputProps, ReduceInputProps} from './IWInputProps'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export function InputColor<T>(props: IIWInputProps<T>) {
 	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
-		delete subset.className
+		const subset = ReduceInputProps(OmitProperty(props, 'className'))
 
 		if (subset.autoComplete === undefined) {
 			subset.autoComplete = 'off'

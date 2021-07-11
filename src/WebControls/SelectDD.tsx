@@ -1,8 +1,9 @@
 import React, {useState, useEffect, ReactElement} from 'react'
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {IconProp} from '@fortawesome/fontawesome-svg-core'
 import {ClassNames} from '../Functions'
+import {Dropdown} from '../Bootstrap/Dropdown'
+import {DropdownItem} from '../Bootstrap/DropdownItem'
 
 export interface IPropsSelectDDItem {
 	id: number | string | boolean | null
@@ -31,7 +32,7 @@ export interface IPropsSelectDD {
 export const SelectDD = (props: IPropsSelectDD) => {
 	const [selectedItem, setSelectedItem] = useState(
 		props.items.find((item: IPropsSelectDDItem) => props.selectedID === undefined || item.id === props.selectedID) ??
-			undefined
+		undefined
 	)
 
 	const handleSelect = (item: any) => {
@@ -50,50 +51,34 @@ export const SelectDD = (props: IPropsSelectDD) => {
 	useEffect(() => {
 		setSelectedItem(
 			props.items.find((item: IPropsSelectDDItem) => props.selectedID === undefined || item.id === props.selectedID) ??
-				undefined
+			undefined
 		)
 	}, [props.selectedID, props.items])
 
 	return (
-		<UncontrolledDropdown
+		<Dropdown
 			size={props.size}
 			className={
 				(props.className ?? '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : '')
-			}>
-			<DropdownToggle
-				color={props.color ?? (!!props.inline ? 'primary-outline' : 'primary')}
-				caret={!!props.caret}
-				className={(!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : '')}>
-				{!!(props ?? {}).faIcon ? (
-					<FontAwesomeIcon icon={props.faIcon} className="mr-1" />
-				) : (
-					!!selectedItem &&
-					selectedItem.faIcon && (
+			}
+			color={props.color ?? (!!props.inline ? 'primary-outline' : 'primary')}
+			noCaret={!props.caret}
+			buttonClassName={(!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : '')}
+			buttonFAProps={props.faIcon}
+			buttonLabel={(selectedItem ?? {}).name ?? 'No Selection'}
+		>
+			{(props ?? {}).items.map((item: IPropsSelectDDItem) => (
+				<DropdownItem key={(item.id ?? -1).toString()} onClick={() => handleSelect(item)}>
+					{item.faIcon && (
 						<FontAwesomeIcon
-							icon={selectedItem.faIcon}
-							className={ClassNames({
-								'mr-1': true,
-								['text-' + selectedItem.faIconColor ?? '']: !!selectedItem.faIconColor
-							})}
+							icon={item.faIcon}
+							fixedWidth
+							className={ClassNames({['text-' + item.faIconColor ?? '']: !!item.faIconColor})}
 						/>
-					)
-				)}
-				{(selectedItem ?? {}).name ?? 'No Selection'}
-			</DropdownToggle>
-			<DropdownMenu>
-				{(props ?? {}).items.map((item: IPropsSelectDDItem) => (
-					<DropdownItem key={(item.id ?? -1).toString()} onClick={() => handleSelect(item)}>
-						{item.faIcon && (
-							<FontAwesomeIcon
-								icon={item.faIcon}
-								fixedWidth
-								className={ClassNames({['text-' + item.faIconColor ?? '']: !!item.faIconColor})}
-							/>
-						)}
-						{item.name}
-					</DropdownItem>
-				))}
-			</DropdownMenu>
-		</UncontrolledDropdown>
+					)}
+					{item.name}
+				</DropdownItem>
+			))}
+		</Dropdown>
 	)
 }

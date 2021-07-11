@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {ViewEmail} from './ViewEmail'
 import {InputWrapper} from './InputWrapper'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 interface IProps<T = any, V = any> extends IIWInputProps<T, V> {
 	autoCompleteOn?: boolean
@@ -10,8 +11,7 @@ interface IProps<T = any, V = any> extends IIWInputProps<T, V> {
 
 export function InputEmail<T = any, V = any>(props: IProps<T, V>) {
 	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
-		delete subset.plaintext
+		const subset = ReduceInputProps(OmitProperty(props, 'plainText'))
 
 		if (subset.autoComplete === undefined) {
 			subset.autoComplete = 'off'

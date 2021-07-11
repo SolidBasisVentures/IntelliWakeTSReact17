@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {CustomInput} from 'reactstrap'
 import {IInputSwitchProps} from './InputSwitch'
 
 export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
@@ -28,9 +27,9 @@ export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
 	}
 
 	return (
-		<CustomInput
+		<label className="cursor-pointer">
+		<input
 			type="checkbox"
-			label={props.label}
 			name={props.name as string}
 			className={'inputCheckbox ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
 			id={newID}
@@ -40,5 +39,6 @@ export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
 			disabled={props.plainText}
 			onClick={props.onClick}
 		/>
+		</label>
 	)
 }

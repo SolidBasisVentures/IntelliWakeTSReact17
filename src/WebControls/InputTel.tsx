@@ -3,7 +3,7 @@ import {IconProp} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPhone} from '@fortawesome/pro-regular-svg-icons'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
-import {FormatPhoneNumber} from '@solidbasisventures/intelliwaketsfoundation'
+import {FormatPhoneNumber, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {InputWrapper} from './InputWrapper'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
@@ -11,12 +11,8 @@ interface IProps<T = unknown> extends IIWInputProps<T> {
 }
 
 export function InputTel<T>(props: IProps<T>) {
-	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props, 'form-control')
-		delete subset.showFAIcon
-
-		return subset
-	}, [props])
+	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'showFAIcon'), 'form-control')
+, [props])
 
 	const faIconToShow = useMemo((): null | IconProp => {
 		if (!props.showFAIcon) return null

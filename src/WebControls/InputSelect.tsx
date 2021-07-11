@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {CleanNumber} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {
 	IIWInputAddProps,
 	IIWInputProps,
@@ -21,27 +21,11 @@ export interface IPropsSelect<T = any, V = any, H = HTMLSelectElement> extends I
 }
 
 export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
-	const inputProps = useMemo<ILegacyInputProps>(() => {
-		const subset = {...ReduceInputProps<T, V, HTMLSelectElement>(props)}
-
-		delete subset.isNumeric
-		delete subset.isNumericOrNull
-		delete subset.isStringOrNull
-		delete subset.plainOnClick
-
-		return subset
-	}, [props])
-
-	const wrapperProps = useMemo<IIWInputAddProps>(() => {
-		const subset = {...ReduceToInputAddProps(props)}
-
-		delete subset.plainTextURL
-		delete subset.plainText
-		delete subset.plainTextProps
-
-		return subset
-	}, [props])
-
+	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps<T, V, HTMLSelectElement>(OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull'))
+		, [props])
+	
+	const wrapperProps = useMemo<IIWInputAddProps>(() => ReduceToInputAddProps(OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')), [props])
+	
 	return (
 		<InputWrapper
 			{...wrapperProps}
@@ -59,7 +43,7 @@ export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 					}
 				} else if (!!props.isNumeric || !!props.isNumericOrNull) {
 					const value = CleanNumber(val)
-
+					
 					if (!!props.isNumericOrNull && value === 0) {
 						return null
 					} else {
@@ -68,7 +52,7 @@ export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 				} else if (!!props.isStringOrNull && !val) {
 					return null
 				}
-
+				
 				return val
 			}}
 			internalStateValue={(val, e) => {
@@ -83,7 +67,7 @@ export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 							.map((child) => child.value)
 					}
 				}
-
+				
 				return val
 			}}>
 			<select

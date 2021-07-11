@@ -4,7 +4,7 @@ import {
 	MomentDateString,
 	MomentDisplayDayDate,
 	MomentDisplayDayDateTime,
-	MomentTimeString,
+	MomentTimeString, OmitProperty,
 	RandomString
 } from '@solidbasisventures/intelliwaketsfoundation'
 
@@ -18,15 +18,10 @@ export function InputDate<T>(props: IProps<T>) {
 	const lastDateValue = useRef(originalValue)
 	const nextDateValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
-
-	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
-		delete subset.value
-		delete subset.onChange
-
-		return subset
-	}, [props])
-
+	
+	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange'))
+		, [props])
+	
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(MomentDateString(props.value as string) ?? '')) {
 			lastDateValue.current = MomentDateString((props.value ?? '') as string) ?? ''
@@ -36,20 +31,20 @@ export function InputDate<T>(props: IProps<T>) {
 			lastDateValue.current = MomentDateString((props.value ?? '') as string) ?? ''
 		}
 	}, [props.value])
-
+	
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = MomentDateString(e.target.value) ?? ''
-
+		
 		setOverrideValue(e.target.value)
-
+		
 		const customValue = (nextDateValue.current + ' ' + (MomentTimeString(props.value as string) ?? '')).trim()
-
+		
 		if (!!props.onChange) {
 			;(e.target as any).customValue = customValue
-
+			
 			props.onChange(e)
 		}
-
+		
 		if (!!props.changeValue) {
 			props.changeValue(
 				customValue,
@@ -60,21 +55,21 @@ export function InputDate<T>(props: IProps<T>) {
 			)
 		}
 	}
-
+	
 	return (
 		<>
 			{!!props.plainText ? (
-				<div className="form-control-plaintext" {...props.plainTextProps}>
+				<div className='form-control-plaintext' {...props.plainTextProps}>
 					{!!props.showTime && !!MomentTimeString(props.value as string)
 						? MomentDisplayDayDateTime(props.value as string)
 						: MomentDisplayDayDate(props.value as string)}
 				</div>
 			) : (
 				<input
-					type="date"
-					className="inputDate"
+					type='date'
+					className='inputDate'
 					{...inputProps}
-					placeholder="yyyy-mm-dd"
+					placeholder='yyyy-mm-dd'
 					value={overrideValue ?? ''}
 					onChange={handleInputChange}
 					autoComplete={props.autoCompleteOn ? 'on' : `AC_${props.name ?? ''}_${RandomString(5)}`}

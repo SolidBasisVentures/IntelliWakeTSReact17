@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
-import {CustomInput} from 'reactstrap'
 import {TChangeValueFunction} from './IWInputProps'
+import Switch from "react-switch"
 
 export interface IInputSwitchProps<T = unknown> {
 	name?: (T extends object ? keyof T : string) | undefined
@@ -13,6 +13,10 @@ export interface IInputSwitchProps<T = unknown> {
 	changeValue?: TChangeValueFunction<T>
 	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
 	hidden?: boolean
+	onColor?: string
+	offColor?: string
+	checkedIcon?: JSX.Element | boolean
+	uncheckedIcon?: JSX.Element | boolean
 }
 
 export function InputSwitch<T>(props: IInputSwitchProps<T>) {
@@ -21,7 +25,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 		props.id
 	])
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (checked: boolean, e: any) => {
 		e.target.value = e.target.checked.toString()
 		;(e.target as any).customValue = e.target.checked
 
@@ -30,22 +34,32 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 		}
 
 		if (!!props.changeValue) {
-			props.changeValue(e.target.checked, e.target.name as any, (e.nativeEvent as any).shiftKey, (e.nativeEvent as any).ctrlKey, (e.nativeEvent as any).altKey)
+			props.changeValue(checked, e.target.name as any, (e.nativeEvent as any).shiftKey, (e.nativeEvent as any).ctrlKey, (e.nativeEvent as any).altKey)
 		}
 	}
 
 	return (
-		<CustomInput
-			type="switch"
-			label={props.label}
-			name={props.name as string}
-			className={'inputSwitch cursor-pointer ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
-			id={newID}
-			hidden={props.hidden}
-			checked={props.checked}
-			onChange={!props.plainText ? handleInputChange : () => {}}
-			disabled={props.plainText}
-			onClick={props.onClick}
-		/>
+		<label className={!props.plainText ? "cursor-pointer" : ''}>
+			<Switch
+				onChange={(checked, e) => {
+					if (!props.plainText) {
+						handleInputChange(checked, e)
+					}
+				}}
+				name={props.name as string}
+				className={'inputSwitch react-switch ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
+				id={newID}
+				hidden={props.hidden}
+				checked={props.checked}
+				disabled={props.plainText}
+				onClick={props.onClick}
+				onColor={props.onColor}
+				offColor={props.offColor}
+				checkedIcon={props.checkedIcon}
+				uncheckedIcon={props.uncheckedIcon}
+			/>
+			{props.label}
+		</label>
+	
 	)
 }

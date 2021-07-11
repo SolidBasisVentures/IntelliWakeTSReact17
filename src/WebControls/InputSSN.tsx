@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	plainTextLast4Only?: boolean
@@ -8,8 +9,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {
 
 export function InputSSN<T>(props: IProps<T>) {
 	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
-		delete subset.plainTextLast4Only
+		const subset = ReduceInputProps(OmitProperty(props, 'plainTextLast4Only'))
 
 		if (subset.autoComplete === undefined) {
 			subset.autoComplete = 'off'

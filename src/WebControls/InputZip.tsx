@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
-import {FormatZip} from '@solidbasisventures/intelliwaketsfoundation'
+import {FormatZip, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {InputWrapper} from './InputWrapper'
 
 export interface IZipProps<T = unknown> extends IIWInputProps<T> {
@@ -8,13 +8,8 @@ export interface IZipProps<T = unknown> extends IIWInputProps<T> {
 }
 
 export function InputZip<T>(props: IZipProps<T>) {
-	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
-
-		delete subset.withNine
-
-		return subset
-	}, [props])
+	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'withNine'))
+			, [props])
 
 	return (
 		<InputWrapper
