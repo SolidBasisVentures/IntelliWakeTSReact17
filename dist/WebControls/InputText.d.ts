@@ -1,5 +1,6 @@
+import React from 'react';
 import { IIWInputProps } from './IWInputProps';
-interface IProps<T = unknown> extends IIWInputProps<T> {
+interface IProps<T = any, V = any, H = HTMLInputElement> extends IIWInputProps<T, V, H> {
 }
-export declare function InputText<T>(props: IProps<T>): JSX.Element;
+export declare const InputText: React.ForwardRefExoticComponent<IProps<any, any, HTMLInputElement> & React.RefAttributes<HTMLInputElement>>;
 export {};

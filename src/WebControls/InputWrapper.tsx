@@ -20,7 +20,7 @@ interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddP
 	internalStateValue?: (value: any, e: any) => any
 }
 
-export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
+export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, H>) => {
 	const isMounted = useRef(false)
 	const lateTrigger = useRef(setTimeout(() => {}, 100))
 

@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import Cleave from 'cleave.js/react'
-import {CleanNumber, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {CleaveOptions} from 'cleave.js/options'
 import {ClassNames} from '../Functions'
@@ -20,20 +20,20 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	const inputProps = useMemo<ILegacyInputProps>(() => {
-		const subset = ReduceInputProps(props)
-		delete subset.decimalScale
-		delete subset.integerScale
-		delete subset.allowNegative
-		delete subset.lowerBound
-		delete subset.upperBound
-		delete subset.currency
-		delete subset.hideZero
-		delete subset.invalid
-		delete subset.decimalScaleDisplay
-
+		const subset = ReduceInputProps(OmitProperty(props,
+			'decimalScale',
+			'integerScale',
+			'allowNegative',
+			'lowerBound',
+			'upperBound',
+			'currency',
+			'hideZero',
+			'invalid',
+			'decimalScaleDisplay'))
+		
 		return subset
 	}, [props])
-
+	
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === '-') {
 			if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
@@ -42,28 +42,28 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				}
 			}
 		}
-
+		
 		if (e.key === '.' && props.decimalScale === 0) {
 			e.preventDefault()
 		}
-
+		
 		if (!!props.onKeyDown) props.onKeyDown(e)
 	}
-
+	
 	let options: CleaveOptions = {
 		numeral: true,
 		numeralThousandsGroupStyle: 'thousand'
 	}
-
+	
 	options.numeralDecimalScale = props.decimalScale ?? options.numeralDecimalScale ?? undefined
 	options.numeralIntegerScale = props.integerScale ?? options.numeralIntegerScale ?? undefined
 	if (!!props.currency) {
 		options.prefix = '$ '
 		options.numeralDecimalScale = props.decimalScale === undefined ? 2 : props.decimalScale ?? undefined
 	}
-
+	
 	const hasDecimals = (props.decimalScale ?? 0) > 0
-
+	
 	return (
 		<InputWrapper<T, V>
 			{...ReduceToInputAddProps(props)}
