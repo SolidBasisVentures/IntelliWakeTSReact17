@@ -9,11 +9,13 @@ export interface IInputSwitchProps<T = unknown> {
     id?: string;
     plainText?: boolean;
     changeValue?: TChangeValueFunction<T>;
-    onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
     hidden?: boolean;
     onColor?: string;
     offColor?: string;
     checkedIcon?: JSX.Element | boolean;
     uncheckedIcon?: JSX.Element | boolean;
+    height?: number;
+    width?: number;
+    size?: "sm" | "lg";
 }
 export declare function InputSwitch<T>(props: IInputSwitchProps<T>): JSX.Element;

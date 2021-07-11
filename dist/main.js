@@ -2558,7 +2558,7 @@ function InputSelect(props) {
     var _a;
     var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull')); }, [props]);
     var wrapperProps = React.useMemo(function () { return ReduceToInputAddProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')); }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, wrapperProps, { className: 'inputSelect' + (props.plainText ? ' disabledLink' : ''), transformToValid: function (val, e) {
+    return (React__default['default'].createElement(InputWrapper, __assign({}, wrapperProps, { className: 'inputSelect form-control' + (props.plainText ? ' disabledLink' : ''), transformToValid: function (val, e) {
             if (!!props.multiple) {
                 if (!!props.isNumeric) {
                     return Array.from(e.target.children)
@@ -2831,14 +2831,8 @@ function InputState(props) {
 }
 
 function InputSwitch(props) {
-    var _a;
-    var newID = React.useMemo(function () { var _a; return (_a = props.id) !== null && _a !== void 0 ? _a : 'sw' + props.name + Math.floor(Math.random() * 100000 + 1); }, [
-        props.name,
-        props.id
-    ]);
+    var _a, _b, _c, _d, _e;
     var handleInputChange = function (checked, e) {
-        e.target.value = e.target.checked.toString();
-        e.target.customValue = e.target.checked;
         if (!!props.onChange) {
             props.onChange(e);
         }
@@ -2846,12 +2840,14 @@ function InputSwitch(props) {
             props.changeValue(checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
+    var height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
+    var width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
     return (React__default['default'].createElement("label", { className: !props.plainText ? "cursor-pointer" : '' },
         React__default['default'].createElement(Switch__default['default'], { onChange: function (checked, e) {
                 if (!props.plainText) {
                     handleInputChange(checked, e);
                 }
-            }, name: props.name, className: 'inputSwitch react-switch ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, disabled: props.plainText, onClick: props.onClick, onColor: props.onColor, offColor: props.offColor, checkedIcon: props.checkedIcon, uncheckedIcon: props.uncheckedIcon }),
+            }, name: props.name, className: 'inputSwitch react-switch ' + ((_c = props.className) !== null && _c !== void 0 ? _c : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_d = props.checkedIcon) !== null && _d !== void 0 ? _d : false, uncheckedIcon: (_e = props.uncheckedIcon) !== null && _e !== void 0 ? _e : false, height: height, width: width }),
         props.label));
 }
 

@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import {TChangeValueFunction} from './IWInputProps'
-import Switch from "react-switch"
+import Switch from 'react-switch'
 
 export interface IInputSwitchProps<T = unknown> {
 	name?: (T extends object ? keyof T : string) | undefined
@@ -11,24 +11,18 @@ export interface IInputSwitchProps<T = unknown> {
 	id?: string
 	plainText?: boolean
 	changeValue?: TChangeValueFunction<T>
-	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
 	hidden?: boolean
 	onColor?: string
 	offColor?: string
 	checkedIcon?: JSX.Element | boolean
 	uncheckedIcon?: JSX.Element | boolean
+	height?: number
+	width?: number
+	size?: "sm" | "lg"
 }
 
 export function InputSwitch<T>(props: IInputSwitchProps<T>) {
-	const newID = useMemo(() => props.id ?? 'sw' + props.name + Math.floor(Math.random() * 100000 + 1), [
-		props.name,
-		props.id
-	])
-
 	const handleInputChange = (checked: boolean, e: any) => {
-		e.target.value = e.target.checked.toString()
-		;(e.target as any).customValue = e.target.checked
-
 		if (!!props.onChange) {
 			props.onChange(e)
 		}
@@ -37,6 +31,9 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 			props.changeValue(checked, e.target.name as any, (e.nativeEvent as any).shiftKey, (e.nativeEvent as any).ctrlKey, (e.nativeEvent as any).altKey)
 		}
 	}
+	
+	const height = props.height ?? props.size === 'sm' ? 12 : props.size === 'lg' ? 18 : 14
+	const width = props.width ?? props.size === 'sm' ? 22 : props.size === 'lg' ? 30 : 26
 
 	return (
 		<label className={!props.plainText ? "cursor-pointer" : ''}>
@@ -48,15 +45,15 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 				}}
 				name={props.name as string}
 				className={'inputSwitch react-switch ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
-				id={newID}
 				hidden={props.hidden}
 				checked={props.checked}
 				disabled={props.plainText}
-				onClick={props.onClick}
 				onColor={props.onColor}
 				offColor={props.offColor}
-				checkedIcon={props.checkedIcon}
-				uncheckedIcon={props.uncheckedIcon}
+				checkedIcon={props.checkedIcon ?? false}
+				uncheckedIcon={props.uncheckedIcon ?? false}
+				height={height}
+				width={width}
 			/>
 			{props.label}
 		</label>

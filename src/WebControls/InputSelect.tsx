@@ -29,7 +29,7 @@ export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 	return (
 		<InputWrapper
 			{...wrapperProps}
-			className={'inputSelect' + (props.plainText ? ' disabledLink' : '')}
+			className={'inputSelect form-control' + (props.plainText ? ' disabledLink' : '')}
 			transformToValid={(val, e) => {
 				if (!!props.multiple) {
 					if (!!props.isNumeric) {
