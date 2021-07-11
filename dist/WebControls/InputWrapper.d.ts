@@ -14,5 +14,5 @@ interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddP
     consoleVerbose?: boolean;
     internalStateValue?: (value: any, e: any) => any;
 }
-export declare const InputWrapper: <T, V, H>(props: IProps<T, V, H>) => JSX.Element;
+export declare const InputWrapper: <T, V, H = THTMLChangeElements>(props: IProps<T, V, H>) => JSX.Element;
 export {};

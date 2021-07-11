@@ -2641,16 +2641,7 @@ function InputGender(props) {
 function InputNumber(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h;
     var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
-        delete subset.decimalScale;
-        delete subset.integerScale;
-        delete subset.allowNegative;
-        delete subset.lowerBound;
-        delete subset.upperBound;
-        delete subset.currency;
-        delete subset.hideZero;
-        delete subset.invalid;
-        delete subset.decimalScaleDisplay;
+        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay'));
         return subset;
     }, [props]);
     var handleKeyDown = function (e) {
@@ -2916,10 +2907,10 @@ function InputTel(props) {
         React__default['default'].createElement("input", __assign({ type: "tel", inputMode: "tel" }, inputProps))));
 }
 
-var InputText = React.forwardRef(function (props, ref) {
+var InputText = function (props) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: ref }))));
-});
+        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
+};
 
 function InputTextArea(props) {
     var inputProps = React.useMemo(function () {
