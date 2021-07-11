@@ -4,7 +4,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export type TChangeValueFunction<T = any, V = any> = (
 	value: V,
-	name?: T extends object ? keyof T : string,
+	name?: (T extends object ? keyof T : string) | undefined,
 	shiftKey?: boolean,
 	ctrlKey?: boolean,
 	altKey?: boolean

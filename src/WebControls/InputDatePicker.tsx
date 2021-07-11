@@ -10,7 +10,7 @@ import {TChangeValueFunction} from './IWInputProps'
 
 interface IProps<T = unknown> {
 	value: string
-	name?: T extends object ? keyof T : string
+	name?: (T extends object ? keyof T : string) | undefined
 	placeholder?: string
 	plainText?: boolean
 	plainTextURL?: string

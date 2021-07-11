@@ -2475,7 +2475,7 @@ var InputWrapper = function (props) {
             if (!!props.changeValueLate &&
                 lateState.current !== undefined &&
                 lateState.current.value !== props.children.props.value) {
-                props.changeValueLate(lateState.current.value, lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
+                props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
                 lateState.current = undefined;
             }
             if (props.children.props.onBlur)
@@ -2510,7 +2510,7 @@ var InputWrapper = function (props) {
                     props.children.props.onChange(e);
                 }
                 if (!!props.changeValue) {
-                    props.changeValue(newState.value, newState.name, newState.shiftKey, newState.ctrlKey, newState.altKey);
+                    props.changeValue(newState.value, !newState.name ? undefined : newState.name, newState.shiftKey, newState.ctrlKey, newState.altKey);
                 }
                 if (!!props.changeValueLate) {
                     if (isValid) {
@@ -2521,7 +2521,7 @@ var InputWrapper = function (props) {
                             isMounted.current &&
                             lateState.current !== undefined &&
                             lateState.current.value !== props.children.props.value) {
-                            props.changeValueLate(lateState.current.value, lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
+                            props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
                             lateState.current = undefined;
                         }
                     }, (_a = props.lateDelayMS) !== null && _a !== void 0 ? _a : 500);
@@ -2641,7 +2641,7 @@ function InputGender(props) {
 function InputNumber(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h;
     var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay'));
+        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name'));
         return subset;
     }, [props]);
     var handleKeyDown = function (e) {
@@ -2683,7 +2683,7 @@ function InputNumber(props) {
         }), plainTextControl: !!props.currency
             ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
             : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), isInvalid: !!props.invalid, isEqual: function (internal, props) { return intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props); } }),
-        React__default['default'].createElement(Cleave__default['default'], __assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps))));
+        React__default['default'].createElement(Cleave__default['default'], __assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { name: props.name }))));
 }
 
 function InputPassword(props) {

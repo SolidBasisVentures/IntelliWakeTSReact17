@@ -25,7 +25,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 	const lateTrigger = useRef(setTimeout(() => {}, 100))
 
 	interface IState {
-		name?: T extends object ? keyof T : string
+		name?: (T extends object ? keyof T : string) | undefined
 		value: V
 		shiftKey: boolean
 		ctrlKey: boolean
@@ -121,7 +121,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 								) {
 									props.changeValueLate(
 										lateState.current.value,
-										lateState.current.name,
+										!lateState.current.name ? undefined : lateState.current.name,
 										lateState.current.shiftKey,
 										lateState.current.ctrlKey,
 										lateState.current.altKey
@@ -170,7 +170,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 									if (!!props.changeValue) {
 										props.changeValue(
 											newState.value as V,
-											newState.name,
+											!newState.name ? undefined : newState.name,
 											newState.shiftKey,
 											newState.ctrlKey,
 											newState.altKey
@@ -189,7 +189,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 											) {
 												props.changeValueLate(
 													lateState.current.value as V,
-													lateState.current.name,
+													!lateState.current.name ? undefined : lateState.current.name,
 													lateState.current.shiftKey,
 													lateState.current.ctrlKey,
 													lateState.current.altKey

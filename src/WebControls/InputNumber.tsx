@@ -19,8 +19,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
-	const inputProps = useMemo<ILegacyInputProps>(() => {
-		const subset = ReduceInputProps(OmitProperty(props,
+	const inputProps = useMemo<ILegacyInputProps>(() =>  ReduceInputProps(OmitProperty(props,
 			'decimalScale',
 			'integerScale',
 			'allowNegative',
@@ -29,10 +28,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			'currency',
 			'hideZero',
 			'invalid',
-			'decimalScaleDisplay'))
-		
-		return subset
-	}, [props])
+			'decimalScaleDisplay', 'name')), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === '-') {
@@ -93,6 +89,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				inputMode={hasDecimals ? 'decimal' : 'numeric'}
 				onKeyDown={handleKeyDown}
 				{...inputProps}
+				name={props.name as any}
 			/>
 		</InputWrapper>
 	)

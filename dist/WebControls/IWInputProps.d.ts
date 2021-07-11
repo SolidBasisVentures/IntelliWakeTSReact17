@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { TClassNames } from '../Functions';
-export declare type TChangeValueFunction<T = any, V = any> = (value: V, name?: T extends object ? keyof T : string, shiftKey?: boolean, ctrlKey?: boolean, altKey?: boolean) => void;
+export declare type TChangeValueFunction<T = any, V = any> = (value: V, name?: (T extends object ? keyof T : string) | undefined, shiftKey?: boolean, ctrlKey?: boolean, altKey?: boolean) => void;
 export interface IIWInputAddProps<T = any, V = any> {
     plainText?: boolean;
     plainTextURL?: string;

@@ -2,7 +2,7 @@ import React from 'react'
 import {HandleChangeValue, TChangeValueFunction} from './IWInputProps'
 
 interface IProps<T = unknown> {
-	name?: T extends object ? keyof T : string
+	name?: (T extends object ? keyof T : string) | undefined
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 	checked: boolean
 	value: any
