@@ -10,6 +10,8 @@ export * from './Bootstrap/BadgeItem';
 export * from './Bootstrap/Button';
 export * from './Bootstrap/ButtonGroup';
 export * from './Bootstrap/ButtonToolbar';
+export * from './Bootstrap/BreadCrumb';
+export * from './Bootstrap/BreadCrumbItem';
 export * from './Bootstrap/Card';
 export * from './Bootstrap/CardBody';
 export * from './Bootstrap/CardColumns';

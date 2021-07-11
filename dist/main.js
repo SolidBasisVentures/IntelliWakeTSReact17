@@ -730,6 +730,47 @@ var Button = React.forwardRef(function (props, ref) {
         , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: ref, to: props.to, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title, children: props.children }));
 });
 
+var ButtonGroup = function (props) {
+    var _a;
+    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    classes +=
+        ' btn-group' +
+            !!props.vertical ? '-vertical' : '';
+    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'vertical', 'className'), { className: classes.trim() }));
+};
+
+var ButtonToolbar = function (props) {
+    var _a;
+    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    classes +=
+        ' ' +
+            ClassNames({
+                'btn-toolbar': true
+            });
+    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
+};
+
+var BreadCrumb = function (props) {
+    var _a, _b;
+    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    classes +=
+        ' breadcrumb';
+    var classesLI = (_b = props.classNameLI) !== null && _b !== void 0 ? _b : '';
+    classes +=
+        ' breadcrumb';
+    return React__default['default'].createElement("nav", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
+        React__default['default'].createElement("li", { className: classesLI.trim(), children: props.children }));
+};
+
+var BreadCrumbItem = function (props) {
+    var _a;
+    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    classes +=
+        ' breadcrumb-item'
+            + (props.active ? ' active' : '');
+    return React__default['default'].createElement("li", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
+};
+
 var Card = function (props) {
     var _a, _b;
     var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
@@ -3667,7 +3708,11 @@ exports.BRAfter = BRAfter;
 exports.BRBefore = BRBefore;
 exports.Badge = Badge;
 exports.BadgeItem = BadgeItem;
+exports.BreadCrumb = BreadCrumb;
+exports.BreadCrumbItem = BreadCrumbItem;
 exports.Button = Button;
+exports.ButtonGroup = ButtonGroup;
+exports.ButtonToolbar = ButtonToolbar;
 exports.CaptureGPS = CaptureGPS;
 exports.Card = Card;
 exports.CardBody = CardBody;
