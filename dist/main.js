@@ -2906,7 +2906,7 @@ function InputTel(props) {
 
 var InputText = function (props) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.ref }))));
+        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
 };
 
 function InputTextArea(props) {
