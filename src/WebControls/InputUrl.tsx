@@ -18,7 +18,7 @@ export function InputUrl<T>(props: IProps<T>) {
 		<>
 			<InputWrapper
 				{...ReduceToInputAddProps(props)}
-				className="inputUrl"
+				className="inputUrl form-control"
 				plainTextControl={
 					<a href={href} target="_blank" rel="noopener noreferrer" className="d-block w-100">
 						<EllipsesTruncate text={props.value} />

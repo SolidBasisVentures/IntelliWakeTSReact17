@@ -14,7 +14,7 @@ export function InputZip<T>(props: IZipProps<T>) {
 	return (
 		<InputWrapper
 			{...ReduceToInputAddProps(props)}
-			className="inputZip"
+			className="inputZip form-control"
 			plainTextControl={FormatZip((props.value ?? '').toString())}>
 			<input type="text" {...inputProps} />
 		</InputWrapper>

@@ -67,7 +67,7 @@ export function InputDate<T>(props: IProps<T>) {
 			) : (
 				<input
 					type='date'
-					className='inputDate'
+					className='inputDate form-control'
 					{...inputProps}
 					placeholder='yyyy-mm-dd'
 					value={overrideValue ?? ''}

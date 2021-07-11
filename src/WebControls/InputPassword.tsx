@@ -6,7 +6,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {}
 
 export function InputPassword<T>(props: IProps<T>) {
 	return (
-		<InputWrapper {...ReduceToInputAddProps(props)} className="inputPassword">
+		<InputWrapper {...ReduceToInputAddProps(props)} className="inputPassword form-control">
 			<input type="password" {...ReduceInputProps(props)} placeholder={props.placeholder ?? '******'} />
 		</InputWrapper>
 	)

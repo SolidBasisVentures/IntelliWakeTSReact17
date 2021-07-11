@@ -648,7 +648,8 @@ var ResizeBase64 = function (base64Str, maxSize) {
 var Alert = function (props) {
     var _a, _b;
     var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    var clearTime = React.useRef(setTimeout(function () { }, 100));
+    var clearTime = React.useRef(setTimeout(function () {
+    }, 100));
     var isMounted = React.useRef(false);
     var _c = React.useState(null), showState = _c[0], setShowState = _c[1];
     var classes = (_b = showState === null || showState === void 0 ? void 0 : showState.className) !== null && _b !== void 0 ? _b : '';
@@ -658,6 +659,7 @@ var Alert = function (props) {
             ClassNames({
                 alert: true,
                 'alert-dismissible': !!props.toggle,
+                'cursor-pointer': !!props.toggle,
                 'fade': true,
                 'show': !!props.isOpen
             });
@@ -2386,7 +2388,7 @@ function InputDate(props) {
     };
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
         ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: 'date', className: 'inputDate' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
+        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
 }
 
 /**
@@ -2572,7 +2574,7 @@ function InputEmail(props) {
         return subset;
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.value && (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps),
-        React__default['default'].createElement(ViewEmail, { email: props.value, label: props.plainTextLabel })))) : (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputEmail" }),
+        React__default['default'].createElement(ViewEmail, { email: props.value, label: props.plainTextLabel })))) : (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputEmail form-control" }),
         React__default['default'].createElement("input", __assign({ type: "email", inputMode: "email" }, inputProps))))));
 }
 
@@ -2688,7 +2690,7 @@ function InputNumber(props) {
 
 function InputPassword(props) {
     var _a;
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputPassword" }),
+    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputPassword form-control" }),
         React__default['default'].createElement("input", __assign({ type: "password" }, ReduceInputProps(props), { placeholder: (_a = props.placeholder) !== null && _a !== void 0 ? _a : '******' }))));
 }
 
@@ -2985,7 +2987,7 @@ function InputUrl(props) {
         return '' + props.value;
     }, [props.value]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputUrl", plainTextControl: React__default['default'].createElement("a", { href: href, target: "_blank", rel: "noopener noreferrer", className: "d-block w-100" },
+        React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputUrl form-control", plainTextControl: React__default['default'].createElement("a", { href: href, target: "_blank", rel: "noopener noreferrer", className: "d-block w-100" },
                 React__default['default'].createElement(EllipsesTruncate, { text: props.value })) }),
             React__default['default'].createElement("input", __assign({ type: "url", pattern: "https://.*", inputMode: "url", className: "inputText" }, ReduceInputProps(props))))));
 }
@@ -2993,7 +2995,7 @@ function InputUrl(props) {
 function InputZip(props) {
     var _a;
     var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'withNine')); }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputZip", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
+    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputZip form-control", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
         React__default['default'].createElement("input", __assign({ type: "text" }, inputProps))));
 }
 

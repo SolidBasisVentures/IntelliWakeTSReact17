@@ -29,7 +29,7 @@ export function InputEmail<T = any, V = any>(props: IProps<T, V>) {
 					</div>
 				)
 			) : (
-				<InputWrapper {...ReduceToInputAddProps(props)} className="inputEmail">
+				<InputWrapper {...ReduceToInputAddProps(props)} className="inputEmail form-control">
 					<input type="email" inputMode="email" {...inputProps} />
 				</InputWrapper>
 			)}
