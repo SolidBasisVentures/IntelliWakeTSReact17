@@ -3532,30 +3532,26 @@ var initialMessageBoxState = {
  * An alert box that appears when a message is passed as a prop,and dismisses after three seconds.
  */
 var MessageBox = function (props) {
-    var _a;
-    var lastMessage = React.useRef();
-    var lastMessageBody = React.useRef();
-    var propsMessageBoxState = typeof props.messageBoxState === 'string' ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
+    var _a, _b;
+    // noinspection SuspiciousTypeOfGuard
+    var propsMessageBoxState = (typeof props.messageBoxState === 'string' || props.messageBoxState instanceof String) ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
     var dismissTimeout = React.useRef(setTimeout(function () {
     }, 1));
+    var messageBoxHTML = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : '');
     var dismissMessageBox = React.useCallback(props.dismissMessageBox, [props.dismissMessageBox]);
     React.useEffect(function () {
-        var _a;
         clearTimeout(dismissTimeout.current);
-        if (!!propsMessageBoxState.message) {
-            lastMessage.current = propsMessageBoxState.message;
-            lastMessageBody.current = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : '');
-            if (!propsMessageBoxState.noDismiss) {
-                dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
-            }
+        if (!!propsMessageBoxState.message && !propsMessageBoxState.noDismiss) {
+            dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
         }
     }, [propsMessageBoxState.message, propsMessageBoxState.noDismiss, dismissMessageBox]);
-    return (React__default['default'].createElement(Alert, { className: 'System_MessageBox', color: (_a = propsMessageBoxState.color) !== null && _a !== void 0 ? _a : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
-        lastMessage.current,
-        !!lastMessageBody.current &&
+    return (React__default['default'].createElement(Alert, { className: 'System_MessageBox', color: (_b = propsMessageBoxState.color) !== null && _b !== void 0 ? _b : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
+        propsMessageBoxState.message,
+        !!propsMessageBoxState.messageBody ?
             React__default['default'].createElement("small", null,
                 React__default['default'].createElement("hr", null),
-                React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: lastMessageBody.current } }))));
+                React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))
+            : null));
 };
 
 function NumberFormat(props) {
