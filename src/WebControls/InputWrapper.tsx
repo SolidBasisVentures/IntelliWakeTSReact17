@@ -5,8 +5,8 @@ import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 import {AppendPrependWrapper} from './AppendPrependWrapper'
 import {Link} from 'react-router-dom'
 
-interface IProps<T = any, V = any> extends IIWInputAddProps<T, V> {
-	children: ReactElement<IIWInputProps<T, V>>
+interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddProps<T, V> {
+	children: ReactElement<IIWInputProps<T, V, H>>
 	className?: string
 	inputIsValid?: (value: any) => boolean
 	valueOnInvalid?: (value: any) => any
@@ -20,7 +20,7 @@ interface IProps<T = any, V = any> extends IIWInputAddProps<T, V> {
 	internalStateValue?: (value: any, e: any) => any
 }
 
-export const InputWrapper = <T, V>(props: IProps<T, V>) => {
+export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 	const isMounted = useRef(false)
 	const lateTrigger = useRef(setTimeout(() => {}, 100))
 

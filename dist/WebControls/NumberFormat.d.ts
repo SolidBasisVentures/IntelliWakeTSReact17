@@ -1,4 +1,3 @@
-/// <reference types="react" />
 interface IProps {
     value?: number | null;
     currency?: boolean;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { LegacyRef, MutableRefObject } from 'react';
 export declare const KEY_UP_ARROW = 38;
 export declare const KEY_DOWN_ARROW = 40;
 export declare const KEY_LEFT_ARROW = 37;
@@ -16,10 +16,11 @@ export declare const KEY_STRING_RIGHT_ARROW = "ArrowRight";
 export declare const KEY_STRING_TAB = "Tab";
 export declare const KEY_STRING_BACKSPACE = "Backspace";
 export declare const KEY_STRING_ESCAPE = "Escape";
-export declare const ElementCustomValue: (e: React.ChangeEvent<HTMLInputElement>) => any;
-export declare const ClassNames: (classes: {
+export declare const ElementCustomValue: (e: React.ChangeEvent<any>) => any;
+export declare type TClassNames = {
     [key: string]: boolean;
-}) => string;
+};
+export declare const ClassNames: (classes: TClassNames) => string;
 export declare const HasPathComponent: (search: string) => boolean;
 export declare const GetPathComponentAfter: (search: string) => any | undefined;
 export declare const GetPathThrough: (search: string) => any | undefined;
@@ -31,3 +32,4 @@ export declare type TBootStrapSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export declare type TBootStrapExtendedSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
 export declare const SizeAtMin: (size: TBootStrapExtendedSizes) => number;
 export declare const SizeAtMax: (size: TBootStrapExtendedSizes) => number;
+export declare const useCombinedRefs: <T>(...refs: React.LegacyRef<T>[]) => React.MutableRefObject<T | undefined> | null;

@@ -3,11 +3,13 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var intelliwaketsfoundation = require('@solidbasisventures/intelliwaketsfoundation');
-var moment = require('moment');
 var React = require('react');
-var reactBootstrap = require('react-bootstrap');
+var moment = require('moment');
 var reactFontawesome = require('@fortawesome/react-fontawesome');
+var faSpinnerThird = require('@fortawesome/pro-solid-svg-icons/faSpinnerThird');
 var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
+var ReactDOM = require('react-dom');
+var reactstrap = require('reactstrap');
 var reactRouterDom = require('react-router-dom');
 var ReactDatePicker = require('react-datepicker');
 var Cleave = require('cleave.js/react');
@@ -15,8 +17,9 @@ var axios = require('axios');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
+var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 var ReactDatePicker__default = /*#__PURE__*/_interopDefaultLegacy(ReactDatePicker);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
@@ -68,6 +71,20 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
 
 var __assign = function() {
     __assign = Object.assign || function __assign(t) {
@@ -307,12 +324,20 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
             var ths = ref.current.getElementsByTagName('th');
             for (var i = 0; i < ths.length; i++) {
                 ths[i].setAttribute('copyuserselect', ths[i].style.userSelect);
-                ths[i].style.userSelect = 'auto';
+                ths[i].style.userSelect = ths[i].classList.contains('noCopy') ? 'none' : 'auto';
+                if (ths[i].classList.contains('onlyCopy')) {
+                    ths[i].setAttribute('copyuserdisplay', ths[i].style.display);
+                    ths[i].style.display = 'inherit';
+                }
             }
             var tds = ref.current.getElementsByTagName('td');
             for (var i = 0; i < tds.length; i++) {
                 tds[i].setAttribute('copyuserselect', tds[i].style.userSelect);
-                tds[i].style.userSelect = 'auto';
+                tds[i].style.userSelect = tds[i].classList.contains('noCopy') ? 'none' : 'auto';
+                if (tds[i].classList.contains('onlyCopy')) {
+                    tds[i].setAttribute('copyuserdisplay', ths[i].style.display);
+                    tds[i].style.display = 'inherit';
+                }
             }
             var brs = ref.current.getElementsByTagName('br');
             for (var i = 0; i < brs.length; i++) {
@@ -343,10 +368,18 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
             for (var i = 0; i < ths.length; i++) {
                 ths[i].style.userSelect = ths[i].getAttribute('copyuserselect');
                 ths[i].removeAttribute('copyuserselect');
+                if (ths[i].classList.contains('onlyCopy')) {
+                    ths[i].style.display = ths[i].getAttribute('display');
+                    ths[i].removeAttribute('copyuserdisplay');
+                }
             }
             for (var i = 0; i < tds.length; i++) {
                 tds[i].style.userSelect = tds[i].getAttribute('copyuserselect');
                 tds[i].removeAttribute('copyuserselect');
+                if (tds[i].classList.contains('onlyCopy')) {
+                    tds[i].style.display = tds[i].getAttribute('display');
+                    tds[i].removeAttribute('copyuserdisplay');
+                }
             }
             for (var i = 0; i < brs.length; i++) {
                 brs[i].style.display = brs[i].getAttribute('display');
@@ -363,7 +396,7 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
 };
 var TableIDToExcel = function (tableID, fileName, appendDateTime) {
     if (appendDateTime === void 0) { appendDateTime = true; }
-    var downloadName = "" + (fileName !== null && fileName !== void 0 ? fileName : tableID) + (appendDateTime ? "-" + moment__default['default'](new Date()).format('YYYY-MM-DD_HH-mm-ss') + ".xls" : '') + ".xls";
+    var downloadName = "" + (fileName !== null && fileName !== void 0 ? fileName : tableID) + (appendDateTime ? "-" + moment__default['default'](new Date()).format('YYYY-MM-DD_HH-mm-ss') + ".xls" : '');
     // const dataType = 'application/vnd.ms-excel'
     var dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     var tableSelect = document.getElementById(tableID);
@@ -410,6 +443,26 @@ var SizeAtMax = function (size) {
         case 'xxxl':
             return 999999;
     }
+};
+var useCombinedRefs = function () {
+    var refs = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        refs[_i] = arguments[_i];
+    }
+    var targetRef = React__default['default'].useRef();
+    React__default['default'].useEffect(function () {
+        refs.forEach(function (ref) {
+            if (!ref)
+                return;
+            if (typeof ref === 'function') {
+                ref(targetRef.current);
+            }
+            else {
+                ref.current = targetRef.current;
+            }
+        });
+    }, [refs]);
+    return targetRef;
 };
 
 var GetOrientation = function (file) { return __awaiter(void 0, void 0, void 0, function () {
@@ -591,6 +644,857 @@ var ResizeBase64 = function (base64Str, maxSize) {
     return canvas.toDataURL();
 };
 
+var Badge = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
+    var classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
+    classes += !!props.color ? " badge-" + props.color : '';
+    classes +=
+        ' ' +
+            ClassNames({
+                badge: true,
+                'badge-pill': !props.notPill
+            });
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'notPill', 'className'), { className: classes.trim() }));
+};
+
+var Spinner = function (props) {
+    var style = {};
+    if (!props.spin && !props.pulse) {
+        style.animation = 'fa-spin 0.75s infinite linear';
+    }
+    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ icon: faSpinnerThird.faSpinnerThird, style: style }, props));
+};
+
+// noinspection SuspiciousTypeOfGuard
+var BadgeItem = function (props) {
+    var _a;
+    var showProps = intelliwaketsfoundation.OmitProperty(props, 'badge', 'alwaysShowValue');
+    return props.badge === null ? (React__default['default'].createElement(Badge, __assign({}, showProps, { color: "light", className: 'text-gray ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }),
+        React__default['default'].createElement(Spinner, null))) : (props.alwaysShowValue && props.badge !== undefined) || !!props.badge ? (React__default['default'].createElement(Badge, __assign({}, showProps), typeof props.badge === 'number' ? intelliwaketsfoundation.ToDigits(props.badge, 0) : props.badge)) : null;
+};
+
+var Button = React.forwardRef(function (props, ref) {
+    var _a, _b, _c, _d, _e;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'button';
+    return (React__default['default'].createElement(TagToUse, { className: (_b = props.classNameOverride) !== null && _b !== void 0 ? _b : ((_c = props.className) !== null && _c !== void 0 ? _c : '') +
+            " btn " +
+            (props.color === 'inline'
+                ? 'btn btn-link btn-link-inline '
+                : "btn-" + (props.outline ? 'outline-' : '') + ((_d = props.color) !== null && _d !== void 0 ? _d : 'secondary') + " ") +
+            ("" + (!!props.size ? "btn-" + props.size : '')) // +
+        , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: ref, to: props.to, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title, children: props.children }));
+});
+
+var Card = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() }));
+};
+
+var CardBody = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-body " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardColumns = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-columns " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardDeck = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-deck " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardFooter = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-footer " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardGroup = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-group " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardHeader = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-header " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardText = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-text " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var CardTitle = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-title " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var ApplyColumnProp = function (size, columnProps) {
+    if (!columnProps)
+        return '';
+    var application = " col";
+    if (size !== 'xs' || typeof columnProps === 'object') {
+        application += "-" + size;
+    }
+    if (columnProps === true)
+        return application;
+    if (typeof columnProps === 'number' || typeof columnProps === 'string')
+        return application + "-" + columnProps;
+    if (typeof columnProps.size === 'number' || typeof columnProps.size === 'string') {
+        application += "-" + columnProps.size;
+    }
+    if (columnProps.offset !== undefined)
+        application += " offset-" + size + "-" + columnProps.offset;
+    if (columnProps.order !== undefined)
+        application += " order-" + columnProps.order;
+    return application;
+};
+
+var Col = function (props) {
+    var _a;
+    var classes = ("" + ((_a = props.className) !== null && _a !== void 0 ? _a : '')).trim();
+    if (!props.xs && !props.sm && !props.md && !props.lg && !props.xl) {
+        classes += ' col';
+    }
+    classes += ApplyColumnProp('xs', props.xs);
+    classes += ApplyColumnProp('sm', props.sm);
+    classes += ApplyColumnProp('md', props.md);
+    classes += ApplyColumnProp('lg', props.lg);
+    classes += ApplyColumnProp('xl', props.xl);
+    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children'), { className: classes.trim() }), props.children));
+};
+
+var Collapse = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'isOpen', 'tag', 'navbar', 'className'), { className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') +
+            ' collapse' +
+            (!!props.navbar ? ' navbar-collapse' : '') +
+            (!!props.isOpen ? ' show' : '') })));
+};
+
+var Container = function (props) {
+    var _a;
+    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+            container: !props.fluid,
+            'container-fluid': !!props.fluid
+        })).trim() }), props.children));
+};
+
+var DropdownItem = function (props) {
+    var _a, _b, _c;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : (!!props.href ? 'a' : 'div');
+    var classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
+    classes +=
+        ' ' +
+            ClassNames({
+                'dropdown-item': !props.header && !props.divider,
+                'dropdown-header': !!props.header,
+                'dropdown-divider': !!props.divider,
+                disabled: !!props.disabled
+            });
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
+        React__default['default'].createElement(Spinner, { fixedWidth: true }),
+        " Loading...")))));
+};
+
+var Dropdown = function (props) {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var hasOpened = React.useRef(false);
+    var _j = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false), isOpen = _j[0], setIsOpen = _j[1];
+    var visibleDDActions = React.useMemo(function () {
+        return !props.ddActions
+            ? []
+            : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(function (ddAction) { return !ddAction.hidden; });
+    }, [props.ddActions]);
+    var showFAProps = React.useMemo(function () { return !!visibleDDActions.find(function (ddAction) { return !!ddAction.faProps; }); }, [visibleDDActions]);
+    var TagToUse = ((_b = props.tag) !== null && _b !== void 0 ? _b : !!props.inNavbar) ? 'li' : 'div';
+    var isControlled = props.isOpen !== undefined;
+    var actualIsOpen = isControlled ? !!props.isOpen : isOpen;
+    // console.log('DD', isControlled, actualIsOpen)
+    var externalClick = function (e) {
+        if (actualIsOpen) {
+            e.stopPropagation();
+            if (!!props.toggle) {
+                props.toggle(e);
+            }
+            if (!isControlled) {
+                setIsOpen(false);
+            }
+        }
+    };
+    var externalEsc = function (e) {
+        if (e.keyCode === KEY_ESCAPE && actualIsOpen) {
+            e.stopPropagation();
+            if (!!props.toggle) {
+                props.toggle(e);
+            }
+            if (!isControlled) {
+                setIsOpen(false);
+            }
+        }
+    };
+    React.useEffect(function () {
+        // if (menuRef.current) {
+        // 	console.log(1)
+        // 	menuRef.current.addEventListener('resize', onResize)
+        // }
+        // if (actualIsOpen) {
+        // 	setOffset((buttonRef?.current?.offsetWidth ?? 0) - (menuRef?.current?.offsetWidth ?? 0))
+        // }
+        window.addEventListener('click', externalClick);
+        window.addEventListener('keydown', externalEsc);
+        return function () {
+            // menuRef.current.removeEventListener('resize', onResize)
+            window.removeEventListener('click', externalClick);
+            window.removeEventListener('keydown', externalEsc);
+        };
+    });
+    var classes = (_c = props.className) !== null && _c !== void 0 ? _c : '';
+    classes +=
+        ' ' +
+            ClassNames({
+                dropdown: true,
+                show: actualIsOpen,
+                'd-inline-block': true,
+                'navbar-nav': !!props.inNavbar,
+                'nav-item': !!props.nav
+            });
+    if (actualIsOpen)
+        hasOpened.current = true;
+    // console.log('Here', buttonRef?.current?.offsetWidth, menuRef?.current?.offsetWidth)
+    // console.log('buttonRef', buttonRef?.current)
+    // console.log('menuRef', menuRef?.current)
+    // console.log('Offset', offset)
+    //onClick={(e: any) => e.stopPropagation()}
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'className'), { className: classes }),
+        React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), size: props.size, className: !!props.nav || !!props.inNavbar
+                ? undefined
+                : (((_e = props.buttonClassName) !== null && _e !== void 0 ? _e : '') + " " + (props.noCaret ? '' : 'dropdown-toggle')).trim(), classNameOverride: !!props.nav || !!props.inNavbar
+                ? ("text-left nav-link " + ((_f = props.buttonClassName) !== null && _f !== void 0 ? _f : '') + " " + (props.noCaret ? '' : 'dropdown-toggle')).trim()
+                : undefined, onClick: function (e) {
+                // e.stopPropagation()
+                if (!!props.toggle) {
+                    props.toggle(e);
+                }
+                if (!isControlled) {
+                    setIsOpen(function (prevState) { return !prevState; });
+                }
+            }, style: !!props.nav || !!props.inNavbar ? { background: 'none', border: 'none' } : undefined }, (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog })),
+        React__default['default'].createElement("div", { tabIndex: -1, className: (ClassNames({
+                show: actualIsOpen,
+                'dropdown-menu-right': !!props.right
+            }) + " dropdown-menu " + ((_h = props.menuClassName) !== null && _h !== void 0 ? _h : '')).trim(), onClick: function (e) {
+                e.stopPropagation();
+                if (!!props.toggle) {
+                    props.toggle(e);
+                }
+                if (!isControlled) {
+                    setIsOpen(function (prevState) { return !prevState; });
+                }
+            } }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
+            props.children,
+            visibleDDActions.map(function (ddAction, idx) {
+                var _a;
+                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? " text-" + ddAction.color : ''), key: idx, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: function () { return (!!ddAction.action ? ddAction.action() : function () { }); } },
+                    showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
+                    ddAction.title));
+            }))))));
+};
+
+var Form = function (props) {
+    var _a;
+    return (React__default['default'].createElement("form", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'innerRef', 'inline', 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+            form: true,
+            'form-inline': !!props.inline
+        })).trim(), ref: props.innerRef }), props.children));
+};
+
+var FormFeedback = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'valid', 'tag'), { className: (((_b = props.className) !== null && _b !== void 0 ? _b : '') + " " + ClassNames({
+            'invalid-feedback': true,
+            'd-none': !!props.valid
+        })).trim() })));
+};
+
+var FormGroup = function (props) {
+    var _a;
+    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+            'form-group': true
+        })).trim() }), props.children));
+};
+
+var InputGroup = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("input-group " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var InputGroupAddon = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'addonType'), { className: ("input-group-" + props.addonType + " " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var InputGroupText = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("input-group-text " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var Label = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
+    var classes = ("" + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim();
+    classes += ' col-form-label';
+    if (props.check)
+        classes += ' form-check-label';
+    classes += ApplyColumnProp('xs', props.xs);
+    classes += ApplyColumnProp('sm', props.sm);
+    classes += ApplyColumnProp('md', props.md);
+    classes += ApplyColumnProp('lg', props.lg);
+    classes += ApplyColumnProp('xl', props.xl);
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'className'), { className: classes.trim() }));
+};
+
+var ListGroup = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'flush'), { className: (ClassNames({ 'list-group-flush': !!props.flush }) + " list-group " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var ListGroupItem = function (props) {
+    var _a, _b, _c;
+    var TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.onClick) ? 'button'
+        : !!props.href
+            ? 'a'
+            : 'li';
+    return (React__default['default'].createElement(TagToUse, __assign({ type: !!props.onClick ? 'button' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: (ClassNames({
+            active: !!props.active,
+            disabled: !!props.disabled,
+            'list-group-item-action': !!props.action
+            // 'd-flex justify-content-between align-items-center': props.badge === null || !!props.badge
+        }) + " list-group-item" + (!!props.color ? " list-group-item-" + props.color : '') + " " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim(), disabled: !!props.onClick && props.disabled ? true : undefined }),
+        props.children,
+        React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-right ' + ((_c = props.badgeClass) !== null && _c !== void 0 ? _c : ''), style: { marginTop: '0.2rem' } })));
+};
+
+var ListGroupItemHeading = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("list-group-item-heading " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var ListGroupItemText = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("list-group-item-text " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+};
+
+var Portal = /** @class */ (function (_super) {
+    __extends(Portal, _super);
+    function Portal(props) {
+        var _this = _super.call(this, props) || this;
+        _this.el = document.createElement('div');
+        _this.el.style.display = 'contents';
+        return _this;
+        // The <div> is a necessary container for our
+        // content, but it should not affect our layout.
+        // Only works in some browsers, but generally
+        // doesn't matter since this is at
+        // the end anyway. Feel free to delete this line.
+    }
+    Portal.prototype.componentDidMount = function () {
+        document.body.appendChild(this.el);
+    };
+    Portal.prototype.componentWillUnmount = function () {
+        document.body.removeChild(this.el);
+    };
+    Portal.prototype.render = function () {
+        return ReactDOM__default['default'].createPortal(this.props.children, this.el);
+    };
+    return Portal;
+}(React__default['default'].Component));
+
+var Modal = function (props) {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var divRef = React.useRef();
+    var toggle = React.useCallback(function (e) {
+        if (!!props.toggle && !props.noCancel) {
+            props.toggle(e);
+        }
+    }, [props]);
+    var okAction = React.useCallback(function (e) {
+        if (!!props.okAction) {
+            var okResult = props.okAction();
+            if (okResult === undefined || okResult !== false) {
+                if (!!props.toggle) {
+                    props.toggle(e);
+                }
+            }
+        }
+    }, [props]);
+    var keyDown = function (e) {
+        if (props.isOpen) {
+            e.stopPropagation();
+            switch (e.keyCode) {
+                case KEY_ESCAPE:
+                    toggle(e);
+                    break;
+                case KEY_ENTER:
+                    okAction(e);
+                    break;
+            }
+        }
+    };
+    React.useEffect(function () {
+        window.addEventListener('keydown', keyDown);
+        return function () {
+            window.removeEventListener('keydown', keyDown);
+        };
+    });
+    React.useEffect(function () {
+        var _a;
+        if (props.isOpen) {
+            if (!!((_a = props.autoFocusElement) === null || _a === void 0 ? void 0 : _a.current)) {
+                props.autoFocusElement.current.focus();
+            }
+            else if (divRef === null || divRef === void 0 ? void 0 : divRef.current) {
+                divRef.current.focus();
+            }
+        }
+    }, [props.isOpen, props.autoFocusElement]);
+    return (React__default['default'].createElement(Portal, null,
+        React__default['default'].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: "dialog", style: {
+                display: props.isOpen ? 'block' : 'none',
+                pointerEvents: props.isOpen ? undefined : 'none'
+            }, onClick: function (e) {
+                if (props.isOpen) {
+                    e.stopPropagation();
+                    toggle(e);
+                }
+            }, onKeyDown: keyDown },
+            React__default['default'].createElement("div", { className: 'modal-dialog' +
+                    (!props.size ? '' : props.size === 'sm' ? ' modal-sm' : ' modal-lg') +
+                    ' ' +
+                    ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : ''), role: "document", style: props.dialogStyle },
+                React__default['default'].createElement("div", { className: "modal-content", onClick: function (e) { return e.stopPropagation(); } }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                    !!props.title && (React__default['default'].createElement("div", { className: "alert-" + ((_b = props.color) !== null && _b !== void 0 ? _b : 'primary') + " modal-header" },
+                        React__default['default'].createElement("h5", { className: "modal-title" }, props.title),
+                        !props.noCancel && (React__default['default'].createElement("button", { className: "close", onClick: toggle },
+                            "\u00D7",
+                            ' ')))),
+                    React__default['default'].createElement("div", { className: 'modal-body ' + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: ("container " + (typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : '')).trim(), onSubmitCapture: function (e) {
+                            e.preventDefault();
+                            if (!props.okDisabled) {
+                                okAction(e);
+                            }
+                        }, onKeyDown: function (e) {
+                            if (e.keyCode === KEY_ENTER) {
+                                e.stopPropagation();
+                            }
+                        } },
+                        props.body,
+                        props.children,
+                        React__default['default'].createElement(Button, { className: "d-none", type: "submit" }))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
+                        props.body,
+                        props.children))),
+                    (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: "modal-footer" },
+                        React__default['default'].createElement("div", { className: "mr-auto" },
+                            (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: " btn btn-link  ", type: "button", onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
+                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map(function (leftButton) { return (React__default['default'].createElement(Button, __assign({}, leftButton))); }),
+                            props.footerLeft),
+                        React__default['default'].createElement("div", { className: "text-right" },
+                            props.footerRight,
+                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map(function (rightButton) { return (React__default['default'].createElement(Button, __assign({}, rightButton))); }),
+                            !!props.okAction && (React__default['default'].createElement("button", { className: "ml-1 btn btn-" + ((_g = props.color) !== null && _g !== void 0 ? _g : 'primary'), type: "button", disabled: props.okDisabled, onClick: function (e) {
+                                    e.stopPropagation();
+                                    okAction(e);
+                                }, ref: divRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
+        React__default['default'].createElement("div", { className: 'modal-backdrop fade' + (props.isOpen ? ' show' : ''), style: { pointerEvents: props.isOpen ? undefined : 'none' }, onClick: toggle })));
+};
+
+var ModalHeader = function (props) {
+    var _a;
+    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header ' + (!!props.color ? "alert-" + props.color + " " : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
+};
+
+var ModalBody = function (props) {
+    var _a;
+    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-body ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
+};
+
+var ModalFooter = function (props) {
+    var _a;
+    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-footer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
+};
+
+var Nav = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
+    var classes = ("" + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim();
+    classes +=
+        ' ' +
+            ClassNames({
+                nav: !props.navbar,
+                'navbar-nav': !!props.navbar,
+                'nav-tabs': !!props.tabs,
+                'nav-pills': !!props.pills,
+                'nav-fill': !!props.fill,
+                'nav-justified': !!props.justified,
+                'flex-column': !!props.vertical,
+                'justify-content-center': !!props.horizontal
+            });
+    return (React__default['default'].createElement(TagToUse, __assign({ role: !!props.tabs ? 'tablist' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tabs', 'pills', 'vertical', 'horizontal', 'justified', 'fill', 'navbar', 'card', 'tag', 'className'), { className: classes.trim() })));
+};
+
+var Navbar = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'nav';
+    var classes = (((_b = props.className) !== null && _b !== void 0 ? _b : '') + " navbar").trim();
+    classes += !!props.color ? " bg-" + props.color : '';
+    classes += !!props.expand ? " navbar-expand" + (typeof props.expand === 'string' ? "-" + props.expand : '') + " " : '';
+    classes +=
+        ' ' +
+            ClassNames({
+                'navbar-light': !!props.light,
+                'navbar-dark': !!props.dark,
+                'fixed-top': !!props.fixed,
+                'sticky-top': !!props.sticky
+            });
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'light', 'dark', 'fixed', 'sticky', 'color', 'tag', 'expand', 'className'), { className: classes.trim() })));
+};
+
+var NavItem = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'li';
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-item ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
+};
+
+var NavLink = function (props) {
+    var _a, _b;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-link ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
+};
+
+var NavbarBrand = function (props) {
+    var _a;
+    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag')));
+};
+
+var NavbarToggler = function (props) {
+    var _a;
+    return (React__default['default'].createElement("button", __assign({}, props, { type: "button", "aria-label": "Toggle navigation", className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' navbar-toggler' }),
+        React__default['default'].createElement("span", { className: "navbar-toggler-icon" })));
+};
+
+var Row = function (props) {
+    var _a;
+    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+            row: true,
+            'no-gutters': !!props.noGutters
+        })).trim() }), props.children));
+};
+
+var setStorage = function (key, newValue, remember, defaultValue) {
+    if (!!key) {
+        switch (remember) {
+            case 'local':
+                if (newValue === defaultValue) {
+                    window.localStorage.removeItem(key);
+                }
+                else {
+                    if (typeof newValue === 'string') {
+                        window.localStorage.setItem(key, newValue);
+                    }
+                    else {
+                        window.localStorage.setItem(key, intelliwaketsfoundation.ObjectToJSONString(newValue));
+                    }
+                }
+                break;
+            case 'session':
+                if (newValue === defaultValue) {
+                    window.sessionStorage.removeItem(key);
+                }
+                else {
+                    if (typeof newValue === 'string') {
+                        window.sessionStorage.setItem(key, newValue);
+                    }
+                    else {
+                        window.sessionStorage.setItem(key, intelliwaketsfoundation.ObjectToJSONString(newValue));
+                    }
+                }
+                break;
+        }
+    }
+};
+var getStorage = function (key, remember, defaultValue) {
+    var _a, _b, _c;
+    if (!key)
+        return defaultValue;
+    var newValue = (remember === 'local'
+        ? (_a = window.localStorage.getItem(key)) !== null && _a !== void 0 ? _a : defaultValue : remember === 'session'
+        ? (_b = window.sessionStorage.getItem(key)) !== null && _b !== void 0 ? _b : defaultValue : defaultValue);
+    if (!!newValue && typeof newValue === 'string' && newValue.startsWith('json:')) {
+        return (_c = intelliwaketsfoundation.JSONStringToObject(newValue)) !== null && _c !== void 0 ? _c : newValue;
+    }
+    return newValue;
+};
+var useStorage = function (key, defaultValue, remember) {
+    var _a, _b;
+    if (remember === void 0) { remember = 'local'; }
+    var _c = React.useState((_a = getStorage(key, remember, defaultValue)) !== null && _a !== void 0 ? _a : defaultValue), value = _c[0], setValue = _c[1];
+    var saveValue = React.useCallback(function (val) {
+        if (typeof val === 'function') {
+            setValue(function (prevState) {
+                if (!!key) {
+                    var newValue = val(getStorage(key, remember, prevState !== null && prevState !== void 0 ? prevState : defaultValue));
+                    setStorage(key, newValue, remember, defaultValue);
+                    return newValue;
+                }
+                else {
+                    return val(prevState);
+                }
+            });
+        }
+        else {
+            if (!!key) {
+                setStorage(key, val, remember, defaultValue);
+            }
+            setValue(val);
+        }
+    }, []);
+    var currentValue = !!key ? (_b = getStorage(key, remember, defaultValue)) !== null && _b !== void 0 ? _b : value : value;
+    return [currentValue, saveValue, function () { return saveValue(defaultValue); }];
+};
+
+/**
+ * A wrapper for Bootstrap's Modal that handles all the actions.
+ *
+ * @example
+ * const [modalPromptProps, setModalPromptProps] = useState<null | IModalPromptProps>(null)
+ *
+ * setModalPromptProps({
+ * 	title: 'Do action?',
+ * 	color: 'danger',
+ * 	messageBody: 'Are you sure you want to do the action?',
+ * 	okLabel: 'Do',
+ * 	okAction: () => {doAction()}
+ * 	})
+ *
+ * <ModalPrompt {...modalPromptProps} dismiss={setModalPromptProps} />
+ */
+var ModalPrompt = function (props) {
+    var _a, _b, _c, _d, _e;
+    var promptResponsesAsArray = React.useMemo(function () {
+        if (props.promptResponses === null || props.promptResponses === undefined)
+            return [];
+        if (props.promptResponses.constructor === Array) {
+            return props.promptResponses;
+        }
+        else {
+            return [props.promptResponses];
+        }
+    }, [props.promptResponses]);
+    var title = React.useMemo(function () {
+        if (typeof props.title !== 'string' || !props.variables)
+            return props.title;
+        return intelliwaketsfoundation.EvaluateString(props.title, props.variables);
+    }, [props.title, props.variables]);
+    var messageBody = React.useMemo(function () {
+        if (typeof props.messageBody !== 'string' || !props.variables)
+            return props.messageBody;
+        return intelliwaketsfoundation.EvaluateString(props.messageBody, props.variables);
+    }, [props.messageBody, props.variables]);
+    var isOpen = React.useMemo(function () {
+        return (!!props.promptOnly ||
+            (props.promptResponses !== null && props.promptResponses !== undefined) ||
+            (!!props.okLabel && !!props.okAction)) &&
+            !props.hidden;
+    }, [props.title, props.messageBody, props.promptResponses, props.okLabel, props.okAction, props.hidden]);
+    var dismiss = React.useCallback(function (canceled) {
+        if (!!props.dismiss)
+            props.dismiss(null, canceled);
+        if (canceled && !!props.cancelAction)
+            props.cancelAction();
+    }, [props.dismiss, props.cancelAction]);
+    var okAction = function () {
+        !!props.okAction && props.okAction();
+        dismiss(false);
+    };
+    // const okKeyPress = (e: React.KeyboardEvent) => {
+    // 	if (!!props.okKeys) {
+    // 		if (Array.isArray(props.okKeys)) {
+    // 			for (const okKey of props.okKeys) {
+    // 				if (e.key === okKey) {
+    // 					okAction()
+    // 					break
+    // 				}
+    // 			}
+    // 		} else {
+    // 			if (e.key === KEY_STRING_ENTER) {
+    // 				okAction()
+    // 			} else if (e.key === props.okKeys) {
+    // 				okAction()
+    // 			}
+    // 		}
+    // 	} else if (e.key === KEY_STRING_ENTER) {
+    // 		okAction()
+    // 	}
+    // }
+    return (React__default['default'].createElement(reactstrap.Modal, { backdrop: true, keyboard: true, isOpen: isOpen, toggle: function () { return dismiss(true); }, autoFocus: false },
+        React__default['default'].createElement(reactstrap.ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary'), toggle: function () { return dismiss(true); }, close: React__default['default'].createElement("button", { className: "close", onClick: function () { return dismiss(true); } }, "\u00D7") }, title),
+        !!messageBody && React__default['default'].createElement(reactstrap.ModalBody, null, messageBody),
+        React__default['default'].createElement(reactstrap.ModalFooter, null,
+            React__default['default'].createElement(Button, { type: "button", onClick: function () { return dismiss(true); }, outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+                    ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary' : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
+            promptResponsesAsArray.map(function (promptResponse, idx) {
+                var _a, _b;
+                return (React__default['default'].createElement(Button, { key: idx, onClick: function () {
+                        promptResponse.action();
+                        dismiss(false);
+                    }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', className: "ml-1" }, promptResponse.label));
+            }),
+            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(Button, { onClick: okAction, color: (_e = props.color) !== null && _e !== void 0 ? _e : 'primary', className: "ml-1", 
+                // onKeyPress={okKeyPress}
+                autoFocus: true, tabIndex: 0 }, props.okLabel)))));
+};
+
+var Tab = function (props) {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var isChanging = React.useRef(false);
+    var loadedTabs = React.useRef([]);
+    var showTabs = props.tabs.filter(function (tab) { return !tab.hide; });
+    var defaultTab = (_a = showTabs.find(function (tab) { return !tab.disabled && (!props.openTab || tab.title === props.openTab); })) === null || _a === void 0 ? void 0 : _a.title;
+    var _j = useStorage(props.rememberKey, defaultTab !== null && defaultTab !== void 0 ? defaultTab : '', (_b = props.rememberType) !== null && _b !== void 0 ? _b : 'session'), openTab = _j[0], setOpenTab = _j[1];
+    var _k = React.useState(null), modalPromptProps = _k[0], setModalPromptProps = _k[1];
+    var actualOpenTab = (_c = showTabs.find(function (tab) { return !tab.disabled && tab.title === (!!props.setOpenTab ? props.openTab : openTab); })) === null || _c === void 0 ? void 0 : _c.title;
+    var setActualOpenTab = React.useCallback((_d = props.setOpenTab) !== null && _d !== void 0 ? _d : setOpenTab, [props, setOpenTab]);
+    var openTabChanged = React.useCallback((_e = props.openTabChanged) !== null && _e !== void 0 ? _e : (function () { }), [props]);
+    var changeOpenTab = React.useCallback(function (tabTitle) {
+        if (actualOpenTab !== tabTitle) {
+            if (!props.isDirty) {
+                setActualOpenTab(tabTitle);
+                openTabChanged(tabTitle);
+            }
+            else {
+                setModalPromptProps({
+                    title: 'Abandon Changes?',
+                    messageBody: 'Are you sure you want to abandon changes?',
+                    color: 'danger',
+                    okLabel: 'Abandon',
+                    okAction: function () {
+                        setActualOpenTab(tabTitle);
+                        openTabChanged(tabTitle);
+                    }
+                });
+            }
+        }
+    }, [actualOpenTab, props.isDirty, setActualOpenTab, openTabChanged]);
+    React.useEffect(function () {
+        var _a;
+        if (!actualOpenTab) {
+            if (!isChanging.current) {
+                var gotoTab = (_a = showTabs.find(function (tab) { return !tab.disabled; })) === null || _a === void 0 ? void 0 : _a.title;
+                if (gotoTab) {
+                    isChanging.current = true;
+                    setActualOpenTab(gotoTab);
+                    openTabChanged(gotoTab);
+                }
+            }
+        }
+        else {
+            isChanging.current = false;
+            if (!loadedTabs.current.includes(actualOpenTab))
+                loadedTabs.current = __spreadArrays(loadedTabs.current, [actualOpenTab]);
+        }
+    }, [actualOpenTab, openTabChanged, setActualOpenTab, showTabs]);
+    if (!actualOpenTab)
+        return null;
+    // "px-4 mt-3 mx-0 gray-tabs"
+    // p-2 background-gray overflow-hidden
+    return (React__default['default'].createElement("div", { className: ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) }) },
+        React__default['default'].createElement(ModalPrompt, __assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
+        React__default['default'].createElement("ul", { className: "nav px-4 mt-3 mx-0 gray-tabs nav-" + ((_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs') }, showTabs.map(function (tab) { return (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
+            React__default['default'].createElement(Button, { color: "link", className: ClassNames({
+                    'nav-link': true,
+                    desktopOnly: true,
+                    active: actualOpenTab === tab.title
+                }), disabled: !!tab.disabled, onClick: function () {
+                    if (!tab.hide && !tab.disabled) {
+                        changeOpenTab(tab.title);
+                    }
+                } },
+                !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, tab.faProps, { fixedWidth: true })),
+                tab.title))); })),
+        React__default['default'].createElement("div", { className: ClassNames({
+                'tab-content': true,
+                'fill-height': !!((_h = props.fillHeight) !== null && _h !== void 0 ? _h : true),
+                'border-left': !props.noPaneBorder,
+                'border-right': !props.noPaneBorder,
+                'border-bottom': !props.noPaneBorder
+            }) }, showTabs
+            .filter(function (tab) {
+            return !tab.hide &&
+                (!tab.loadedOnlyWhenActive || tab.title === actualOpenTab) &&
+                (!props.paneLoading ||
+                    props.paneLoading === 'All' ||
+                    tab.title === actualOpenTab ||
+                    (props.paneLoading === 'KeepOnceLoaded' &&
+                        loadedTabs.current.some(function (loadedTab) { return tab.title === loadedTab; })));
+        })
+            .map(function (tab) {
+            var _a, _b, _c, _d, _e;
+            return (React__default['default'].createElement("div", { key: tab.title, className: ((_a = props.classNamePanes) !== null && _a !== void 0 ? _a : '') +
+                    ' ' +
+                    (tab.title === actualOpenTab ? (_b = props.classNamePaneActive) !== null && _b !== void 0 ? _b : '' : '') +
+                    ' ' +
+                    ClassNames({
+                        show: tab.title === actualOpenTab,
+                        active: tab.title === actualOpenTab,
+                        'fill-height': ((_c = tab.fillHeight) !== null && _c !== void 0 ? _c : props.fillHeight) === 'noScroll',
+                        'fill-height-scroll': ((_e = (_d = tab.fillHeight) !== null && _d !== void 0 ? _d : props.fillHeight) !== null && _e !== void 0 ? _e : true) === true,
+                        'p-2': !props.noPanePadding
+                    }) +
+                    ' tab-pane fade ' }, tab.pane));
+        }))));
+};
+
+var Table = React.forwardRef(function (props, ref) {
+    var _a;
+    return (React__default['default'].createElement("table", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
+            ' ' +
+            ClassNames({
+                table: true,
+                'table-bordered': !!props.bordered,
+                'table-borderless': !!props.borderless,
+                'table-striped': !!props.striped,
+                'table-dark': !!props.dark,
+                'table-hover': !!props.hover,
+                'table-responsive': !!props.responsive,
+                'table-sortable': !!props.sortable,
+                'table-sm': props.size !== 'lg',
+                small: !!props.textSmall,
+                'table-sticky': !!props.sticky
+            }), tabIndex: props.tabIndex, hidden: props.hidden, style: props.style, ref: ref, onKeyDown: props.onKeyDown },
+        !!props.caption && React__default['default'].createElement("caption", null, props.caption),
+        props.children));
+});
+
 function checkDeps(deps, name) {
     var reactHookName = "React." + name.replace(/DeepCompare/, '');
     if (!deps || deps.length === 0) {
@@ -678,6 +1582,7 @@ var RemoveActivityOverlay = function (prevState) {
  * An overlay with a black background and a spinner that covers the entire screen.
  */
 var ActivityOverlay = function (props) {
+    var _a;
     function resetActivityOverlay() {
         var _a;
         if (props.activityOverlayState.nestedCount > 0) {
@@ -689,7 +1594,7 @@ var ActivityOverlay = function (props) {
     }
     if (props.activityOverlayState.nestedCount > 0) {
         return (React__default['default'].createElement("div", { className: "System_ActivityOverlay", onClick: resetActivityOverlay, color: "primary" },
-            React__default['default'].createElement(reactBootstrap.Spinner, { animation: "border", style: { width: '3rem', height: '3rem' } })));
+            React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '3x' })));
     }
     return null;
 };
@@ -698,9 +1603,9 @@ var ActivityOverlay = function (props) {
  * An overlay with a white background and a spinner that covers the entire surface of it's parent component.
  */
 var ActivityOverlayControl = function (props) {
-    var _a, _b;
+    var _a;
     return props.show ? (React__default['default'].createElement("div", { className: "System_ActivityOverlay_Control" },
-        React__default['default'].createElement(reactBootstrap.Spinner, { animation: "border", style: { width: (_a = props.spinnerSize) !== null && _a !== void 0 ? _a : '2rem', height: (_b = props.spinnerSize) !== null && _b !== void 0 ? _b : '2rem' } }))) : null;
+        React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '2x' }))) : null;
 };
 
 var initialSortProperties = {
@@ -920,7 +1825,7 @@ var ArrayTable = function (props) {
     if (props.minWidth) {
         styleSettings.minWidth = props.minWidth;
     }
-    return (React__default['default'].createElement(reactBootstrap.Table, { size: "sm", bordered: props.bordered, className: ClassNames((_a = {
+    return (React__default['default'].createElement(Table, { size: "sm", bordered: props.bordered, className: ClassNames((_a = {
                 'table-scrollable': !!props.scrollable
             },
             _a[(_c = 'table-col-min-' + props.arrayStructure.minColSize) !== null && _c !== void 0 ? _c : ''] = !!props.arrayStructure.minColSize,
@@ -1343,31 +2248,6 @@ var defaultRangeString = DateRangeToString(defaultRange);
 // 	borderless: false
 // } as Partial<IPropsDateRange>
 
-/**
- * An array-driven drop down control
- */
-var DDActions = function (props) {
-    var _a;
-    var visibleDDActions = React.useMemo(function () {
-        return (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(function (ddAction) { return !ddAction.hidden; });
-    }, [props.ddActions]);
-    var showDDActions = React.useMemo(function () { return !props.hidden && visibleDDActions.length > 0; }, [visibleDDActions, props.hidden]);
-    var showFAProps = React.useMemo(function () { return !!visibleDDActions.find(function (ddAction) { return !!ddAction.faProps; }); }, [visibleDDActions]);
-    if (!showDDActions)
-        return null;
-    return (React__default['default'].createElement(reactBootstrap.Dropdown, null,
-        React__default['default'].createElement(reactBootstrap.Dropdown.Toggle, { className: props.className, color: props.color, size: props.size },
-            props.faProps !== null && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, ((_a = props.faProps) !== null && _a !== void 0 ? _a : { icon: proRegularSvgIcons.faCog }), { fixedWidth: !!props.buttonText }))),
-            props.buttonText,
-            !props.noCaret && React__default['default'].createElement("span", { className: "caret" })),
-        React__default['default'].createElement(reactBootstrap.Dropdown.Menu, { align: props.right ? 'right' : undefined }, visibleDDActions.map(function (ddAction, idx) {
-            var _a;
-            return (React__default['default'].createElement(reactBootstrap.Dropdown.Item, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? " text-" + ddAction.color : ''), key: idx, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: function () { return (!!ddAction.action ? ddAction.action() : function () { }); } },
-                showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
-                ddAction.title));
-        }))));
-};
-
 var EllipsesTruncate = function (props) {
     var _a;
     if (props.hidden || !props.text)
@@ -1380,10 +2260,7 @@ var EllipsesTruncate = function (props) {
 
 function InputCheckBox(props) {
     var _a;
-    var newID = React.useMemo(function () { var _a; return (_a = props.id) !== null && _a !== void 0 ? _a : 'cb' + props.name + Math.floor(Math.random() * 100000 + 1); }, [
-        props.name,
-        props.id
-    ]);
+    var newID = React.useMemo(function () { var _a; return (_a = props.id) !== null && _a !== void 0 ? _a : 'cb' + props.name + Math.floor(Math.random() * 100000 + 1); }, [props.name, props.id]);
     var handleInputChange = function (e) {
         e.target.value = e.target.checked.toString();
         e.target.customValue = e.target.checked;
@@ -1394,20 +2271,23 @@ function InputCheckBox(props) {
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(reactBootstrap.Form.Check, { type: "checkbox", label: props.label, name: props.name, className: 'inputCheckbox ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick }));
+    return (React__default['default'].createElement(reactstrap.CustomInput, { type: "checkbox", label: props.label, name: props.name, className: 'inputCheckbox ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick }));
 }
 
-var ReduceInputProps = function (props) {
-    var subset = __assign(__assign({}, props), { value: props.value });
-    delete subset.plainText;
-    delete subset.plainTextURL;
-    delete subset.plainTextProps;
-    delete subset.changeValue;
-    delete subset.changeValueLate;
-    delete subset.autoCompleteOn;
-    delete subset.append;
-    delete subset.prepend;
-    // delete subset.onChange
+var ReduceInputProps = function (props, classNameAdd) {
+    var _a, _b, _c;
+    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend');
+    if (!!classNameAdd) {
+        if (typeof classNameAdd === 'string') {
+            subset.className = (((_a = subset.className) !== null && _a !== void 0 ? _a : '') + " " + classNameAdd).trim();
+        }
+        else if (Array.isArray(classNameAdd)) {
+            subset.className = (((_b = subset.className) !== null && _b !== void 0 ? _b : '') + " " + classNameAdd.join(' ')).trim();
+        }
+        else {
+            subset.className = (((_c = subset.className) !== null && _c !== void 0 ? _c : '') + " " + ClassNames(classNameAdd)).trim();
+        }
+    }
     return subset;
 };
 var ReduceToInputAddProps = function (props) {
@@ -1444,10 +2324,10 @@ function InputColor(props) {
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps),
-            React__default['default'].createElement("input", __assign({ type: "color", className: (_a = 'form-control inputText ' + props.className) !== null && _a !== void 0 ? _a : '' }, inputProps, { disabled: true })),
+            React__default['default'].createElement("input", __assign({ type: "color", className: (_a = 'inputText ' + props.className) !== null && _a !== void 0 ? _a : '' }, inputProps, { disabled: true })),
             props.value))) : (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps),
-        React__default['default'].createElement(reactBootstrap.Form.Control, __assign({ type: "color", className: (_b = 'form-control inputText ' + props.className) !== null && _b !== void 0 ? _b : '' }, inputProps, { disabled: true })),
-        props.value))) : (React__default['default'].createElement("input", __assign({ type: "color", className: (_c = 'form-control inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); } })))));
+        React__default['default'].createElement("input", __assign({ type: "color", className: (_b = 'inputText ' + props.className) !== null && _b !== void 0 ? _b : '' }, inputProps, { disabled: true })),
+        props.value))) : (React__default['default'].createElement("input", __assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); } })))));
 }
 
 var originalValue = ' ';
@@ -1488,7 +2368,7 @@ function InputDate(props) {
     };
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
         ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: "date", className: "form-control inputDate" }, inputProps, { placeholder: "yyyy-mm-dd", value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
+        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: "date", className: "inputDate" }, inputProps, { placeholder: "yyyy-mm-dd", value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
 }
 
 /**
@@ -1522,12 +2402,12 @@ function ViewEmail(props) {
 }
 
 var InputGroupWrapper = function (props) {
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.prepend || !!props.append ? (React__default['default'].createElement(reactBootstrap.InputGroup, null,
-        !!props.prepend && (React__default['default'].createElement(reactBootstrap.InputGroup.Prepend, null,
-            React__default['default'].createElement(reactBootstrap.InputGroup.Text, null, props.prepend))),
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.prepend || !!props.append ? (React__default['default'].createElement(InputGroup, null,
+        !!props.prepend && (React__default['default'].createElement(InputGroupAddon, { addonType: "prepend" },
+            React__default['default'].createElement(InputGroupText, null, props.prepend))),
         props.children,
-        !!props.append && (React__default['default'].createElement(reactBootstrap.InputGroup.Append, null,
-            React__default['default'].createElement(reactBootstrap.InputGroup.Text, null, props.append))))) : (React__default['default'].createElement(React__default['default'].Fragment, null, props.children))));
+        !!props.append && (React__default['default'].createElement(InputGroupAddon, { addonType: "append" },
+            React__default['default'].createElement(InputGroupText, null, props.append))))) : (React__default['default'].createElement(React__default['default'].Fragment, null, props.children))));
 };
 
 var AppendPrependWrapper = function (props) {
@@ -1548,6 +2428,7 @@ var InputWrapper = function (props) {
     var lateState = React.useRef(undefined);
     var _f = React.useState(props.children.props.value), internalState = _f[0], setInternalState = _f[1];
     var isManagingDirtyState = React.useRef(false);
+    var verbose = props.consoleVerbose;
     if (props.consoleVerbose) {
         console.log('IntState', props.children.props.name, ' = ', internalState);
     }
@@ -1565,6 +2446,9 @@ var InputWrapper = function (props) {
                 : internalState !== props.children.props.value) &&
             (!props.isInvalid ||
                 (!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState)))) {
+            if (verbose) {
+                console.log('UE Val', props.children.props.value);
+            }
             setInternalState(props.children.props.value);
         }
     }, [props.children.props.value]);
@@ -1574,12 +2458,12 @@ var InputWrapper = function (props) {
             if (!!props.plainOnClick)
                 props.plainOnClick();
         } }),
-        React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(__assign(__assign({}, props.children.props), { className: 'form-control ' + (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
+        React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(__assign(__assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
             ' ' +
             ((_d = props.className) !== null && _d !== void 0 ? _d : '') +
-            (props.children.props.isInvalid || props.isInvalid ? ' is_invalid' : '') +
+            (props.children.props.invalid || props.isInvalid ? ' is_invalid' : '') +
             (props.children.props.required ? ' is-required' : '')).trim(), onFocus: function (e) {
-            if (!props.doNotSelectOnFocus && !!e.target.select)
+            if (!props.doNotSelectOnFocus && 'select' in e.target)
                 e.target.select();
             if (props.children.props.onFocus)
                 props.children.props.onFocus(e);
@@ -1603,9 +2487,14 @@ var InputWrapper = function (props) {
                     ? !!props.children.props.valueOnInvalid
                         ? props.children.props.valueOnInvalid(e.target.value)
                         : ''
-                    : (!props.transformToValid
-                        ? e.target.value
-                        : props.transformToValid(e.target.value, e)));
+                    : (!props.transformToValid ? e.target.value : props.transformToValid(e.target.value, e)));
+                if (verbose) {
+                    console.log('targetValue', e.target.value);
+                    console.log('isValid', isValid);
+                    console.log('valueOnInvalid', !!props.children.props.valueOnInvalid);
+                    console.log('props.transformToValid', !!props.transformToValid);
+                    console.log('customValue', customValue);
+                }
                 e.target.customValue = customValue;
                 var newState = {
                     value: customValue,
@@ -1634,10 +2523,20 @@ var InputWrapper = function (props) {
                         }
                     }, (_a = props.lateDelayMS) !== null && _a !== void 0 ? _a : 500);
                     if (!props.children.props.onChange && !props.changeValue && !props.changeValueLate) {
+                        if (verbose) {
+                            console.log('oC Val ISV?', !!props.internalStateValue, e.target.value);
+                            if (!!props.internalStateValue)
+                                console.log('oC Val ISV', props.internalStateValue(e.target.value, e));
+                        }
                         setInternalState(!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value);
                     }
                 }
                 else {
+                    if (verbose) {
+                        console.log('Else Val ISV?', !!props.internalStateValue, e.target.value);
+                        if (!!props.internalStateValue)
+                            console.log('Else Val ISV', props.internalStateValue(e.target.value, e));
+                    }
                     setInternalState(!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value);
                 }
             }
@@ -1716,7 +2615,7 @@ function InputSelect(props) {
             }
             return val;
         } }),
-        React__default['default'].createElement(reactBootstrap.Form.Control, __assign({ type: "select" }, inputProps, { value: (_a = inputProps.value) !== null && _a !== void 0 ? _a : '', style: __assign(__assign({}, props.style), { pointerEvents: !!props.plainText ? 'none' : undefined }), tabIndex: !!props.plainText ? -1 : undefined }), props.children)));
+        React__default['default'].createElement("select", __assign({}, inputProps, { value: (_a = inputProps.value) !== null && _a !== void 0 ? _a : '', style: __assign(__assign({}, props.style), { pointerEvents: !!props.plainText ? 'none' : undefined }), tabIndex: !!props.plainText ? -1 : undefined }), props.children)));
 }
 
 function InputGender(props) {
@@ -1737,7 +2636,7 @@ function InputGender(props) {
 }
 
 function InputNumber(props) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     var inputProps = React.useMemo(function () {
         var subset = ReduceInputProps(props);
         delete subset.decimalScale;
@@ -1747,7 +2646,7 @@ function InputNumber(props) {
         delete subset.upperBound;
         delete subset.currency;
         delete subset.hideZero;
-        delete subset.isInvalid;
+        delete subset.invalid;
         delete subset.decimalScaleDisplay;
         return subset;
     }, [props]);
@@ -1769,14 +2668,14 @@ function InputNumber(props) {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand'
     };
-    options.numeralDecimalScale = (_a = props.decimalScale) !== null && _a !== void 0 ? _a : options.numeralDecimalScale;
-    options.numeralIntegerScale = (_b = props.integerScale) !== null && _b !== void 0 ? _b : options.numeralIntegerScale;
+    options.numeralDecimalScale = (_b = (_a = props.decimalScale) !== null && _a !== void 0 ? _a : options.numeralDecimalScale) !== null && _b !== void 0 ? _b : undefined;
+    options.numeralIntegerScale = (_d = (_c = props.integerScale) !== null && _c !== void 0 ? _c : options.numeralIntegerScale) !== null && _d !== void 0 ? _d : undefined;
     if (!!props.currency) {
         options.prefix = '$ ';
-        options.numeralDecimalScale = props.decimalScale === undefined ? 2 : (_c = props.decimalScale) !== null && _c !== void 0 ? _c : undefined;
+        options.numeralDecimalScale = props.decimalScale === undefined ? 2 : (_e = props.decimalScale) !== null && _e !== void 0 ? _e : undefined;
     }
-    var hasDecimals = ((_d = props.decimalScale) !== null && _d !== void 0 ? _d : 0) > 0;
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { inputIsValid: function (val) { return !isNaN(intelliwaketsfoundation.CleanNumber(val)); }, valueOnInvalid: function () { return 0; }, transformToValid: function (val) {
+    var hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
+    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { inputIsValid: function (val) { return !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)); }, valueOnInvalid: function () { return 0; }, transformToValid: function (val) {
             var cleanNumber = intelliwaketsfoundation.CleanNumber(val);
             if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
                 return props.lowerBound;
@@ -1788,8 +2687,8 @@ function InputNumber(props) {
             numerics: hasDecimals,
             integers: !hasDecimals
         }), plainTextControl: !!props.currency
-            ? intelliwaketsfoundation.ToCurrency(props.value, (_e = props.decimalScaleDisplay) !== null && _e !== void 0 ? _e : options.numeralDecimalScale)
-            : intelliwaketsfoundation.ToDigits(props.value, (_f = props.decimalScaleDisplay) !== null && _f !== void 0 ? _f : options.numeralDecimalScale), isInvalid: !!props.isInvalid, isEqual: function (internal, props) { return intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props); } }),
+            ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
+            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), isInvalid: !!props.invalid, isEqual: function (internal, props) { return intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props); } }),
         React__default['default'].createElement(Cleave__default['default'], __assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps))));
 }
 
@@ -1801,22 +2700,22 @@ function InputPassword(props) {
 
 function InputRadio(props) {
     var _a;
-    var newID = React.useMemo(function () { var _a; return (_a = props.id) !== null && _a !== void 0 ? _a : 'r' + props.name + Math.floor(Math.random() * 100000 + 1); }, [
-        props.name,
-        props.id
-    ]);
-    return !!props.plainText ? (props.checked ? (props.label) : null) : (React__default['default'].createElement(reactBootstrap.Form.Check, { type: "radio", label: props.label, name: props.name, id: newID, className: 'inputRadio ' + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), checked: props.checked, onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); }, value: props.value, onClick: props.onClick }));
+    return !!props.plainText ? (props.checked ? (props.label) : null) : (React__default['default'].createElement("label", { className: "cursor-pointer" },
+        React__default['default'].createElement("input", { type: "radio", value: props.value, checked: props.checked, className: 'inputRadio ' + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), name: props.name, onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); }, onClick: props.onClick }),
+        ' ',
+        props.label));
 }
 
 /**
  * A search input with an option to have a trigger delay or not.
  */
-var InputSearch = function (props) {
+var InputSearch = React.forwardRef(function (props, ref) {
     var _a, _b, _c;
-    var inputRef = React.useRef();
     var triggeredText = React.useRef((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
     var searchTimeout = React.useRef(setTimeout(function () { }, 100));
     var _d = React.useState(''), currentText = _d[0], setCurrentText = _d[1];
+    var innerRef = React__default['default'].useRef(null);
+    var combinedRef = useCombinedRefs(ref, innerRef);
     var handleInputChange = function (e) {
         var _a;
         var value = (_a = e.target.value) !== null && _a !== void 0 ? _a : '';
@@ -1840,7 +2739,7 @@ var InputSearch = function (props) {
             props.onKeyDown(e);
         }
     };
-    var handleOnBlur = function (_e) {
+    var handleOnBlur = function () {
         clearTimeout(searchTimeout.current);
         triggerChange();
     };
@@ -1861,24 +2760,32 @@ var InputSearch = function (props) {
         }
         if (!props.noSelectOnFocus) {
             setTimeout(function () {
-                if (!!inputRef.current) {
-                    inputRef.current.select();
+                var _a;
+                if (!!((_a = combinedRef === null || combinedRef === void 0 ? void 0 : combinedRef.current) === null || _a === void 0 ? void 0 : _a.select)) {
+                    combinedRef.current.select();
                 }
             }, 250);
         }
     };
     var inputProps = {
         type: 'search',
-        className: "inputSearch " + ((_b = props.className) !== null && _b !== void 0 ? _b : '') + " " + (!!props.bordered ? '' : 'bg-transparent border-0'),
+        inputMode: 'search',
+        className: "form-control inputSearch " + ((_b = props.className) !== null && _b !== void 0 ? _b : '') + " " + (!!props.bordered ? '' : 'bg-transparent border-0'),
         value: currentText,
         onChange: handleInputChange,
         onBlur: handleOnBlur,
-        innerRef: function (ref) {
-            if (!!props.innerRef) {
-                props.innerRef(ref);
-            }
-            inputRef.current = ref;
-        },
+        ref: combinedRef,
+        // innerRef: props.innerRef,
+        // innerRef: (ref: any) => {
+        // 	if (!!props.innerRef) {
+        // 		// console.log(typeof props.innerRef)
+        // 		if (typeof props.innerRef === 'function') {
+        // 			props.innerRef(ref)
+        // 		}
+        // 	}
+        //
+        // 	inputRef.current = ref
+        // },
         style: props.style,
         placeholder: props.placeholder,
         onKeyDown: handleKeyDown,
@@ -1887,13 +2794,15 @@ var InputSearch = function (props) {
         onFocus: handleOnFocus,
         autoComplete: props.autoCompleteOn ? 'on' : "AC_" + intelliwaketsfoundation.RandomString(12)
     };
-    return !!props.iconPrefix || !!props.reactPrefix ? (React__default['default'].createElement(reactBootstrap.InputGroup, { className: "searchGroup " + ((_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : '') + " " + (props.bordered ? '' : 'transparent') },
-        (!!props.iconPrefix || !!props.reactPrefix) && (React__default['default'].createElement(reactBootstrap.InputGroup.Text, { onClick: function () {
-                if (!!inputRef.current)
-                    inputRef.current.focus();
+    return !!props.iconPrefix || !!props.reactPrefix ? (React__default['default'].createElement(InputGroup, { className: "searchGroup " + ((_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : '') + " " + (props.bordered ? '' : 'transparent') },
+        (!!props.iconPrefix || !!props.reactPrefix) && (React__default['default'].createElement(InputGroupText, { onClick: function () {
+                var _a;
+                var innerRef = ref;
+                if (!!((_a = innerRef === null || innerRef === void 0 ? void 0 : innerRef.current) === null || _a === void 0 ? void 0 : _a.focus))
+                    innerRef.current.focus();
             } }, props.iconPrefix !== undefined ? (typeof props.iconPrefix === 'boolean' ? (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faSearch })) : (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, props.iconPrefix)))) : (props.reactPrefix))),
         React__default['default'].createElement("input", __assign({}, inputProps)))) : (React__default['default'].createElement("input", __assign({}, inputProps)));
-};
+});
 
 var OptionsActive = [
     { key: true, description: 'Active' },
@@ -1941,13 +2850,13 @@ function InputSSN(props) {
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputSSN", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
+    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputSSN form-control", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
         React__default['default'].createElement("input", __assign({ type: "text" }, inputProps, { pattern: "\\d{3}-?\\d{2}-?\\d{4}" }))));
 }
 
 function InputState(props) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText inputState", transformToValid: function (val) { return val.toUpperCase(); } }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props)))));
+        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
 }
 
 function InputSwitch(props) {
@@ -1966,7 +2875,7 @@ function InputSwitch(props) {
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(reactBootstrap.Form.Check, { type: "switch", label: props.label, name: props.name, className: 'inputSwitch cursor-pointer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick }));
+    return (React__default['default'].createElement(reactstrap.CustomInput, { type: "switch", label: props.label, name: props.name, className: 'inputSwitch cursor-pointer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick }));
 }
 
 var InputSwitchAlternate = function (props) {
@@ -1984,12 +2893,12 @@ var InputSwitchAlternate = function (props) {
         if (!!props.changeValue)
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
     };
-    return (React__default['default'].createElement(reactBootstrap.Form.Check, { type: "switch", label: props.label, name: props.name, className: 'inputSwitch ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), id: newID, checked: props.value === valuesOnOff[0], onChange: !props.plainText ? handleInputChange : function () { } }));
+    return (React__default['default'].createElement(reactstrap.CustomInput, { type: "switch", label: props.label, name: props.name, className: 'inputSwitch ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), id: newID, checked: props.value === valuesOnOff[0], onChange: !props.plainText ? handleInputChange : function () { } }));
 };
 
 function InputTel(props) {
     var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(props);
+        var subset = ReduceInputProps(props, 'form-control');
         delete subset.showFAIcon;
         return subset;
     }, [props]);
@@ -2006,7 +2915,7 @@ function InputTel(props) {
 
 function InputText(props) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props)))));
+        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
 }
 
 function InputTextArea(props) {
@@ -2018,11 +2927,11 @@ function InputTextArea(props) {
         return subset;
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputTextArea", plainTextControl: React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext vertical-scroll horizontal-scroll' + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: {
+        React__default['default'].createElement(InputWrapper, __assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: "inputTextArea form-control", plainTextControl: React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext vertical-scroll horizontal-scroll' + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } })) }),
-            React__default['default'].createElement("textarea", __assign({}, inputProps)))));
+            React__default['default'].createElement("input", __assign({ type: "textarea" }, inputProps)))));
 }
 
 var originalValue$1 = ' ';
@@ -2061,7 +2970,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", __assign({ type: "time", className: "inputTime" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", __assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
@@ -2125,14 +3034,6 @@ function InputZip(props) {
     return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputZip", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
         React__default['default'].createElement("input", __assign({ type: "text" }, inputProps))));
 }
-
-var IWButton = function (props) {
-    var _a, _b, _c;
-    return (React__default['default'].createElement("button", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
-            " btn " + (props.color === 'inline' ? 'btn btn-link btn-link-inline ' : "btn-" + (props.outline ? 'outline-' : '') + ((_b = props.color) !== null && _b !== void 0 ? _b : 'secondary') + " ") +
-            ("" + (!!props.size ? "btn-" + props.size : '')) + ' ' +
-            ClassNames({ 'btn-block': !!props.block }), type: (_c = props.type) !== null && _c !== void 0 ? _c : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: props.ref, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title }, props.children));
-};
 
 /**
  * The IWServerData control is a React control that calls API's to a server and manages the state of the data in its control.
@@ -2415,25 +3316,6 @@ var IWServerData = function (props) {
             ((_l = props.loadingReactNodes) !== null && _l !== void 0 ? _l : React__default['default'].createElement(ActivityOverlayControl, { show: true }))));
 };
 
-var IWTable = function (props) {
-    var _a;
-    return (React__default['default'].createElement("table", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' ' + ClassNames({
-            table: true,
-            'table-bordered': !!props.bordered,
-            'border-0': !!props.borderless,
-            'table-striped': !!props.striped,
-            'table-dark': !!props.dark,
-            'table-hover': !!props.hover,
-            'table-responsive': !!props.responsive,
-            'table-sortable': !!props.sortable,
-            'table-sm': props.size !== 'lg',
-            'small': !!props.textSmall,
-            'table-sticky': !!props.sticky
-        }), tabIndex: props.tabIndex, hidden: props.hidden, style: props.style, ref: props.ref, onKeyDown: props.onKeyDown },
-        !!props.caption && React__default['default'].createElement("caption", null, props.caption),
-        props.children));
-};
-
 function StyleControl(props) {
     return !props.css ? React__default['default'].createElement(React__default['default'].Fragment, null) : React__default['default'].createElement("style", { dangerouslySetInnerHTML: { __html: props.css } });
 }
@@ -2503,7 +3385,7 @@ var MDMaster = function (props) {
 };
 var panelClean = function (panel) { return intelliwaketsfoundation.ReplaceAll('/', '', (panel !== null && panel !== void 0 ? panel : '').replace(/\s+/g, '')); };
 var MDLink = function (props) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     var history = reactRouterDom.useHistory();
     var mdContext = React.useContext(MDContext);
     var selectedRow = React.useRef(null);
@@ -2523,10 +3405,15 @@ var MDLink = function (props) {
         classNames.push('active');
     if (linkActive && props.activeClassName)
         classNames.push(props.activeClassName);
+    // if (!!props.badge || props.badge === null) classNames.push('d-flex justify-content-between align-items-center')
     displayProps.className = classNames.join(' ');
     delete displayProps.postPath;
     delete displayProps.id;
     delete displayProps.blockActivate;
+    delete displayProps.badge;
+    delete displayProps.badgeColor;
+    delete displayProps.badgeClass;
+    delete displayProps.color;
     var selectItem = function () {
         if (!props.blockActivate) {
             window.sessionStorage.removeItem(mdContext.baseFullPath + '-LastURL');
@@ -2550,13 +3437,15 @@ var MDLink = function (props) {
                     else {
                         selectItem();
                     }
-                }, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+                }, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }),
+                props.children,
+                React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-right ' + ((_a = props.badgeClass) !== null && _a !== void 0 ? _a : ''), style: { marginTop: '0.2rem' } })));
         case 'tr':
-            return (React__default['default'].createElement("tr", __assign({}, displayProps, { onClick: (_a = props.onClick) !== null && _a !== void 0 ? _a : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default['default'].createElement("tr", __assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         case 'div':
-            return (React__default['default'].createElement("div", __assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default['default'].createElement("div", __assign({}, displayProps, { onClick: (_c = props.onClick) !== null && _c !== void 0 ? _c : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         default:
-            return (React__default['default'].createElement("span", __assign({}, displayProps, { onClick: (_c = props.onClick) !== null && _c !== void 0 ? _c : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default['default'].createElement("span", __assign({}, displayProps, { onClick: (_d = props.onClick) !== null && _d !== void 0 ? _d : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
     }
 };
 var MDDetail = function (props) {
@@ -2633,7 +3522,7 @@ var MasterDetailListGroup = function (props) {
     return (React__default['default'].createElement(MasterDetail, { setMenuBackItemState: props.setMenuBackItemState, mdPath: props.mdPath, breakAt: props.breakAt, backText: props.backText, rememberLast: props.rememberLast, className: props.className },
         React__default['default'].createElement(MDMaster, { width: props.mdMasterWidth, className: props.mdMasterClassName },
             props.mdMasterTopNode,
-            React__default['default'].createElement(reactBootstrap.ListGroup, { variant: "flush", className: "fill-height-scroll " + (props.noTextLargeSmaller ? '' : "text-large-" + props.breakAt + "-smaller") },
+            React__default['default'].createElement(ListGroup, { flush: true, className: "fill-height-scroll " + (props.noTextLargeSmaller ? '' : "text-large-" + props.breakAt + "-smaller") },
                 listGroupItems.map(function (listGroupItem, idx) {
                     var _a, _b, _c, _d;
                     var prefix = null;
@@ -2647,7 +3536,7 @@ var MasterDetailListGroup = function (props) {
                                     prefix = idx > 0 ? '' : null;
                                     break;
                                 default:
-                                    prefix = (React__default['default'].createElement(reactBootstrap.ListGroup.Item, { onClick: function () {
+                                    prefix = (React__default['default'].createElement(ListGroupItemHeading, { onClick: function () {
                                             if (!!props.setCollapsedSections && !!listGroupItem.section) {
                                                 props.setCollapsedSections(function (prevState) {
                                                     if (!listGroupItem.section)
@@ -2680,7 +3569,8 @@ var MasterDetailListGroup = function (props) {
                                 ((_d = listGroupItem.className) !== null && _d !== void 0 ? _d : '') },
                             !!listGroupItem.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ fixedWidth: true }, listGroupItem.faProps)),
                             listGroupItem.linkNode,
-                            listGroupItem.counter !== undefined && (React__default['default'].createElement(reactBootstrap.Badge, { color: listGroupItem.counterColor, className: "float-right small text-white border-round ml-2" }, listGroupItem.counter !== null ? (intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0)) : (React__default['default'].createElement(reactBootstrap.Spinner, { animation: "border", size: "sm", style: { width: '0.8em', height: '0.8em' } })))))));
+                            React__default['default'].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
+                            listGroupItem.counter !== undefined && (React__default['default'].createElement(Badge, { color: listGroupItem.counterColor, className: "float-right small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default['default'].createElement(Spinner, { size: "xs" }))))));
                 }),
                 props.mdMasterBottomNode),
             props.mdMasterBottomOutsideNode),
@@ -2703,10 +3593,9 @@ var initialMessageBoxState = {
  */
 var MessageBox = function (props) {
     var _a, _b;
-    var propsMessageBoxState = typeof props.messageBoxState === 'string'
-        ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
+    var propsMessageBoxState = (typeof props.messageBoxState === 'string' || props.messageBoxState instanceof String) ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
     var dismissTimeout = React.useRef(setTimeout(function () { }, 1));
-    var messageBoxHTML = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : '');
+    var messageBoxHTML = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : "");
     var dismissMessageBox = React.useCallback(props.dismissMessageBox, [props.dismissMessageBox]);
     React.useEffect(function () {
         clearTimeout(dismissTimeout.current);
@@ -2714,105 +3603,13 @@ var MessageBox = function (props) {
             dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
         }
     }, [propsMessageBoxState.message, propsMessageBoxState.noDismiss, dismissMessageBox]);
-    return (React__default['default'].createElement(reactBootstrap.Alert, { className: "System_MessageBox", color: (_b = propsMessageBoxState.color) !== null && _b !== void 0 ? _b : 'primary', show: !!propsMessageBoxState.message, onClose: props.dismissMessageBox },
+    return (React__default['default'].createElement(reactstrap.Alert, { className: "System_MessageBox", color: (_b = propsMessageBoxState.color) !== null && _b !== void 0 ? _b : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
         propsMessageBoxState.message,
-        !!propsMessageBoxState.messageBody ? (React__default['default'].createElement("small", null,
-            React__default['default'].createElement("hr", null),
-            React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))) : null));
-};
-
-/**
- * A wrapper for Bootstrap's Modal that handles all the actions.
- *
- * @example
- * const [modalPromptProps, setModalPromptProps] = useState<null | IModalPromptProps>(null)
- *
- * setModalPromptProps({
- * 	title: 'Do action?',
- * 	color: 'danger',
- * 	messageBody: 'Are you sure you want to do the action?',
- * 	okLabel: 'Do',
- * 	okAction: () => {doAction()}
- * 	})
- *
- * <ModalPrompt {...modalPromptProps} dismiss={setModalPromptProps} />
- */
-var ModalPrompt = function (props) {
-    var _a, _b, _c, _d, _e, _f;
-    var promptResponsesAsArray = React.useMemo(function () {
-        if (props.promptResponses === null || props.promptResponses === undefined)
-            return [];
-        if (props.promptResponses.constructor === Array) {
-            return props.promptResponses;
-        }
-        else {
-            return [props.promptResponses];
-        }
-    }, [props.promptResponses]);
-    var title = React.useMemo(function () {
-        if (typeof props.title !== 'string' || !props.variables)
-            return props.title;
-        return intelliwaketsfoundation.EvaluateString(props.title, props.variables);
-    }, [props.title, props.variables]);
-    var messageBody = React.useMemo(function () {
-        if (typeof props.messageBody !== 'string' || !props.variables)
-            return props.messageBody;
-        return intelliwaketsfoundation.EvaluateString(props.messageBody, props.variables);
-    }, [props.messageBody, props.variables]);
-    var isOpen = React.useMemo(function () {
-        return (!!props.promptOnly ||
-            (props.promptResponses !== null && props.promptResponses !== undefined) ||
-            (!!props.okLabel && !!props.okAction)) &&
-            !props.hidden;
-    }, [props.title, props.messageBody, props.promptResponses, props.okLabel, props.okAction, props.hidden]);
-    var dismiss = React.useCallback(function (canceled) {
-        if (!!props.dismiss)
-            props.dismiss(null, canceled);
-        if (canceled && !!props.cancelAction)
-            props.cancelAction();
-    }, [props.dismiss, props.cancelAction]);
-    var okAction = function () {
-        !!props.okAction && props.okAction();
-        dismiss(false);
-    };
-    var okKeyPress = function (e) {
-        if (!!props.okKeys) {
-            if (Array.isArray(props.okKeys)) {
-                for (var _i = 0, _a = props.okKeys; _i < _a.length; _i++) {
-                    var okKey = _a[_i];
-                    if (e.key === okKey) {
-                        okAction();
-                        break;
-                    }
-                }
-            }
-            else {
-                if (e.key === KEY_STRING_ENTER) {
-                    okAction();
-                }
-                else if (e.key === props.okKeys) {
-                    okAction();
-                }
-            }
-        }
-        else if (e.key === KEY_STRING_ENTER) {
-            okAction();
-        }
-    };
-    return (React__default['default'].createElement(reactBootstrap.Modal, { backdrop: true, keyboard: true, isOpen: isOpen, toggle: function () { return dismiss(true); }, autoFocus: false },
-        React__default['default'].createElement(reactBootstrap.Modal.Header, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
-        !!messageBody && React__default['default'].createElement(reactBootstrap.ModalBody, null, messageBody),
-        React__default['default'].createElement(reactBootstrap.ModalFooter, null,
-            React__default['default'].createElement(IWButton, { type: "button", onClick: function () { return dismiss(true); }, outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
-                    ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary' : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
-            promptResponsesAsArray.map(function (promptResponse, idx) {
-                var _a, _b;
-                return (React__default['default'].createElement(IWButton, { key: idx, onClick: function () {
-                        promptResponse.action();
-                        dismiss(false);
-                    }, outline: promptResponse.outline, color: ((_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary'), className: "ml-1" }, promptResponse.label));
-            }),
-            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(IWButton, { onClick: okAction, color: (_f = (_e = props.color) !== null && _e !== void 0 ? _e : props.color) !== null && _f !== void 0 ? _f : 'primary', className: "ml-1", onKeyPress: okKeyPress, autoFocus: true, tabIndex: 0 }, props.okLabel)))));
+        !!propsMessageBoxState.messageBody ?
+            React__default['default'].createElement("small", null,
+                React__default['default'].createElement("hr", null),
+                React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))
+            : null));
 };
 
 function NumberFormat(props) {
@@ -2857,22 +3654,18 @@ var SelectDD = function (props) {
         var _a;
         setSelectedItem((_a = props.items.find(function (item) { return props.selectedID === undefined || item.id === props.selectedID; })) !== null && _a !== void 0 ? _a : undefined);
     }, [props.selectedID, props.items]);
-    return (React__default['default'].createElement(reactBootstrap.Dropdown
-    // size={props.size}
-    , { 
-        // size={props.size}
-        className: ((_c = props.className) !== null && _c !== void 0 ? _c : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : '') },
-        React__default['default'].createElement(reactBootstrap.Dropdown.Toggle, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.inline ? 'primary-outline' : 'primary'), className: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : '') },
+    return (React__default['default'].createElement(reactstrap.UncontrolledDropdown, { size: props.size, className: ((_c = props.className) !== null && _c !== void 0 ? _c : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : '') },
+        React__default['default'].createElement(reactstrap.DropdownToggle, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.inline ? 'primary-outline' : 'primary'), caret: !!props.caret, className: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : '') },
             !!(props !== null && props !== void 0 ? props : {}).faIcon ? (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: props.faIcon, className: "mr-1" })) : (!!selectedItem &&
                 selectedItem.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: selectedItem.faIcon, className: ClassNames((_a = {
                         'mr-1': true
                     },
                     _a[(_e = 'text-' + selectedItem.faIconColor) !== null && _e !== void 0 ? _e : ''] = !!selectedItem.faIconColor,
                     _a)) }))), (_f = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _f !== void 0 ? _f : 'No Selection'),
-        React__default['default'].createElement(reactBootstrap.Dropdown.Menu, null, (props !== null && props !== void 0 ? props : {}).items.map(function (item) {
+        React__default['default'].createElement(reactstrap.DropdownMenu, null, (props !== null && props !== void 0 ? props : {}).items.map(function (item) {
             var _a;
             var _b, _c;
-            return (React__default['default'].createElement(reactBootstrap.Dropdown.Item, { key: ((_b = item.id) !== null && _b !== void 0 ? _b : -1).toString(), onClick: function () { return handleSelect(item); } },
+            return (React__default['default'].createElement(reactstrap.DropdownItem, { key: ((_b = item.id) !== null && _b !== void 0 ? _b : -1).toString(), onClick: function () { return handleSelect(item); } },
                 item.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames((_a = {}, _a[(_c = 'text-' + item.faIconColor) !== null && _c !== void 0 ? _c : ''] = !!item.faIconColor, _a)) })),
                 item.name));
         }))));
@@ -2909,22 +3702,37 @@ var TextStatus = function (props) {
 exports.ActivityOverlay = ActivityOverlay;
 exports.ActivityOverlayControl = ActivityOverlayControl;
 exports.AddActivityOverlay = AddActivityOverlay;
+exports.ApplyColumnProp = ApplyColumnProp;
 exports.ArrayTable = ArrayTable;
 exports.BRAfter = BRAfter;
 exports.BRBefore = BRBefore;
+exports.Badge = Badge;
+exports.BadgeItem = BadgeItem;
+exports.Button = Button;
 exports.CaptureGPS = CaptureGPS;
+exports.Card = Card;
+exports.CardBody = CardBody;
+exports.CardColumns = CardColumns;
+exports.CardDeck = CardDeck;
+exports.CardFooter = CardFooter;
+exports.CardGroup = CardGroup;
+exports.CardHeader = CardHeader;
+exports.CardText = CardText;
+exports.CardTitle = CardTitle;
 exports.ClassNames = ClassNames;
+exports.Col = Col;
+exports.Collapse = Collapse;
 exports.ColumnBodyClassNames = ColumnBodyClassNames;
 exports.ColumnClassNames = ColumnClassNames;
 exports.ColumnHeadClassNames = ColumnHeadClassNames;
 exports.ColumnHeaderClick = ColumnHeaderClick;
 exports.ComputeValue = ComputeValue;
+exports.Container = Container;
 exports.CookieCreate = CookieCreate;
 exports.CookieErase = CookieErase;
 exports.CookieRead = CookieRead;
 exports.CopyRefToClipboard = CopyRefToClipboard;
 exports.CreateCustomDateRange = CreateCustomDateRange;
-exports.DDActions = DDActions;
 exports.DateRange = DateRange;
 exports.DateRangeCalendar = DateRangeCalendar;
 exports.DateRangeDateMomentToString = DateRangeDateMomentToString;
@@ -2932,25 +3740,31 @@ exports.DateRangeDateStringToMoment = DateRangeDateStringToMoment;
 exports.DateRangeToMoment = DateRangeToMoment;
 exports.DateRangeToString = DateRangeToString;
 exports.DownloadBase64Data = DownloadBase64Data;
+exports.Dropdown = Dropdown;
+exports.DropdownItem = DropdownItem;
 exports.ElementCustomValue = ElementCustomValue;
 exports.EllipsesTruncate = EllipsesTruncate;
 exports.FileToBase64 = FileToBase64;
 exports.FilterObjects = FilterObjects;
+exports.Form = Form;
+exports.FormFeedback = FormFeedback;
+exports.FormGroup = FormGroup;
 exports.FormatValue = FormatValue;
 exports.GetOrientation = GetOrientation;
 exports.GetPathComponentAfter = GetPathComponentAfter;
 exports.GetPathThrough = GetPathThrough;
 exports.HandleChangeValue = HandleChangeValue;
 exports.HasPathComponent = HasPathComponent;
-exports.IWButton = IWButton;
 exports.IWServerData = IWServerData;
-exports.IWTable = IWTable;
 exports.InputCheckBox = InputCheckBox;
 exports.InputColor = InputColor;
 exports.InputDate = InputDate;
 exports.InputDatePicker = InputDatePicker;
 exports.InputEmail = InputEmail;
 exports.InputGender = InputGender;
+exports.InputGroup = InputGroup;
+exports.InputGroupAddon = InputGroupAddon;
+exports.InputGroupText = InputGroupText;
 exports.InputGroupWrapper = InputGroupWrapper;
 exports.InputNumber = InputNumber;
 exports.InputPassword = InputPassword;
@@ -2990,13 +3804,28 @@ exports.KEY_STRING_TAB = KEY_STRING_TAB;
 exports.KEY_STRING_UP_ARROW = KEY_STRING_UP_ARROW;
 exports.KEY_TAB = KEY_TAB;
 exports.KEY_UP_ARROW = KEY_UP_ARROW;
+exports.Label = Label;
+exports.ListGroup = ListGroup;
+exports.ListGroupItem = ListGroupItem;
+exports.ListGroupItemHeading = ListGroupItemHeading;
+exports.ListGroupItemText = ListGroupItemText;
 exports.MDDetail = MDDetail;
 exports.MDLink = MDLink;
 exports.MDMaster = MDMaster;
 exports.MasterDetail = MasterDetail;
 exports.MasterDetailListGroup = MasterDetailListGroup;
 exports.MessageBox = MessageBox;
+exports.Modal = Modal;
+exports.ModalBody = ModalBody;
+exports.ModalFooter = ModalFooter;
+exports.ModalHeader = ModalHeader;
 exports.ModalPrompt = ModalPrompt;
+exports.Nav = Nav;
+exports.NavItem = NavItem;
+exports.NavLink = NavLink;
+exports.Navbar = Navbar;
+exports.NavbarBrand = NavbarBrand;
+exports.NavbarToggler = NavbarToggler;
 exports.NumberFormat = NumberFormat;
 exports.OptionsActive = OptionsActive;
 exports.OptionsActiveAll = OptionsActiveAll;
@@ -3005,14 +3834,18 @@ exports.ReduceInputProps = ReduceInputProps;
 exports.ReduceToInputAddProps = ReduceToInputAddProps;
 exports.RemoveActivityOverlay = RemoveActivityOverlay;
 exports.ResizeBase64 = ResizeBase64;
+exports.Row = Row;
 exports.ScreenFormatValue = ScreenFormatValue;
 exports.SelectDD = SelectDD;
 exports.SetSort = SetSort;
 exports.SizeAtMax = SizeAtMax;
 exports.SizeAtMin = SizeAtMin;
 exports.SortObjects = SortObjects;
+exports.Spinner = Spinner;
 exports.StructuredArray = StructuredArray;
 exports.StyleControl = StyleControl;
+exports.Tab = Tab;
+exports.Table = Table;
 exports.TableIDToExcel = TableIDToExcel;
 exports.TextStatus = TextStatus;
 exports.ValidColumns = ValidColumns;
@@ -3036,6 +3869,7 @@ exports.defaultRangeYear = defaultRangeYear;
 exports.defaultRanges = defaultRanges;
 exports.defaultRangesReport = defaultRangesReport;
 exports.defaultRangesReportQuarterly = defaultRangesReportQuarterly;
+exports.getStorage = getStorage;
 exports.initialActivityOverlayState = initialActivityOverlayState;
 exports.initialDateRange = initialDateRange;
 exports.initialDateRangeString = initialDateRangeString;
@@ -3044,7 +3878,10 @@ exports.initialMessageBoxState = initialMessageBoxState;
 exports.initialSortProperties = initialSortProperties;
 exports.initialTextStatusState = initialTextStatusState;
 exports.panelClean = panelClean;
+exports.setStorage = setStorage;
+exports.useCombinedRefs = useCombinedRefs;
 exports.useDeepCompareCallback = useDeepCompareCallback;
 exports.useDeepCompareEffect = useDeepCompareEffect;
 exports.useDeepCompareMemo = useDeepCompareMemo;
 exports.useDeepCompareMemoize = useDeepCompareMemoize;
+exports.useStorage = useStorage;

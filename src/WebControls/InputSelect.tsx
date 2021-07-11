@@ -22,7 +22,7 @@ export interface IPropsSelect<T = any, V = any, H = HTMLSelectElement> extends I
 
 export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 	const inputProps = useMemo<ILegacyInputProps>(() => {
-		const subset = {...ReduceInputProps(props)}
+		const subset = {...ReduceInputProps<T, V, HTMLSelectElement>(props)}
 
 		delete subset.isNumeric
 		delete subset.isNumericOrNull
