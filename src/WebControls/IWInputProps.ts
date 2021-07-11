@@ -20,6 +20,7 @@ export interface IIWInputAddProps<T = any, V = any> {
 	autoCompleteOn?: boolean
 	prepend?: ReactNode
 	append?: ReactNode
+	invalid?: boolean
 }
 
 export type THTMLChangeElements = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -52,15 +53,15 @@ export type TLegacyInputType =
 	| 'color'
 
 export interface ILegacyInputProps<T = THTMLChangeElements> extends React.InputHTMLAttributes<T> {
-	[key: string]: any
+	// [key: string]: any
 	type?: TLegacyInputType
-	bsSize?: 'lg' | 'sm'
-	valid?: boolean
+	// bsSize?: 'lg' | 'sm'
+	// valid?: boolean
 	invalid?: boolean
-	tag?: React.ElementType
-	innerRef?: React.Ref<T>
+	// tag?: React.ElementType
+	// innerRef?: React.Ref<T>
 	plaintext?: boolean
-	addon?: boolean
+	// addon?: boolean
 }
 
 export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements>
@@ -82,7 +83,8 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 		'changeValueLate',
 		'autoCompleteOn',
 		'append',
-		'prepend'
+		'prepend',
+		'invalid'
 	)
 
 	if (!!classNameAdd) {
@@ -107,7 +109,8 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 		changeValueLate: props.changeValueLate,
 		autoCompleteOn: props.autoCompleteOn,
 		prepend: props.prepend,
-		append: props.append
+		append: props.append,
+		invalid: props.invalid
 	}
 }
 

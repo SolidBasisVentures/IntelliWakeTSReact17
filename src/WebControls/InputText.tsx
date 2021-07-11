@@ -7,7 +7,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {}
 export function InputText<T>(props: IProps<T>) {
 	return (
 		<InputWrapper {...ReduceToInputAddProps(props)} className="inputText">
-			<input type="text" {...ReduceInputProps(props, 'form-control')} />
+			<input type="text" {...ReduceInputProps(props, 'form-control')} required={props.required} />
 		</InputWrapper>
 	)
 }

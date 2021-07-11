@@ -70,6 +70,7 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 		}
 	}, [props.children.props.value])
 
+	// noinspection PointlessBooleanExpressionJS
 	return (
 		<>
 			{props.plainText ? (
@@ -103,12 +104,13 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 								(props.children.props.className ?? '') +
 								' ' +
 								(props.className ?? '') +
-								(props.children.props.invalid || props.isInvalid ? ' is_invalid' : '') +
+								(props.children.props.invalid || props.isInvalid ? ' is-invalid' : '') +
+								(props.children.props.invalid === false ? ' is-valid' : '') +
 								(props.children.props.required ? ' is-required' : '')
 							).trim(),
 							onFocus: (e: React.FocusEvent<THTMLChangeElements>) => {
 								if (!props.doNotSelectOnFocus && 'select' in e.target) e.target.select()
-								if (props.children.props.onFocus) props.children.props.onFocus(e)
+								if (props.children.props.onFocus) props.children.props.onFocus(e as any)
 							},
 							onBlur: (e: React.FocusEvent<THTMLChangeElements>) => {
 								clearTimeout(lateTrigger.current)
@@ -126,21 +128,21 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 									)
 									lateState.current = undefined
 								}
-								if (props.children.props.onBlur) props.children.props.onBlur(e)
+								if (props.children.props.onBlur) props.children.props.onBlur(e as any)
 							},
 							onChange: (e: React.ChangeEvent<THTMLChangeElements>) => {
 								clearTimeout(lateTrigger.current)
 
 								if (!props.children.props.plainText && !props.children.props.disabled) {
 									const isValid =
-										!props.children.props.inputIsValid || props.children.props.inputIsValid(e.target.value)
+										!props.inputIsValid || props.inputIsValid(e.target.value)
 
 									isManagingDirtyState.current = !isValid
 
 									let customValue = (
 										!isValid
-											? !!props.children.props.valueOnInvalid
-												? props.children.props.valueOnInvalid(e.target.value)
+											? !!props.valueOnInvalid
+												? props.valueOnInvalid(e.target.value)
 												: ''
 											: ((!props.transformToValid ? e.target.value : props.transformToValid(e.target.value, e)) as any)
 									) as V
@@ -148,7 +150,7 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 									if (verbose) {
 										console.log('targetValue', e.target.value)
 										console.log('isValid', isValid)
-										console.log('valueOnInvalid', !!props.children.props.valueOnInvalid)
+										console.log('valueOnInvalid', !!props.valueOnInvalid)
 										console.log('props.transformToValid', !!props.transformToValid)
 										console.log('customValue', customValue)
 									}
@@ -163,7 +165,7 @@ export const InputWrapper = <T, V, H>(props: IProps<T, V, H>) => {
 									}
 
 									if (!!props.children.props.onChange) {
-										props.children.props.onChange(e)
+										props.children.props.onChange(e as any)
 									}
 									if (!!props.changeValue) {
 										props.changeValue(
