@@ -1,7 +1,10 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
-import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import {EvaluateString, TVariables} from '@solidbasisventures/intelliwaketsfoundation'
 import {Button} from '../Bootstrap/Button'
+import { Modal } from '../Bootstrap/Modal'
+import { ModalHeader } from '../Bootstrap/ModalHeader'
+import { ModalBody } from '../Bootstrap/ModalBody'
+import { ModalFooter } from '../Bootstrap/ModalFooter'
 
 export interface IModalPromptResponse {
 	label: ReactNode
@@ -91,37 +94,10 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 		dismiss(false)
 	}
 
-	// const okKeyPress = (e: React.KeyboardEvent) => {
-	// 	if (!!props.okKeys) {
-	// 		if (Array.isArray(props.okKeys)) {
-	// 			for (const okKey of props.okKeys) {
-	// 				if (e.key === okKey) {
-	// 					okAction()
-	// 					break
-	// 				}
-	// 			}
-	// 		} else {
-	// 			if (e.key === KEY_STRING_ENTER) {
-	// 				okAction()
-	// 			} else if (e.key === props.okKeys) {
-	// 				okAction()
-	// 			}
-	// 		}
-	// 	} else if (e.key === KEY_STRING_ENTER) {
-	// 		okAction()
-	// 	}
-	// }
-
 	return (
-		<Modal backdrop keyboard isOpen={isOpen} toggle={() => dismiss(true)} autoFocus={false}>
+		<Modal isOpen={isOpen} toggle={() => dismiss(true)} >
 			<ModalHeader
-				className={'alert-' + (props.color ?? 'primary')}
-				toggle={() => dismiss(true)}
-				close={
-					<button className="close" onClick={() => dismiss(true)}>
-						&times;
-					</button>
-				}>
+				className={'alert-' + (props.color ?? 'primary')}>
 				{title}
 			</ModalHeader>
 			{!!messageBody && <ModalBody>{messageBody}</ModalBody>}

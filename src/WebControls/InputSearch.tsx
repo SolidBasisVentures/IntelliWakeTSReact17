@@ -2,7 +2,6 @@ import React, {forwardRef, InputHTMLAttributes, ReactNode, useEffect, useRef, us
 import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import {faSearch} from '@fortawesome/pro-regular-svg-icons'
-import {InputType} from 'reactstrap/lib/Input'
 import {InputGroup} from '../Bootstrap/InputGroup'
 import {InputGroupText} from '../Bootstrap/InputGroupText'
 import {useCombinedRefs} from '../Functions'
@@ -96,7 +95,7 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 	}
 
 	const inputProps: InputHTMLAttributes<HTMLInputElement> & {ref: any} = {
-		type: 'search' as InputType,
+		type: 'search',
 		inputMode: 'search',
 		className: `form-control inputSearch ${props.className ?? ''} ${!!props.bordered ? '' : 'bg-transparent border-0'}`,
 		value: currentText,
