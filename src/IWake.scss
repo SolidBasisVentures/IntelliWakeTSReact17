@@ -23,11 +23,18 @@
   //noinspection CssUnknownProperty
   -webkit-logical-width: auto;
   /* Chrome ignores auto, but here for completeness */
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .btn-link-inline:hover,
 .btn-link-inline:focus {
   text-decoration: underline;
+}
+
+.nav-link.btn-link {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .invisible-xs-larger,
@@ -161,6 +168,13 @@ table.table-hover tbody tr,
 .checkbox label,
 .collapsable {
   cursor: pointer;
+}
+
+.table-hover tbody tr:hover:hover {
+  td {
+    color: #212529 !important;
+    background-color: rgba(0, 0, 0, 0.075) !important;
+  }
 }
 
 @media print {
@@ -517,7 +531,7 @@ table.table-sortable thead th {
     right: 0;
     left: 0;
     z-index: 1030;
-    height: 18px !important;
+    height: 18px;
   }
 
   table.table-scrollable {
@@ -1648,4 +1662,10 @@ br {
 
 p {
   mso-data-placement: same-cell;
+}
+
+@media (max-width: 575.98px) {
+  #root > .App.IWApp > footer {
+    height: 36px;
+  }
 }

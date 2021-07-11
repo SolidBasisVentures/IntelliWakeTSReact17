@@ -1,9 +1,10 @@
 import React from 'react'
-import {Spinner} from 'react-bootstrap'
+import {SizeProp} from '@fortawesome/fontawesome-svg-core'
+import {Spinner} from './Spinner'
 
 interface IProps {
 	show: boolean
-	spinnerSize?: string
+	size?: SizeProp
 }
 
 /**
@@ -12,7 +13,7 @@ interface IProps {
 export const ActivityOverlayControl = (props: IProps) => {
 	return props.show ? (
 		<div className="System_ActivityOverlay_Control">
-			<Spinner animation="border" style={{width: props.spinnerSize ?? '2rem', height: props.spinnerSize ?? '2rem'}} />
+			<Spinner size={props.size ?? '2x'} />
 		</div>
 	) : null
 }

@@ -1,8 +1,8 @@
 import React, {CSSProperties, useState} from 'react'
-import {Table} from 'react-bootstrap'
 import {IArrayStructure, ValidColumns, WriteBodyTR, WriteFootTR, WriteHeadTR} from './ArrayStructure'
 import {initialSortProperties, ISortProperties, SortObjects} from './ArrayManipulators'
 import {ClassNames} from '../Functions'
+import {Table} from '../Bootstrap/Table'
 
 export interface IPropsArrayTable {
 	arrayData: any[] | null

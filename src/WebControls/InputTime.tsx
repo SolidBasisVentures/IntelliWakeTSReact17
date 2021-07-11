@@ -78,7 +78,7 @@ export function InputTime<T>(props: IProps<T>) {
 			) : (
 				<input
 					type="time"
-					className="inputTime"
+					className="inputTime form-control"
 					{...inputProps}
 					value={overrideValue}
 					onChange={handleInputChange}

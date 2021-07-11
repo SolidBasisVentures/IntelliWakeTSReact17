@@ -1,10 +1,10 @@
 import React, {ReactElement, ReactNode, useEffect, useRef, useState} from 'react'
-import {IIWInputAddProps, IIWInputProps, ReduceInputProps} from './IWInputProps'
+import {IIWInputAddProps, IIWInputProps, ReduceInputProps, THTMLChangeElements} from './IWInputProps'
 import {InputGroupWrapper} from './InputGroupWrapper'
 import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 import {AppendPrependWrapper} from './AppendPrependWrapper'
 import {Link} from 'react-router-dom'
-import {FormControlProps} from 'react-bootstrap'
+import {InputProps} from '../Bootstrap/BaseInputProps'
 
 interface IProps<T = any, V = any> extends IIWInputAddProps<T, V> {
 	children: ReactElement<IIWInputProps<T, V>>
@@ -35,10 +35,12 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 
 	const lateState = useRef<IState | undefined>(undefined)
 
-	const [internalState, setInternalState] = useState<FormControlProps['value'] | undefined>(
-		props.children.props.value as FormControlProps['value'] | undefined
+	const [internalState, setInternalState] = useState<InputProps['value'] | undefined>(
+		props.children.props.value as InputProps['value'] | undefined
 	)
 	const isManagingDirtyState = useRef(false)
+
+	const verbose = props.consoleVerbose
 
 	if (props.consoleVerbose) {
 		console.log('IntState', props.children.props.name, ' = ', internalState)
@@ -62,6 +64,9 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 			(!props.isInvalid ||
 				(!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState)))
 		) {
+			if (verbose) {
+				console.log('UE Val', props.children.props.value)
+			}
 			setInternalState(props.children.props.value as any)
 		}
 	}, [props.children.props.value])
@@ -95,18 +100,18 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 						props.children,
 						ReduceInputProps({
 							...props.children.props,
-							className: 'form-control ' + (
+							className: (
 								(props.children.props.className ?? '') +
 								' ' +
 								(props.className ?? '') +
-								(props.children.props.isInvalid || props.isInvalid ? ' is_invalid' : '') +
+								(props.children.props.invalid || props.isInvalid ? ' is_invalid' : '') +
 								(props.children.props.required ? ' is-required' : '')
 							).trim(),
-							onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
-								if (!props.doNotSelectOnFocus && !!e.target.select) e.target.select()
+							onFocus: (e: React.FocusEvent<THTMLChangeElements>) => {
+								if (!props.doNotSelectOnFocus && 'select' in e.target) e.target.select()
 								if (props.children.props.onFocus) props.children.props.onFocus(e)
 							},
-							onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+							onBlur: (e: React.FocusEvent<THTMLChangeElements>) => {
 								clearTimeout(lateTrigger.current)
 								if (
 									!!props.changeValueLate &&
@@ -124,7 +129,7 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 								}
 								if (props.children.props.onBlur) props.children.props.onBlur(e)
 							},
-							onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+							onChange: (e: React.ChangeEvent<THTMLChangeElements>) => {
 								clearTimeout(lateTrigger.current)
 
 								if (!props.children.props.plainText && !props.children.props.disabled) {
@@ -133,14 +138,21 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 
 									isManagingDirtyState.current = !isValid
 
-									let customValue = (!isValid
-										? !!props.children.props.valueOnInvalid
-											? props.children.props.valueOnInvalid(e.target.value)
-											: ''
-										: ((!props.transformToValid
-												? e.target.value
-												: props.transformToValid(e.target.value, e)) as any)) as V
+									let customValue = (
+										!isValid
+											? !!props.children.props.valueOnInvalid
+												? props.children.props.valueOnInvalid(e.target.value)
+												: ''
+											: ((!props.transformToValid ? e.target.value : props.transformToValid(e.target.value, e)) as any)
+									) as V
 
+									if (verbose) {
+										console.log('targetValue', e.target.value)
+										console.log('isValid', isValid)
+										console.log('valueOnInvalid', !!props.children.props.valueOnInvalid)
+										console.log('props.transformToValid', !!props.transformToValid)
+										console.log('customValue', customValue)
+									}
 									;(e.target as any).customValue = customValue
 
 									const newState: IState = {
@@ -185,11 +197,21 @@ export const InputWrapper = <T, V>(props: IProps<T, V>) => {
 											}
 										}, props.lateDelayMS ?? 500)
 										if (!props.children.props.onChange && !props.changeValue && !props.changeValueLate) {
+											if (verbose) {
+												console.log('oC Val ISV?', !!props.internalStateValue, e.target.value)
+												if (!!props.internalStateValue)
+													console.log('oC Val ISV', props.internalStateValue(e.target.value, e))
+											}
 											setInternalState(
 												!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value
 											)
 										}
 									} else {
+										if (verbose) {
+											console.log('Else Val ISV?', !!props.internalStateValue, e.target.value)
+											if (!!props.internalStateValue)
+												console.log('Else Val ISV', props.internalStateValue(e.target.value, e))
+										}
 										setInternalState(
 											!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value
 										)

@@ -12,7 +12,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {
 
 export function InputTel<T>(props: IProps<T>) {
 	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
+		const subset = ReduceInputProps(props, 'form-control')
 		delete subset.showFAIcon
 
 		return subset

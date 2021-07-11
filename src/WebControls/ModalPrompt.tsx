@@ -1,8 +1,7 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
-import {Modal, ModalBody, ModalFooter} from 'react-bootstrap'
+import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import {EvaluateString, TVariables} from '@solidbasisventures/intelliwaketsfoundation'
-import {KEY_STRING_ENTER} from '../Functions'
-import {IWButton} from './IWButton'
+import {Button} from '../Bootstrap/Button'
 
 export interface IModalPromptResponse {
 	label: ReactNode
@@ -92,66 +91,77 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 		dismiss(false)
 	}
 
-	const okKeyPress = (e: React.KeyboardEvent) => {
-		if (!!props.okKeys) {
-			if (Array.isArray(props.okKeys)) {
-				for (const okKey of props.okKeys) {
-					if (e.key === okKey) {
-						okAction()
-						break
-					}
-				}
-			} else {
-				if (e.key === KEY_STRING_ENTER) {
-					okAction()
-				} else if (e.key === props.okKeys) {
-					okAction()
-				}
-			}
-		} else if (e.key === KEY_STRING_ENTER) {
-			okAction()
-		}
-	}
+	// const okKeyPress = (e: React.KeyboardEvent) => {
+	// 	if (!!props.okKeys) {
+	// 		if (Array.isArray(props.okKeys)) {
+	// 			for (const okKey of props.okKeys) {
+	// 				if (e.key === okKey) {
+	// 					okAction()
+	// 					break
+	// 				}
+	// 			}
+	// 		} else {
+	// 			if (e.key === KEY_STRING_ENTER) {
+	// 				okAction()
+	// 			} else if (e.key === props.okKeys) {
+	// 				okAction()
+	// 			}
+	// 		}
+	// 	} else if (e.key === KEY_STRING_ENTER) {
+	// 		okAction()
+	// 	}
+	// }
 
 	return (
 		<Modal backdrop keyboard isOpen={isOpen} toggle={() => dismiss(true)} autoFocus={false}>
-			<Modal.Header className={'alert-' + (props.color ?? 'primary')}>{title}</Modal.Header>
+			<ModalHeader
+				className={'alert-' + (props.color ?? 'primary')}
+				toggle={() => dismiss(true)}
+				close={
+					<button className="close" onClick={() => dismiss(true)}>
+						&times;
+					</button>
+				}>
+				{title}
+			</ModalHeader>
 			{!!messageBody && <ModalBody>{messageBody}</ModalBody>}
 			<ModalFooter>
-				<IWButton
+				<Button
 					type="button"
 					onClick={() => dismiss(true)}
 					outline={props.cancelOutline}
-					color={props.cancelColor ??
-					(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
-						? props.color ?? 'primary'
-						: 'link')}>
+					color={
+						props.cancelColor ??
+						(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+							? props.color ?? 'primary'
+							: 'link')
+					}>
 					{props.cancelLabel ??
 						(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')}
-				</IWButton>
+				</Button>
 				{promptResponsesAsArray.map((promptResponse, idx) => (
-					<IWButton
+					<Button
 						key={idx}
 						onClick={() => {
 							promptResponse.action()
 							dismiss(false)
 						}}
 						outline={promptResponse.outline}
-						color={(promptResponse.color ?? props.color ?? 'primary')}
+						color={promptResponse.color ?? props.color ?? 'primary'}
 						className="ml-1">
 						{promptResponse.label}
-					</IWButton>
+					</Button>
 				))}
 				{!!props.okLabel && !!props.okAction && (
-					<IWButton
+					<Button
 						onClick={okAction}
-						color={props.color ?? props.color ?? 'primary'}
+						color={props.color ?? 'primary'}
 						className="ml-1"
-						onKeyPress={okKeyPress}
+						// onKeyPress={okKeyPress}
 						autoFocus
 						tabIndex={0}>
 						{props.okLabel}
-					</IWButton>
+					</Button>
 				)}
 			</ModalFooter>
 		</Modal>

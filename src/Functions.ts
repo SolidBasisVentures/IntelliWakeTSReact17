@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {LegacyRef, MutableRefObject} from 'react'
 import {CleanNumber, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
 import moment from 'moment'
 
@@ -21,7 +21,7 @@ export const KEY_STRING_TAB = 'Tab'
 export const KEY_STRING_BACKSPACE = 'Backspace'
 export const KEY_STRING_ESCAPE = 'Escape'
 
-export const ElementCustomValue = (e: React.ChangeEvent<HTMLInputElement>): any => {
+export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 	const target: any = e.target
 
 	if (!!target) {
@@ -35,7 +35,9 @@ export const ElementCustomValue = (e: React.ChangeEvent<HTMLInputElement>): any 
 	return null
 }
 
-export const ClassNames = (classes: {[key: string]: boolean}): string => {
+export type TClassNames = {[key: string]: boolean}
+
+export const ClassNames = (classes: TClassNames): string => {
 	return (Object.keys(classes).filter((classitem) => classes[classitem]) ?? []).join(' ')
 }
 
@@ -154,12 +156,20 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 			let ths = ref.current.getElementsByTagName('th') as any[]
 			for (let i = 0; i < ths.length; i++) {
 				ths[i].setAttribute('copyuserselect', ths[i].style.userSelect)
-				ths[i].style.userSelect = 'auto'
+				ths[i].style.userSelect = ths[i].classList.contains('noCopy') ? 'none' : 'auto'
+				if (ths[i].classList.contains('onlyCopy')) {
+					ths[i].setAttribute('copyuserdisplay', ths[i].style.display)
+					ths[i].style.display = 'inherit'
+				}
 			}
 			let tds = ref.current.getElementsByTagName('td') as any[]
 			for (let i = 0; i < tds.length; i++) {
 				tds[i].setAttribute('copyuserselect', tds[i].style.userSelect)
-				tds[i].style.userSelect = 'auto'
+				tds[i].style.userSelect = tds[i].classList.contains('noCopy') ? 'none' : 'auto'
+				if (tds[i].classList.contains('onlyCopy')) {
+					tds[i].setAttribute('copyuserdisplay', ths[i].style.display)
+					tds[i].style.display = 'inherit'
+				}
 			}
 			let brs = ref.current.getElementsByTagName('br') as any[]
 			for (let i = 0; i < brs.length; i++) {
@@ -192,10 +202,18 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 			for (let i = 0; i < ths.length; i++) {
 				ths[i].style.userSelect = ths[i].getAttribute('copyuserselect')
 				ths[i].removeAttribute('copyuserselect')
+				if (ths[i].classList.contains('onlyCopy')) {
+					ths[i].style.display = ths[i].getAttribute('display')
+					ths[i].removeAttribute('copyuserdisplay')
+				}
 			}
 			for (let i = 0; i < tds.length; i++) {
 				tds[i].style.userSelect = tds[i].getAttribute('copyuserselect')
 				tds[i].removeAttribute('copyuserselect')
+				if (tds[i].classList.contains('onlyCopy')) {
+					tds[i].style.display = tds[i].getAttribute('display')
+					tds[i].removeAttribute('copyuserdisplay')
+				}
 			}
 			for (let i = 0; i < brs.length; i++) {
 				brs[i].style.display = brs[i].getAttribute('display')
@@ -215,7 +233,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 export const TableIDToExcel = (tableID: string, fileName?: string, appendDateTime = true) => {
 	const downloadName = `${fileName ?? tableID}${
 		appendDateTime ? `-${moment(new Date()).format('YYYY-MM-DD_HH-mm-ss')}.xls` : ''
-	}.xls`
+	}`
 	// const dataType = 'application/vnd.ms-excel'
 	const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 	const tableSelect = document.getElementById(tableID) as any
@@ -270,4 +288,22 @@ export const SizeAtMax = (size: TBootStrapExtendedSizes): number => {
 		case 'xxxl':
 			return 999999
 	}
+}
+
+export const useCombinedRefs = <T>(...refs: (LegacyRef<T> | null)[]): MutableRefObject<T | undefined> | null => {
+	const targetRef = React.useRef<T>()
+
+	React.useEffect(() => {
+		refs.forEach((ref: any) => {
+			if (!ref) return
+
+			if (typeof ref === 'function') {
+				ref(targetRef.current)
+			} else {
+				ref.current = targetRef.current
+			}
+		})
+	}, [refs])
+
+	return targetRef
 }

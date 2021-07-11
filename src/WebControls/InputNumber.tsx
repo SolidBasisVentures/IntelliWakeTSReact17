@@ -5,6 +5,7 @@ import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputP
 import {CleaveOptions} from 'cleave.js/options'
 import {ClassNames} from '../Functions'
 import {InputWrapper} from './InputWrapper'
+import {InputProps} from 'reactstrap'
 
 export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V> {
 	htmlRef?: (ref: any) => void
@@ -19,7 +20,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
-	const inputProps = useMemo<any>(() => {
+	const inputProps = useMemo<InputProps>(() => {
 		const subset = ReduceInputProps(props)
 		delete subset.decimalScale
 		delete subset.integerScale
@@ -28,7 +29,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		delete subset.upperBound
 		delete subset.currency
 		delete subset.hideZero
-		delete subset.isInvalid
+		delete subset.invalid
 		delete subset.decimalScaleDisplay
 
 		return subset
@@ -55,8 +56,8 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		numeralThousandsGroupStyle: 'thousand'
 	}
 
-	options.numeralDecimalScale = props.decimalScale ?? options.numeralDecimalScale
-	options.numeralIntegerScale = props.integerScale ?? options.numeralIntegerScale
+	options.numeralDecimalScale = props.decimalScale ?? options.numeralDecimalScale ?? undefined
+	options.numeralIntegerScale = props.integerScale ?? options.numeralIntegerScale ?? undefined
 	if (!!props.currency) {
 		options.prefix = '$ '
 		options.numeralDecimalScale = props.decimalScale === undefined ? 2 : props.decimalScale ?? undefined
@@ -67,7 +68,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	return (
 		<InputWrapper<T, V>
 			{...ReduceToInputAddProps(props)}
-			inputIsValid={(val) => !isNaN(CleanNumber(val))}
+			inputIsValid={(val) => !isNaN(CleanNumber(val, undefined, true))}
 			valueOnInvalid={() => 0}
 			transformToValid={(val) => {
 				const cleanNumber = CleanNumber(val)
@@ -85,7 +86,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 					? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 					: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 			}
-			isInvalid={!!props.isInvalid}
+			isInvalid={!!props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
 			<Cleave
 				options={options}

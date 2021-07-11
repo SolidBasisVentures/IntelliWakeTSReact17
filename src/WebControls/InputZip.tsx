@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react'
+import {Input} from 'reactstrap'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {FormatZip} from '@solidbasisventures/intelliwaketsfoundation'
 import {InputWrapper} from './InputWrapper'
@@ -21,7 +22,7 @@ export function InputZip<T>(props: IZipProps<T>) {
 			{...ReduceToInputAddProps(props)}
 			className="inputZip"
 			plainTextControl={FormatZip((props.value ?? '').toString())}>
-			<input type="text" {...inputProps} />
+			<Input type="text" {...inputProps} />
 		</InputWrapper>
 	)
 }

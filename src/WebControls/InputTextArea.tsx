@@ -21,8 +21,9 @@ export function InputTextArea<T>(props: IProps<T>) {
 	return (
 		<>
 			<InputWrapper
+				doNotSelectOnFocus
 				{...ReduceToInputAddProps(props)}
-				className="inputTextArea"
+				className="inputTextArea form-control"
 				plainTextControl={
 					<div
 						className={'form-control-plaintext vertical-scroll horizontal-scroll' + (!!props.bordered ? ' border' : '')}
@@ -34,7 +35,7 @@ export function InputTextArea<T>(props: IProps<T>) {
 						}}
 					/>
 				}>
-				<textarea {...inputProps} />
+				<input type="textarea" {...inputProps} />
 			</InputWrapper>
 		</>
 	)

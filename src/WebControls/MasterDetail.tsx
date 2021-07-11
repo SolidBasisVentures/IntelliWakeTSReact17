@@ -5,6 +5,8 @@ import {Redirect, useHistory} from 'react-router-dom'
 import {GetPathComponentAfter, GetPathThrough, SizeAtMin, TBootStrapExtendedSizes} from '../Functions'
 import {RandomString, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
 import {StyleControl} from './StyleControl'
+import {TBadgeValues} from '../Bootstrap/ListGroupItem'
+import {BadgeItem} from '../Bootstrap/BadgeItem'
 
 export interface MenuBackItem {
 	menuBackActive: boolean
@@ -145,6 +147,9 @@ interface IPropsMasterLink {
 	noAutoScroll?: boolean
 	postPath?: string
 	blockActivate?: boolean
+	badge?: TBadgeValues
+	badgeColor?: string
+	badgeClass?: string
 }
 
 export const panelClean = (panel?: string | null): string => ReplaceAll('/', '', (panel ?? '').replace(/\s+/g, ''))
@@ -170,11 +175,16 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	if (displayProps.className) classNames.push(displayProps.className)
 	if (linkActive) classNames.push('active')
 	if (linkActive && props.activeClassName) classNames.push(props.activeClassName)
+	// if (!!props.badge || props.badge === null) classNames.push('d-flex justify-content-between align-items-center')
 
 	displayProps.className = classNames.join(' ')
 	delete displayProps.postPath
 	delete displayProps.id
 	delete displayProps.blockActivate
+	delete displayProps.badge
+	delete displayProps.badgeColor
+	delete displayProps.badgeClass
+	delete displayProps.color
 
 	const selectItem = () => {
 		if (!props.blockActivate) {
@@ -208,6 +218,12 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 					title={props.title}
 					ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
 					{props.children}
+					<BadgeItem
+						badge={props.badge}
+						color={props.badgeColor}
+						className={'float-right ' + (props.badgeClass ?? '')}
+						style={{marginTop: '0.2rem'}}
+					/>
 				</li>
 			)
 		case 'tr':

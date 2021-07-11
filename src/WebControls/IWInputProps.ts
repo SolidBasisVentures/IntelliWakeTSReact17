@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
-import {ElementCustomValue} from '../Functions'
+import {ClassNames, ElementCustomValue, TClassNames} from '../Functions'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export type TChangeValueFunction<T = any, V = any> = (
 	value: V,
@@ -21,33 +22,78 @@ export interface IIWInputAddProps<T = any, V = any> {
 	append?: ReactNode
 }
 
-export interface IIWInputProps<T = any, V = any> extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'value'>, IIWInputAddProps<T, V> {
-	value?: V
-	style?: any
-	name?: string
-	isInvalid?: boolean
-	required?: boolean
-	onFocus?: (e: React.FocusEvent<any>) => void
-	inputIsValid?: any
-	onBlur?: (e: React.FocusEvent<any>) => void
-	valueOnInvalid?: any
-	placeholder?: string
-	onKeyDown?: (e: React.KeyboardEvent<any>) => void
-	autoComplete?: string
-	autoFocus?: boolean
+export type THTMLChangeElements = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+
+export type TLegacyInputType =
+	| 'text'
+	| 'email'
+	| 'select'
+	| 'file'
+	| 'radio'
+	| 'checkbox'
+	| 'textarea'
+	| 'button'
+	| 'reset'
+	| 'submit'
+	| 'date'
+	| 'datetime-local'
+	| 'hidden'
+	| 'image'
+	| 'month'
+	| 'number'
+	| 'range'
+	| 'search'
+	| 'tel'
+	| 'url'
+	| 'week'
+	| 'password'
+	| 'datetime'
+	| 'time'
+	| 'color'
+
+export interface ILegacyInputProps<T = THTMLChangeElements> extends React.InputHTMLAttributes<T> {
+	[key: string]: any
+	type?: TLegacyInputType
+	bsSize?: 'lg' | 'sm'
+	valid?: boolean
+	invalid?: boolean
+	tag?: React.ElementType
+	innerRef?: React.Ref<T>
+	plaintext?: boolean
+	addon?: boolean
 }
 
-export const ReduceInputProps = <T = any, V = any>(props: IIWInputProps<T, V> | any): any => {
-	const subset = {...props, value: props.value as any}
-	delete subset.plainText
-	delete subset.plainTextURL
-	delete subset.plainTextProps
-	delete subset.changeValue
-	delete subset.changeValueLate
-	delete subset.autoCompleteOn
-	delete subset.append
-	delete subset.prepend
-	// delete subset.onChange
+export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements>
+	extends Omit<ILegacyInputProps<H>, 'value'>,
+		IIWInputAddProps<T, V> {
+	value?: V
+}
+
+export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
+	props: IIWInputProps<T, V, H> | any,
+	classNameAdd?: string | string[] | TClassNames
+): ILegacyInputProps => {
+	const subset = OmitProperty(
+		props,
+		'plainText',
+		'plainTextURL',
+		'plainTextProps',
+		'changeValue',
+		'changeValueLate',
+		'autoCompleteOn',
+		'append',
+		'prepend'
+	)
+
+	if (!!classNameAdd) {
+		if (typeof classNameAdd === 'string') {
+			subset.className = `${subset.className ?? ''} ${classNameAdd}`.trim()
+		} else if (Array.isArray(classNameAdd)) {
+			subset.className = `${subset.className ?? ''} ${classNameAdd.join(' ')}`.trim()
+		} else {
+			subset.className = `${subset.className ?? ''} ${ClassNames(classNameAdd)}`.trim()
+		}
+	}
 
 	return subset
 }
@@ -65,13 +111,13 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 	}
 }
 
-export const HandleChangeValue = <T = any, V = any>(
-	e: React.ChangeEvent<HTMLInputElement>,
+export const HandleChangeValue = <T = any, V = any, H = any>(
+	e: React.ChangeEvent<H>,
 	changeValue?: TChangeValueFunction<T, V>,
-	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+	onChange?: (e: React.ChangeEvent<H>) => void
 ) => {
 	if (!!changeValue) {
-		changeValue(ElementCustomValue(e) as V, e.target.name as any)
+		changeValue(ElementCustomValue(e) as V, (e.target as any).name as any)
 	}
 
 	if (!!onChange) {

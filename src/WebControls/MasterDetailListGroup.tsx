@@ -1,9 +1,14 @@
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import React, {Dispatch, ReactNode, SetStateAction, useMemo} from 'react'
-import {Badge, ListGroup, Spinner} from 'react-bootstrap'
 import {IMasterDetailProps, MasterDetail, MDDetail, MDLink, MDMaster} from './MasterDetail'
 import {ToDigits, ToPascalCase} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
+import {TBadgeValues} from '../Bootstrap/ListGroupItem'
+import {BadgeItem} from '../Bootstrap/BadgeItem'
+import {ListGroup} from '../Bootstrap/ListGroup'
+import {ListGroupItemHeading} from '../Bootstrap/ListGroupItemHeading'
+import {Badge} from '../Bootstrap/Badge'
+import {Spinner} from './Spinner'
 
 export interface IMasterDetailListGroupMDLink {
 	hidden?: boolean
@@ -14,6 +19,8 @@ export interface IMasterDetailListGroupMDLink {
 	/** undefined = don't show, null = show with spinner, number (0, 1, etc.) = show */
 	counter?: number | null
 	counterColor?: string
+	badge?: TBadgeValues
+	badgeColor?: string
 	panelTitle?: string
 	panelURL?: string
 	id?: any
@@ -78,7 +85,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 			<MDMaster width={props.mdMasterWidth} className={props.mdMasterClassName}>
 				{props.mdMasterTopNode}
 				<ListGroup
-					variant="flush"
+					flush
 					className={`fill-height-scroll ${props.noTextLargeSmaller ? '' : `text-large-${props.breakAt}-smaller`}`}>
 					{listGroupItems.map((listGroupItem, idx) => {
 						let prefix: ReactNode = null
@@ -94,7 +101,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 										break
 									default:
 										prefix = (
-											<ListGroup.Item
+											<ListGroupItemHeading
 												onClick={() => {
 													if (!!props.setCollapsedSections && !!listGroupItem.section) {
 														props.setCollapsedSections((prevState) => {
@@ -112,7 +119,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 													'cursor-pointer': !!props.setCollapsedSections && !!listGroupItem.section
 												})}>
 												{listGroupItem.sectionNode ?? listGroupItem.section}
-											</ListGroup.Item>
+											</ListGroupItemHeading>
 										)
 										break
 								}
@@ -147,15 +154,12 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 									}>
 									{!!listGroupItem.faProps && <FontAwesomeIcon fixedWidth {...listGroupItem.faProps} />}
 									{listGroupItem.linkNode}
+									<BadgeItem badge={listGroupItem.badge} color={listGroupItem.badgeColor} />
 									{listGroupItem.counter !== undefined && (
 										<Badge
 											color={listGroupItem.counterColor}
 											className="float-right small text-white border-round ml-2">
-											{listGroupItem.counter !== null ? (
-												ToDigits(listGroupItem.counter, 0)
-											) : (
-												<Spinner animation="border" size="sm" style={{width: '0.8em', height: '0.8em'}} />
-											)}
+											{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) : <Spinner size="xs" />}
 										</Badge>
 									)}
 								</MDLink>

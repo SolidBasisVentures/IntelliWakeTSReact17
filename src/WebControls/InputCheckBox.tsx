@@ -1,12 +1,12 @@
 import React, {useMemo} from 'react'
-import {Form} from 'react-bootstrap'
+import {CustomInput} from 'reactstrap'
 import {IInputSwitchProps} from './InputSwitch'
 
 export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
-	const newID = useMemo(() => props.id ?? 'cb' + props.name + Math.floor(Math.random() * 100000 + 1), [
-		props.name,
-		props.id
-	])
+	const newID = useMemo(
+		() => props.id ?? 'cb' + props.name + Math.floor(Math.random() * 100000 + 1),
+		[props.name, props.id]
+	)
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.target.value = e.target.checked.toString()
@@ -28,7 +28,7 @@ export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
 	}
 
 	return (
-		<Form.Check
+		<CustomInput
 			type="checkbox"
 			label={props.label}
 			name={props.name as string}
