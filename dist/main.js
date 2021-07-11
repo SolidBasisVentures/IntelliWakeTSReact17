@@ -2640,10 +2640,7 @@ function InputGender(props) {
 
 function InputNumber(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name'));
-        return subset;
-    }, [props]);
+    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name')); }, [props]);
     var handleKeyDown = function (e) {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {

@@ -22,7 +22,7 @@ interface IProps<T = unknown> {
     color?: string;
     options: IOption[];
     value: any;
-    name?: T extends object ? keyof T : string;
+    name?: (T extends object ? keyof T : string) | undefined;
     changeValue?: TChangeValueFunction<T>;
     plainText?: boolean;
 }
