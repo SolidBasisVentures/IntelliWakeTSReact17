@@ -20,7 +20,8 @@ export interface ILegacyInputProps<T = THTMLChangeElements> extends React.InputH
     invalid?: boolean;
     plaintext?: boolean;
 }
-export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements> extends Omit<ILegacyInputProps<H>, 'value'>, IIWInputAddProps<T, V> {
+export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements> extends Omit<ILegacyInputProps<H>, 'value' | 'name'>, IIWInputAddProps<T, V> {
+    name?: T extends object ? keyof T : string;
     value?: V;
 }
 export declare const ReduceInputProps: <T = any, V = any, H = THTMLChangeElements>(props: any, classNameAdd?: string | TClassNames | string[] | undefined) => ILegacyInputProps;

@@ -65,8 +65,9 @@ export interface ILegacyInputProps<T = THTMLChangeElements> extends React.InputH
 }
 
 export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements>
-	extends Omit<ILegacyInputProps<H>, 'value'>,
+	extends Omit<ILegacyInputProps<H>, 'value' | 'name'>,
 		IIWInputAddProps<T, V> {
+	name?: T extends object ? keyof T : string
 	value?: V
 }
 
