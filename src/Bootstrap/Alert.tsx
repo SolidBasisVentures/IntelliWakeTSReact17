@@ -11,7 +11,8 @@ export interface IWAlertProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref
 
 export const Alert = (props: IWAlertProps) => {
 	const TagToUse = props.tag ?? ('div' as React.ReactType)
-	const clearTime = useRef(setTimeout(() => {}, 100))
+	const clearTime = useRef(setTimeout(() => {
+	}, 100))
 	const isMounted = useRef(false)
 	const [showState, setShowState] = useState<IWAlertProps | null>(null)
 	
@@ -22,6 +23,7 @@ export const Alert = (props: IWAlertProps) => {
 		ClassNames({
 			alert: true,
 			'alert-dismissible': !!props.toggle,
+			'cursor-pointer': !!props.toggle,
 			'fade': true,
 			'show': !!props.isOpen
 		})
