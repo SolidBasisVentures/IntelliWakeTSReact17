@@ -2284,7 +2284,6 @@ var EllipsesTruncate = function (props) {
 
 function InputCheckBox(props) {
     var _a;
-    var newID = React.useMemo(function () { var _a; return (_a = props.id) !== null && _a !== void 0 ? _a : 'cb' + props.name + Math.floor(Math.random() * 100000 + 1); }, [props.name, props.id]);
     var handleInputChange = function (e) {
         e.target.value = e.target.checked.toString();
         e.target.customValue = e.target.checked;
@@ -2295,8 +2294,10 @@ function InputCheckBox(props) {
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement("label", { className: "cursor-pointer" },
-        React__default['default'].createElement("input", { type: "checkbox", name: props.name, className: 'inputCheckbox ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), id: newID, hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () { }, disabled: props.plainText, onClick: props.onClick })));
+    return (React__default['default'].createElement("label", { className: !props.plainText ? 'cursor-pointer' : '' },
+        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'inputCheckbox mr-1 ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () {
+            }, disabled: props.plainText, onClick: props.onClick }),
+        props.label));
 }
 
 var ReduceInputProps = function (props, classNameAdd) {

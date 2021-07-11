@@ -1,20 +1,20 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import {IInputSwitchProps} from './InputSwitch'
 
-export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
-	const newID = useMemo(
-		() => props.id ?? 'cb' + props.name + Math.floor(Math.random() * 100000 + 1),
-		[props.name, props.id]
-	)
+export interface IInputCheckboxProps<T> extends IInputSwitchProps<T> {
+	onChange?: (e: any) => void
+	onClick?: (e: any) => void
+}
 
+export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.target.value = e.target.checked.toString()
 		;(e.target as any).customValue = e.target.checked
-
+		
 		if (!!props.onChange) {
 			props.onChange(e)
 		}
-
+		
 		if (!!props.changeValue) {
 			props.changeValue(
 				e.target.checked,
@@ -25,20 +25,21 @@ export function InputCheckBox<T>(props: IInputSwitchProps<T>) {
 			)
 		}
 	}
-
+	
 	return (
-		<label className="cursor-pointer">
-		<input
-			type="checkbox"
-			name={props.name as string}
-			className={'inputCheckbox ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
-			id={newID}
-			hidden={props.hidden}
-			checked={props.checked}
-			onChange={!props.plainText ? handleInputChange : () => {}}
-			disabled={props.plainText}
-			onClick={props.onClick}
-		/>
+		<label className={!props.plainText ? 'cursor-pointer' : ''}>
+			<input
+				type='checkbox'
+				name={props.name as string}
+				className={'inputCheckbox mr-1 ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
+				hidden={props.hidden}
+				checked={props.checked}
+				onChange={!props.plainText ? handleInputChange : () => {
+				}}
+				disabled={props.plainText}
+				onClick={props.onClick}
+			/>
+			{props.label}
 		</label>
 	)
 }
