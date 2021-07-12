@@ -10,6 +10,7 @@ export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElemen
 	divider?: boolean
 	header?: boolean
 	loading?: boolean
+	active?: boolean
 }
 
 export const DropdownItem = (props: IWDropdownItemProps) => {
@@ -22,6 +23,7 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 			'dropdown-item': !props.header && !props.divider,
 			'dropdown-header': !!props.header,
 			'dropdown-divider': !!props.divider,
+			'active': !!props.active,
 			disabled: !!props.disabled
 		})
 
@@ -33,6 +35,7 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 				'disabled',
 				'divider',
 				'header',
+				'active',
 				'className',
 				'size',
 				'type',

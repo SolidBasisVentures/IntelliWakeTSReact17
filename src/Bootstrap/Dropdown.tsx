@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useMemo, useRef, useState} from 'react'
+import React, {CSSProperties, ReactNode, useEffect, useMemo, useRef, useState} from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {Button} from './Button'
 import {ClassNames, KEY_ESCAPE} from '../Functions'
@@ -15,6 +15,7 @@ export interface IDDAction {
 	header?: boolean
 	faProps?: FontAwesomeIconProps
 	faPropHidden?: boolean
+	active?: boolean
 	title?: ReactNode
 	action?: () => void
 	color?: string
@@ -30,6 +31,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 	toggle?: React.KeyboardEventHandler<any> | React.MouseEventHandler<any>
 	size?: 'sm' | 'lg'
 	color?: string
+	block?: boolean
 	inNavbar?: boolean
 	right?: boolean
 	buttonLabel?: ReactNode
@@ -37,6 +39,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 	buttonClassName?: string
 	menuClassName?: string
 	noCaret?: boolean
+	menuStyle?: CSSProperties
 	ddActions?: IDDAction[] | (() => IDDAction[])
 }
 
@@ -111,12 +114,13 @@ export const Dropdown = (props: IWDropdownProps) => {
 	})
 
 	let classes = props.className ?? ''
+	if (!!props.direction) classes += ` drop${props.direction}`
 	classes +=
 		' ' +
 		ClassNames({
 			dropdown: true,
 			show: actualIsOpen,
-			'd-inline-block': true,
+			'd-inline-block': !props.block,
 			'navbar-nav': !!props.inNavbar,
 			'nav-item': !!props.nav
 		})
@@ -139,6 +143,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				'disabled',
 				'direction',
 				'ddActions',
+				'block',
 				'isOpen',
 				'nav',
 				'toggle',
@@ -151,11 +156,13 @@ export const Dropdown = (props: IWDropdownProps) => {
 				'noCaret',
 				'size',
 				'color',
-				'className'
+				'className',
+				'menuStyle'
 			)}
 			className={classes}>
 			<Button
 				color={props.color ?? (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined)}
+				block={props.block}
 				size={props.size}
 				className={
 					!!props.nav || !!props.inNavbar
@@ -200,6 +207,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 						setIsOpen((prevState) => !prevState)
 					}
 				}}
+				style={props.menuStyle}
 				// style={
 				// 	!props.right
 				// 		? {
@@ -224,6 +232,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 							<DropdownItem
 								className={(ddAction.className ?? '') + (!!ddAction.color ? ` text-${ddAction.color}` : '')}
 								key={idx}
+								active={ddAction.active}
 								disabled={!!ddAction.disabled || !ddAction.action}
 								divider={!!ddAction.divider}
 								header={!!ddAction.header}

@@ -1,4 +1,4 @@
-import React, {Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useRef, useState} from 'react'
+import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import {TStorageType, useStorage} from '../Hooks/useStorage'
 import {Button} from './Button'
@@ -23,7 +23,7 @@ export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'>
 	rememberKey?: string
 	rememberType?: TStorageType
 	openTab?: string
-	setOpenTab?: Dispatch<SetStateAction<string>>
+	setOpenTab?: (tab: string) => void
 	openTabChanged?: (tab: string) => void
 	isDirty?: boolean
 	tabType?: 'tabs' | 'pills'
@@ -117,8 +117,8 @@ export const Tab = (props: IWTabProps) => {
 									changeOpenTab(tab.title)
 								}
 							}}>
-							{!!tab.faProps && <FontAwesomeIcon {...tab.faProps} fixedWidth />}
-							{tab.title}
+							{!!tab.faProps && <FontAwesomeIcon {...tab.faProps} fixedWidth={!!tab.title} className={!!tab.title ? "fa-fw-desktop" : ''} />}
+							<span className="desktopOnly">{tab.title}</span>
 						</Button>
 					</li>
 				))}
