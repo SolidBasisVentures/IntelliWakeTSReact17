@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactNode, SetStateAction } from 'react';
+import React, { ReactNode } from 'react';
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { TStorageType } from '../Hooks/useStorage';
 export interface IIWTab {
@@ -17,7 +17,7 @@ export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'>
     rememberKey?: string;
     rememberType?: TStorageType;
     openTab?: string;
-    setOpenTab?: Dispatch<SetStateAction<string>>;
+    setOpenTab?: (tab: string) => void;
     openTabChanged?: (tab: string) => void;
     isDirty?: boolean;
     tabType?: 'tabs' | 'pills';

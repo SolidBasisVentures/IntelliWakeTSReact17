@@ -771,11 +771,11 @@ var BreadCrumbItem = function (props) {
     return React__default['default'].createElement("li", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
 };
 
-var Card = function (props) {
+var Card = React.forwardRef(function (props, ref) {
     var _a, _b;
     var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() }));
-};
+    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim(), ref: ref }));
+});
 
 var CardBody = function (props) {
     var _a, _b;
@@ -887,9 +887,10 @@ var DropdownItem = function (props) {
                 'dropdown-item': !props.header && !props.divider,
                 'dropdown-header': !!props.header,
                 'dropdown-divider': !!props.divider,
+                'active': !!props.active,
                 disabled: !!props.disabled
             });
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
         React__default['default'].createElement(Spinner, { fixedWidth: true }),
         " Loading...")))));
 };
@@ -947,12 +948,14 @@ var Dropdown = function (props) {
         };
     });
     var classes = (_c = props.className) !== null && _c !== void 0 ? _c : '';
+    if (!!props.direction)
+        classes += " drop" + props.direction;
     classes +=
         ' ' +
             ClassNames({
                 dropdown: true,
                 show: actualIsOpen,
-                'd-inline-block': true,
+                'd-inline-block': !props.block,
                 'navbar-nav': !!props.inNavbar,
                 'nav-item': !!props.nav
             });
@@ -963,8 +966,8 @@ var Dropdown = function (props) {
     // console.log('menuRef', menuRef?.current)
     // console.log('Offset', offset)
     //onClick={(e: any) => e.stopPropagation()}
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'className'), { className: classes }),
-        React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), size: props.size, className: !!props.nav || !!props.inNavbar
+    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'className', 'menuStyle'), { className: classes }),
+        React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, className: !!props.nav || !!props.inNavbar
                 ? undefined
                 : (((_e = props.buttonClassName) !== null && _e !== void 0 ? _e : '') + " " + (props.noCaret ? '' : 'dropdown-toggle')).trim(), classNameOverride: !!props.nav || !!props.inNavbar
                 ? ("text-left nav-link " + ((_f = props.buttonClassName) !== null && _f !== void 0 ? _f : '') + " " + (props.noCaret ? '' : 'dropdown-toggle')).trim()
@@ -988,11 +991,11 @@ var Dropdown = function (props) {
                 if (!isControlled) {
                     setIsOpen(function (prevState) { return !prevState; });
                 }
-            } }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
+            }, style: props.menuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
             visibleDDActions.map(function (ddAction, idx) {
                 var _a;
-                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? " text-" + ddAction.color : ''), key: idx, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: function () { return (!!ddAction.action ? ddAction.action() : function () { }); } },
+                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? " text-" + ddAction.color : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: function () { return (!!ddAction.action ? ddAction.action() : function () { }); } },
                     showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
                     ddAction.title));
             }))))));
@@ -1504,8 +1507,8 @@ var Tab = function (props) {
                         changeOpenTab(tab.title);
                     }
                 } },
-                !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, tab.faProps, { fixedWidth: true })),
-                tab.title))); })),
+                !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
+                React__default['default'].createElement("span", { className: "desktopOnly" }, tab.title)))); })),
         React__default['default'].createElement("div", { className: ClassNames({
                 'tab-content': true,
                 'fill-height': !!((_h = props.fillHeight) !== null && _h !== void 0 ? _h : true),
@@ -1541,7 +1544,7 @@ var Tab = function (props) {
 
 var Table = React.forwardRef(function (props, ref) {
     var _a;
-    return (React__default['default'].createElement("table", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
+    return (React__default['default'].createElement("table", __assign({ className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
             ' ' +
             ClassNames({
                 table: true,
@@ -1555,7 +1558,7 @@ var Table = React.forwardRef(function (props, ref) {
                 'table-sm': props.size !== 'lg',
                 small: !!props.textSmall,
                 'table-sticky': !!props.sticky
-            }), tabIndex: props.tabIndex, hidden: props.hidden, style: props.style, ref: ref, onKeyDown: props.onKeyDown },
+            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'sticky', 'sortable')),
         !!props.caption && React__default['default'].createElement("caption", null, props.caption),
         props.children));
 });

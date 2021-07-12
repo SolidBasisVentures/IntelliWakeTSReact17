@@ -1,7 +1,8 @@
 import React, {forwardRef} from 'react'
 import {ClassNames} from '../Functions'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
-export interface IIWTableProps {
+export interface IIWTableProps extends Omit<React.HTMLProps<HTMLTableElement>, 'ref' | 'size'> {
 	bordered?: boolean
 	borderless?: boolean
 	striped?: boolean
@@ -11,14 +12,8 @@ export interface IIWTableProps {
 	dark?: boolean
 	caption?: string
 	textSmall?: boolean
-	className?: string
 	sticky?: boolean
 	sortable?: boolean
-	tabIndex?: number
-	hidden?: boolean
-	style?: React.CSSProperties
-	children?: any
-	onKeyDown?: React.KeyboardEventHandler<HTMLTableElement>
 }
 
 export const Table = forwardRef<HTMLTableElement, IIWTableProps>((props, ref) => {
@@ -41,11 +36,20 @@ export const Table = forwardRef<HTMLTableElement, IIWTableProps>((props, ref) =>
 					'table-sticky': !!props.sticky
 				})
 			}
-			tabIndex={props.tabIndex}
-			hidden={props.hidden}
-			style={props.style}
 			ref={ref}
-			onKeyDown={props.onKeyDown}>
+			{...OmitProperty(props,
+				'bordered',
+				'borderless',
+				'striped',
+				'hover',
+				'size',
+				'responsive',
+				'dark',
+				'caption',
+				'textSmall',
+				'sticky',
+				'sortable'
+			)}>
 			{!!props.caption && <caption>{props.caption}</caption>}
 			{props.children}
 		</table>

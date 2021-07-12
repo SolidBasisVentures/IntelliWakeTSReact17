@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 export declare type Direction = 'up' | 'down' | 'left' | 'right';
 export interface IDDAction {
@@ -8,6 +8,7 @@ export interface IDDAction {
     header?: boolean;
     faProps?: FontAwesomeIconProps;
     faPropHidden?: boolean;
+    active?: boolean;
     title?: ReactNode;
     action?: () => void;
     color?: string;
@@ -22,6 +23,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
     toggle?: React.KeyboardEventHandler<any> | React.MouseEventHandler<any>;
     size?: 'sm' | 'lg';
     color?: string;
+    block?: boolean;
     inNavbar?: boolean;
     right?: boolean;
     buttonLabel?: ReactNode;
@@ -29,6 +31,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
     buttonClassName?: string;
     menuClassName?: string;
     noCaret?: boolean;
+    menuStyle?: CSSProperties;
     ddActions?: IDDAction[] | (() => IDDAction[]);
 }
 export declare const Dropdown: (props: IWDropdownProps) => JSX.Element;
