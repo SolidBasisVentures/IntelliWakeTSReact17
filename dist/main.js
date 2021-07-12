@@ -1558,7 +1558,7 @@ var Table = React.forwardRef(function (props, ref) {
                 'table-sm': props.size !== 'lg',
                 small: !!props.textSmall,
                 'table-sticky': !!props.sticky
-            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'sticky', 'sortable')),
+            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'sticky', 'sortable', 'className')),
         !!props.caption && React__default['default'].createElement("caption", null, props.caption),
         props.children));
 });

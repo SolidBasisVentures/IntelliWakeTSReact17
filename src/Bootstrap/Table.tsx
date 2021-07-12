@@ -48,7 +48,8 @@ export const Table = forwardRef<HTMLTableElement, IIWTableProps>((props, ref) =>
 				'caption',
 				'textSmall',
 				'sticky',
-				'sortable'
+				'sortable',
+				'className'
 			)}>
 			{!!props.caption && <caption>{props.caption}</caption>}
 			{props.children}
