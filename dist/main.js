@@ -768,7 +768,7 @@ var BreadCrumbItem = function (props) {
     classes +=
         ' breadcrumb-item'
             + (props.active ? ' active' : '');
-    return React__default['default'].createElement("li", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
+    return React__default['default'].createElement("li", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className', 'active'), { className: classes.trim() }));
 };
 
 var Card = React.forwardRef(function (props, ref) {

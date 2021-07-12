@@ -11,5 +11,5 @@ export const BreadCrumbItem = (props: IWBreadCrumbItemProps) => {
 		' breadcrumb-item'
 		+ (props.active ? ' active' : '')
 	
-	return <li {...OmitProperty(props, 'className')} className={classes.trim()} />
+	return <li {...OmitProperty(props, 'className', 'active')} className={classes.trim()} />
 }
