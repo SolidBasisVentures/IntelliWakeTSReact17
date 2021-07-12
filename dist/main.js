@@ -2944,7 +2944,7 @@ function InputTextArea(props) {
     var inputProps = React.useMemo(function () {
         var _a;
         var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered'));
-        subset.value = (_a = props.value) !== null && _a !== void 0 ? _a : '';
+        subset.value = ((_a = props.value) !== null && _a !== void 0 ? _a : '');
         return subset;
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
@@ -2952,7 +2952,7 @@ function InputTextArea(props) {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } })) }),
-            React__default['default'].createElement("input", __assign({ type: "textarea" }, inputProps)))));
+            React__default['default'].createElement("textarea", __assign({}, inputProps)))));
 }
 
 var originalValue$1 = ' ';
