@@ -11,7 +11,7 @@ export const BreadCrumb = (props: IWBreadCrumbProps) => {
 		' breadcrumb'
 	
 	let classesLI = props.classNameLI ?? ''
-	classes +=
+	classesLI +=
 		' breadcrumb'
 	
 	return <nav {...OmitProperty(props, 'classNameLI', 'className', 'children')} className={classes.trim()}>

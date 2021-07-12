@@ -756,7 +756,7 @@ var BreadCrumb = function (props) {
     classes +=
         ' breadcrumb';
     var classesLI = (_b = props.classNameLI) !== null && _b !== void 0 ? _b : '';
-    classes +=
+    classesLI +=
         ' breadcrumb';
     return React__default['default'].createElement("nav", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
         React__default['default'].createElement("ol", { className: classesLI.trim(), children: props.children }));
