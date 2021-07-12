@@ -134,6 +134,8 @@ export const Dropdown = (props: IWDropdownProps) => {
 	// console.log('Offset', offset)
 
 	//onClick={(e: any) => e.stopPropagation()}
+	
+	if (!props.children && visibleDDActions.length === 0) return null
 
 	return (
 		<TagToUse

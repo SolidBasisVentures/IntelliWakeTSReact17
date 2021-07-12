@@ -966,6 +966,8 @@ var Dropdown = function (props) {
     // console.log('menuRef', menuRef?.current)
     // console.log('Offset', offset)
     //onClick={(e: any) => e.stopPropagation()}
+    if (!props.children && visibleDDActions.length === 0)
+        return null;
     return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'className', 'menuStyle'), { className: classes }),
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, className: !!props.nav || !!props.inNavbar
                 ? undefined

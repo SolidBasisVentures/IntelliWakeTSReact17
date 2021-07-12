@@ -34,4 +34,4 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
     menuStyle?: CSSProperties;
     ddActions?: IDDAction[] | (() => IDDAction[]);
 }
-export declare const Dropdown: (props: IWDropdownProps) => JSX.Element;
+export declare const Dropdown: (props: IWDropdownProps) => JSX.Element | null;
