@@ -759,7 +759,7 @@ var BreadCrumb = function (props) {
     classes +=
         ' breadcrumb';
     return React__default['default'].createElement("nav", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
-        React__default['default'].createElement("li", { className: classesLI.trim(), children: props.children }));
+        React__default['default'].createElement("ol", { className: classesLI.trim(), children: props.children }));
 };
 
 var BreadCrumbItem = function (props) {

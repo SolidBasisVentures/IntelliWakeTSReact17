@@ -1,5 +1,5 @@
 import React from 'react';
-export interface IIWTableProps {
+export interface IIWTableProps extends Omit<React.HTMLProps<HTMLTableElement>, 'ref' | 'size'> {
     bordered?: boolean;
     borderless?: boolean;
     striped?: boolean;
@@ -9,13 +9,7 @@ export interface IIWTableProps {
     dark?: boolean;
     caption?: string;
     textSmall?: boolean;
-    className?: string;
     sticky?: boolean;
     sortable?: boolean;
-    tabIndex?: number;
-    hidden?: boolean;
-    style?: React.CSSProperties;
-    children?: any;
-    onKeyDown?: React.KeyboardEventHandler<HTMLTableElement>;
 }
 export declare const Table: React.ForwardRefExoticComponent<IIWTableProps & React.RefAttributes<HTMLTableElement>>;
