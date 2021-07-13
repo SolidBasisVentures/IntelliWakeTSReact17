@@ -1497,9 +1497,9 @@ var Tab = function (props) {
         return null;
     // "px-4 mt-3 mx-0 gray-tabs"
     // p-2 background-gray overflow-hidden
-    return (React__default['default'].createElement("div", { className: ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) }) },
+    return (React__default['default'].createElement("div", { className: ClassNames({ tabControlParent: true, 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) }) },
         React__default['default'].createElement(ModalPrompt, __assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
-        React__default['default'].createElement("ul", { className: "nav px-4 mt-3 mx-0 gray-tabs nav-" + ((_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs') }, showTabs.map(function (tab) { return (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
+        React__default['default'].createElement("ul", { className: "nav px-4 mt-3 mx-0 nav-" + ((_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs') }, showTabs.map(function (tab) { return (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
             React__default['default'].createElement(Button, { color: "link", className: ClassNames({
                     'nav-link': true,
                     desktopOnly: true,
