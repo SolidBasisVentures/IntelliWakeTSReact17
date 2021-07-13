@@ -8,7 +8,7 @@ interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddP
     transformToValid?: (value: any, e: any) => any;
     doNotSelectOnFocus?: boolean;
     plainTextControl?: ReactNode;
-    isInvalid?: boolean;
+    invalid?: boolean;
     lateDelayMS?: number;
     isEqual?: (internalValue: any, endValue: any) => boolean;
     consoleVerbose?: boolean;

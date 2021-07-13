@@ -70,8 +70,6 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 		}
 	}, [props.children.props.value])
 
-	console.log(props.invalid)
-	
 	// noinspection PointlessBooleanExpressionJS
 	return (
 		<>
