@@ -32,6 +32,7 @@ export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'>
 	classNamePaneActive?: string
 	noPanePadding?: boolean
 	noPaneBorder?: boolean
+	navClassName?: string
 }
 
 export const Tab = (props: IWTabProps) => {
@@ -99,9 +100,9 @@ export const Tab = (props: IWTabProps) => {
 	// p-2 background-gray overflow-hidden
 
 	return (
-		<div className={ClassNames({'fill-height': !!(props.fillHeight ?? true)})}>
+		<div className={ClassNames({tabControlParent: true, 'fill-height': !!(props.fillHeight ?? true)})}>
 			<ModalPrompt {...modalPromptProps} dismiss={setModalPromptProps} />
-			<ul className={`nav px-4 mt-3 mx-0 gray-tabs nav-${props.tabType ?? 'tabs'}`}>
+			<ul className={`nav px-4 mt-3 mx-0 nav-${props.tabType ?? 'tabs'}`}>
 				{showTabs.map((tab) => (
 					<li key={tab.title} className="nav-item">
 						<Button
