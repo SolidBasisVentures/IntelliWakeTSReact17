@@ -729,6 +729,9 @@ var Button = React.forwardRef(function (props, ref) {
             (props.block
                 ? 'btn-block '
                 : '') +
+            (props.active
+                ? 'active '
+                : '') +
             ("" + (!!props.size ? "btn-" + props.size : '')) // +
         , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: ref, to: props.to, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title, children: props.children }));
 });
@@ -2351,7 +2354,7 @@ function InputCheckBox(props) {
 
 var ReduceInputProps = function (props, classNameAdd) {
     var _a, _b, _c;
-    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef');
+    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'innerRef');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = (((_a = subset.className) !== null && _a !== void 0 ? _a : '') + " " + classNameAdd).trim();
