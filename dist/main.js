@@ -2354,7 +2354,7 @@ function InputCheckBox(props) {
 
 var ReduceInputProps = function (props, classNameAdd) {
     var _a, _b, _c;
-    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'innerRef');
+    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = (((_a = subset.className) !== null && _a !== void 0 ? _a : '') + " " + classNameAdd).trim();
@@ -2535,8 +2535,8 @@ var InputWrapper = function (props) {
         React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(__assign(__assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
             ' ' +
             ((_d = props.className) !== null && _d !== void 0 ? _d : '') +
-            (props.children.props.invalid || props.isInvalid ? ' is-invalid' : '') +
-            (props.children.props.invalid === false ? ' is-valid' : '') +
+            (props.isInvalid ? ' is-invalid' : '') +
+            (props.isInvalid === false ? ' is-valid' : '') +
             (props.children.props.required ? ' is-required' : '')).trim(), onFocus: function (e) {
             if (!props.doNotSelectOnFocus && 'select' in e.target)
                 e.target.select();

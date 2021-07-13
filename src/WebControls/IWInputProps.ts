@@ -85,6 +85,7 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 		'autoCompleteOn',
 		'append',
 		'prepend',
+		'invalid',
 		'innerRef'
 	)
 

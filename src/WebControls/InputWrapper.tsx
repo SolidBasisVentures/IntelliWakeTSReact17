@@ -104,8 +104,8 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 								(props.children.props.className ?? '') +
 								' ' +
 								(props.className ?? '') +
-								(props.children.props.invalid || props.isInvalid ? ' is-invalid' : '') +
-								(props.children.props.invalid === false ? ' is-valid' : '') +
+								(props.isInvalid ? ' is-invalid' : '') +
+								(props.isInvalid === false ? ' is-valid' : '') +
 								(props.children.props.required ? ' is-required' : '')
 							).trim(),
 							onFocus: (e: React.FocusEvent<THTMLChangeElements>) => {

@@ -21,5 +21,6 @@ export interface IIWButtonProps extends IWButtonLightProps {
     title?: string;
     classNameOverride?: string;
     to?: string;
+    active?: boolean;
 }
 export declare const Button: React.ForwardRefExoticComponent<IIWButtonProps & React.RefAttributes<HTMLButtonElement>>;
