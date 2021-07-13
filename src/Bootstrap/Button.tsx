@@ -39,6 +39,9 @@ export const Button = forwardRef<HTMLButtonElement, IIWButtonProps>((props, ref)
 					(props.color === 'inline'
 						? 'btn btn-link btn-link-inline '
 						: `btn-${props.outline ? 'outline-' : ''}${props.color ?? 'secondary'} `) +
+					(props.block
+						? 'btn-block '
+						: '') +
 					`${!!props.size ? `btn-${props.size}` : ''}` // +
 				// ' ' +
 				// ClassNames({'btn-block': !!props.block, caret: !!props.caret})

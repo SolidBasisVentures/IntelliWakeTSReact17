@@ -726,6 +726,9 @@ var Button = React.forwardRef(function (props, ref) {
             (props.color === 'inline'
                 ? 'btn btn-link btn-link-inline '
                 : "btn-" + (props.outline ? 'outline-' : '') + ((_d = props.color) !== null && _d !== void 0 ? _d : 'secondary') + " ") +
+            (props.block
+                ? 'btn-block '
+                : '') +
             ("" + (!!props.size ? "btn-" + props.size : '')) // +
         , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: ref, to: props.to, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title, children: props.children }));
 });
