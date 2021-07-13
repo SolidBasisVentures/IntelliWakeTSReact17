@@ -1503,7 +1503,7 @@ var Tab = function (props) {
         return null;
     // "px-4 mt-3 mx-0 gray-tabs"
     // p-2 background-gray overflow-hidden
-    return (React__default['default'].createElement("div", { className: ClassNames({ tabControlParent: true, 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) }) },
+    return (React__default['default'].createElement("div", { className: (props.className + " tabControlParent " + ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })).trim() },
         React__default['default'].createElement(ModalPrompt, __assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
         React__default['default'].createElement("ul", { className: "nav px-4 mt-3 mx-0 nav-" + ((_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs') }, showTabs.map(function (tab) { return (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
             React__default['default'].createElement(Button, { color: "link", className: ClassNames({
@@ -2525,7 +2525,6 @@ var InputWrapper = function (props) {
             setInternalState(props.children.props.value);
         }
     }, [props.children.props.value]);
-    console.log(props.invalid);
     // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", __assign({ className: "form-control-plaintext " }, props.plainTextProps),
