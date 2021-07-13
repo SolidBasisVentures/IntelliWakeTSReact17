@@ -1238,5 +1238,5 @@ p {
   #root > .App.IWApp > footer {
     height: 36px; } }
 
-.tabControl .nav-tabs > .nav-item button:hover {
+.tabControlParent .nav-tabs > .nav-item button:hover {
   border-color: transparent !important; }
