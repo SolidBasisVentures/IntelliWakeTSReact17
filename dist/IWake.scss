@@ -1669,3 +1669,9 @@ p {
     height: 36px;
   }
 }
+
+.tabControl {
+  .nav-tabs > .nav-item button:hover {
+    border-color: transparent !important;
+  }
+}

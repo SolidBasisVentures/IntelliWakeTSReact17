@@ -3,12 +3,12 @@ import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputP
 import {CleanScripts, OmitProperty, ReplaceLinks} from '@solidbasisventures/intelliwaketsfoundation'
 import {InputWrapper} from './InputWrapper'
 
-interface IProps<T, V, H = HTMLTextAreaElement> extends IIWInputProps<T, V, H> {
+interface IProps<T = any, V = string, H = HTMLTextAreaElement> extends IIWInputProps<T, V, H> {
 	bordered?: boolean
 	rows?: number
 }
 
-export function InputTextArea<T, V, H = HTMLTextAreaElement>(props: IProps<T, V, H>) {
+export function InputTextArea<T = any, V = string, H = HTMLTextAreaElement>(props: IProps<T, V, H>) {
 	const inputProps = useMemo(() => {
 		let subset = ReduceInputProps(OmitProperty(props, 'bordered'))
 
