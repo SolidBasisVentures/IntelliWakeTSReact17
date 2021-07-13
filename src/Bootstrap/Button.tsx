@@ -25,6 +25,7 @@ export interface IIWButtonProps extends IWButtonLightProps {
 	// caret?: boolean
 	classNameOverride?: string
 	to?: string
+	active?: boolean
 }
 
 export const Button = forwardRef<HTMLButtonElement, IIWButtonProps>((props, ref) => {
@@ -41,6 +42,9 @@ export const Button = forwardRef<HTMLButtonElement, IIWButtonProps>((props, ref)
 						: `btn-${props.outline ? 'outline-' : ''}${props.color ?? 'secondary'} `) +
 					(props.block
 						? 'btn-block '
+						: '') +
+					(props.active
+						? 'active '
 						: '') +
 					`${!!props.size ? `btn-${props.size}` : ''}` // +
 				// ' ' +
