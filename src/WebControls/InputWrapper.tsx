@@ -13,7 +13,7 @@ interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddP
 	transformToValid?: (value: any, e: any) => any
 	doNotSelectOnFocus?: boolean
 	plainTextControl?: ReactNode
-	isInvalid?: boolean
+	invalid?: boolean
 	lateDelayMS?: number
 	isEqual?: (internalValue: any, endValue: any) => boolean
 	consoleVerbose?: boolean
@@ -60,7 +60,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 			(!!props.isEqual
 				? !props.isEqual(internalState, props.children.props.value)
 				: internalState !== props.children.props.value) &&
-			(!props.isInvalid ||
+			(!props.invalid ||
 				(!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState)))
 		) {
 			if (verbose) {
@@ -70,6 +70,8 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 		}
 	}, [props.children.props.value])
 
+	console.log(props.invalid)
+	
 	// noinspection PointlessBooleanExpressionJS
 	return (
 		<>
@@ -104,8 +106,8 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 								(props.children.props.className ?? '') +
 								' ' +
 								(props.className ?? '') +
-								(props.isInvalid ? ' is-invalid' : '') +
-								(props.isInvalid === false ? ' is-valid' : '') +
+								(props.invalid ? ' is-invalid' : '') +
+								(props.invalid === false ? ' is-valid' : '') +
 								(props.children.props.required ? ' is-required' : '')
 							).trim(),
 							onFocus: (e: React.FocusEvent<THTMLChangeElements>) => {

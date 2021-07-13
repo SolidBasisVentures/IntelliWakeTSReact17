@@ -2517,7 +2517,7 @@ var InputWrapper = function (props) {
             (!!props.isEqual
                 ? !props.isEqual(internalState, props.children.props.value)
                 : internalState !== props.children.props.value) &&
-            (!props.isInvalid ||
+            (!props.invalid ||
                 (!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState)))) {
             if (verbose) {
                 console.log('UE Val', props.children.props.value);
@@ -2525,6 +2525,7 @@ var InputWrapper = function (props) {
             setInternalState(props.children.props.value);
         }
     }, [props.children.props.value]);
+    console.log(props.invalid);
     // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", __assign({ className: "form-control-plaintext " }, props.plainTextProps),
@@ -2535,8 +2536,8 @@ var InputWrapper = function (props) {
         React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(__assign(__assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
             ' ' +
             ((_d = props.className) !== null && _d !== void 0 ? _d : '') +
-            (props.isInvalid ? ' is-invalid' : '') +
-            (props.isInvalid === false ? ' is-valid' : '') +
+            (props.invalid ? ' is-invalid' : '') +
+            (props.invalid === false ? ' is-valid' : '') +
             (props.children.props.required ? ' is-required' : '')).trim(), onFocus: function (e) {
             if (!props.doNotSelectOnFocus && 'select' in e.target)
                 e.target.select();
@@ -2737,7 +2738,7 @@ function InputNumber(props) {
             integers: !hasDecimals
         }), plainTextControl: !!props.currency
             ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
-            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), isInvalid: !!props.invalid, isEqual: function (internal, props) { return intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props); } }),
+            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), invalid: props.invalid, isEqual: function (internal, props) { return intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props); } }),
         React__default['default'].createElement(Cleave__default['default'], __assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { name: props.name }))));
 }
 
