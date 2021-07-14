@@ -8,7 +8,7 @@ export interface IWModalProps {
 	isOpen?: boolean
 	// autoFocus?: boolean
 	autoFocusElement?: any
-	size?: 'sm' | 'lg'
+	size?: 'sm' | 'lg' | 'xl'
 	toggle?: React.KeyboardEventHandler<any> | React.MouseEventHandler<any>
 	color?: string
 	title?: ReactNode
@@ -108,10 +108,9 @@ export const Modal = (props: IWModalProps) => {
 				onKeyDown={keyDown}>
 				<div
 					className={
-						'modal-dialog' +
-						(!props.size ? '' : props.size === 'sm' ? ' modal-sm' : ' modal-lg') +
-						' ' +
-						(props.dialogClassName ?? '')
+						('modal-dialog' +
+						(!props.size ? ' ' : ` modal-${props.size} `) +
+						(props.dialogClassName ?? '')).trim()
 					}
 					role="document"
 					style={props.dialogStyle}>

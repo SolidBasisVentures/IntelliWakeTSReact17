@@ -836,7 +836,7 @@ var ApplyColumnProp = function (size, columnProps) {
         return '';
     var application = " col";
     // if (size !== 'xs' || typeof columnProps === 'object') {
-    if (!!size && size !== 'xs') {
+    if (size !== 'xs') {
         application += "-" + size;
     }
     if (columnProps === true)
@@ -844,7 +844,9 @@ var ApplyColumnProp = function (size, columnProps) {
     if (typeof columnProps === 'number' || typeof columnProps === 'string')
         return application + "-" + columnProps;
     if (typeof columnProps.size === 'number' || typeof columnProps.size === 'string') {
-        application += "-" + columnProps.size;
+        if (columnProps.size !== 'xs') {
+            application += "-" + columnProps.size;
+        }
     }
     if (columnProps.offset !== undefined) {
         if (size === 'xs') {
@@ -1190,10 +1192,9 @@ var Modal = function (props) {
                     toggle(e);
                 }
             }, onKeyDown: keyDown },
-            React__default['default'].createElement("div", { className: 'modal-dialog' +
-                    (!props.size ? '' : props.size === 'sm' ? ' modal-sm' : ' modal-lg') +
-                    ' ' +
-                    ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : ''), role: "document", style: props.dialogStyle },
+            React__default['default'].createElement("div", { className: ('modal-dialog' +
+                    (!props.size ? ' ' : " modal-" + props.size + " ") +
+                    ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: "document", style: props.dialogStyle },
                 React__default['default'].createElement("div", { className: "modal-content", onClick: function (e) { return e.stopPropagation(); } }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
                     !!props.title && (React__default['default'].createElement("div", { className: "alert-" + ((_b = props.color) !== null && _b !== void 0 ? _b : 'primary') + " modal-header" },
                         React__default['default'].createElement("h5", { className: "modal-title" }, props.title),

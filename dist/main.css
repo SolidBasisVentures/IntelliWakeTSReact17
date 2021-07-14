@@ -121,7 +121,8 @@
 
 .btn-link-inline:hover,
 .btn-link-inline:focus {
-  text-decoration: underline; }
+  text-decoration: underline;
+  color: var(--primary); }
 
 .nav-link.btn-link {
   outline: none !important;
