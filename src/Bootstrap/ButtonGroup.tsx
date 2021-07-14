@@ -9,7 +9,7 @@ export const ButtonGroup = (props: IWButtonGroupProps) => {
 	let classes = props.className ?? ''
 	classes +=
 		' btn-group' +
-		!!props.vertical ? '-vertical' : ''
+		(!!props.vertical ? '-vertical' : '')
 
 	return <div {...OmitProperty(props, 'vertical', 'className')} className={classes.trim()} />
 }
