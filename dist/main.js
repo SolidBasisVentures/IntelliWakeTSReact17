@@ -741,7 +741,7 @@ var ButtonGroup = function (props) {
     var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
     classes +=
         ' btn-group' +
-            !!props.vertical ? '-vertical' : '';
+            (!!props.vertical ? '-vertical' : '');
     return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'vertical', 'className'), { className: classes.trim() }));
 };
 
@@ -835,7 +835,8 @@ var ApplyColumnProp = function (size, columnProps) {
     if (!columnProps)
         return '';
     var application = " col";
-    if (size !== 'xs' || typeof columnProps === 'object') {
+    // if (size !== 'xs' || typeof columnProps === 'object') {
+    if (!!size && size !== 'xs') {
         application += "-" + size;
     }
     if (columnProps === true)
@@ -845,8 +846,14 @@ var ApplyColumnProp = function (size, columnProps) {
     if (typeof columnProps.size === 'number' || typeof columnProps.size === 'string') {
         application += "-" + columnProps.size;
     }
-    if (columnProps.offset !== undefined)
-        application += " offset-" + size + "-" + columnProps.offset;
+    if (columnProps.offset !== undefined) {
+        if (size === 'xs') {
+            application += " offset-" + columnProps.offset;
+        }
+        else {
+            application += " offset-" + size + "-" + columnProps.offset;
+        }
+    }
     if (columnProps.order !== undefined)
         application += " order-" + columnProps.order;
     return application;
