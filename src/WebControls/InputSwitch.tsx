@@ -22,6 +22,7 @@ export interface IInputSwitchProps<T = unknown> {
 	width?: number
 	size?: 'sm' | 'lg'
 	noPadding?: boolean
+	noFormControlPlainText?: boolean
 }
 
 export function InputSwitch<T>(props: IInputSwitchProps<T>) {
@@ -39,14 +40,16 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	const width = props.width ?? props.size === 'sm' ? 20 : props.size === 'lg' ? 30 : 26
 	
 	return (
-		<label className={'inputSwitch ' + (props.plainText ? `plainText ${props.plainTextProps ?? ''} ` : '') + (props.className ?? '')} hidden={props.hidden}>
+		<label
+			className={'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ${props.plainTextProps ?? ''} ` : '') + (props.className ?? '')}
+			hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
+			{(!props.plainText || !props.plainTextLabelOnly) &&
 			<Switch
 				onChange={(checked, e) => {
 					if (!props.plainText) {
 						handleInputChange(checked, e)
 					}
 				}}
-				hidden={props.plainText && props.plainTextLabelOnly}
 				name={props.name as string}
 				className={'react-switch ' + (props.noPadding ? '' : ' mr-2')}
 				checked={props.checked}
@@ -57,7 +60,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 				uncheckedIcon={props.uncheckedIcon ?? false}
 				height={height}
 				width={width}
-			/>
+			/>}
 			{props.label}
 		</label>
 	

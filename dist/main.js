@@ -2797,12 +2797,13 @@ function InputSwitch(props) {
     };
     const height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 14 : props.size === 'lg' ? 18 : 14;
     const width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 20 : props.size === 'lg' ? 30 : 26;
-    return (React__default['default'].createElement("label", { className: 'inputSwitch ' + (props.plainText ? `plainText ${(_c = props.plainTextProps) !== null && _c !== void 0 ? _c : ''} ` : '') + ((_d = props.className) !== null && _d !== void 0 ? _d : ''), hidden: props.hidden },
-        React__default['default'].createElement(Switch__default['default'], { onChange: (checked, e) => {
-                if (!props.plainText) {
-                    handleInputChange(checked, e);
-                }
-            }, hidden: props.plainText && props.plainTextLabelOnly, name: props.name, className: 'react-switch ' + (props.noPadding ? '' : ' mr-2'), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_e = props.checkedIcon) !== null && _e !== void 0 ? _e : false, uncheckedIcon: (_f = props.uncheckedIcon) !== null && _f !== void 0 ? _f : false, height: height, width: width }),
+    return (React__default['default'].createElement("label", { className: 'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ${(_c = props.plainTextProps) !== null && _c !== void 0 ? _c : ''} ` : '') + ((_d = props.className) !== null && _d !== void 0 ? _d : ''), hidden: props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly) },
+        (!props.plainText || !props.plainTextLabelOnly) &&
+            React__default['default'].createElement(Switch__default['default'], { onChange: (checked, e) => {
+                    if (!props.plainText) {
+                        handleInputChange(checked, e);
+                    }
+                }, name: props.name, className: 'react-switch ' + (props.noPadding ? '' : ' mr-2'), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_e = props.checkedIcon) !== null && _e !== void 0 ? _e : false, uncheckedIcon: (_f = props.uncheckedIcon) !== null && _f !== void 0 ? _f : false, height: height, width: width }),
         props.label));
 }
 

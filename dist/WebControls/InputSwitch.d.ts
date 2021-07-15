@@ -17,5 +17,6 @@ export interface IInputSwitchProps<T = unknown> {
     width?: number;
     size?: 'sm' | 'lg';
     noPadding?: boolean;
+    noFormControlPlainText?: boolean;
 }
 export declare function InputSwitch<T>(props: IInputSwitchProps<T>): JSX.Element;
