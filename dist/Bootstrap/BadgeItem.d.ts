@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { IWBadgeProps } from './Badge';
 import { TBadgeValues } from './ListGroupItem';
 export interface IBadgeItemProps extends IWBadgeProps {

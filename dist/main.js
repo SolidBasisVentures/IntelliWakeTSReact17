@@ -30,21 +30,20 @@ var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 // ----------------------------
 function CookieCreate(name, value, days) {
     name = name.replace(/=/g, "");
-    var expires = "";
+    let expires = "";
     if (days) {
-        var date = new Date();
+        let date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + value + expires + "; path=/";
 }
-function CookieRead(name, defaultValue) {
-    if (defaultValue === void 0) { defaultValue = null; }
+function CookieRead(name, defaultValue = null) {
     name = name.replace(/=/g, "");
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) === ' ') {
             c = c.substring(1, c.length);
         }
@@ -57,6 +56,63 @@ function CookieRead(name, defaultValue) {
 function CookieErase(name) {
     CookieCreate(name, "", -1);
 }
+
+const arrayIDMapsForArrayWithID = (arrayValues, existingArrayIDMaps) => {
+    const idName = 'id';
+    const originalIDs = existingArrayIDMaps.map((existingArrayIDMap) => existingArrayIDMap.originalID);
+    const newArrayIDMaps = [
+        ...existingArrayIDMaps,
+        ...arrayValues
+            .filter((arrayValue) => !originalIDs.includes(arrayValue[idName]))
+            .map((arrayValue) => {
+            const arrayIDMap = {
+                originalID: arrayValue,
+                uuid: intelliwaketsfoundation.GenerateUUID()
+            };
+            return arrayIDMap;
+        })
+    ];
+    const arrayValueIDs = arrayValues.map((arrayValue) => arrayValue[idName]);
+    return newArrayIDMaps.filter((arrayIDMap) => arrayValueIDs.includes(arrayIDMap.originalID));
+};
+const arrayMapWithMapIDIndex = (arrayValues, arrayIDMaps, map) => {
+    const idName = 'id';
+    return arrayValues.map((arrayValue) => {
+        var _a, _b;
+        return map(arrayValue, (_b = (_a = arrayIDMaps.find((arrayIDMap) => arrayIDMap.originalID === arrayValue[idName])) === null || _a === void 0 ? void 0 : _a.uuid) !== null && _b !== void 0 ? _b : intelliwaketsfoundation.GenerateUUID());
+    });
+};
+
+exports.Environments = void 0;
+(function (Environments) {
+    Environments["ENV_Local"] = "ENV_Local";
+    Environments["ENV_Dev"] = "ENV_Dev";
+    Environments["ENV_Test"] = "ENV_Test";
+    Environments["ENV_QA"] = "ENV_QA";
+    Environments["ENV_Demo"] = "ENV_Demo";
+    Environments["ENV_ProdSupport"] = "ENV_ProdSupport";
+    Environments["ENV_Prod"] = "ENV_Prod";
+})(exports.Environments || (exports.Environments = {}));
+const IsENV = (environments) => {
+    console.log('******* Environments Deprecated... use Stages');
+    console.trace();
+    let envs;
+    if (typeof environments === 'string') {
+        envs = [environments];
+    }
+    else {
+        envs = environments;
+    }
+    for (const env of envs) {
+        if (process.env.REACT_APP_ENV === env) {
+            return true;
+        }
+    }
+    return false;
+};
+const IsDevFocused = () => {
+    return IsENV([exports.Environments.ENV_Local, exports.Environments.ENV_Dev, exports.Environments.ENV_QA]);
+};
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -72,31 +128,6 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 
 function __awaiter(thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -108,117 +139,27 @@ function __awaiter(thisArg, _arguments, P, generator) {
     });
 }
 
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-}
-
-var arrayIDMapsForArrayWithID = function (arrayValues, existingArrayIDMaps) {
-    var idName = 'id';
-    var originalIDs = existingArrayIDMaps.map(function (existingArrayIDMap) { return existingArrayIDMap.originalID; });
-    var newArrayIDMaps = __spreadArrays(existingArrayIDMaps, arrayValues
-        .filter(function (arrayValue) { return !originalIDs.includes(arrayValue[idName]); })
-        .map(function (arrayValue) {
-        var arrayIDMap = {
-            originalID: arrayValue,
-            uuid: intelliwaketsfoundation.GenerateUUID()
-        };
-        return arrayIDMap;
-    }));
-    var arrayValueIDs = arrayValues.map(function (arrayValue) { return arrayValue[idName]; });
-    return newArrayIDMaps.filter(function (arrayIDMap) { return arrayValueIDs.includes(arrayIDMap.originalID); });
-};
-var arrayMapWithMapIDIndex = function (arrayValues, arrayIDMaps, map) {
-    var idName = 'id';
-    return arrayValues.map(function (arrayValue) {
-        var _a, _b;
-        return map(arrayValue, (_b = (_a = arrayIDMaps.find(function (arrayIDMap) { return arrayIDMap.originalID === arrayValue[idName]; })) === null || _a === void 0 ? void 0 : _a.uuid) !== null && _b !== void 0 ? _b : intelliwaketsfoundation.GenerateUUID());
-    });
-};
-
-(function (Environments) {
-    Environments["ENV_Local"] = "ENV_Local";
-    Environments["ENV_Dev"] = "ENV_Dev";
-    Environments["ENV_Test"] = "ENV_Test";
-    Environments["ENV_QA"] = "ENV_QA";
-    Environments["ENV_Demo"] = "ENV_Demo";
-    Environments["ENV_ProdSupport"] = "ENV_ProdSupport";
-    Environments["ENV_Prod"] = "ENV_Prod";
-})(exports.Environments || (exports.Environments = {}));
-var IsENV = function (environments) {
-    console.log('******* Environments Deprecated... use Stages');
-    console.trace();
-    var envs;
-    if (typeof environments === 'string') {
-        envs = [environments];
-    }
-    else {
-        envs = environments;
-    }
-    for (var _i = 0, envs_1 = envs; _i < envs_1.length; _i++) {
-        var env = envs_1[_i];
-        if (process.env.REACT_APP_ENV === env) {
-            return true;
-        }
-    }
-    return false;
-};
-var IsDevFocused = function () {
-    return IsENV([exports.Environments.ENV_Local, exports.Environments.ENV_Dev, exports.Environments.ENV_QA]);
-};
-
-var KEY_UP_ARROW = 38;
-var KEY_DOWN_ARROW = 40;
-var KEY_LEFT_ARROW = 37;
-var KEY_RIGHT_ARROW = 39;
-var KEY_SPACE = 32;
-var KEY_ENTER = 13;
-var KEY_TAB = 9;
-var KEY_BACKSPACE = 8;
-var KEY_ESCAPE = 27;
-var KEY_STRING_ENTER = 'Enter';
-var KEY_STRING_DOWN_ARROW = 'ArrowDown';
-var KEY_STRING_UP_ARROW = 'ArrowUp';
-var KEY_STRING_LEFT_ARROW = 'ArrowLeft';
-var KEY_STRING_RIGHT_ARROW = 'ArrowRight';
-var KEY_STRING_TAB = 'Tab';
-var KEY_STRING_BACKSPACE = 'Backspace';
-var KEY_STRING_ESCAPE = 'Escape';
-var ElementCustomValue = function (e) {
-    var target = e.target;
+const KEY_UP_ARROW = 38;
+const KEY_DOWN_ARROW = 40;
+const KEY_LEFT_ARROW = 37;
+const KEY_RIGHT_ARROW = 39;
+const KEY_SPACE = 32;
+const KEY_ENTER = 13;
+const KEY_TAB = 9;
+const KEY_BACKSPACE = 8;
+const KEY_ESCAPE = 27;
+const KEY_STRING_ENTER = 'Enter';
+const KEY_STRING_DOWN_ARROW = 'ArrowDown';
+const KEY_STRING_UP_ARROW = 'ArrowUp';
+const KEY_STRING_LEFT_ARROW = 'ArrowLeft';
+const KEY_STRING_RIGHT_ARROW = 'ArrowRight';
+const KEY_STRING_TAB = 'Tab';
+const KEY_STRING_BACKSPACE = 'Backspace';
+const KEY_STRING_ESCAPE = 'Escape';
+const ElementCustomValue = (e) => {
+    const target = e.target;
     if (!!target) {
-        var returnValue = target['customValue'] === undefined ? target.value : target.customValue;
+        const returnValue = target['customValue'] === undefined ? target.value : target.customValue;
         if (target.classList.contains('isNumber')) {
             return intelliwaketsfoundation.CleanNumber(returnValue);
         }
@@ -226,33 +167,33 @@ var ElementCustomValue = function (e) {
     }
     return null;
 };
-var ClassNames = function (classes) {
+const ClassNames = (classes) => {
     var _a;
-    return ((_a = Object.keys(classes).filter(function (classitem) { return classes[classitem]; })) !== null && _a !== void 0 ? _a : []).join(' ');
+    return ((_a = Object.keys(classes).filter((classitem) => classes[classitem])) !== null && _a !== void 0 ? _a : []).join(' ');
 };
-var HasPathComponent = function (search) {
-    var searchCalc = search.toLowerCase();
+const HasPathComponent = (search) => {
+    let searchCalc = search.toLowerCase();
     if (!searchCalc.startsWith('/')) {
         searchCalc = '/' + searchCalc;
     }
     if (!searchCalc.endsWith('/')) {
         searchCalc += '/';
     }
-    var pathName = window.location.pathname.toLowerCase();
+    let pathName = window.location.pathname.toLowerCase();
     if (!pathName.endsWith('/')) {
         pathName += '/';
     }
     return pathName.indexOf(searchCalc) >= 0;
 };
-var GetPathComponentAfter = function (search) {
-    var searchCalc = search.toLowerCase();
+const GetPathComponentAfter = (search) => {
+    let searchCalc = search.toLowerCase();
     if (!searchCalc.endsWith('/')) {
         searchCalc += '/';
     }
-    var startPos = window.location.pathname.toLowerCase().indexOf(searchCalc);
+    const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc);
     if (startPos >= 0) {
-        var after = window.location.pathname.substr(startPos + searchCalc.length);
-        var slashPos = after.toLowerCase().indexOf('/');
+        const after = window.location.pathname.substr(startPos + searchCalc.length);
+        const slashPos = after.toLowerCase().indexOf('/');
         if (slashPos >= 0) {
             return after.substring(0, slashPos);
         }
@@ -262,68 +203,64 @@ var GetPathComponentAfter = function (search) {
     }
     return undefined;
 };
-var GetPathThrough = function (search) {
-    var searchCalc = search.toLowerCase();
-    var startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/');
+const GetPathThrough = (search) => {
+    let searchCalc = search.toLowerCase();
+    const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/');
     if (startPosSlash >= 0) {
         return window.location.pathname.substr(0, startPosSlash + searchCalc.length);
     }
-    var startPosNoSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc);
+    const startPosNoSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc);
     if (startPosNoSlash >= 0) {
-        var possibleComplete = window.location.pathname.substr(0, startPosNoSlash + searchCalc.length);
+        const possibleComplete = window.location.pathname.substr(0, startPosNoSlash + searchCalc.length);
         if (possibleComplete.length === window.location.pathname.length) {
             return possibleComplete;
         }
     }
     return undefined;
 };
-var CaptureGPS = function () {
-    return new Promise(function (resolve) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    resolve(position);
-                }, function () {
-                    resolve(null);
-                });
-            }
-            else {
+const CaptureGPS = () => {
+    return new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                resolve(position);
+            }, function () {
                 resolve(null);
-            }
-            return [2 /*return*/];
-        });
-    }); });
+            });
+        }
+        else {
+            resolve(null);
+        }
+    }));
 };
-var DownloadBase64Data = function (fileName, base64, type) {
+const DownloadBase64Data = (fileName, base64, type) => {
     if (!!window.navigator.msSaveBlob) {
         // IE
-        var byteCharacters = atob(base64.replace(/^[^,]+,/, '').replace(/\r\n/g, ''));
-        var byteNumbers = new Array(byteCharacters.length);
-        for (var i = 0; i < byteCharacters.length; i++) {
+        const byteCharacters = atob(base64.replace(/^[^,]+,/, '').replace(/\r\n/g, ''));
+        let byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
             byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
-        var byteArray = new Uint8Array(byteNumbers);
-        var blob = new Blob([byteArray], { type: type });
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: type });
         window.navigator.msSaveOrOpenBlob(blob, fileName);
     }
     else {
-        var link = document.createElement('a');
+        const link = document.createElement('a');
         link.href = base64;
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
     }
 };
-var CopyRefToClipboard = function (ref, tryFormatted) {
-    if (tryFormatted === void 0) { tryFormatted = true; }
+const CopyRefToClipboard = (ref, tryFormatted = true) => {
     if (ref && ref.current && document.createRange && window.getSelection) {
-        var range = document.createRange();
-        var sel = window.getSelection();
+        let range = document.createRange();
+        let sel = window.getSelection();
         if (sel) {
             // unselect any element in the page
             sel.removeAllRanges();
-            var ths = ref.current.getElementsByTagName('th');
-            for (var i = 0; i < ths.length; i++) {
+            let ths = ref.current.getElementsByTagName('th');
+            for (let i = 0; i < ths.length; i++) {
                 ths[i].setAttribute('copyuserselect', ths[i].style.userSelect);
                 ths[i].style.userSelect = ths[i].classList.contains('noCopy') ? 'none' : 'auto';
                 if (ths[i].classList.contains('onlyCopy')) {
@@ -331,8 +268,8 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
                     ths[i].style.display = 'inherit';
                 }
             }
-            var tds = ref.current.getElementsByTagName('td');
-            for (var i = 0; i < tds.length; i++) {
+            let tds = ref.current.getElementsByTagName('td');
+            for (let i = 0; i < tds.length; i++) {
                 tds[i].setAttribute('copyuserselect', tds[i].style.userSelect);
                 tds[i].style.userSelect = tds[i].classList.contains('noCopy') ? 'none' : 'auto';
                 if (tds[i].classList.contains('onlyCopy')) {
@@ -340,13 +277,13 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
                     tds[i].style.display = 'inherit';
                 }
             }
-            var brs = ref.current.getElementsByTagName('br');
-            for (var i = 0; i < brs.length; i++) {
+            let brs = ref.current.getElementsByTagName('br');
+            for (let i = 0; i < brs.length; i++) {
                 brs[i].setAttribute('copyuserdisplay', brs[i].style.display);
                 brs[i].style.display = 'none';
             }
-            var hrs = ref.current.getElementsByTagName('hr');
-            for (var i = 0; i < hrs.length; i++) {
+            let hrs = ref.current.getElementsByTagName('hr');
+            for (let i = 0; i < hrs.length; i++) {
                 hrs[i].setAttribute('copyuserdisplay', hrs[i].style.display);
                 hrs[i].style.display = 'none';
             }
@@ -366,7 +303,7 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
             }
             document.execCommand('copy');
             sel.removeAllRanges();
-            for (var i = 0; i < ths.length; i++) {
+            for (let i = 0; i < ths.length; i++) {
                 ths[i].style.userSelect = ths[i].getAttribute('copyuserselect');
                 ths[i].removeAttribute('copyuserselect');
                 if (ths[i].classList.contains('onlyCopy')) {
@@ -374,7 +311,7 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
                     ths[i].removeAttribute('copyuserdisplay');
                 }
             }
-            for (var i = 0; i < tds.length; i++) {
+            for (let i = 0; i < tds.length; i++) {
                 tds[i].style.userSelect = tds[i].getAttribute('copyuserselect');
                 tds[i].removeAttribute('copyuserselect');
                 if (tds[i].classList.contains('onlyCopy')) {
@@ -382,11 +319,11 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
                     tds[i].removeAttribute('copyuserdisplay');
                 }
             }
-            for (var i = 0; i < brs.length; i++) {
+            for (let i = 0; i < brs.length; i++) {
                 brs[i].style.display = brs[i].getAttribute('display');
                 brs[i].removeAttribute('copyuserdisplay');
             }
-            for (var i = 0; i < hrs.length; i++) {
+            for (let i = 0; i < hrs.length; i++) {
                 hrs[i].style.display = hrs[i].getAttribute('display');
                 hrs[i].removeAttribute('copyuserdisplay');
             }
@@ -395,21 +332,20 @@ var CopyRefToClipboard = function (ref, tryFormatted) {
     }
     return false;
 };
-var TableIDToExcel = function (tableID, fileName, appendDateTime) {
-    if (appendDateTime === void 0) { appendDateTime = true; }
-    var downloadName = "" + (fileName !== null && fileName !== void 0 ? fileName : tableID) + (appendDateTime ? "-" + moment__default['default'](new Date()).format('YYYY-MM-DD_HH-mm-ss') + ".xls" : '');
+const TableIDToExcel = (tableID, fileName, appendDateTime = true) => {
+    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${moment__default['default'](new Date()).format('YYYY-MM-DD_HH-mm-ss')}.xls` : ''}`;
     // const dataType = 'application/vnd.ms-excel'
-    var dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-    var tableSelect = document.getElementById(tableID);
-    var tableHTML = tableSelect.outerHTML; //.replace(/ /g, '%20')
+    const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const tableSelect = document.getElementById(tableID);
+    let tableHTML = tableSelect.outerHTML; //.replace(/ /g, '%20')
     tableHTML = intelliwaketsfoundation.ReplaceAll('<br>', ' ', tableHTML);
-    var a = document.createElement('a');
-    var blob = new Blob([tableHTML], { type: dataType });
+    let a = document.createElement('a');
+    const blob = new Blob([tableHTML], { type: dataType });
     a.href = URL.createObjectURL(blob);
     a.download = downloadName;
     a.click();
 };
-var SizeAtMin = function (size) {
+const SizeAtMin = (size) => {
     switch (size) {
         case 'xs':
             return 0;
@@ -427,7 +363,7 @@ var SizeAtMin = function (size) {
             return 1400;
     }
 };
-var SizeAtMax = function (size) {
+const SizeAtMax = (size) => {
     switch (size) {
         case 'xs':
             return 575.98;
@@ -445,14 +381,10 @@ var SizeAtMax = function (size) {
             return 999999;
     }
 };
-var useCombinedRefs = function () {
-    var refs = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        refs[_i] = arguments[_i];
-    }
-    var targetRef = React__default['default'].useRef();
-    React__default['default'].useEffect(function () {
-        refs.forEach(function (ref) {
+const useCombinedRefs = (...refs) => {
+    const targetRef = React__default['default'].useRef();
+    React__default['default'].useEffect(() => {
+        refs.forEach((ref) => {
             if (!ref)
                 return;
             if (typeof ref === 'function') {
@@ -466,166 +398,139 @@ var useCombinedRefs = function () {
     return targetRef;
 };
 
-var GetOrientation = function (file) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/, new Promise(function (resolve) { return __awaiter(void 0, void 0, void 0, function () {
-                var oreader;
-                return __generator(this, function (_a) {
-                    oreader = new FileReader();
-                    oreader.onload = function (event) {
-                        //@ts-ignore
-                        var view = new DataView(event.target.result);
-                        if (view.getUint16(0, false) !== 0xFFD8) {
-                            resolve(-2);
+const GetOrientation = (file) => __awaiter(void 0, void 0, void 0, function* () {
+    return new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
+        let oreader = new FileReader();
+        oreader.onload = (event) => {
+            //@ts-ignore
+            let view = new DataView(event.target.result);
+            if (view.getUint16(0, false) !== 0xFFD8) {
+                resolve(-2);
+                return;
+            }
+            let length = view.byteLength, offset = 2;
+            while (offset < length) {
+                let marker = view.getUint16(offset, false);
+                offset += 2;
+                if (marker === 0xFFE1) {
+                    if (view.getUint32(offset += 2, false) !== 0x45786966) {
+                        resolve(-1);
+                        return;
+                    }
+                    let little = view.getUint16(offset += 6, false) === 0x4949;
+                    offset += view.getUint32(offset + 4, little);
+                    let tags = view.getUint16(offset, little);
+                    offset += 2;
+                    for (let i = 0; i < tags; i++) {
+                        if (view.getUint16(offset + (i * 12), little) === 0x0112) {
+                            resolve(view.getUint16(offset + (i * 12) + 8, little));
                             return;
                         }
-                        var length = view.byteLength, offset = 2;
-                        while (offset < length) {
-                            var marker = view.getUint16(offset, false);
-                            offset += 2;
-                            if (marker === 0xFFE1) {
-                                if (view.getUint32(offset += 2, false) !== 0x45786966) {
-                                    resolve(-1);
-                                    return;
-                                }
-                                var little = view.getUint16(offset += 6, false) === 0x4949;
-                                offset += view.getUint32(offset + 4, little);
-                                var tags = view.getUint16(offset, little);
-                                offset += 2;
-                                for (var i = 0; i < tags; i++) {
-                                    if (view.getUint16(offset + (i * 12), little) === 0x0112) {
-                                        resolve(view.getUint16(offset + (i * 12) + 8, little));
-                                        return;
-                                    }
-                                }
-                            }
-                            else if ((marker & 0xFF00) !== 0xFF00) {
-                                break;
-                            }
-                            else
-                                offset += view.getUint16(offset, false);
+                    }
+                }
+                else if ((marker & 0xFF00) !== 0xFF00) {
+                    break;
+                }
+                else
+                    offset += view.getUint16(offset, false);
+            }
+            resolve(-1);
+        };
+        oreader.readAsArrayBuffer(file.slice(0, 64 * 1024));
+    }));
+});
+const PhotoFileToData = (file, maxSize = 4096) => __awaiter(void 0, void 0, void 0, function* () {
+    return new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
+        const srcOrientation = yield GetOrientation(file);
+        // Create a file reader
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            let img = document.createElement("img");
+            img.onload = function () {
+                return __awaiter(this, void 0, void 0, function* () {
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > height) {
+                        if (width > maxSize) {
+                            height *= maxSize / width;
+                            width = maxSize;
                         }
-                        resolve(-1);
-                    };
-                    oreader.readAsArrayBuffer(file.slice(0, 64 * 1024));
-                    return [2 /*return*/];
+                    }
+                    else {
+                        if (height > maxSize) {
+                            width *= maxSize / height;
+                            height = maxSize;
+                        }
+                    }
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d");
+                    if ([5, 6, 7, 8].indexOf(srcOrientation) > -1) {
+                        // noinspection JSSuspiciousNameCombination
+                        canvas.width = height;
+                        // noinspection JSSuspiciousNameCombination
+                        canvas.height = width;
+                    }
+                    else {
+                        canvas.width = width;
+                        canvas.height = height;
+                    }
+                    switch (srcOrientation) {
+                        case 2:
+                            ctx.transform(-1, 0, 0, 1, width, 0);
+                            break;
+                        case 3:
+                            ctx.transform(-1, 0, 0, -1, width, height);
+                            break;
+                        case 4:
+                            ctx.transform(1, 0, 0, -1, 0, height);
+                            break;
+                        case 5:
+                            ctx.transform(0, 1, 1, 0, 0, 0);
+                            break;
+                        case 6:
+                            ctx.transform(0, 1, -1, 0, height, 0);
+                            break;
+                        case 7:
+                            ctx.transform(0, -1, -1, 0, height, width);
+                            break;
+                        case 8:
+                            ctx.transform(0, -1, 1, 0, 0, width);
+                            break;
+                        default:
+                            ctx.transform(1, 0, 0, 1, 0, 0);
+                            break;
+                    }
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL(file['type']));
                 });
-            }); })];
-    });
-}); };
-var PhotoFileToData = function (file, maxSize) {
-    if (maxSize === void 0) { maxSize = 4096; }
-    return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            return [2 /*return*/, new Promise(function (resolve) { return __awaiter(void 0, void 0, void 0, function () {
-                    var srcOrientation, reader;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0: return [4 /*yield*/, GetOrientation(file)];
-                            case 1:
-                                srcOrientation = _a.sent();
-                                reader = new FileReader();
-                                reader.onload = function (e) {
-                                    var img = document.createElement("img");
-                                    img.onload = function () {
-                                        return __awaiter(this, void 0, void 0, function () {
-                                            var width, height, canvas, ctx;
-                                            return __generator(this, function (_a) {
-                                                width = img.width;
-                                                height = img.height;
-                                                if (width > height) {
-                                                    if (width > maxSize) {
-                                                        height *= maxSize / width;
-                                                        width = maxSize;
-                                                    }
-                                                }
-                                                else {
-                                                    if (height > maxSize) {
-                                                        width *= maxSize / height;
-                                                        height = maxSize;
-                                                    }
-                                                }
-                                                canvas = document.createElement("canvas");
-                                                ctx = canvas.getContext("2d");
-                                                if ([5, 6, 7, 8].indexOf(srcOrientation) > -1) {
-                                                    // noinspection JSSuspiciousNameCombination
-                                                    canvas.width = height;
-                                                    // noinspection JSSuspiciousNameCombination
-                                                    canvas.height = width;
-                                                }
-                                                else {
-                                                    canvas.width = width;
-                                                    canvas.height = height;
-                                                }
-                                                switch (srcOrientation) {
-                                                    case 2:
-                                                        ctx.transform(-1, 0, 0, 1, width, 0);
-                                                        break;
-                                                    case 3:
-                                                        ctx.transform(-1, 0, 0, -1, width, height);
-                                                        break;
-                                                    case 4:
-                                                        ctx.transform(1, 0, 0, -1, 0, height);
-                                                        break;
-                                                    case 5:
-                                                        ctx.transform(0, 1, 1, 0, 0, 0);
-                                                        break;
-                                                    case 6:
-                                                        ctx.transform(0, 1, -1, 0, height, 0);
-                                                        break;
-                                                    case 7:
-                                                        ctx.transform(0, -1, -1, 0, height, width);
-                                                        break;
-                                                    case 8:
-                                                        ctx.transform(0, -1, 1, 0, 0, width);
-                                                        break;
-                                                    default:
-                                                        ctx.transform(1, 0, 0, 1, 0, 0);
-                                                        break;
-                                                }
-                                                ctx.drawImage(img, 0, 0, width, height);
-                                                resolve(canvas.toDataURL(file['type']));
-                                                return [2 /*return*/];
-                                            });
-                                        });
-                                    };
-                                    img.onerror = function () {
-                                        resolve(false);
-                                    };
-                                    img.src = e.target.result;
-                                };
-                                reader.readAsDataURL(file);
-                                return [2 /*return*/];
-                        }
-                    });
-                }); })];
-        });
-    });
-};
-var FileToBase64 = function (file) {
-    return new Promise(function (resolve, reject) { return __awaiter(void 0, void 0, void 0, function () {
-        var reader;
-        return __generator(this, function (_a) {
-            reader = new FileReader();
-            reader.onload = function (e) {
-                resolve(e.target.result);
             };
-            reader.onerror = function () {
-                reject();
+            img.onerror = function () {
+                resolve(false);
             };
-            reader.readAsDataURL(file);
-            return [2 /*return*/];
-        });
-    }); });
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }));
+});
+const FileToBase64 = (file) => {
+    return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            resolve(e.target.result);
+        };
+        reader.onerror = function () {
+            reject();
+        };
+        reader.readAsDataURL(file);
+    }));
 };
 // Thumb 128
-var ResizeBase64 = function (base64Str, maxSize) {
-    if (maxSize === void 0) { maxSize = 4096; }
-    var img = new Image();
+const ResizeBase64 = (base64Str, maxSize = 4096) => {
+    let img = new Image();
     img.src = base64Str;
-    var canvas = document.createElement('canvas');
-    var width = img.width;
-    var height = img.height;
+    let canvas = document.createElement('canvas');
+    let width = img.width;
+    let height = img.height;
     if (width > height) {
         if (width > maxSize) {
             height *= maxSize / width;
@@ -640,20 +545,20 @@ var ResizeBase64 = function (base64Str, maxSize) {
     }
     canvas.width = width;
     canvas.height = height;
-    var ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0, width, height);
     return canvas.toDataURL();
 };
 
-var Alert = function (props) {
+const Alert = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    var clearTime = React.useRef(setTimeout(function () {
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    const clearTime = React.useRef(setTimeout(() => {
     }, 100));
-    var isMounted = React.useRef(false);
-    var _c = React.useState(null), showState = _c[0], setShowState = _c[1];
-    var classes = (_b = showState === null || showState === void 0 ? void 0 : showState.className) !== null && _b !== void 0 ? _b : '';
-    classes += !!(showState === null || showState === void 0 ? void 0 : showState.color) ? " alert-" + (showState === null || showState === void 0 ? void 0 : showState.color) : '';
+    const isMounted = React.useRef(false);
+    const [showState, setShowState] = React.useState(null);
+    let classes = (_b = showState === null || showState === void 0 ? void 0 : showState.className) !== null && _b !== void 0 ? _b : '';
+    classes += !!(showState === null || showState === void 0 ? void 0 : showState.color) ? ` alert-${showState === null || showState === void 0 ? void 0 : showState.color}` : '';
     classes +=
         ' ' +
             ClassNames({
@@ -663,7 +568,7 @@ var Alert = function (props) {
                 'fade': true,
                 'show': !!props.isOpen
             });
-    React.useEffect(function () {
+    React.useEffect(() => {
         isMounted.current = true;
         if (!!props.isOpen) {
             setShowState(props);
@@ -671,199 +576,199 @@ var Alert = function (props) {
         else {
             if (showState === null || showState === void 0 ? void 0 : showState.isOpen) {
                 clearTimeout(clearTime.current);
-                clearTime.current = setTimeout(function () {
+                clearTime.current = setTimeout(() => {
                     if (isMounted.current) {
                         setShowState(null);
                     }
                 }, 1500);
             }
         }
-        return function () {
+        return () => {
             isMounted.current = false;
         };
     }, [props.isOpen]);
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className'), { className: classes.trim(), onClick: function () {
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className'), { className: classes.trim(), onClick: () => {
             if (!!props.toggle)
                 props.toggle();
         } }));
 };
 
-var Badge = function (props) {
+const Badge = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
-    var classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
-    classes += !!props.color ? " badge-" + props.color : '';
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
+    let classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
+    classes += !!props.color ? ` badge-${props.color}` : '';
     classes +=
         ' ' +
             ClassNames({
                 badge: true,
                 'badge-pill': !props.notPill
             });
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'notPill', 'className'), { className: classes.trim() }));
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'notPill', 'className'), { className: classes.trim() }));
 };
 
-var Spinner = function (props) {
-    var style = {};
+const Spinner = (props) => {
+    let style = {};
     if (!props.spin && !props.pulse) {
         style.animation = 'fa-spin 0.75s infinite linear';
     }
-    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ icon: faSpinnerThird.faSpinnerThird, style: style }, props));
+    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird, style: style }, props));
 };
 
 // noinspection SuspiciousTypeOfGuard
-var BadgeItem = function (props) {
+const BadgeItem = (props) => {
     var _a;
-    var showProps = intelliwaketsfoundation.OmitProperty(props, 'badge', 'alwaysShowValue');
-    return props.badge === null ? (React__default['default'].createElement(Badge, __assign({}, showProps, { color: "light", className: 'text-gray ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }),
-        React__default['default'].createElement(Spinner, null))) : (props.alwaysShowValue && props.badge !== undefined) || !!props.badge ? (React__default['default'].createElement(Badge, __assign({}, showProps), typeof props.badge === 'number' ? intelliwaketsfoundation.ToDigits(props.badge, 0) : props.badge)) : null;
+    const showProps = intelliwaketsfoundation.OmitProperty(props, 'badge', 'alwaysShowValue');
+    return props.badge === null ? (React__default['default'].createElement(Badge, Object.assign({}, showProps, { color: "light", className: 'text-gray ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }),
+        React__default['default'].createElement(Spinner, null))) : (props.alwaysShowValue && props.badge !== undefined) || !!props.badge ? (React__default['default'].createElement(Badge, Object.assign({}, showProps), typeof props.badge === 'number' ? intelliwaketsfoundation.ToDigits(props.badge, 0) : props.badge)) : null;
 };
 
-var Button = React.forwardRef(function (props, ref) {
+const Button = React.forwardRef((props, ref) => {
     var _a, _b, _c, _d, _e;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'button';
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'button';
     return (React__default['default'].createElement(TagToUse, { className: (_b = props.classNameOverride) !== null && _b !== void 0 ? _b : ((_c = props.className) !== null && _c !== void 0 ? _c : '') +
-            " btn " +
+            ` btn ` +
             (props.color === 'inline'
                 ? 'btn btn-link btn-link-inline '
-                : "btn-" + (props.outline ? 'outline-' : '') + ((_d = props.color) !== null && _d !== void 0 ? _d : 'secondary') + " ") +
+                : `btn-${props.outline ? 'outline-' : ''}${(_d = props.color) !== null && _d !== void 0 ? _d : 'secondary'} `) +
             (props.block
                 ? 'btn-block '
                 : '') +
             (props.active
                 ? 'active '
                 : '') +
-            ("" + (!!props.size ? "btn-" + props.size : '')) // +
+            `${!!props.size ? `btn-${props.size}` : ''}` // +
         , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: ref, to: props.to, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title, children: props.children }));
 });
 
-var ButtonGroup = function (props) {
+const ButtonGroup = (props) => {
     var _a;
-    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    let classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
     classes +=
         ' btn-group' +
             (!!props.vertical ? '-vertical' : '');
-    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'vertical', 'className'), { className: classes.trim() }));
+    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'vertical', 'className'), { className: classes.trim() }));
 };
 
-var ButtonToolbar = function (props) {
+const ButtonToolbar = (props) => {
     var _a;
-    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    let classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
     classes +=
         ' ' +
             ClassNames({
                 'btn-toolbar': true
             });
-    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
+    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
 };
 
-var BreadCrumb = function (props) {
+const BreadCrumb = (props) => {
     var _a, _b;
-    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    let classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
     classes +=
         ' breadcrumb';
-    var classesLI = (_b = props.classNameLI) !== null && _b !== void 0 ? _b : '';
+    let classesLI = (_b = props.classNameLI) !== null && _b !== void 0 ? _b : '';
     classesLI +=
         ' breadcrumb';
-    return React__default['default'].createElement("nav", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
+    return React__default['default'].createElement("nav", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
         React__default['default'].createElement("ol", { className: classesLI.trim(), children: props.children }));
 };
 
-var BreadCrumbItem = function (props) {
+const BreadCrumbItem = (props) => {
     var _a;
-    var classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
+    let classes = (_a = props.className) !== null && _a !== void 0 ? _a : '';
     classes +=
         ' breadcrumb-item'
             + (props.active ? ' active' : '');
-    return React__default['default'].createElement("li", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className', 'active'), { className: classes.trim() }));
+    return React__default['default'].createElement("li", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className', 'active'), { className: classes.trim() }));
 };
 
-var Card = React.forwardRef(function (props, ref) {
+const Card = React.forwardRef((props, ref) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim(), ref: ref }));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim(), ref: ref }));
 });
 
-var CardBody = function (props) {
+const CardBody = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-body " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-body ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardColumns = function (props) {
+const CardColumns = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-columns " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-columns ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardDeck = function (props) {
+const CardDeck = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-deck " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-deck ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardFooter = function (props) {
+const CardFooter = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-footer " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-footer ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardGroup = function (props) {
+const CardGroup = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-group " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardHeader = function (props) {
+const CardHeader = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-header " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-header ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardText = function (props) {
+const CardText = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-text " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var CardTitle = function (props) {
+const CardTitle = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("card-title " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-title ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var ApplyColumnProp = function (size, columnProps) {
+const ApplyColumnProp = (size, columnProps) => {
     if (!columnProps)
         return '';
-    var application = " col";
+    let application = ` col`;
     // if (size !== 'xs' || typeof columnProps === 'object') {
     if (size !== 'xs') {
-        application += "-" + size;
+        application += `-${size}`;
     }
     if (columnProps === true)
         return application;
     if (typeof columnProps === 'number' || typeof columnProps === 'string')
-        return application + "-" + columnProps;
+        return `${application}-${columnProps}`;
     if (typeof columnProps.size === 'number' || typeof columnProps.size === 'string') {
         if (columnProps.size !== 'xs') {
-            application += "-" + columnProps.size;
+            application += `-${columnProps.size}`;
         }
     }
     if (columnProps.offset !== undefined) {
         if (size === 'xs') {
-            application += " offset-" + columnProps.offset;
+            application += ` offset-${columnProps.offset}`;
         }
         else {
-            application += " offset-" + size + "-" + columnProps.offset;
+            application += ` offset-${size}-${columnProps.offset}`;
         }
     }
     if (columnProps.order !== undefined)
-        application += " order-" + columnProps.order;
+        application += ` order-${columnProps.order}`;
     return application;
 };
 
-var Col = function (props) {
+const Col = (props) => {
     var _a;
-    var classes = ("" + ((_a = props.className) !== null && _a !== void 0 ? _a : '')).trim();
+    let classes = `${(_a = props.className) !== null && _a !== void 0 ? _a : ''}`.trim();
     if (!props.xs && !props.sm && !props.md && !props.lg && !props.xl) {
         classes += ' col';
     }
@@ -872,30 +777,30 @@ var Col = function (props) {
     classes += ApplyColumnProp('md', props.md);
     classes += ApplyColumnProp('lg', props.lg);
     classes += ApplyColumnProp('xl', props.xl);
-    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children'), { className: classes.trim() }), props.children));
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children'), { className: classes.trim() }), props.children));
 };
 
-var Collapse = function (props) {
+const Collapse = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'isOpen', 'tag', 'navbar', 'className'), { className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') +
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'isOpen', 'tag', 'navbar', 'className'), { className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') +
             ' collapse' +
             (!!props.navbar ? ' navbar-collapse' : '') +
             (!!props.isOpen ? ' show' : '') })));
 };
 
-var Container = function (props) {
+const Container = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             container: !props.fluid,
             'container-fluid': !!props.fluid
-        })).trim() }), props.children));
+        })}`.trim() }), props.children));
 };
 
-var DropdownItem = function (props) {
+const DropdownItem = (props) => {
     var _a, _b, _c;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : (!!props.href ? 'a' : 'div');
-    var classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : (!!props.href ? 'a' : 'div');
+    let classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
     classes +=
         ' ' +
             ClassNames({
@@ -905,26 +810,24 @@ var DropdownItem = function (props) {
                 'active': !!props.active,
                 disabled: !!props.disabled
             });
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
         React__default['default'].createElement(Spinner, { fixedWidth: true }),
         " Loading...")))));
 };
 
-var Dropdown = function (props) {
+const Dropdown = (props) => {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    var hasOpened = React.useRef(false);
-    var _j = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false), isOpen = _j[0], setIsOpen = _j[1];
-    var visibleDDActions = React.useMemo(function () {
-        return !props.ddActions
-            ? []
-            : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(function (ddAction) { return !ddAction.hidden; });
-    }, [props.ddActions]);
-    var showFAProps = React.useMemo(function () { return !!visibleDDActions.find(function (ddAction) { return !!ddAction.faProps; }); }, [visibleDDActions]);
-    var TagToUse = ((_b = props.tag) !== null && _b !== void 0 ? _b : !!props.inNavbar) ? 'li' : 'div';
-    var isControlled = props.isOpen !== undefined;
-    var actualIsOpen = isControlled ? !!props.isOpen : isOpen;
+    const hasOpened = React.useRef(false);
+    const [isOpen, setIsOpen] = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false);
+    const visibleDDActions = React.useMemo(() => !props.ddActions
+        ? []
+        : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter((ddAction) => !ddAction.hidden), [props.ddActions]);
+    const showFAProps = React.useMemo(() => !!visibleDDActions.find((ddAction) => !!ddAction.faProps), [visibleDDActions]);
+    const TagToUse = ((_b = props.tag) !== null && _b !== void 0 ? _b : !!props.inNavbar) ? 'li' : 'div';
+    const isControlled = props.isOpen !== undefined;
+    const actualIsOpen = isControlled ? !!props.isOpen : isOpen;
     // console.log('DD', isControlled, actualIsOpen)
-    var externalClick = function (e) {
+    const externalClick = (e) => {
         if (actualIsOpen) {
             e.stopPropagation();
             if (!!props.toggle) {
@@ -935,7 +838,7 @@ var Dropdown = function (props) {
             }
         }
     };
-    var externalEsc = function (e) {
+    const externalEsc = (e) => {
         if (e.keyCode === KEY_ESCAPE && actualIsOpen) {
             e.stopPropagation();
             if (!!props.toggle) {
@@ -946,7 +849,7 @@ var Dropdown = function (props) {
             }
         }
     };
-    React.useEffect(function () {
+    React.useEffect(() => {
         // if (menuRef.current) {
         // 	console.log(1)
         // 	menuRef.current.addEventListener('resize', onResize)
@@ -956,15 +859,15 @@ var Dropdown = function (props) {
         // }
         window.addEventListener('click', externalClick);
         window.addEventListener('keydown', externalEsc);
-        return function () {
+        return () => {
             // menuRef.current.removeEventListener('resize', onResize)
             window.removeEventListener('click', externalClick);
             window.removeEventListener('keydown', externalEsc);
         };
     });
-    var classes = (_c = props.className) !== null && _c !== void 0 ? _c : '';
+    let classes = (_c = props.className) !== null && _c !== void 0 ? _c : '';
     if (!!props.direction)
-        classes += " drop" + props.direction;
+        classes += ` drop${props.direction}`;
     classes +=
         ' ' +
             ClassNames({
@@ -983,87 +886,87 @@ var Dropdown = function (props) {
     //onClick={(e: any) => e.stopPropagation()}
     if (!props.children && visibleDDActions.length === 0)
         return null;
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'className', 'menuStyle'), { className: classes }),
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'className', 'menuStyle'), { className: classes }),
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, className: !!props.nav || !!props.inNavbar
                 ? undefined
-                : (((_e = props.buttonClassName) !== null && _e !== void 0 ? _e : '') + " " + (props.noCaret ? '' : 'dropdown-toggle')).trim(), classNameOverride: !!props.nav || !!props.inNavbar
-                ? ("text-left nav-link " + ((_f = props.buttonClassName) !== null && _f !== void 0 ? _f : '') + " " + (props.noCaret ? '' : 'dropdown-toggle')).trim()
-                : undefined, onClick: function (e) {
+                : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim(), classNameOverride: !!props.nav || !!props.inNavbar
+                ? `text-left nav-link ${(_f = props.buttonClassName) !== null && _f !== void 0 ? _f : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+                : undefined, onClick: (e) => {
                 // e.stopPropagation()
                 if (!!props.toggle) {
                     props.toggle(e);
                 }
                 if (!isControlled) {
-                    setIsOpen(function (prevState) { return !prevState; });
+                    setIsOpen((prevState) => !prevState);
                 }
             }, style: !!props.nav || !!props.inNavbar ? { background: 'none', border: 'none' } : undefined }, (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog })),
-        React__default['default'].createElement("div", { tabIndex: -1, className: (ClassNames({
+        React__default['default'].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
                 'dropdown-menu-right': !!props.right
-            }) + " dropdown-menu " + ((_h = props.menuClassName) !== null && _h !== void 0 ? _h : '')).trim(), onClick: function (e) {
+            })} dropdown-menu ${(_h = props.menuClassName) !== null && _h !== void 0 ? _h : ''}`.trim(), onClick: (e) => {
                 e.stopPropagation();
                 if (!!props.toggle) {
                     props.toggle(e);
                 }
                 if (!isControlled) {
-                    setIsOpen(function (prevState) { return !prevState; });
+                    setIsOpen((prevState) => !prevState);
                 }
             }, style: props.menuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
-            visibleDDActions.map(function (ddAction, idx) {
+            visibleDDActions.map((ddAction, idx) => {
                 var _a;
-                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? " text-" + ddAction.color : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: function () { return (!!ddAction.action ? ddAction.action() : function () { }); } },
-                    showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
+                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: () => (!!ddAction.action ? ddAction.action() : () => { }) },
+                    showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
                     ddAction.title));
             }))))));
 };
 
-var Form = function (props) {
+const Form = (props) => {
     var _a;
-    return (React__default['default'].createElement("form", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'innerRef', 'inline', 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+    return (React__default['default'].createElement("form", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'innerRef', 'inline', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             form: true,
             'form-inline': !!props.inline
-        })).trim(), ref: props.innerRef }), props.children));
+        })}`.trim(), ref: props.innerRef }), props.children));
 };
 
-var FormFeedback = function (props) {
+const FormFeedback = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'valid', 'tag'), { className: (((_b = props.className) !== null && _b !== void 0 ? _b : '') + " " + ClassNames({
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'valid', 'tag'), { className: `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${ClassNames({
             'invalid-feedback': true,
             'd-none': !!props.valid
-        })).trim() })));
+        })}`.trim() })));
 };
 
-var FormGroup = function (props) {
+const FormGroup = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             'form-group': true
-        })).trim() }), props.children));
+        })}`.trim() }), props.children));
 };
 
-var InputGroup = function (props) {
+const InputGroup = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("input-group " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var InputGroupAddon = function (props) {
+const InputGroupAddon = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'addonType'), { className: ("input-group-" + props.addonType + " " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'addonType'), { className: `input-group-${props.addonType} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var InputGroupText = function (props) {
+const InputGroupText = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("input-group-text " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var Label = function (props) {
+const Label = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
-    var classes = ("" + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim();
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
+    let classes = `${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim();
     classes += ' col-form-label';
     if (props.check)
         classes += ' form-check-label';
@@ -1072,79 +975,77 @@ var Label = function (props) {
     classes += ApplyColumnProp('md', props.md);
     classes += ApplyColumnProp('lg', props.lg);
     classes += ApplyColumnProp('xl', props.xl);
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'className'), { className: classes.trim() }));
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'className'), { className: classes.trim() }));
 };
 
-var ListGroup = function (props) {
+const ListGroup = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'flush'), { className: (ClassNames({ 'list-group-flush': !!props.flush }) + " list-group " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'flush'), { className: `${ClassNames({ 'list-group-flush': !!props.flush })} list-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var ListGroupItem = function (props) {
+const ListGroupItem = (props) => {
     var _a, _b, _c;
-    var TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.onClick) ? 'button'
+    const TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.onClick)
+        ? 'button'
         : !!props.href
             ? 'a'
             : 'li';
-    return (React__default['default'].createElement(TagToUse, __assign({ type: !!props.onClick ? 'button' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: (ClassNames({
+    return (React__default['default'].createElement(TagToUse, Object.assign({ type: !!props.onClick ? 'button' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: `${ClassNames({
             active: !!props.active,
             disabled: !!props.disabled,
             'list-group-item-action': !!props.action
             // 'd-flex justify-content-between align-items-center': props.badge === null || !!props.badge
-        }) + " list-group-item" + (!!props.color ? " list-group-item-" + props.color : '') + " " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim(), disabled: !!props.onClick && props.disabled ? true : undefined }),
+        })} list-group-item${!!props.color ? ` list-group-item-${props.color}` : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim(), disabled: !!props.onClick && props.disabled ? true : undefined }),
         props.children,
         React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-right ' + ((_c = props.badgeClass) !== null && _c !== void 0 ? _c : ''), style: { marginTop: '0.2rem' } })));
 };
 
-var ListGroupItemHeading = function (props) {
+const ListGroupItemHeading = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("list-group-item-heading " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `list-group-item-heading ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var ListGroupItemText = function (props) {
+const ListGroupItemText = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: ("list-group-item-text " + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `list-group-item-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-var Portal = /** @class */ (function (_super) {
-    __extends(Portal, _super);
-    function Portal(props) {
-        var _this = _super.call(this, props) || this;
-        _this.el = document.createElement('div');
-        _this.el.style.display = 'contents';
-        return _this;
+class Portal extends React__default['default'].Component {
+    constructor(props) {
+        super(props);
+        this.el = document.createElement('div');
+        this.el.style.display = 'contents';
         // The <div> is a necessary container for our
         // content, but it should not affect our layout.
         // Only works in some browsers, but generally
         // doesn't matter since this is at
         // the end anyway. Feel free to delete this line.
     }
-    Portal.prototype.componentDidMount = function () {
+    componentDidMount() {
         document.body.appendChild(this.el);
-    };
-    Portal.prototype.componentWillUnmount = function () {
+    }
+    componentWillUnmount() {
         document.body.removeChild(this.el);
-    };
-    Portal.prototype.render = function () {
+    }
+    render() {
         return ReactDOM__default['default'].createPortal(this.props.children, this.el);
-    };
-    return Portal;
-}(React__default['default'].Component));
+    }
+}
 
-var Modal = function (props) {
+const Modal = (props) => {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    var divRef = React.useRef();
-    var toggle = React.useCallback(function (e) {
+    const divRef = React.useRef();
+    const toggle = React.useCallback((e) => {
         if (!!props.toggle && !props.noCancel) {
             props.toggle(e);
         }
     }, [props]);
-    var okAction = React.useCallback(function (e) {
+    const okAction = React.useCallback((e) => {
         if (!!props.okAction) {
-            var okResult = props.okAction();
+            const okResult = props.okAction();
             if (okResult === undefined || okResult !== false) {
                 if (!!props.toggle) {
                     props.toggle(e);
@@ -1152,7 +1053,7 @@ var Modal = function (props) {
             }
         }
     }, [props]);
-    var keyDown = function (e) {
+    const keyDown = (e) => {
         if (props.isOpen) {
             e.stopPropagation();
             switch (e.keyCode) {
@@ -1165,13 +1066,13 @@ var Modal = function (props) {
             }
         }
     };
-    React.useEffect(function () {
+    React.useEffect(() => {
         window.addEventListener('keydown', keyDown);
-        return function () {
+        return () => {
             window.removeEventListener('keydown', keyDown);
         };
     });
-    React.useEffect(function () {
+    React.useEffect(() => {
         var _a;
         if (props.isOpen) {
             if (!!((_a = props.autoFocusElement) === null || _a === void 0 ? void 0 : _a.current)) {
@@ -1186,27 +1087,27 @@ var Modal = function (props) {
         React__default['default'].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: "dialog", style: {
                 display: props.isOpen ? 'block' : 'none',
                 pointerEvents: props.isOpen ? undefined : 'none'
-            }, onClick: function (e) {
+            }, onClick: (e) => {
                 if (props.isOpen) {
                     e.stopPropagation();
                     toggle(e);
                 }
             }, onKeyDown: keyDown },
             React__default['default'].createElement("div", { className: ('modal-dialog' +
-                    (!props.size ? ' ' : " modal-" + props.size + " ") +
+                    (!props.size ? ' ' : ` modal-${props.size} `) +
                     ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: "document", style: props.dialogStyle },
-                React__default['default'].createElement("div", { className: "modal-content", onClick: function (e) { return e.stopPropagation(); } }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
-                    !!props.title && (React__default['default'].createElement("div", { className: "alert-" + ((_b = props.color) !== null && _b !== void 0 ? _b : 'primary') + " modal-header" },
+                React__default['default'].createElement("div", { className: "modal-content", onClick: (e) => e.stopPropagation() }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                    !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default['default'].createElement("h5", { className: "modal-title" }, props.title),
                         !props.noCancel && (React__default['default'].createElement("button", { className: "close", onClick: toggle },
                             "\u00D7",
                             ' ')))),
-                    React__default['default'].createElement("div", { className: 'modal-body ' + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: ("container " + (typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : '')).trim(), onSubmitCapture: function (e) {
+                    React__default['default'].createElement("div", { className: 'modal-body ' + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
                             e.preventDefault();
                             if (!props.okDisabled) {
                                 okAction(e);
                             }
-                        }, onKeyDown: function (e) {
+                        }, onKeyDown: (e) => {
                             if (e.keyCode === KEY_ENTER) {
                                 e.stopPropagation();
                             }
@@ -1219,37 +1120,37 @@ var Modal = function (props) {
                     (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: "modal-footer" },
                         React__default['default'].createElement("div", { className: "mr-auto" },
                             (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: " btn btn-link  ", type: "button", onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
-                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map(function (leftButton) { return (React__default['default'].createElement(Button, __assign({}, leftButton))); }),
+                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton) => (React__default['default'].createElement(Button, Object.assign({}, leftButton)))),
                             props.footerLeft),
                         React__default['default'].createElement("div", { className: "text-right" },
                             props.footerRight,
-                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map(function (rightButton) { return (React__default['default'].createElement(Button, __assign({}, rightButton))); }),
-                            !!props.okAction && (React__default['default'].createElement("button", { className: "ml-1 btn btn-" + ((_g = props.color) !== null && _g !== void 0 ? _g : 'primary'), type: "button", disabled: props.okDisabled, onClick: function (e) {
+                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton) => (React__default['default'].createElement(Button, Object.assign({}, rightButton)))),
+                            !!props.okAction && (React__default['default'].createElement("button", { className: `ml-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: "button", disabled: props.okDisabled, onClick: (e) => {
                                     e.stopPropagation();
                                     okAction(e);
                                 }, ref: divRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
         React__default['default'].createElement("div", { className: 'modal-backdrop fade' + (props.isOpen ? ' show' : ''), style: { pointerEvents: props.isOpen ? undefined : 'none' }, onClick: toggle })));
 };
 
-var ModalHeader = function (props) {
+const ModalHeader = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header ' + (!!props.color ? "alert-" + props.color + " " : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header ' + (!!props.color ? `alert-${props.color} ` : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
 };
 
-var ModalBody = function (props) {
+const ModalBody = (props) => {
     var _a;
-    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-body ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
+    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-body ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
 };
 
-var ModalFooter = function (props) {
+const ModalFooter = (props) => {
     var _a;
-    return React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-footer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
+    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-footer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
 };
 
-var Nav = function (props) {
+const Nav = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
-    var classes = ("" + ((_b = props.className) !== null && _b !== void 0 ? _b : '')).trim();
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
+    let classes = `${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim();
     classes +=
         ' ' +
             ClassNames({
@@ -1262,15 +1163,15 @@ var Nav = function (props) {
                 'flex-column': !!props.vertical,
                 'justify-content-center': !!props.horizontal
             });
-    return (React__default['default'].createElement(TagToUse, __assign({ role: !!props.tabs ? 'tablist' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tabs', 'pills', 'vertical', 'horizontal', 'justified', 'fill', 'navbar', 'card', 'tag', 'className'), { className: classes.trim() })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({ role: !!props.tabs ? 'tablist' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tabs', 'pills', 'vertical', 'horizontal', 'justified', 'fill', 'navbar', 'card', 'tag', 'className'), { className: classes.trim() })));
 };
 
-var Navbar = function (props) {
+const Navbar = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'nav';
-    var classes = (((_b = props.className) !== null && _b !== void 0 ? _b : '') + " navbar").trim();
-    classes += !!props.color ? " bg-" + props.color : '';
-    classes += !!props.expand ? " navbar-expand" + (typeof props.expand === 'string' ? "-" + props.expand : '') + " " : '';
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'nav';
+    let classes = `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} navbar`.trim();
+    classes += !!props.color ? ` bg-${props.color}` : '';
+    classes += !!props.expand ? ` navbar-expand${typeof props.expand === 'string' ? `-${props.expand}` : ''} ` : '';
     classes +=
         ' ' +
             ClassNames({
@@ -1279,42 +1180,42 @@ var Navbar = function (props) {
                 'fixed-top': !!props.fixed,
                 'sticky-top': !!props.sticky
             });
-    return (React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'light', 'dark', 'fixed', 'sticky', 'color', 'tag', 'expand', 'className'), { className: classes.trim() })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'light', 'dark', 'fixed', 'sticky', 'color', 'tag', 'expand', 'className'), { className: classes.trim() })));
 };
 
-var NavItem = function (props) {
+const NavItem = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'li';
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-item ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'li';
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-item ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
 };
 
-var NavLink = function (props) {
+const NavLink = (props) => {
     var _a, _b;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-link ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-link ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
 };
 
-var NavbarBrand = function (props) {
+const NavbarBrand = (props) => {
     var _a;
-    var TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
-    return React__default['default'].createElement(TagToUse, __assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag')));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag')));
 };
 
-var NavbarToggler = function (props) {
+const NavbarToggler = (props) => {
     var _a;
-    return (React__default['default'].createElement("button", __assign({}, props, { type: "button", "aria-label": "Toggle navigation", className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' navbar-toggler' }),
+    return (React__default['default'].createElement("button", Object.assign({}, props, { type: "button", "aria-label": "Toggle navigation", className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' navbar-toggler' }),
         React__default['default'].createElement("span", { className: "navbar-toggler-icon" })));
 };
 
-var Row = function (props) {
+const Row = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", __assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: (((_a = props.className) !== null && _a !== void 0 ? _a : '') + " " + ClassNames({
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             row: true,
             'no-gutters': !!props.noGutters
-        })).trim() }), props.children));
+        })}`.trim() }), props.children));
 };
 
-var setStorage = function (key, newValue, remember, defaultValue) {
+const setStorage = (key, newValue, remember, defaultValue) => {
     if (!!key) {
         switch (remember) {
             case 'local':
@@ -1346,27 +1247,28 @@ var setStorage = function (key, newValue, remember, defaultValue) {
         }
     }
 };
-var getStorage = function (key, remember, defaultValue) {
+const getStorage = (key, remember, defaultValue) => {
     var _a, _b, _c;
     if (!key)
         return defaultValue;
-    var newValue = (remember === 'local'
-        ? (_a = window.localStorage.getItem(key)) !== null && _a !== void 0 ? _a : defaultValue : remember === 'session'
-        ? (_b = window.sessionStorage.getItem(key)) !== null && _b !== void 0 ? _b : defaultValue : defaultValue);
+    let newValue = (remember === 'local'
+        ? (_a = window.localStorage.getItem(key)) !== null && _a !== void 0 ? _a : defaultValue
+        : remember === 'session'
+            ? (_b = window.sessionStorage.getItem(key)) !== null && _b !== void 0 ? _b : defaultValue
+            : defaultValue);
     if (!!newValue && typeof newValue === 'string' && newValue.startsWith('json:')) {
         return (_c = intelliwaketsfoundation.JSONStringToObject(newValue)) !== null && _c !== void 0 ? _c : newValue;
     }
     return newValue;
 };
-var useStorage = function (key, defaultValue, remember) {
+const useStorage = (key, defaultValue, remember = 'local') => {
     var _a, _b;
-    if (remember === void 0) { remember = 'local'; }
-    var _c = React.useState((_a = getStorage(key, remember, defaultValue)) !== null && _a !== void 0 ? _a : defaultValue), value = _c[0], setValue = _c[1];
-    var saveValue = React.useCallback(function (val) {
+    const [value, setValue] = React.useState((_a = getStorage(key, remember, defaultValue)) !== null && _a !== void 0 ? _a : defaultValue);
+    const saveValue = React.useCallback((val) => {
         if (typeof val === 'function') {
-            setValue(function (prevState) {
+            setValue((prevState) => {
                 if (!!key) {
-                    var newValue = val(getStorage(key, remember, prevState !== null && prevState !== void 0 ? prevState : defaultValue));
+                    const newValue = val(getStorage(key, remember, prevState !== null && prevState !== void 0 ? prevState : defaultValue));
                     setStorage(key, newValue, remember, defaultValue);
                     return newValue;
                 }
@@ -1382,8 +1284,8 @@ var useStorage = function (key, defaultValue, remember) {
             setValue(val);
         }
     }, []);
-    var currentValue = !!key ? (_b = getStorage(key, remember, defaultValue)) !== null && _b !== void 0 ? _b : value : value;
-    return [currentValue, saveValue, function () { return saveValue(defaultValue); }];
+    const currentValue = !!key ? (_b = getStorage(key, remember, defaultValue)) !== null && _b !== void 0 ? _b : value : value;
+    return [currentValue, saveValue, () => saveValue(defaultValue)];
 };
 
 /**
@@ -1402,9 +1304,9 @@ var useStorage = function (key, defaultValue, remember) {
  *
  * <ModalPrompt {...modalPromptProps} dismiss={setModalPromptProps} />
  */
-var ModalPrompt = function (props) {
+const ModalPrompt = (props) => {
     var _a, _b, _c, _d, _e;
-    var promptResponsesAsArray = React.useMemo(function () {
+    const promptResponsesAsArray = React.useMemo(() => {
         if (props.promptResponses === null || props.promptResponses === undefined)
             return [];
         if (props.promptResponses.constructor === Array) {
@@ -1414,41 +1316,40 @@ var ModalPrompt = function (props) {
             return [props.promptResponses];
         }
     }, [props.promptResponses]);
-    var title = React.useMemo(function () {
+    const title = React.useMemo(() => {
         if (typeof props.title !== 'string' || !props.variables)
             return props.title;
         return intelliwaketsfoundation.EvaluateString(props.title, props.variables);
     }, [props.title, props.variables]);
-    var messageBody = React.useMemo(function () {
+    const messageBody = React.useMemo(() => {
         if (typeof props.messageBody !== 'string' || !props.variables)
             return props.messageBody;
         return intelliwaketsfoundation.EvaluateString(props.messageBody, props.variables);
     }, [props.messageBody, props.variables]);
-    var isOpen = React.useMemo(function () {
-        return (!!props.promptOnly ||
-            (props.promptResponses !== null && props.promptResponses !== undefined) ||
-            (!!props.okLabel && !!props.okAction)) &&
-            !props.hidden;
-    }, [props.title, props.messageBody, props.promptResponses, props.okLabel, props.okAction, props.hidden]);
-    var dismiss = React.useCallback(function (canceled) {
+    const isOpen = React.useMemo(() => (!!props.promptOnly ||
+        (props.promptResponses !== null && props.promptResponses !== undefined) ||
+        (!!props.okLabel && !!props.okAction)) &&
+        !props.hidden, [props.title, props.messageBody, props.promptResponses, props.okLabel, props.okAction, props.hidden]);
+    const dismiss = React.useCallback((canceled) => {
         if (!!props.dismiss)
             props.dismiss(null, canceled);
         if (canceled && !!props.cancelAction)
             props.cancelAction();
     }, [props.dismiss, props.cancelAction]);
-    var okAction = function () {
+    const okAction = () => {
         !!props.okAction && props.okAction();
         dismiss(false);
     };
-    return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: function () { return dismiss(true); } },
+    return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true) },
         React__default['default'].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
         !!messageBody && React__default['default'].createElement(ModalBody, null, messageBody),
         React__default['default'].createElement(ModalFooter, null,
-            React__default['default'].createElement(Button, { type: "button", onClick: function () { return dismiss(true); }, outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
-                    ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary' : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
-            promptResponsesAsArray.map(function (promptResponse, idx) {
+            React__default['default'].createElement(Button, { type: "button", onClick: () => dismiss(true), outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+                    ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary'
+                    : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
+            promptResponsesAsArray.map((promptResponse, idx) => {
                 var _a, _b;
-                return (React__default['default'].createElement(Button, { key: idx, onClick: function () {
+                return (React__default['default'].createElement(Button, { key: idx, onClick: () => {
                         promptResponse.action();
                         dismiss(false);
                     }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', className: "ml-1" }, promptResponse.label));
@@ -1458,18 +1359,18 @@ var ModalPrompt = function (props) {
                 autoFocus: true, tabIndex: 0 }, props.okLabel)))));
 };
 
-var Tab = function (props) {
+const Tab = (props) => {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    var isChanging = React.useRef(false);
-    var loadedTabs = React.useRef([]);
-    var showTabs = props.tabs.filter(function (tab) { return !tab.hide; });
-    var defaultTab = (_a = showTabs.find(function (tab) { return !tab.disabled && (!props.openTab || tab.title === props.openTab); })) === null || _a === void 0 ? void 0 : _a.title;
-    var _j = useStorage(props.rememberKey, defaultTab !== null && defaultTab !== void 0 ? defaultTab : '', (_b = props.rememberType) !== null && _b !== void 0 ? _b : 'session'), openTab = _j[0], setOpenTab = _j[1];
-    var _k = React.useState(null), modalPromptProps = _k[0], setModalPromptProps = _k[1];
-    var actualOpenTab = (_c = showTabs.find(function (tab) { return !tab.disabled && tab.title === (!!props.setOpenTab ? props.openTab : openTab); })) === null || _c === void 0 ? void 0 : _c.title;
-    var setActualOpenTab = React.useCallback((_d = props.setOpenTab) !== null && _d !== void 0 ? _d : setOpenTab, [props, setOpenTab]);
-    var openTabChanged = React.useCallback((_e = props.openTabChanged) !== null && _e !== void 0 ? _e : (function () { }), [props]);
-    var changeOpenTab = React.useCallback(function (tabTitle) {
+    const isChanging = React.useRef(false);
+    const loadedTabs = React.useRef([]);
+    const showTabs = props.tabs.filter((tab) => !tab.hide);
+    const defaultTab = (_a = showTabs.find((tab) => !tab.disabled && (!props.openTab || tab.title === props.openTab))) === null || _a === void 0 ? void 0 : _a.title;
+    const [openTab, setOpenTab] = useStorage(props.rememberKey, defaultTab !== null && defaultTab !== void 0 ? defaultTab : '', (_b = props.rememberType) !== null && _b !== void 0 ? _b : 'session');
+    const [modalPromptProps, setModalPromptProps] = React.useState(null);
+    const actualOpenTab = (_c = showTabs.find((tab) => !tab.disabled && tab.title === (!!props.setOpenTab ? props.openTab : openTab))) === null || _c === void 0 ? void 0 : _c.title;
+    const setActualOpenTab = React.useCallback((_d = props.setOpenTab) !== null && _d !== void 0 ? _d : setOpenTab, [props, setOpenTab]);
+    const openTabChanged = React.useCallback((_e = props.openTabChanged) !== null && _e !== void 0 ? _e : (() => { }), [props]);
+    const changeOpenTab = React.useCallback((tabTitle) => {
         if (actualOpenTab !== tabTitle) {
             if (!props.isDirty) {
                 setActualOpenTab(tabTitle);
@@ -1481,7 +1382,7 @@ var Tab = function (props) {
                     messageBody: 'Are you sure you want to abandon changes?',
                     color: 'danger',
                     okLabel: 'Abandon',
-                    okAction: function () {
+                    okAction: () => {
                         setActualOpenTab(tabTitle);
                         openTabChanged(tabTitle);
                     }
@@ -1489,11 +1390,11 @@ var Tab = function (props) {
             }
         }
     }, [actualOpenTab, props.isDirty, setActualOpenTab, openTabChanged]);
-    React.useEffect(function () {
+    React.useEffect(() => {
         var _a;
         if (!actualOpenTab) {
             if (!isChanging.current) {
-                var gotoTab = (_a = showTabs.find(function (tab) { return !tab.disabled; })) === null || _a === void 0 ? void 0 : _a.title;
+                const gotoTab = (_a = showTabs.find((tab) => !tab.disabled)) === null || _a === void 0 ? void 0 : _a.title;
                 if (gotoTab) {
                     isChanging.current = true;
                     setActualOpenTab(gotoTab);
@@ -1504,27 +1405,27 @@ var Tab = function (props) {
         else {
             isChanging.current = false;
             if (!loadedTabs.current.includes(actualOpenTab))
-                loadedTabs.current = __spreadArrays(loadedTabs.current, [actualOpenTab]);
+                loadedTabs.current = [...loadedTabs.current, actualOpenTab];
         }
     }, [actualOpenTab, openTabChanged, setActualOpenTab, showTabs]);
     if (!actualOpenTab)
         return null;
     // "px-4 mt-3 mx-0 gray-tabs"
     // p-2 background-gray overflow-hidden
-    return (React__default['default'].createElement("div", { className: (props.className + " tabControlParent " + ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })).trim() },
-        React__default['default'].createElement(ModalPrompt, __assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
-        React__default['default'].createElement("ul", { className: "nav px-4 mt-3 mx-0 nav-" + ((_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs') }, showTabs.map(function (tab) { return (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
+    return (React__default['default'].createElement("div", { className: `${props.className} tabControlParent ${ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })}`.trim() },
+        React__default['default'].createElement(ModalPrompt, Object.assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
+        React__default['default'].createElement("ul", { className: `nav px-4 mt-3 mx-0 nav-${(_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs'}` }, showTabs.map((tab) => (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
             React__default['default'].createElement(Button, { color: "link", className: ClassNames({
                     'nav-link': true,
                     desktopOnly: true,
                     active: actualOpenTab === tab.title
-                }), disabled: !!tab.disabled, onClick: function () {
+                }), disabled: !!tab.disabled, onClick: () => {
                     if (!tab.hide && !tab.disabled) {
                         changeOpenTab(tab.title);
                     }
                 } },
-                !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
-                React__default['default'].createElement("span", { className: "desktopOnly" }, tab.title)))); })),
+                !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
+                React__default['default'].createElement("span", { className: "desktopOnly" }, tab.title)))))),
         React__default['default'].createElement("div", { className: ClassNames({
                 'tab-content': true,
                 'fill-height': !!((_h = props.fillHeight) !== null && _h !== void 0 ? _h : true),
@@ -1532,16 +1433,14 @@ var Tab = function (props) {
                 'border-right': !props.noPaneBorder,
                 'border-bottom': !props.noPaneBorder
             }) }, showTabs
-            .filter(function (tab) {
-            return !tab.hide &&
-                (!tab.loadedOnlyWhenActive || tab.title === actualOpenTab) &&
-                (!props.paneLoading ||
-                    props.paneLoading === 'All' ||
-                    tab.title === actualOpenTab ||
-                    (props.paneLoading === 'KeepOnceLoaded' &&
-                        loadedTabs.current.some(function (loadedTab) { return tab.title === loadedTab; })));
-        })
-            .map(function (tab) {
+            .filter((tab) => !tab.hide &&
+            (!tab.loadedOnlyWhenActive || tab.title === actualOpenTab) &&
+            (!props.paneLoading ||
+                props.paneLoading === 'All' ||
+                tab.title === actualOpenTab ||
+                (props.paneLoading === 'KeepOnceLoaded' &&
+                    loadedTabs.current.some((loadedTab) => tab.title === loadedTab))))
+            .map((tab) => {
             var _a, _b, _c, _d, _e;
             return (React__default['default'].createElement("div", { key: tab.title, className: ((_a = props.classNamePanes) !== null && _a !== void 0 ? _a : '') +
                     ' ' +
@@ -1558,9 +1457,9 @@ var Tab = function (props) {
         }))));
 };
 
-var Table = React.forwardRef(function (props, ref) {
+const Table = React.forwardRef((props, ref) => {
     var _a;
-    return (React__default['default'].createElement("table", __assign({ className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
+    return (React__default['default'].createElement("table", Object.assign({ className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
             ' ' +
             ClassNames({
                 table: true,
@@ -1580,15 +1479,15 @@ var Table = React.forwardRef(function (props, ref) {
 });
 
 function checkDeps(deps, name) {
-    var reactHookName = "React." + name.replace(/DeepCompare/, '');
+    const reactHookName = `React.${name.replace(/DeepCompare/, '')}`;
     if (!deps || deps.length === 0) {
-        throw new Error(name + " should not be used with no dependencies. Use " + reactHookName + " instead.");
+        throw new Error(`${name} should not be used with no dependencies. Use ${reactHookName} instead.`);
     }
 }
 function useDeepCompareMemoize(value) {
-    var ref = React__default['default'].useRef([]);
+    const ref = React__default['default'].useRef([]);
     if (!intelliwaketsfoundation.DeepEqual(value, ref.current)) {
-        ref.current = __assign({}, value);
+        ref.current = Object.assign({}, value);
     }
     return ref.current;
 }
@@ -1642,17 +1541,17 @@ function useDeepCompareMemo(factory, dependencies) {
     return React__default['default'].useMemo(factory, useDeepCompareMemoize(dependencies));
 }
 
-var initialActivityOverlayState = {
+const initialActivityOverlayState = {
     nestedCount: 0,
     lastStart: undefined
 };
-var AddActivityOverlay = function (prevState) {
+const AddActivityOverlay = (prevState) => {
     return {
         nestedCount: prevState.nestedCount + 1,
         lastStart: moment__default['default']()
     };
 };
-var RemoveActivityOverlay = function (prevState) {
+const RemoveActivityOverlay = (prevState) => {
     if (prevState.nestedCount < 1) {
         console.log('WARNING: Additional RemoveActivityOverlay called');
         return initialActivityOverlayState;
@@ -1665,12 +1564,12 @@ var RemoveActivityOverlay = function (prevState) {
 /**
  * An overlay with a black background and a spinner that covers the entire screen.
  */
-var ActivityOverlay = function (props) {
+const ActivityOverlay = (props) => {
     var _a;
     function resetActivityOverlay() {
         var _a;
         if (props.activityOverlayState.nestedCount > 0) {
-            var seconds = 5;
+            const seconds = 5;
             if (moment__default['default']().diff((_a = props.activityOverlayState.lastStart) !== null && _a !== void 0 ? _a : 0, 'seconds') >= seconds) {
                 props.resetActivityOverlay();
             }
@@ -1686,13 +1585,13 @@ var ActivityOverlay = function (props) {
 /**
  * An overlay with a white background and a spinner that covers the entire surface of it's parent component.
  */
-var ActivityOverlayControl = function (props) {
+const ActivityOverlayControl = (props) => {
     var _a;
     return props.show ? (React__default['default'].createElement("div", { className: "System_ActivityOverlay_Control" },
         React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '2x' }))) : null;
 };
 
-var initialSortProperties = {
+const initialSortProperties = {
     sort_column: null,
     sort_ascending: true,
     empty_to_bottom: true,
@@ -1700,28 +1599,26 @@ var initialSortProperties = {
     sort_ascending_2: true,
     empty_to_bottom_2: true
 };
-var SetSort = function (currentProperties, columnName, emptyToBottom, forceDirection) {
-    if (emptyToBottom === void 0) { emptyToBottom = true; }
-    if (forceDirection === void 0) { forceDirection = null; }
+const SetSort = (currentProperties, columnName, emptyToBottom = true, forceDirection = null) => {
     if (columnName === currentProperties.sort_column) {
-        return __assign(__assign({}, currentProperties), { sort_ascending: !currentProperties.sort_ascending });
+        return Object.assign(Object.assign({}, currentProperties), { sort_ascending: !currentProperties.sort_ascending });
     }
     else {
-        return __assign(__assign({}, currentProperties), { sort_column_2: currentProperties.sort_column, sort_ascending_2: currentProperties.sort_ascending, empty_to_bottom_2: currentProperties.empty_to_bottom, sort_column: columnName, sort_ascending: forceDirection === null ? true : forceDirection, empty_to_bottom: emptyToBottom });
+        return Object.assign(Object.assign({}, currentProperties), { sort_column_2: currentProperties.sort_column, sort_ascending_2: currentProperties.sort_ascending, empty_to_bottom_2: currentProperties.empty_to_bottom, sort_column: columnName, sort_ascending: forceDirection === null ? true : forceDirection, empty_to_bottom: emptyToBottom });
     }
 };
-var SortObjects = function (objects, sortProperties) {
+const SortObjects = (objects, sortProperties) => {
     if (sortProperties.sort_column !== null) {
-        return objects.sort(function (object_a, object_b) {
+        return objects.sort((object_a, object_b) => {
             var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
-            var emptyToBottom_1 = sortProperties.empty_to_bottom
+            const emptyToBottom_1 = sortProperties.empty_to_bottom
                 ? !!object_a[(_a = sortProperties.sort_column) !== null && _a !== void 0 ? _a : ''] && !object_b[(_b = sortProperties.sort_column) !== null && _b !== void 0 ? _b : '']
                     ? -1
                     : !object_a[(_c = sortProperties.sort_column) !== null && _c !== void 0 ? _c : ''] && !!object_b[(_d = sortProperties.sort_column) !== null && _d !== void 0 ? _d : '']
                         ? 1
                         : 0
                 : 0;
-            var comparison_1 = (isNaN(object_a[(_e = sortProperties.sort_column) !== null && _e !== void 0 ? _e : ''])
+            const comparison_1 = (isNaN(object_a[(_e = sortProperties.sort_column) !== null && _e !== void 0 ? _e : ''])
                 ? ((_g = object_a[(_f = sortProperties.sort_column) !== null && _f !== void 0 ? _f : '']) !== null && _g !== void 0 ? _g : '').localeCompare((_j = object_b[(_h = sortProperties.sort_column) !== null && _h !== void 0 ? _h : '']) !== null && _j !== void 0 ? _j : '', undefined, { sensitivity: 'base' })
                 : object_a[(_k = sortProperties.sort_column) !== null && _k !== void 0 ? _k : ''] - object_b[(_l = sortProperties.sort_column) !== null && _l !== void 0 ? _l : '']) *
                 (sortProperties.sort_ascending ? 1 : -1);
@@ -1729,14 +1626,14 @@ var SortObjects = function (objects, sortProperties) {
                 return emptyToBottom_1 || comparison_1;
             }
             else {
-                var emptyToBottom_2 = sortProperties.empty_to_bottom_2
+                const emptyToBottom_2 = sortProperties.empty_to_bottom_2
                     ? !!object_a[(_m = sortProperties.sort_column_2) !== null && _m !== void 0 ? _m : ''] && !object_b[(_o = sortProperties.sort_column_2) !== null && _o !== void 0 ? _o : '']
                         ? -1
                         : !object_a[(_p = sortProperties.sort_column_2) !== null && _p !== void 0 ? _p : ''] && !!object_b[(_q = sortProperties.sort_column_2) !== null && _q !== void 0 ? _q : '']
                             ? 1
                             : 0
                     : 0;
-                var comparison_2 = (isNaN(object_a[(_r = sortProperties.sort_column_2) !== null && _r !== void 0 ? _r : ''])
+                const comparison_2 = (isNaN(object_a[(_r = sortProperties.sort_column_2) !== null && _r !== void 0 ? _r : ''])
                     ? ((_t = object_a[(_s = sortProperties.sort_column_2) !== null && _s !== void 0 ? _s : '']) !== null && _t !== void 0 ? _t : '').localeCompare((_v = object_b[(_u = sortProperties.sort_column_2) !== null && _u !== void 0 ? _u : '']) !== null && _v !== void 0 ? _v : '', undefined, { sensitivity: 'base' })
                     : object_a[(_w = sortProperties.sort_column_2) !== null && _w !== void 0 ? _w : ''] - object_b[(_x = sortProperties.sort_column_2) !== null && _x !== void 0 ? _x : '']) *
                     (sortProperties.sort_ascending_2 ? 1 : -1);
@@ -1748,22 +1645,22 @@ var SortObjects = function (objects, sortProperties) {
         return objects;
     }
 };
-var FilterObjects = function (objects, filter) {
+const FilterObjects = (objects, filter) => {
     if (!filter)
         return objects;
-    var filterItems = filter
+    const filterItems = filter
         .split(' ')
-        .filter(function (filterItem) { return !!filterItem; })
-        .map(function (filterItem) { return filterItem.toString().toLowerCase(); });
-    return objects.filter(function (object) {
-        var values = Object.values(object).join('}{').toLowerCase();
-        return filterItems.length === filterItems.filter(function (filterItem) { return values.includes(filterItem); }).length;
+        .filter((filterItem) => !!filterItem)
+        .map((filterItem) => filterItem.toString().toLowerCase());
+    return objects.filter((object) => {
+        const values = Object.values(object).join('}{').toLowerCase();
+        return filterItems.length === filterItems.filter((filterItem) => values.includes(filterItem)).length;
     });
 };
 
-var ComputeValue = function (value, column, rowData, sumsInFooter) {
+const ComputeValue = (value, column, rowData, sumsInFooter) => {
     var _a, _b;
-    var computedValue = !!column.customWriter
+    const computedValue = !!column.customWriter
         ? column.customWriter(value)
         : !!column.customWriterFromRow
             ? column.customWriterFromRow(rowData)
@@ -1776,7 +1673,7 @@ var ComputeValue = function (value, column, rowData, sumsInFooter) {
     }
     return computedValue;
 };
-var FormatValue = function (value, column) {
+const FormatValue = (value, column) => {
     if (column.momentTSFormat) {
         if (value) {
             if (!isNaN(parseInt(value))) {
@@ -1789,36 +1686,30 @@ var FormatValue = function (value, column) {
     }
     return value;
 };
-var IsColumnEmpty = function (arrayData, fieldName) {
+const IsColumnEmpty = (arrayData, fieldName) => {
     if (!arrayData)
         return true;
-    return !arrayData.find(function (item) { var _a; return !!((_a = item[fieldName]) !== null && _a !== void 0 ? _a : null); });
+    return !arrayData.find((item) => { var _a; return !!((_a = item[fieldName]) !== null && _a !== void 0 ? _a : null); });
 };
-var ValidColumns = function (arrayData, arrayStructure) {
+const ValidColumns = (arrayData, arrayStructure) => {
     var _a;
-    return ((_a = arrayStructure.columns.filter(function (column) {
-        return (!column.hideOnEmpty || !IsColumnEmpty(arrayData, column.fieldName)) &&
-            (!column.hideOnFunction || column.hideOnFunction(arrayData));
-    })) !== null && _a !== void 0 ? _a : []);
+    return ((_a = arrayStructure.columns.filter((column) => (!column.hideOnEmpty || !IsColumnEmpty(arrayData, column.fieldName)) &&
+        (!column.hideOnFunction || column.hideOnFunction(arrayData)))) !== null && _a !== void 0 ? _a : []);
 };
-var StructuredArray = function (arrayData, arrayStructure) {
-    var structuredArray = [];
-    var sumsInFooter = {};
-    var validColumns = ValidColumns(arrayData, arrayStructure);
-    structuredArray.push(validColumns.map(function (column) { return column.title; }));
-    var _loop_1 = function (row) {
-        structuredArray.push(validColumns.map(function (column) { var _a; return FormatValue(ComputeValue((_a = row[column.fieldName]) !== null && _a !== void 0 ? _a : null, column, row, sumsInFooter), column); }));
-    };
-    for (var _i = 0, _a = arrayData !== null && arrayData !== void 0 ? arrayData : []; _i < _a.length; _i++) {
-        var row = _a[_i];
-        _loop_1(row);
+const StructuredArray = (arrayData, arrayStructure) => {
+    let structuredArray = [];
+    const sumsInFooter = {};
+    const validColumns = ValidColumns(arrayData, arrayStructure);
+    structuredArray.push(validColumns.map((column) => column.title));
+    for (const row of arrayData !== null && arrayData !== void 0 ? arrayData : []) {
+        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue(ComputeValue((_a = row[column.fieldName]) !== null && _a !== void 0 ? _a : null, column, row, sumsInFooter), column); }));
     }
     if (Object.keys(sumsInFooter).length > 0) {
-        structuredArray.push(validColumns.map(function (column) { var _a; return FormatValue((_a = sumsInFooter[column.fieldName]) !== null && _a !== void 0 ? _a : null, column); }));
+        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue((_a = sumsInFooter[column.fieldName]) !== null && _a !== void 0 ? _a : null, column); }));
     }
     return structuredArray;
 };
-var ScreenFormatValue = function (value, column) {
+const ScreenFormatValue = (value, column) => {
     if (column.toDigitsPrecision !== undefined) {
         if (column.dashIfBlank) {
             value = intelliwaketsfoundation.ToDigitsDash(value, column.toDigitsPrecision);
@@ -1846,82 +1737,70 @@ var ScreenFormatValue = function (value, column) {
     }
     return value;
 };
-var ColumnHeadClassNames = function (column, arrayStructure, otherClasses) {
-    if (otherClasses === void 0) { otherClasses = {}; }
-    return ColumnClassNames(column, __assign({ hoverAction: !!arrayStructure.sortable && !column.doNotSort }, otherClasses));
+const ColumnHeadClassNames = (column, arrayStructure, otherClasses = {}) => {
+    return ColumnClassNames(column, Object.assign({ hoverAction: !!arrayStructure.sortable && !column.doNotSort }, otherClasses));
 };
-var ColumnBodyClassNames = function (column, otherClasses) {
-    if (otherClasses === void 0) { otherClasses = {}; }
-    return ColumnClassNames(column, __assign({ small: !!column.bodySmall }, otherClasses));
+const ColumnBodyClassNames = (column, otherClasses = {}) => {
+    return ColumnClassNames(column, Object.assign({ small: !!column.bodySmall }, otherClasses));
 };
-var ColumnClassNames = function (column, otherClasses) {
+const ColumnClassNames = (column, otherClasses = {}) => {
     var _a;
-    var _b;
-    if (otherClasses === void 0) { otherClasses = {}; }
-    return ClassNames(__assign((_a = { 'text-right': column.toDigitsPrecision !== undefined ||
-                column.toCurrencyPrecision !== undefined ||
-                column.momentTSFormat !== undefined }, _a['td-' + ((_b = column.size) !== null && _b !== void 0 ? _b : '')] = !!column.size, _a), otherClasses));
+    return ClassNames(Object.assign({ 'text-right': column.toDigitsPrecision !== undefined ||
+            column.toCurrencyPrecision !== undefined ||
+            column.momentTSFormat !== undefined, ['td-' + ((_a = column.size) !== null && _a !== void 0 ? _a : '')]: !!column.size }, otherClasses));
 };
-var ColumnHeaderClick = function (column, arrayStructure, sorter, setSorter) {
+const ColumnHeaderClick = (column, arrayStructure, sorter, setSorter) => {
     if (!!arrayStructure.sortable && !column.doNotSort) {
-        var newSort = SetSort(sorter, column.fieldName);
+        const newSort = SetSort(sorter, column.fieldName);
         setSorter(newSort);
     }
 };
-var WriteHeadTR = function (arrayStructure, validColumns, hideCosts, sorter, setSorter) {
-    return (React__default['default'].createElement("tr", { className: "table-secondary" }, validColumns.map(function (column, idx) {
-        return !hideCosts || !column.isACost ? (React__default['default'].createElement("th", { key: idx, className: ColumnHeadClassNames(column, arrayStructure), onClick: function () {
-                ColumnHeaderClick(column, arrayStructure, sorter, setSorter);
-            } }, column.title)) : null;
-    })));
+const WriteHeadTR = (arrayStructure, validColumns, hideCosts, sorter, setSorter) => {
+    return (React__default['default'].createElement("tr", { className: "table-secondary" }, validColumns.map((column, idx) => !hideCosts || !column.isACost ? (React__default['default'].createElement("th", { key: idx, className: ColumnHeadClassNames(column, arrayStructure), onClick: () => {
+            ColumnHeaderClick(column, arrayStructure, sorter, setSorter);
+        } }, column.title)) : null)));
 };
-var WriteBodyTR = function (rowData, idx, arrayStructure, validColumns, hideCosts, sumsInFooter) {
-    return (React__default['default'].createElement("tr", { key: idx, onClick: function () {
+const WriteBodyTR = (rowData, idx, arrayStructure, validColumns, hideCosts, sumsInFooter) => {
+    return (React__default['default'].createElement("tr", { key: idx, onClick: () => {
             if (!!arrayStructure.rowClick)
                 arrayStructure.rowClick(rowData);
-        } }, validColumns.map(function (column, idx) { var _a; return WriteBodyTD((_a = rowData[column.fieldName]) !== null && _a !== void 0 ? _a : undefined, column, hideCosts, rowData, sumsInFooter, idx); })));
+        } }, validColumns.map((column, idx) => { var _a; return WriteBodyTD((_a = rowData[column.fieldName]) !== null && _a !== void 0 ? _a : undefined, column, hideCosts, rowData, sumsInFooter, idx); })));
 };
-var WriteBodyTD = function (columnValue, column, hideCosts, rowData, sumsInFooter, idx) {
+const WriteBodyTD = (columnValue, column, hideCosts, rowData, sumsInFooter, idx) => {
     if (!hideCosts || !column.isACost) {
-        var computedValue = ComputeValue(columnValue, column, rowData, sumsInFooter);
-        var formattedValue = ScreenFormatValue(computedValue, column);
+        const computedValue = ComputeValue(columnValue, column, rowData, sumsInFooter);
+        const formattedValue = ScreenFormatValue(computedValue, column);
         return (React__default['default'].createElement("td", { key: idx, className: ColumnBodyClassNames(column) }, formattedValue));
     }
     else {
         return null;
     }
 };
-var WriteFootTR = function (validColumns, sums, hideCosts) {
-    return (React__default['default'].createElement("tr", { className: "border-top" }, validColumns.map(function (column, idx) {
-        return !hideCosts || !column.isACost ? (React__default['default'].createElement("th", { key: idx, className: ColumnClassNames(column, {
-                'border-0': true
-            }) }, sums[column.fieldName] === undefined ? null : ScreenFormatValue(sums[column.fieldName], column))) : null;
-    })));
+const WriteFootTR = (validColumns, sums, hideCosts) => {
+    return (React__default['default'].createElement("tr", { className: "border-top" }, validColumns.map((column, idx) => !hideCosts || !column.isACost ? (React__default['default'].createElement("th", { key: idx, className: ColumnClassNames(column, {
+            'border-0': true
+        }) }, sums[column.fieldName] === undefined ? null : ScreenFormatValue(sums[column.fieldName], column))) : null)));
 };
 
-var ArrayTable = function (props) {
-    var _a;
-    var _b, _c, _d;
-    var _e = React.useState(__assign(__assign({}, initialSortProperties), { sort_column: (_b = props.arrayStructure.defaultSortColumn) !== null && _b !== void 0 ? _b : null })), sorter = _e[0], setSorter = _e[1];
-    var sumsInFooter = {};
-    var validColumns = ValidColumns(props.arrayData, props.arrayStructure);
-    var styleSettings = {};
+const ArrayTable = (props) => {
+    var _a, _b, _c;
+    const [sorter, setSorter] = React.useState(Object.assign(Object.assign({}, initialSortProperties), { sort_column: (_a = props.arrayStructure.defaultSortColumn) !== null && _a !== void 0 ? _a : null }));
+    const sumsInFooter = {};
+    const validColumns = ValidColumns(props.arrayData, props.arrayStructure);
+    let styleSettings = {};
     if (props.minWidth) {
         styleSettings.minWidth = props.minWidth;
     }
-    return (React__default['default'].createElement(Table, { size: "sm", bordered: props.bordered, className: ClassNames((_a = {
-                'table-scrollable': !!props.scrollable
-            },
-            _a[(_c = 'table-col-min-' + props.arrayStructure.minColSize) !== null && _c !== void 0 ? _c : ''] = !!props.arrayStructure.minColSize,
-            _a)), style: styleSettings, hover: !!props.arrayStructure.rowClick },
+    return (React__default['default'].createElement(Table, { size: "sm", bordered: props.bordered, className: ClassNames({
+            'table-scrollable': !!props.scrollable,
+            [(_b = 'table-col-min-' + props.arrayStructure.minColSize) !== null && _b !== void 0 ? _b : '']: !!props.arrayStructure.minColSize
+        }), style: styleSettings, hover: !!props.arrayStructure.rowClick },
         React__default['default'].createElement("thead", null, WriteHeadTR(props.arrayStructure, validColumns, !!props.hideCosts, sorter, setSorter)),
-        React__default['default'].createElement("tbody", null, SortObjects((_d = props.arrayData) !== null && _d !== void 0 ? _d : [], sorter).map(function (row, idx) {
-            return WriteBodyTR(row, idx, props.arrayStructure, validColumns, !!props.hideCosts, sumsInFooter);
-        })),
+        React__default['default'].createElement("tbody", null, SortObjects((_c = props.arrayData) !== null && _c !== void 0 ? _c : [], sorter).map((row, idx) => WriteBodyTR(row, idx, props.arrayStructure, validColumns, !!props.hideCosts, sumsInFooter))),
         Object.keys(sumsInFooter).length > 0 ? (React__default['default'].createElement("tfoot", null, WriteFootTR(validColumns, sumsInFooter, !!props.hideCosts))) : null));
 };
 
-var BRAfter = function (props) {
+const BRAfter = (props) => {
     if (props.hidden || !props.text)
         return null;
     return (React__default['default'].createElement("span", { className: props.className },
@@ -1932,7 +1811,7 @@ var BRAfter = function (props) {
         React__default['default'].createElement("br", null)));
 };
 
-var BRBefore = function (props) {
+const BRBefore = (props) => {
     if (props.hidden || !props.text)
         return null;
     return (React__default['default'].createElement("span", { className: props.className },
@@ -1943,51 +1822,51 @@ var BRBefore = function (props) {
         props.suffix));
 };
 
-var customRangeName = 'Custom Range';
-var CreateCustomDateRange = function (dateStart, dateEnd) {
+const customRangeName = 'Custom Range';
+const CreateCustomDateRange = (dateStart, dateEnd) => {
     return {
         name: customRangeName,
         start: DateRangeDateMomentToString(dateStart),
         end: DateRangeDateMomentToString(dateEnd)
     };
 };
-var DateRangeDateMomentToString = function (date) { var _a; return typeof date === 'string' ? date : (_a = intelliwaketsfoundation.MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
-var DateRangeDateStringToMoment = function (date) { var _a; return typeof date === 'string' ? (_a = intelliwaketsfoundation.MomentFromString(date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
-var DateRangeToMoment = function (dateRange) { return ({
+const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = intelliwaketsfoundation.MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
+const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = intelliwaketsfoundation.MomentFromString(date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
+const DateRangeToMoment = (dateRange) => ({
     name: dateRange.name,
     start: DateRangeDateStringToMoment(dateRange.start),
     end: DateRangeDateStringToMoment(dateRange.end)
-}); };
-var DateRangeToString = function (dateRange) { return ({
+});
+const DateRangeToString = (dateRange) => ({
     name: dateRange.name,
     start: DateRangeDateMomentToString(dateRange.start),
     end: DateRangeDateMomentToString(dateRange.end)
-}); };
-var initialDateRange = {
+});
+const initialDateRange = {
     name: customRangeName,
     start: moment__default['default'](),
     end: moment__default['default']()
 };
-var initialDateRangeString = DateRangeToString(initialDateRange);
-var DateRangeCalendar = function (props) {
-    var moments = [];
-    var firstDay = props.month.clone().startOf('month');
-    var currentDay = firstDay.clone().startOf('week');
-    var lastDay = props.month.clone().endOf('month');
+const initialDateRangeString = DateRangeToString(initialDateRange);
+const DateRangeCalendar = (props) => {
+    let moments = [];
+    let firstDay = props.month.clone().startOf('month');
+    let currentDay = firstDay.clone().startOf('week');
+    let lastDay = props.month.clone().endOf('month');
     while (currentDay.isBefore(lastDay)) {
-        var week = [];
+        let week = [];
         do {
             week.push(currentDay.clone());
             currentDay.add(1, 'day');
         } while (currentDay.weekday() > 0);
         moments.push(week);
     }
-    var prev = function () {
+    const prev = () => {
         if (props.prevMonth) {
             props.prevMonth();
         }
     };
-    var next = function () {
+    const next = () => {
         if (props.nextMonth) {
             props.nextMonth();
         }
@@ -2016,34 +1895,30 @@ var DateRangeCalendar = function (props) {
                 React__default['default'].createElement("th", null, "Th"),
                 React__default['default'].createElement("th", null, "Fr"),
                 React__default['default'].createElement("th", null, "Sa"))),
-        React__default['default'].createElement("tbody", null, moments.map(function (week, idx) {
-            return React__default['default'].createElement("tr", { key: idx }, week.map(function (day) {
-                return React__default['default'].createElement("td", { className: (day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
-                        ((day.isBefore(firstDay, 'day') || day.isAfter(lastDay, 'day')) && !day.isBetween(props.startSelected, props.endSelected, 'day', '[]') ? 'off ends ' : '') +
-                        (day.isSame(props.startSelected, 'day') ? 'active start-date ' : '') +
-                        (day.isBetween(props.startSelected, props.endSelected, 'day') ? 'in-range ' : '') +
-                        (day.isSame(props.endSelected, 'day') ? 'active end-date ' : '') +
-                        'available ', key: day.format(), onClick: function () { return props.dateClick(day); } }, day.format('D'));
-            }));
-        }))));
+        React__default['default'].createElement("tbody", null, moments.map((week, idx) => React__default['default'].createElement("tr", { key: idx }, week.map((day) => React__default['default'].createElement("td", { className: (day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
+                ((day.isBefore(firstDay, 'day') || day.isAfter(lastDay, 'day')) && !day.isBetween(props.startSelected, props.endSelected, 'day', '[]') ? 'off ends ' : '') +
+                (day.isSame(props.startSelected, 'day') ? 'active start-date ' : '') +
+                (day.isBetween(props.startSelected, props.endSelected, 'day') ? 'in-range ' : '') +
+                (day.isSame(props.endSelected, 'day') ? 'active end-date ' : '') +
+                'available ', key: day.format(), onClick: () => props.dateClick(day) }, day.format('D'))))))));
 };
-var DateRange = function (props) {
+const DateRange = (props) => {
     var _a;
-    var nodeParent = React.useRef();
-    var nodeBody = React.useRef();
-    var getStartRange = function () {
+    const nodeParent = React.useRef();
+    const nodeBody = React.useRef();
+    const getStartRange = () => {
         if (props.defaultRange && props.defaultRange.name) {
             if (props.defaultRange.name === customRangeName) {
                 return DateRangeToMoment(props.defaultRange);
             }
             if (!!props.presetRanges) {
-                var presetRanges = props.presetRanges.map(function (range) { return DateRangeToMoment(range); });
+                const presetRanges = props.presetRanges.map(range => DateRangeToMoment(range));
                 if (presetRanges.length > 0) {
-                    var foundItem = presetRanges.find(function (item) { return props.defaultRange.name === item.name; });
+                    const foundItem = presetRanges.find((item) => props.defaultRange.name === item.name);
                     if (foundItem) {
                         return foundItem;
                     }
-                    var foundItemStartsWith = presetRanges.find(function (item) { return item.name.startsWith(props.defaultRange.name); });
+                    const foundItemStartsWith = presetRanges.find((item) => item.name.startsWith(props.defaultRange.name));
                     if (foundItemStartsWith) {
                         return foundItemStartsWith;
                     }
@@ -2054,7 +1929,7 @@ var DateRange = function (props) {
             return DateRangeToMoment(props.presetRanges[0]);
         return initialDateRange;
     };
-    var _b = React.useState({
+    const [state, setState] = React.useState({
         isOpen: false,
         selectedRange: getStartRange(),
         selectedText: '',
@@ -2062,51 +1937,50 @@ var DateRange = function (props) {
         customRange: initialDateRange,
         monthToShow: getStartRange().start,
         applyToFirst: true
-    }), state = _b[0], setState = _b[1];
-    var getCurrentRange = function () {
+    });
+    const getCurrentRange = () => {
         if (state.selectedRange)
             return state.selectedRange;
         return getStartRange();
     };
-    var currentRange = getCurrentRange();
-    var rangeDescription = function (range) {
+    const currentRange = getCurrentRange();
+    const rangeDescription = (range) => {
         return (range.name === customRangeName ? (moment__default['default'](range.start).format('L') + ' - ' + moment__default['default'](range.end).format('L')) : range.name);
     };
-    var setOpen = function (e) {
+    const setOpen = (e) => {
         if (!nodeBody.current.contains(e.target)) {
-            setState(__assign(__assign({}, state), { isOpen: true }));
+            setState(Object.assign(Object.assign({}, state), { isOpen: true }));
         }
     };
-    var handleClick = function (e) {
+    const handleClick = (e) => {
         if (!nodeParent.current.contains(e.target)) {
-            setState(__assign(__assign({}, state), { isOpen: false }));
+            setState(Object.assign(Object.assign({}, state), { isOpen: false }));
         }
     };
-    var handlePresetClick = function (range) {
-        setState(__assign(__assign({}, state), { isOpen: false, selectedRange: range }));
+    const handlePresetClick = (range) => {
+        setState(Object.assign(Object.assign({}, state), { isOpen: false, selectedRange: range }));
         if (!!props.selectRange)
             props.selectRange(range);
         if (!!props.selectRangeString)
             props.selectRangeString(DateRangeToString(range));
     };
-    var handleCustomApplyClick = function () {
-        setState(__assign(__assign({}, state), { isOpen: false, selectedRange: state.customRange }));
+    const handleCustomApplyClick = () => {
+        setState(Object.assign(Object.assign({}, state), { isOpen: false, selectedRange: state.customRange }));
         if (!!props.selectRange)
             props.selectRange(state.customRange);
         if (!!props.selectRangeString)
             props.selectRangeString(DateRangeToString(state.customRange));
     };
-    var handleCustomClick = function () {
-        var customRange = __assign(__assign({}, getCurrentRange()), { name: customRangeName });
-        setState(__assign(__assign({}, state), { prevPreset: currentRange, customRange: customRange }));
+    const handleCustomClick = () => {
+        const customRange = Object.assign(Object.assign({}, getCurrentRange()), { name: customRangeName });
+        setState(Object.assign(Object.assign({}, state), { prevPreset: currentRange, customRange: customRange }));
     };
-    var handleUnCustomClick = function () {
-        var customRange = __assign(__assign({}, getCurrentRange()), { name: customRangeName });
-        setState(__assign(__assign({}, state), { prevPreset: null, customRange: customRange }));
+    const handleUnCustomClick = () => {
+        const customRange = Object.assign(Object.assign({}, getCurrentRange()), { name: customRangeName });
+        setState(Object.assign(Object.assign({}, state), { prevPreset: null, customRange: customRange }));
     };
-    var handleDateClick = function (day) {
-        var _a;
-        var newState = __assign({}, state);
+    const handleDateClick = (day) => {
+        let newState = Object.assign({}, state);
         if (newState.applyToFirst) {
             newState.customRange.start = day;
         }
@@ -2114,28 +1988,28 @@ var DateRange = function (props) {
             newState.customRange.end = day;
         }
         if (newState.customRange.start.isAfter(newState.customRange.end)) {
-            _a = [newState.customRange.end, newState.customRange.start], newState.customRange.start = _a[0], newState.customRange.end = _a[1];
+            [newState.customRange.start, newState.customRange.end] = [newState.customRange.end, newState.customRange.start];
         }
         newState.applyToFirst = !newState.applyToFirst;
         setState(newState);
     };
-    var prevMonth = function () {
-        var prev = state.monthToShow.clone().subtract(1, 'month');
-        setState(__assign(__assign({}, state), { monthToShow: prev }));
+    const prevMonth = () => {
+        const prev = state.monthToShow.clone().subtract(1, 'month');
+        setState(Object.assign(Object.assign({}, state), { monthToShow: prev }));
     };
-    var nextMonth = function () {
-        var next = state.monthToShow.clone().add(1, 'month');
-        setState(__assign(__assign({}, state), { monthToShow: next }));
+    const nextMonth = () => {
+        const next = state.monthToShow.clone().add(1, 'month');
+        setState(Object.assign(Object.assign({}, state), { monthToShow: next }));
     };
-    React.useEffect(function () {
+    React.useEffect(() => {
         document.addEventListener('mousedown', handleClick);
-        return function () {
+        return () => {
             document.removeEventListener('mousedown', handleClick);
         };
     });
-    React.useEffect(function () {
+    React.useEffect(() => {
         if (!!props.defaultRange) {
-            setState(__assign(__assign({}, state), { selectedRange: DateRangeToMoment(props.defaultRange) }));
+            setState(Object.assign(Object.assign({}, state), { selectedRange: DateRangeToMoment(props.defaultRange) }));
         }
     }, [props.defaultRange]);
     return (React__default['default'].createElement("div", { className: 'DateRangeDD ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : ''), onClick: setOpen, ref: nodeParent, color: props.color },
@@ -2146,9 +2020,7 @@ var DateRange = function (props) {
         React__default['default'].createElement("div", { className: ClassNames({ DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen }), ref: nodeBody },
             React__default['default'].createElement("div", { className: 'ranges' + (state.prevPreset ? ' d-none' : '') },
                 React__default['default'].createElement("ul", null,
-                    props.presetRanges.map(function (preset, idx) {
-                        return React__default['default'].createElement("li", { key: idx, onClick: function () { return handlePresetClick(preset); }, className: (preset.name === currentRange.name ? 'active' : '') }, preset.name);
-                    }),
+                    props.presetRanges.map((preset, idx) => React__default['default'].createElement("li", { key: idx, onClick: () => handlePresetClick(preset), className: (preset.name === currentRange.name ? 'active' : '') }, preset.name)),
                     React__default['default'].createElement("li", { onClick: handleCustomClick },
                         customRangeName,
                         React__default['default'].createElement("span", { className: "float-right" }, ">")))),
@@ -2161,7 +2033,7 @@ var DateRange = function (props) {
                 React__default['default'].createElement("span", { className: "drp-selected" }, rangeDescription(state.customRange)),
                 React__default['default'].createElement("button", { className: "btn btn-sm btn-primary", type: "button", onClick: handleCustomApplyClick }, "Apply")))));
 };
-var defaultRanges = [
+const defaultRanges = [
     {
         name: 'This Week #' + moment__default['default']().format('w'),
         start: moment__default['default']().startOf('week'),
@@ -2198,8 +2070,8 @@ var defaultRanges = [
         end: moment__default['default']().endOf('day')
     }
 ];
-var defaultRangeStrings = defaultRanges.map(function (range) { return DateRangeToString(range); });
-var defaultRangesReport = [
+const defaultRangeStrings = defaultRanges.map(range => DateRangeToString(range));
+const defaultRangesReport = [
     {
         name: 'This Week',
         start: moment__default['default']().startOf('week'),
@@ -2231,8 +2103,8 @@ var defaultRangesReport = [
         end: moment__default['default']().subtract(1, 'year').endOf('year')
     }
 ];
-var defaultRangeStringsReport = defaultRangesReport.map(function (range) { return DateRangeToString(range); });
-var defaultRangesReportQuarterly = [
+const defaultRangeStringsReport = defaultRangesReport.map(range => DateRangeToString(range));
+const defaultRangesReportQuarterly = [
     {
         name: 'This Month',
         start: moment__default['default']().startOf('month'),
@@ -2284,13 +2156,13 @@ var defaultRangesReportQuarterly = [
         end: moment__default['default']().subtract(1, 'year').endOf('year')
     }
 ];
-var defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(function (range) { return DateRangeToString(range); });
+const defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(range => DateRangeToString(range));
 /**
  * Default to this month
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-var defaultRange = {
+const defaultRange = {
     name: 'This Month',
     start: moment__default['default']().startOf('month'),
     end: moment__default['default']().endOf('month')
@@ -2300,7 +2172,7 @@ var defaultRange = {
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it
  */
-var defaultRangeWeek = {
+const defaultRangeWeek = {
     name: 'This Week',
     start: moment__default['default']().startOf('week'),
     end: moment__default['default']().endOf('week')
@@ -2310,7 +2182,7 @@ var defaultRangeWeek = {
  *
  * Use DateRangeToString(defaultRangeLast4Weeks) to get a string of it
  */
-var defaultRangeLast4Weeks = {
+const defaultRangeLast4Weeks = {
     name: 'Last 4 Weeks',
     start: moment__default['default']().subtract(3, 'week').startOf('week'),
     end: moment__default['default']().endOf('week')
@@ -2320,19 +2192,19 @@ var defaultRangeLast4Weeks = {
  *
  * Use DateRangeToString(defaultRangeYear) to get a string of it
  */
-var defaultRangeYear = {
+const defaultRangeYear = {
     name: 'Year-to-Date',
     start: moment__default['default']().startOf('year'),
     end: moment__default['default']().endOf('year')
 };
-var defaultRangeString = DateRangeToString(defaultRange);
+const defaultRangeString = DateRangeToString(defaultRange);
 // DateRange.defaultProps = {
 // 	presetRanges: defaultRanges,
 // 	showCaret: true,
 // 	borderless: false
 // } as Partial<IPropsDateRange>
 
-var EllipsesTruncate = function (props) {
+const EllipsesTruncate = (props) => {
     var _a;
     if (props.hidden || !props.text)
         return null;
@@ -2344,7 +2216,7 @@ var EllipsesTruncate = function (props) {
 
 function InputCheckBox(props) {
     var _a;
-    var handleInputChange = function (e) {
+    const handleInputChange = (e) => {
         e.target.value = e.target.checked.toString();
         e.target.customValue = e.target.checked;
         if (!!props.onChange) {
@@ -2355,28 +2227,28 @@ function InputCheckBox(props) {
         }
     };
     return (React__default['default'].createElement("label", { className: !props.plainText ? 'cursor-pointer' : '' },
-        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'inputCheckbox mr-1 ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : function () {
+        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'inputCheckbox mr-1 ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : () => {
             }, disabled: props.plainText, onClick: props.onClick }),
         props.label));
 }
 
-var ReduceInputProps = function (props, classNameAdd) {
+const ReduceInputProps = (props, classNameAdd) => {
     var _a, _b, _c;
-    var subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef');
+    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
-            subset.className = (((_a = subset.className) !== null && _a !== void 0 ? _a : '') + " " + classNameAdd).trim();
+            subset.className = `${(_a = subset.className) !== null && _a !== void 0 ? _a : ''} ${classNameAdd}`.trim();
         }
         else if (Array.isArray(classNameAdd)) {
-            subset.className = (((_b = subset.className) !== null && _b !== void 0 ? _b : '') + " " + classNameAdd.join(' ')).trim();
+            subset.className = `${(_b = subset.className) !== null && _b !== void 0 ? _b : ''} ${classNameAdd.join(' ')}`.trim();
         }
         else {
-            subset.className = (((_c = subset.className) !== null && _c !== void 0 ? _c : '') + " " + ClassNames(classNameAdd)).trim();
+            subset.className = `${(_c = subset.className) !== null && _c !== void 0 ? _c : ''} ${ClassNames(classNameAdd)}`.trim();
         }
     }
     return subset;
 };
-var ReduceToInputAddProps = function (props) {
+const ReduceToInputAddProps = (props) => {
     return {
         plainText: props.plainText,
         plainTextURL: props.plainTextURL,
@@ -2389,7 +2261,7 @@ var ReduceToInputAddProps = function (props) {
         invalid: props.invalid
     };
 };
-var HandleChangeValue = function (e, changeValue, onChange) {
+const HandleChangeValue = (e, changeValue, onChange) => {
     if (!!changeValue) {
         changeValue(ElementCustomValue(e), e.target.name);
     }
@@ -2401,29 +2273,29 @@ var HandleChangeValue = function (e, changeValue, onChange) {
 
 function InputColor(props) {
     var _a, _b, _c;
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'className'));
+    const inputProps = React.useMemo(() => {
+        const subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'className'));
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
         return subset;
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps),
-            React__default['default'].createElement("input", __assign({ type: "color", className: (_a = 'inputText ' + props.className) !== null && _a !== void 0 ? _a : '' }, inputProps, { disabled: true })),
-            props.value))) : (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps),
-        React__default['default'].createElement("input", __assign({ type: "color", className: (_b = 'inputText ' + props.className) !== null && _b !== void 0 ? _b : '' }, inputProps, { disabled: true })),
-        props.value))) : (React__default['default'].createElement("input", __assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); } })))));
+        React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
+            React__default['default'].createElement("input", Object.assign({ type: "color", className: (_a = 'inputText ' + props.className) !== null && _a !== void 0 ? _a : '' }, inputProps, { disabled: true })),
+            props.value))) : (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
+        React__default['default'].createElement("input", Object.assign({ type: "color", className: (_b = 'inputText ' + props.className) !== null && _b !== void 0 ? _b : '' }, inputProps, { disabled: true })),
+        props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) })))));
 }
 
-var originalValue = ' ';
+const originalValue$1 = ' ';
 function InputDate(props) {
     var _a;
-    var lastDateValue = React.useRef(originalValue);
-    var nextDateValue = React.useRef(originalValue);
-    var _b = React.useState(originalValue), overrideValue = _b[0], setOverrideValue = _b[1];
-    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')); }, [props]);
-    React.useEffect(function () {
+    const lastDateValue = React.useRef(originalValue$1);
+    const nextDateValue = React.useRef(originalValue$1);
+    const [overrideValue, setOverrideValue] = React.useState(originalValue$1);
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')), [props]);
+    React.useEffect(() => {
         var _a, _b, _c, _d, _e;
         if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
             lastDateValue.current = (_c = intelliwaketsfoundation.MomentDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
@@ -2434,11 +2306,11 @@ function InputDate(props) {
             lastDateValue.current = (_e = intelliwaketsfoundation.MomentDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
         }
     }, [props.value]);
-    var handleInputChange = function (e) {
+    const handleInputChange = (e) => {
         var _a, _b;
         nextDateValue.current = (_a = intelliwaketsfoundation.MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        var customValue = (nextDateValue.current + ' ' + ((_b = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
+        const customValue = (nextDateValue.current + ' ' + ((_b = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2447,9 +2319,9 @@ function InputDate(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
         ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", __assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_a = props.name) !== null && _a !== void 0 ? _a : '') + "_" + intelliwaketsfoundation.RandomString(5) })))));
+        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 /**
@@ -2457,7 +2329,7 @@ function InputDate(props) {
  */
 function InputDatePicker(props) {
     var _a, _b;
-    var setValue = function (date) {
+    const setValue = (date) => {
         var _a, _b, _c;
         if (!!props.changeValue) {
             if (!date) {
@@ -2465,14 +2337,14 @@ function InputDatePicker(props) {
             }
             else {
                 if (!Array.isArray(date)) {
-                    var dateValueString = moment__default['default'](date).format(intelliwaketsfoundation.MOMENT_FORMAT_DATE);
-                    var timeValueString = (_c = intelliwaketsfoundation.MomentTimeString((_b = props.value) !== null && _b !== void 0 ? _b : '')) !== null && _c !== void 0 ? _c : '';
-                    props.changeValue((dateValueString + " " + timeValueString).trim(), props.name);
+                    const dateValueString = moment__default['default'](date).format(intelliwaketsfoundation.MOMENT_FORMAT_DATE);
+                    const timeValueString = (_c = intelliwaketsfoundation.MomentTimeString((_b = props.value) !== null && _b !== void 0 ? _b : '')) !== null && _c !== void 0 ? _c : '';
+                    props.changeValue(`${dateValueString} ${timeValueString}`.trim(), props.name);
                 }
             }
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
         ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
         : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement(ReactDatePicker__default['default'], { value: (_b = intelliwaketsfoundation.MomentDateString((_a = props.value) !== null && _a !== void 0 ? _a : '')) !== null && _b !== void 0 ? _b : '', onChange: setValue, className: "form-control inputDate", placeholderText: props.placeholder, todayButton: !props.noTodayButton ? 'Today' : undefined }))));
 }
@@ -2482,7 +2354,7 @@ function ViewEmail(props) {
     return React__default['default'].createElement(React__default['default'].Fragment, null, !!props.email ? React__default['default'].createElement("a", { href: 'mailto:' + props.email }, (_a = props.label) !== null && _a !== void 0 ? _a : props.email) : (_b = props.label) !== null && _b !== void 0 ? _b : null);
 }
 
-var InputGroupWrapper = function (props) {
+const InputGroupWrapper = (props) => {
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.prepend || !!props.append ? (React__default['default'].createElement(InputGroup, null,
         !!props.prepend && (React__default['default'].createElement(InputGroupAddon, { addonType: "prepend" },
             React__default['default'].createElement(InputGroupText, null, props.prepend))),
@@ -2491,7 +2363,7 @@ var InputGroupWrapper = function (props) {
             React__default['default'].createElement(InputGroupText, null, props.append))))) : (React__default['default'].createElement(React__default['default'].Fragment, null, props.children))));
 };
 
-var AppendPrependWrapper = function (props) {
+const AppendPrependWrapper = (props) => {
     if (!props.children)
         return null;
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
@@ -2502,24 +2374,24 @@ var AppendPrependWrapper = function (props) {
         !!props.append && props.append));
 };
 
-var InputWrapper = function (props) {
+const InputWrapper = (props) => {
     var _a, _b, _c, _d, _e;
-    var isMounted = React.useRef(false);
-    var lateTrigger = React.useRef(setTimeout(function () { }, 100));
-    var lateState = React.useRef(undefined);
-    var _f = React.useState(props.children.props.value), internalState = _f[0], setInternalState = _f[1];
-    var isManagingDirtyState = React.useRef(false);
-    var verbose = props.consoleVerbose;
+    const isMounted = React.useRef(false);
+    const lateTrigger = React.useRef(setTimeout(() => { }, 100));
+    const lateState = React.useRef(undefined);
+    const [internalState, setInternalState] = React.useState(props.children.props.value);
+    const isManagingDirtyState = React.useRef(false);
+    const verbose = props.consoleVerbose;
     if (props.consoleVerbose) {
         console.log('IntState', props.children.props.name, ' = ', internalState);
     }
-    React.useEffect(function () {
+    React.useEffect(() => {
         isMounted.current = true;
-        return function () {
+        return () => {
             isMounted.current = false;
         };
     });
-    React.useEffect(function () {
+    React.useEffect(() => {
         lateState.current = undefined;
         if (!isManagingDirtyState.current &&
             (!!props.isEqual
@@ -2535,22 +2407,22 @@ var InputWrapper = function (props) {
     }, [props.children.props.value]);
     // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", __assign({ className: "form-control-plaintext " }, props.plainTextProps),
-            React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' cursor-pointer' : '') }, props.plainTextProps, { onClick: function () {
+        React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext " }, props.plainTextProps),
+            React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
             if (!!props.plainOnClick)
                 props.plainOnClick();
         } }),
-        React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(__assign(__assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
+        React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(Object.assign(Object.assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
             ' ' +
             ((_d = props.className) !== null && _d !== void 0 ? _d : '') +
             (props.invalid ? ' is-invalid' : '') +
             (props.invalid === false ? ' is-valid' : '') +
-            (props.children.props.required ? ' is-required' : '')).trim(), onFocus: function (e) {
+            (props.children.props.required ? ' is-required' : '')).trim(), onFocus: (e) => {
             if (!props.doNotSelectOnFocus && 'select' in e.target)
                 e.target.select();
             if (props.children.props.onFocus)
                 props.children.props.onFocus(e);
-        }, onBlur: function (e) {
+        }, onBlur: (e) => {
             clearTimeout(lateTrigger.current);
             if (!!props.changeValueLate &&
                 lateState.current !== undefined &&
@@ -2560,13 +2432,13 @@ var InputWrapper = function (props) {
             }
             if (props.children.props.onBlur)
                 props.children.props.onBlur(e);
-        }, onChange: function (e) {
+        }, onChange: (e) => {
             var _a;
             clearTimeout(lateTrigger.current);
             if (!props.children.props.plainText && !props.children.props.disabled) {
-                var isValid = !props.inputIsValid || props.inputIsValid(e.target.value);
+                const isValid = !props.inputIsValid || props.inputIsValid(e.target.value);
                 isManagingDirtyState.current = !isValid;
-                var customValue = (!isValid
+                let customValue = (!isValid
                     ? !!props.valueOnInvalid
                         ? props.valueOnInvalid(e.target.value)
                         : ''
@@ -2579,7 +2451,7 @@ var InputWrapper = function (props) {
                     console.log('customValue', customValue);
                 }
                 e.target.customValue = customValue;
-                var newState = {
+                const newState = {
                     value: customValue,
                     name: e.target.name,
                     shiftKey: e.nativeEvent.shiftKey,
@@ -2596,7 +2468,7 @@ var InputWrapper = function (props) {
                     if (isValid) {
                         lateState.current = newState;
                     }
-                    lateTrigger.current = setTimeout(function () {
+                    lateTrigger.current = setTimeout(() => {
                         if (!!props.changeValueLate &&
                             isMounted.current &&
                             lateState.current !== undefined &&
@@ -2623,41 +2495,41 @@ var InputWrapper = function (props) {
                     setInternalState(!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value);
                 }
             }
-        }, autoComplete: props.autoCompleteOn ? 'on' : "AC_" + ((_e = props.children.props.name) !== null && _e !== void 0 ? _e : '') + "_" + intelliwaketsfoundation.RandomString(5), value: internalState })))))));
+        }, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_e = props.children.props.name) !== null && _e !== void 0 ? _e : ''}_${intelliwaketsfoundation.RandomString(5)}`, value: internalState })))))));
 };
 
 function InputEmail(props) {
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainText'));
+    const inputProps = React.useMemo(() => {
+        const subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainText'));
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.value && (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps),
-        React__default['default'].createElement(ViewEmail, { email: props.value, label: props.plainTextLabel })))) : (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputEmail form-control" }),
-        React__default['default'].createElement("input", __assign({ type: "email", inputMode: "email" }, inputProps))))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.value && (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
+        React__default['default'].createElement(ViewEmail, { email: props.value, label: props.plainTextLabel })))) : (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputEmail form-control" }),
+        React__default['default'].createElement("input", Object.assign({ type: "email", inputMode: "email" }, inputProps))))));
 }
 
 function InputSelect(props) {
     var _a;
-    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull')); }, [props]);
-    var wrapperProps = React.useMemo(function () { return ReduceToInputAddProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')); }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, wrapperProps, { className: 'inputSelect form-control' + (props.plainText ? ' disabledLink' : ''), transformToValid: function (val, e) {
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull')), [props]);
+    const wrapperProps = React.useMemo(() => ReduceToInputAddProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')), [props]);
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, wrapperProps, { className: 'inputSelect form-control' + (props.plainText ? ' disabledLink' : ''), transformToValid: (val, e) => {
             if (!!props.multiple) {
                 if (!!props.isNumeric) {
                     return Array.from(e.target.children)
-                        .filter(function (child) { return child.selected; })
-                        .map(function (child) { return intelliwaketsfoundation.CleanNumber(child.value); });
+                        .filter((child) => child.selected)
+                        .map((child) => intelliwaketsfoundation.CleanNumber(child.value));
                 }
                 else {
                     return Array.from(e.target.children)
-                        .filter(function (child) { return child.selected; })
-                        .map(function (child) { return child.value; });
+                        .filter((child) => child.selected)
+                        .map((child) => child.value);
                 }
             }
             else if (!!props.isNumeric || !!props.isNumericOrNull) {
-                var value = intelliwaketsfoundation.CleanNumber(val);
+                const value = intelliwaketsfoundation.CleanNumber(val);
                 if (!!props.isNumericOrNull && value === 0) {
                     return null;
                 }
@@ -2669,36 +2541,36 @@ function InputSelect(props) {
                 return null;
             }
             return val;
-        }, internalStateValue: function (val, e) {
+        }, internalStateValue: (val, e) => {
             if (!!props.multiple) {
                 if (!!props.isNumeric) {
                     return Array.from(e.target.children)
-                        .filter(function (child) { return child.selected; })
-                        .map(function (child) { return intelliwaketsfoundation.CleanNumber(child.value); });
+                        .filter((child) => child.selected)
+                        .map((child) => intelliwaketsfoundation.CleanNumber(child.value));
                 }
                 else {
                     return Array.from(e.target.children)
-                        .filter(function (child) { return child.selected; })
-                        .map(function (child) { return child.value; });
+                        .filter((child) => child.selected)
+                        .map((child) => child.value);
                 }
             }
             return val;
         } }),
-        React__default['default'].createElement("select", __assign({}, inputProps, { value: (_a = inputProps.value) !== null && _a !== void 0 ? _a : '', style: __assign(__assign({}, props.style), { pointerEvents: !!props.plainText ? 'none' : undefined }), tabIndex: !!props.plainText ? -1 : undefined }), props.children)));
+        React__default['default'].createElement("select", Object.assign({}, inputProps, { value: (_a = inputProps.value) !== null && _a !== void 0 ? _a : '', style: Object.assign(Object.assign({}, props.style), { pointerEvents: !!props.plainText ? 'none' : undefined }), tabIndex: !!props.plainText ? -1 : undefined }), props.children)));
 }
 
 function InputGender(props) {
-    var inputProps = React.useMemo(function () {
+    const inputProps = React.useMemo(() => {
         var _a;
-        var subset = ReduceInputProps(props);
+        const subset = ReduceInputProps(props);
         subset.value = (_a = subset.value) !== null && _a !== void 0 ? _a : '';
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputGender" }),
-        React__default['default'].createElement(InputSelect, __assign({}, inputProps, { isStringOrNull: true }),
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputGender" }),
+        React__default['default'].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true }),
             React__default['default'].createElement("option", null),
             React__default['default'].createElement("option", { value: "Male" }, "Male"),
             React__default['default'].createElement("option", { value: "Female" }, "Female"))));
@@ -2706,8 +2578,8 @@ function InputGender(props) {
 
 function InputNumber(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name')); }, [props]);
-    var handleKeyDown = function (e) {
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name')), [props]);
+    const handleKeyDown = (e) => {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
                 if (!props.allowNegative || (props.lowerBound !== undefined && props.lowerBound >= 0)) {
@@ -2721,7 +2593,7 @@ function InputNumber(props) {
         if (!!props.onKeyDown)
             props.onKeyDown(e);
     };
-    var options = {
+    let options = {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand'
     };
@@ -2731,9 +2603,9 @@ function InputNumber(props) {
         options.prefix = '$ ';
         options.numeralDecimalScale = props.decimalScale === undefined ? 2 : (_e = props.decimalScale) !== null && _e !== void 0 ? _e : undefined;
     }
-    var hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { inputIsValid: function (val) { return !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)); }, valueOnInvalid: function () { return 0; }, transformToValid: function (val) {
-            var cleanNumber = intelliwaketsfoundation.CleanNumber(val);
+    const hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)), valueOnInvalid: () => 0, transformToValid: (val) => {
+            const cleanNumber = intelliwaketsfoundation.CleanNumber(val);
             if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
                 return props.lowerBound;
             if (props.upperBound !== undefined && cleanNumber > props.upperBound)
@@ -2745,20 +2617,20 @@ function InputNumber(props) {
             integers: !hasDecimals
         }), plainTextControl: !!props.currency
             ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
-            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), invalid: props.invalid, isEqual: function (internal, props) { return intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props); } }),
-        React__default['default'].createElement(Cleave__default['default'], __assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { name: props.name }))));
+            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
+        React__default['default'].createElement(Cleave__default['default'], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { name: props.name }))));
 }
 
 function InputPassword(props) {
     var _a;
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputPassword form-control" }),
-        React__default['default'].createElement("input", __assign({ type: "password" }, ReduceInputProps(props), { placeholder: (_a = props.placeholder) !== null && _a !== void 0 ? _a : '******' }))));
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputPassword form-control" }),
+        React__default['default'].createElement("input", Object.assign({ type: "password" }, ReduceInputProps(props), { placeholder: (_a = props.placeholder) !== null && _a !== void 0 ? _a : '******' }))));
 }
 
 function InputRadio(props) {
     var _a;
     return !!props.plainText ? (props.checked ? (props.label) : null) : (React__default['default'].createElement("label", { className: "cursor-pointer" },
-        React__default['default'].createElement("input", { type: "radio", value: props.value, checked: props.checked, className: 'inputRadio ' + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), name: props.name, onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); }, onClick: props.onClick }),
+        React__default['default'].createElement("input", { type: "radio", value: props.value, checked: props.checked, className: 'inputRadio ' + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), name: props.name, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange), onClick: props.onClick }),
         ' ',
         props.label));
 }
@@ -2766,20 +2638,20 @@ function InputRadio(props) {
 /**
  * A search input with an option to have a trigger delay or not.
  */
-var InputSearch = React.forwardRef(function (props, ref) {
+const InputSearch = React.forwardRef((props, ref) => {
     var _a, _b, _c;
-    var triggeredText = React.useRef((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
-    var searchTimeout = React.useRef(setTimeout(function () { }, 100));
-    var _d = React.useState(''), currentText = _d[0], setCurrentText = _d[1];
-    var innerRef = React__default['default'].useRef(null);
-    var combinedRef = useCombinedRefs(ref, innerRef);
-    var handleInputChange = function (e) {
+    const triggeredText = React.useRef((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
+    const searchTimeout = React.useRef(setTimeout(() => { }, 100));
+    const [currentText, setCurrentText] = React.useState('');
+    const innerRef = React__default['default'].useRef(null);
+    const combinedRef = useCombinedRefs(ref, innerRef);
+    const handleInputChange = (e) => {
         var _a;
-        var value = (_a = e.target.value) !== null && _a !== void 0 ? _a : '';
+        const value = (_a = e.target.value) !== null && _a !== void 0 ? _a : '';
         setCurrentText(value);
         if (!!props.triggerDelayAmount) {
             clearTimeout(searchTimeout.current);
-            searchTimeout.current = setTimeout(function () {
+            searchTimeout.current = setTimeout(() => {
                 triggerChange(value);
             }, props.triggerDelayAmount);
         }
@@ -2787,7 +2659,7 @@ var InputSearch = React.forwardRef(function (props, ref) {
             props.triggerSearchText(value);
         }
     };
-    var handleKeyDown = function (e) {
+    const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             clearTimeout(searchTimeout.current);
             triggerChange(currentText, true);
@@ -2796,27 +2668,27 @@ var InputSearch = React.forwardRef(function (props, ref) {
             props.onKeyDown(e);
         }
     };
-    var handleOnBlur = function () {
+    const handleOnBlur = () => {
         clearTimeout(searchTimeout.current);
         triggerChange();
     };
-    var triggerChange = function (searchText, force) {
-        var textToSearch = searchText !== null && searchText !== void 0 ? searchText : currentText;
+    const triggerChange = (searchText, force) => {
+        const textToSearch = searchText !== null && searchText !== void 0 ? searchText : currentText;
         if (!!force || textToSearch !== triggeredText.current) {
             triggeredText.current = textToSearch;
             props.triggerSearchText(textToSearch);
         }
     };
-    React.useEffect(function () {
+    React.useEffect(() => {
         var _a;
         setCurrentText((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
     }, [props.initialValue]);
-    var handleOnFocus = function (e) {
+    const handleOnFocus = (e) => {
         if (!!props.onFocus) {
             props.onFocus(e);
         }
         if (!props.noSelectOnFocus) {
-            setTimeout(function () {
+            setTimeout(() => {
                 var _a;
                 if (!!((_a = combinedRef === null || combinedRef === void 0 ? void 0 : combinedRef.current) === null || _a === void 0 ? void 0 : _a.select)) {
                     combinedRef.current.select();
@@ -2824,10 +2696,10 @@ var InputSearch = React.forwardRef(function (props, ref) {
             }, 250);
         }
     };
-    var inputProps = {
+    const inputProps = {
         type: 'search',
         inputMode: 'search',
-        className: "form-control inputSearch " + ((_b = props.className) !== null && _b !== void 0 ? _b : '') + " " + (!!props.bordered ? '' : 'bg-transparent border-0'),
+        className: `form-control inputSearch ${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${!!props.bordered ? '' : 'bg-transparent border-0'}`,
         value: currentText,
         onChange: handleInputChange,
         onBlur: handleOnBlur,
@@ -2849,44 +2721,44 @@ var InputSearch = React.forwardRef(function (props, ref) {
         id: props.id,
         autoFocus: props.autoFocus,
         onFocus: handleOnFocus,
-        autoComplete: props.autoCompleteOn ? 'on' : "AC_" + intelliwaketsfoundation.RandomString(12)
+        autoComplete: props.autoCompleteOn ? 'on' : `AC_${intelliwaketsfoundation.RandomString(12)}`
     };
-    return !!props.iconPrefix || !!props.reactPrefix ? (React__default['default'].createElement(InputGroup, { className: "searchGroup " + ((_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : '') + " " + (props.bordered ? '' : 'transparent') },
-        (!!props.iconPrefix || !!props.reactPrefix) && (React__default['default'].createElement(InputGroupText, { onClick: function () {
+    return !!props.iconPrefix || !!props.reactPrefix ? (React__default['default'].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
+        (!!props.iconPrefix || !!props.reactPrefix) && (React__default['default'].createElement(InputGroupText, { onClick: () => {
                 var _a;
-                var innerRef = ref;
+                const innerRef = ref;
                 if (!!((_a = innerRef === null || innerRef === void 0 ? void 0 : innerRef.current) === null || _a === void 0 ? void 0 : _a.focus))
                     innerRef.current.focus();
-            } }, props.iconPrefix !== undefined ? (typeof props.iconPrefix === 'boolean' ? (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faSearch })) : (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({}, props.iconPrefix)))) : (props.reactPrefix))),
-        React__default['default'].createElement("input", __assign({}, inputProps)))) : (React__default['default'].createElement("input", __assign({}, inputProps)));
+            } }, props.iconPrefix !== undefined ? (typeof props.iconPrefix === 'boolean' ? (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faSearch })) : (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, props.iconPrefix)))) : (props.reactPrefix))),
+        React__default['default'].createElement("input", Object.assign({}, inputProps)))) : (React__default['default'].createElement("input", Object.assign({}, inputProps)));
 });
 
-var OptionsActive = [
+const OptionsActive = [
     { key: true, description: 'Active' },
     { key: false, description: 'Inactive' }
 ];
-var OptionsActiveAll = __spreadArrays(OptionsActive, [{ key: null, description: 'All' }]);
+const OptionsActiveAll = [...OptionsActive, { key: null, description: 'All' }];
 /**
  * A input select that lets you update a state when selecting an option.
  */
-var InputSelectStep = function (props) {
+const InputSelectStep = (props) => {
     var _a, _b, _c, _d;
-    var classNames = !!props.inline
+    let classNames = !!props.inline
         ? 'd-inline-block outline-none '
         : 'form-control ' + (!!props.borderless ? ' bg-transparent border-0 ' : '');
     if (!props.plainText) {
         classNames += 'cursor-pointer ';
         if (!!props.inline)
-            classNames += ' hoverUnderline ' + (props.color === '' ? '' : "text-" + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') + " ");
+            classNames += ' hoverUnderline ' + (props.color === '' ? '' : `text-${(_a = props.color) !== null && _a !== void 0 ? _a : 'primary'} `);
     }
     classNames += (_b = ' ' + props.className) !== null && _b !== void 0 ? _b : '';
-    var currentOptionIDX = React.useMemo(function () { return props.options.findIndex(function (option) { return option.key === props.value; }); }, [
+    const currentOptionIDX = React.useMemo(() => props.options.findIndex((option) => option.key === props.value), [
         props.options,
         props.value
     ]);
-    var click = function (e) {
+    const click = (e) => {
         var _a;
-        var newValue = (_a = props.options.find(function () { return true; })) === null || _a === void 0 ? void 0 : _a.key;
+        let newValue = (_a = props.options.find(() => true)) === null || _a === void 0 ? void 0 : _a.key;
         if (currentOptionIDX < props.options.length - 1 && currentOptionIDX >= 0) {
             newValue = props.options[currentOptionIDX + 1].key;
         }
@@ -2899,25 +2771,25 @@ var InputSelectStep = function (props) {
 
 function InputSSN(props) {
     var _a;
-    var inputProps = React.useMemo(function () {
-        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextLast4Only'));
+    const inputProps = React.useMemo(() => {
+        const subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextLast4Only'));
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputSSN form-control", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, inputProps, { pattern: "\\d{3}-?\\d{2}-?\\d{4}" }))));
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputSSN form-control", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
+        React__default['default'].createElement("input", Object.assign({ type: "text" }, inputProps, { pattern: "\\d{3}-?\\d{2}-?\\d{4}" }))));
 }
 
 function InputState(props) {
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText inputState", transformToValid: function (val) { return val.toUpperCase(); } }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputText inputState", transformToValid: (val) => val.toUpperCase() }),
+        React__default['default'].createElement("input", Object.assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
 }
 
 function InputSwitch(props) {
     var _a, _b, _c, _d, _e;
-    var handleInputChange = function (checked, e) {
+    const handleInputChange = (checked, e) => {
         // if (!!props.onChange) {
         // 	props.onChange(e)
         // }
@@ -2925,10 +2797,10 @@ function InputSwitch(props) {
             props.changeValue(checked, props.name, !!e.shiftKey, !!e.ctrlKey, !!e.altKey);
         }
     };
-    var height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
-    var width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
+    const height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
+    const width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
     return (React__default['default'].createElement("label", { className: !props.plainText ? 'cursor-pointer' : '', hidden: props.hidden },
-        React__default['default'].createElement(Switch__default['default'], { onChange: function (checked, e) {
+        React__default['default'].createElement(Switch__default['default'], { onChange: (checked, e) => {
                 if (!props.plainText) {
                     handleInputChange(checked, e);
                 }
@@ -2937,45 +2809,45 @@ function InputSwitch(props) {
 }
 
 function InputTel(props) {
-    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'showFAIcon'), 'form-control'); }, [props]);
-    var faIconToShow = React.useMemo(function () {
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'showFAIcon'), 'form-control'), [props]);
+    const faIconToShow = React.useMemo(() => {
         if (!props.showFAIcon)
             return null;
         if (props.showFAIcon === true)
             return proRegularSvgIcons.faPhone;
         return props.showFAIcon;
     }, [props.showFAIcon]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputTel", append: !!faIconToShow && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: faIconToShow }), plainTextControl: intelliwaketsfoundation.FormatPhoneNumber(props.value) }),
-        React__default['default'].createElement("input", __assign({ type: "tel", inputMode: "tel" }, inputProps))));
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputTel", append: !!faIconToShow && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: faIconToShow }), plainTextControl: intelliwaketsfoundation.FormatPhoneNumber(props.value) }),
+        React__default['default'].createElement("input", Object.assign({ type: "tel", inputMode: "tel" }, inputProps))));
 }
 
-var InputText = function (props) {
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
+const InputText = (props) => {
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
+        React__default['default'].createElement("input", Object.assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
 };
 
 function InputTextArea(props) {
-    var inputProps = React.useMemo(function () {
+    const inputProps = React.useMemo(() => {
         var _a;
-        var subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered'));
+        let subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered'));
         subset.value = ((_a = props.value) !== null && _a !== void 0 ? _a : '');
         return subset;
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, __assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: "inputTextArea form-control", plainTextControl: React__default['default'].createElement("div", __assign({ className: 'form-control-plaintext vertical-scroll horizontal-scroll' + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: {
+        React__default['default'].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: "inputTextArea form-control", plainTextControl: React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext vertical-scroll horizontal-scroll' + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } })) }),
-            React__default['default'].createElement("textarea", __assign({}, inputProps)))));
+            React__default['default'].createElement("textarea", Object.assign({}, inputProps)))));
 }
 
-var originalValue$1 = ' ';
+const originalValue = ' ';
 function InputTime(props) {
-    var lastTimeValue = React.useRef(originalValue$1);
-    var nextTimeValue = React.useRef(originalValue$1);
-    var _a = React.useState(originalValue$1), overrideValue = _a[0], setOverrideValue = _a[1];
-    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')); }, [props]);
-    React.useEffect(function () {
+    const lastTimeValue = React.useRef(originalValue);
+    const nextTimeValue = React.useRef(originalValue);
+    const [overrideValue, setOverrideValue] = React.useState(originalValue);
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
+    React.useEffect(() => {
         var _a, _b, _c, _d, _e, _f;
         if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
             lastTimeValue.current = (_c = intelliwaketsfoundation.MomentTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
@@ -2986,11 +2858,11 @@ function InputTime(props) {
             lastTimeValue.current = (_f = intelliwaketsfoundation.MomentTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
         }
     }, [props.value, props.editSeconds]);
-    var handleInputChange = function (e) {
+    const handleInputChange = (e) => {
         var _a, _b;
         nextTimeValue.current = (_a = intelliwaketsfoundation.MomentTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        var customValue = (((_b = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
+        const customValue = (((_b = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2999,65 +2871,65 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", __assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
-    var inputProps = React.useMemo(function () {
+    const inputProps = React.useMemo(() => {
         var _a;
-        var subset = ReduceInputProps(props);
+        const subset = ReduceInputProps(props);
         subset.value = (_a = subset.value) !== null && _a !== void 0 ? _a : '';
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
         }
         return subset;
     }, [props]);
-    var timeZonesList = React.useMemo(function () {
-        var tzItems = intelliwaketsfoundation.TimeZoneOlsons();
-        if (!!props.value && !tzItems.map(function (tzItem) { return tzItem.olson; }).includes(props.value)) {
+    const timeZonesList = React.useMemo(() => {
+        let tzItems = intelliwaketsfoundation.TimeZoneOlsons();
+        if (!!props.value && !tzItems.map((tzItem) => tzItem.olson).includes(props.value)) {
             tzItems.push({ zone: '', olson: props.value, hours: '' });
         }
         return tzItems;
     }, []);
-    var valueTZ = React.useMemo(function () { return (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr(props.value)); }, [props.value]);
+    const valueTZ = React.useMemo(() => (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr(props.value)), [props.value]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+        React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
             valueTZ,
             ":",
             React__default['default'].createElement("span", { className: "text-muted" },
                 " ",
-                props.value))) : (React__default['default'].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default['default'].createElement("div", __assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                props.value))) : (React__default['default'].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
         valueTZ,
         ":",
         React__default['default'].createElement("span", { className: "text-muted" },
             " ",
             props.value))) : (React__default['default'].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputSelect, __assign({}, inputProps, { isStringOrNull: true, onChange: function (e) { return HandleChangeValue(e, props.changeValue, props.onChange); } }),
+        React__default['default'].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) }),
             React__default['default'].createElement("option", null),
-            timeZonesList.map(function (tzItem) { return (React__default['default'].createElement("option", { key: tzItem.olson, value: tzItem.olson },
+            timeZonesList.map((tzItem) => (React__default['default'].createElement("option", { key: tzItem.olson, value: tzItem.olson },
                 tzItem.zone,
                 ": ",
-                tzItem.olson)); }))))));
+                tzItem.olson))))))));
 }
 
 function InputUrl(props) {
-    var href = React.useMemo(function () {
+    const href = React.useMemo(() => {
         if (!('' + props.value).toString().toLowerCase().startsWith('http')) {
             return 'http://' + props.value;
         }
         return '' + props.value;
     }, [props.value]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputUrl form-control", plainTextControl: React__default['default'].createElement("a", { href: href, target: "_blank", rel: "noopener noreferrer", className: "d-block w-100" },
+        React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputUrl form-control", plainTextControl: React__default['default'].createElement("a", { href: href, target: "_blank", rel: "noopener noreferrer", className: "d-block w-100" },
                 React__default['default'].createElement(EllipsesTruncate, { text: props.value })) }),
-            React__default['default'].createElement("input", __assign({ type: "url", pattern: "https://.*", inputMode: "url", className: "inputText" }, ReduceInputProps(props))))));
+            React__default['default'].createElement("input", Object.assign({ type: "url", pattern: "https://.*", inputMode: "url", className: "inputText" }, ReduceInputProps(props))))));
 }
 
 function InputZip(props) {
     var _a;
-    var inputProps = React.useMemo(function () { return ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'withNine')); }, [props]);
-    return (React__default['default'].createElement(InputWrapper, __assign({}, ReduceToInputAddProps(props), { className: "inputZip form-control", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
-        React__default['default'].createElement("input", __assign({ type: "text" }, inputProps))));
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'withNine')), [props]);
+    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputZip form-control", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
+        React__default['default'].createElement("input", Object.assign({ type: "text" }, inputProps))));
 }
 
 /**
@@ -3101,39 +2973,37 @@ function InputZip(props) {
  * </ServerData>
  *
  */
-var IWServerData = function (props) {
+const IWServerData = (props) => {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-    var isMounted = React.useRef(true);
-    var delayTimeout = React.useRef(setTimeout(function () { }, 100));
-    var forceRefreshRef = React.useRef(props.forceRefresh);
-    var lastRequest = React.useRef(props.request);
+    const isMounted = React.useRef(true);
+    const delayTimeout = React.useRef(setTimeout(() => { }, 100));
+    const forceRefreshRef = React.useRef(props.forceRefresh);
+    const lastRequest = React.useRef(props.request);
     // const cancelTokenSource = useRef(null as CancelTokenSource | null)
-    var inProgress = React.useRef(false);
-    var lastTS = React.useRef(0);
-    var attemptingGet = React.useRef(false);
-    var attemptingUpdate = React.useRef(false);
-    var _m = React.useState(false), showInProgressControl = _m[0], setShowInProgressControl = _m[1];
-    var setResponse = React.useCallback((_a = props.setResponse) !== null && _a !== void 0 ? _a : (function () { }), [props.setResponse]);
-    var setUpdateResponse = React.useCallback((_b = props.setUpdateResponse) !== null && _b !== void 0 ? _b : (function () { }), [props.setUpdateResponse]);
-    var startingAction = React.useCallback((_c = props.startingAction) !== null && _c !== void 0 ? _c : (function () { }), [props.startingAction]);
-    var axiosResponseAction = React.useCallback((_d = props.axiosResponseAction) !== null && _d !== void 0 ? _d : (function () { }), [props.axiosResponseAction]);
-    var handleServerData = React.useCallback((_e = props.handleServerData) !== null && _e !== void 0 ? _e : (function () { }), [props.handleServerData]);
-    var updatedAction = React.useCallback((_f = props.updatedAction) !== null && _f !== void 0 ? _f : (function () { }), [props.updatedAction]);
-    var catchAction = React.useCallback((_g = props.catchAction) !== null && _g !== void 0 ? _g : (function () { }), [props.catchAction]);
-    var finallyAction = React.useCallback((_h = props.finallyAction) !== null && _h !== void 0 ? _h : (function () { }), [props.finallyAction]);
-    var showUserMessage = React.useCallback((_j = props.showUserMessage) !== null && _j !== void 0 ? _j : (function () { }), [props.showUserMessage]);
-    var failedAction = React.useCallback((_k = props.failedAction) !== null && _k !== void 0 ? _k : (function () { }), [props.failedAction]);
-    var isGet = React.useMemo(function () {
-        return !props.noExecution &&
-            !!props.item &&
-            !!props.verb &&
-            props.request !== null &&
-            !!setResponse &&
-            (props.response === undefined ||
-                forceRefreshRef.current !== props.forceRefresh ||
-                attemptingGet.current ||
-                (!props.noRefreshOnRequestChange && !intelliwaketsfoundation.DeepEqual(props.request, lastRequest.current)));
-    }, [
+    const inProgress = React.useRef(false);
+    const lastTS = React.useRef(0);
+    const attemptingGet = React.useRef(false);
+    const attemptingUpdate = React.useRef(false);
+    const [showInProgressControl, setShowInProgressControl] = React.useState(false);
+    const setResponse = React.useCallback((_a = props.setResponse) !== null && _a !== void 0 ? _a : (() => { }), [props.setResponse]);
+    const setUpdateResponse = React.useCallback((_b = props.setUpdateResponse) !== null && _b !== void 0 ? _b : (() => { }), [props.setUpdateResponse]);
+    const startingAction = React.useCallback((_c = props.startingAction) !== null && _c !== void 0 ? _c : (() => { }), [props.startingAction]);
+    const axiosResponseAction = React.useCallback((_d = props.axiosResponseAction) !== null && _d !== void 0 ? _d : (() => { }), [props.axiosResponseAction]);
+    const handleServerData = React.useCallback((_e = props.handleServerData) !== null && _e !== void 0 ? _e : (() => { }), [props.handleServerData]);
+    const updatedAction = React.useCallback((_f = props.updatedAction) !== null && _f !== void 0 ? _f : (() => { }), [props.updatedAction]);
+    const catchAction = React.useCallback((_g = props.catchAction) !== null && _g !== void 0 ? _g : (() => { }), [props.catchAction]);
+    const finallyAction = React.useCallback((_h = props.finallyAction) !== null && _h !== void 0 ? _h : (() => { }), [props.finallyAction]);
+    const showUserMessage = React.useCallback((_j = props.showUserMessage) !== null && _j !== void 0 ? _j : (() => { }), [props.showUserMessage]);
+    const failedAction = React.useCallback((_k = props.failedAction) !== null && _k !== void 0 ? _k : (() => { }), [props.failedAction]);
+    const isGet = React.useMemo(() => !props.noExecution &&
+        !!props.item &&
+        !!props.verb &&
+        props.request !== null &&
+        !!setResponse &&
+        (props.response === undefined ||
+            forceRefreshRef.current !== props.forceRefresh ||
+            attemptingGet.current ||
+            (!props.noRefreshOnRequestChange && !intelliwaketsfoundation.DeepEqual(props.request, lastRequest.current))), [
         props.noExecution,
         props.item,
         props.verb,
@@ -3143,23 +3013,23 @@ var IWServerData = function (props) {
         props.forceRefresh,
         attemptingGet.current
     ]);
-    var isUpdate = React.useMemo(function () { return !props.noExecution && !!props.updateVerb && !!props.updateRequest && !!setUpdateResponse; }, [props.noExecution, props.updateVerb, props.updateRequest, setUpdateResponse, attemptingUpdate.current]);
+    const isUpdate = React.useMemo(() => !props.noExecution && !!props.updateVerb && !!props.updateRequest && !!setUpdateResponse, [props.noExecution, props.updateVerb, props.updateRequest, setUpdateResponse, attemptingUpdate.current]);
     if (props.verboseConsole && (props.superVerboseConsole || ((isGet || isUpdate) && !inProgress.current)))
         console.log('IWServerData-Local', props.item, props.verb, props.updateVerb, 'isGet', isGet, attemptingGet.current, 'isUpdate', isUpdate, attemptingUpdate.current, 'inProgress', inProgress.current, 'refresh', props.forceRefresh, forceRefreshRef.current, 'starting', (isGet || isUpdate) && !inProgress.current);
-    React.useEffect(function () {
+    React.useEffect(() => {
         var _a;
         clearTimeout(delayTimeout.current);
         isMounted.current = true;
         if (!inProgress.current && (isGet || isUpdate)) {
             attemptingGet.current = isGet;
             attemptingUpdate.current = isUpdate;
-            delayTimeout.current = setTimeout(function () {
+            delayTimeout.current = setTimeout(() => {
                 var _a, _b, _c;
                 if (isMounted.current) {
                     inProgress.current = true;
                     attemptingGet.current = false;
                     attemptingUpdate.current = false;
-                    var currentTS = moment__default['default']().valueOf();
+                    const currentTS = moment__default['default']().valueOf();
                     if (lastTS.current > currentTS - 1000) {
                         console.log('!WARNING!', props.item, props.verb, 'processed less than a second ago!');
                         if (props.response === undefined)
@@ -3178,21 +3048,21 @@ var IWServerData = function (props) {
                     forceRefreshRef.current = props.forceRefresh;
                     // cancelTokenSource.current = axios.CancelToken.source()
                     setShowInProgressControl(true);
-                    var authorizationHeader = __assign({ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null, localtime: moment__default['default']().format(intelliwaketsfoundation.MOMENT_FORMAT_DATE_TIME), locationhref: window.location.href }, props.authorizationHeader);
+                    const authorizationHeader = Object.assign({ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null, localtime: moment__default['default']().format(intelliwaketsfoundation.MOMENT_FORMAT_DATE_TIME), locationhref: window.location.href }, props.authorizationHeader);
                     if (!!props.superVerboseConsole)
                         console.log('aH', authorizationHeader);
-                    var headers = {
+                    let headers = {
                         Authorization: JSON.stringify(authorizationHeader)
                     };
-                    var config = {
+                    let config = {
                         headers: headers
                     };
                     // if (!!cancelTokenSource.current) {
                     // 	config.cancelToken = cancelTokenSource.current.token
                     // }
                     !!startingAction && startingAction();
-                    var verb_1 = isUpdate ? props.updateVerb : props.verb;
-                    var request = isUpdate ? props.updateRequest : (_a = props.request) !== null && _a !== void 0 ? _a : {};
+                    const verb = isUpdate ? props.updateVerb : props.verb;
+                    const request = isUpdate ? props.updateRequest : (_a = props.request) !== null && _a !== void 0 ? _a : {};
                     // if (!props.noCredentials) axios.defaults.withCredentials = true
                     if (!props.noCredentials)
                         config.withCredentials = true;
@@ -3200,15 +3070,15 @@ var IWServerData = function (props) {
                     // 	config.baseURL = `${window.location.origin ?? ''}`
                     // }
                     if (!!props.verboseConsole) {
-                        console.log("API Request for " + ((_b = props.urlPrefix) !== null && _b !== void 0 ? _b : '') + "/" + props.item + "/" + verb_1, request, config);
+                        console.log(`API Request for ${(_b = props.urlPrefix) !== null && _b !== void 0 ? _b : ''}/${props.item}/${verb}`, request, config);
                     }
                     axios__default['default']
-                        .post(((_c = props.urlPrefix) !== null && _c !== void 0 ? _c : '') + "/" + props.item + "/" + verb_1, request, config)
-                        .then(function (response) {
+                        .post(`${(_c = props.urlPrefix) !== null && _c !== void 0 ? _c : ''}/${props.item}/${verb}`, request, config)
+                        .then((response) => {
                         var _a, _b, _c, _d;
                         if (isMounted.current) {
                             if (!!props.verboseConsole)
-                                console.log("API Response for " + ((_a = props.urlPrefix) !== null && _a !== void 0 ? _a : '') + "/" + props.item + "/" + verb_1, response);
+                                console.log(`API Response for ${(_a = props.urlPrefix) !== null && _a !== void 0 ? _a : ''}/${props.item}/${verb}`, response);
                             if (!!props.superVerboseConsole)
                                 console.log('headers', response.headers);
                             !!axiosResponseAction && axiosResponseAction(response);
@@ -3223,8 +3093,8 @@ var IWServerData = function (props) {
                                     return;
                                 }
                             }
-                            var serverStatus = intelliwaketsfoundation.JSONParse((_c = response.headers.serverstatus) !== null && _c !== void 0 ? _c : '{}');
-                            var resultsData = ((_d = response.data) !== null && _d !== void 0 ? _d : {});
+                            const serverStatus = intelliwaketsfoundation.JSONParse((_c = response.headers.serverstatus) !== null && _c !== void 0 ? _c : '{}');
+                            const resultsData = ((_d = response.data) !== null && _d !== void 0 ? _d : {});
                             if (isMounted.current) {
                                 if (!!serverStatus) {
                                     if (intelliwaketsfoundation.IsStageDevFocused() && serverStatus.dev_message) {
@@ -3254,7 +3124,7 @@ var IWServerData = function (props) {
                                 }
                                 else {
                                     if (intelliwaketsfoundation.IsStageDevFocused()) {
-                                        console.warn(props.item, verb_1, 'API: Response Empty', response);
+                                        console.warn(props.item, verb, 'API: Response Empty', response);
                                     }
                                     !!showUserMessage && showUserMessage('Could not connect to server', true);
                                     if (isUpdate) {
@@ -3267,11 +3137,11 @@ var IWServerData = function (props) {
                             }
                         }
                     })
-                        .catch(function (error) {
+                        .catch((error) => {
                         var _a;
                         if (isMounted.current) {
                             if (intelliwaketsfoundation.IsStageDevFocused()) {
-                                console.warn("API Error for " + ((_a = props.urlPrefix) !== null && _a !== void 0 ? _a : '') + "/" + props.item + "/" + verb_1, error);
+                                console.warn(`API Error for ${(_a = props.urlPrefix) !== null && _a !== void 0 ? _a : ''}/${props.item}/${verb}`, error);
                             }
                             // axios.isCancel(error)
                             !!showUserMessage && showUserMessage('Could not connect to server', true);
@@ -3284,7 +3154,7 @@ var IWServerData = function (props) {
                             !!catchAction && catchAction(error);
                         }
                     })
-                        .finally(function () {
+                        .finally(() => {
                         // if (isMounted.current) {
                         // cancelTokenSource.current = null
                         // }
@@ -3297,7 +3167,7 @@ var IWServerData = function (props) {
                 }
             }, (_a = props.delayMS) !== null && _a !== void 0 ? _a : 50);
         }
-        return function () {
+        return () => {
             isMounted.current = false;
             // if (cancelTokenSource.current) {
             // 	cancelTokenSource.current.cancel()
@@ -3345,32 +3215,32 @@ function StyleControl(props) {
     return !props.css ? React__default['default'].createElement(React__default['default'].Fragment, null) : React__default['default'].createElement("style", { dangerouslySetInnerHTML: { __html: props.css } });
 }
 
-var initialMenuBackItem = {
+const initialMenuBackItem = {
     menuBackActive: false,
     menuBackButtonTitle: '',
     menuBackButtonURL: '',
     menuPageTitle: '',
     menuDisplaySize: undefined
 };
-var initialMDContext = {
+const initialMDContext = {
     breakAt: 'lg',
     mdPath: '',
     baseFullPath: '',
     isOpen: false,
-    setMenuBackItemState: function () { }
+    setMenuBackItemState: () => { }
 };
-var MDContext = React__default['default'].createContext(initialMDContext);
-var MasterDetail = function (props) {
+const MDContext = React__default['default'].createContext(initialMDContext);
+const MasterDetail = (props) => {
     var _a, _b, _c;
-    var mdContextParent_RAW = React.useContext(MDContext);
-    var mdContextParent = mdContextParent_RAW.baseFullPath ? mdContextParent_RAW : undefined;
+    const mdContextParent_RAW = React.useContext(MDContext);
+    const mdContextParent = mdContextParent_RAW.baseFullPath ? mdContextParent_RAW : undefined;
     // const basePath = mdContextParent_RAW.baseFullPath ?
     //     mdContextParent_RAW.baseFullPath + props.mdPath
     //     :
     //     window.location.pathname.substr(0, window.location.pathname.indexOf(props.mdPath)) + props.mdPath;
-    var basePath = (_a = GetPathThrough(props.mdPath)) !== null && _a !== void 0 ? _a : window.location.pathname + '/' + props.mdPath;
-    var isOpen = window.location.pathname.length > basePath.length && GetPathComponentAfter(basePath) !== '~';
-    var mdContext = {
+    const basePath = (_a = GetPathThrough(props.mdPath)) !== null && _a !== void 0 ? _a : window.location.pathname + '/' + props.mdPath;
+    const isOpen = window.location.pathname.length > basePath.length && GetPathComponentAfter(basePath) !== '~';
+    const mdContext = {
         breakAt: props.breakAt,
         mdPath: props.mdPath,
         baseFullPath: basePath,
@@ -3379,7 +3249,7 @@ var MasterDetail = function (props) {
         parentMDContext: mdContextParent,
         setMenuBackItemState: props.setMenuBackItemState
     };
-    var previousDashboardLastURL = window.sessionStorage.getItem(basePath + '-LastURL');
+    const previousDashboardLastURL = window.sessionStorage.getItem(basePath + '-LastURL');
     if (props.rememberLast &&
         !GetPathComponentAfter(basePath) &&
         previousDashboardLastURL &&
@@ -3394,12 +3264,12 @@ var MasterDetail = function (props) {
             React__default['default'].createElement("div", { className: ((_c = props.className) !== null && _c !== void 0 ? _c : '') + ' masterDetail masterDetail-' + props.breakAt }, props.children)));
     }
 };
-var MDMaster = function (props) {
-    var mdContext = React.useContext(MDContext);
-    var id = React.useMemo(function () { return ("mdm-id-" + intelliwaketsfoundation.RandomString(5)).toLowerCase(); }, []);
-    var css = null;
+const MDMaster = (props) => {
+    const mdContext = React.useContext(MDContext);
+    const id = React.useMemo(() => `mdm-id-${intelliwaketsfoundation.RandomString(5)}`.toLowerCase(), []);
+    let css = null;
     if (props.width) {
-        css = "@media (min-width: " + SizeAtMin(mdContext.breakAt) + "px) { #" + id + " {width: " + props.width + "; min-width: " + props.width + ";}}";
+        css = `@media (min-width: ${SizeAtMin(mdContext.breakAt)}px) { #${id} {width: ${props.width}; min-width: ${props.width};}}`;
     }
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
         React__default['default'].createElement(StyleControl, { css: css }),
@@ -3408,22 +3278,22 @@ var MDMaster = function (props) {
                 ' masterDetailMaster' +
                 (mdContext.isOpen ? ' isOpen' : ''), id: id }, props.children)));
 };
-var panelClean = function (panel) { return intelliwaketsfoundation.ReplaceAll('/', '', (panel !== null && panel !== void 0 ? panel : '').replace(/\s+/g, '')); };
-var MDLink = function (props) {
+const panelClean = (panel) => intelliwaketsfoundation.ReplaceAll('/', '', (panel !== null && panel !== void 0 ? panel : '').replace(/\s+/g, ''));
+const MDLink = (props) => {
     var _a, _b, _c, _d;
-    var history = reactRouterDom.useHistory();
-    var mdContext = React.useContext(MDContext);
-    var selectedRow = React.useRef(null);
-    var panelURLAddOn = mdContext.baseFullPath +
+    const history = reactRouterDom.useHistory();
+    const mdContext = React.useContext(MDContext);
+    const selectedRow = React.useRef(null);
+    const panelURLAddOn = mdContext.baseFullPath +
         (props.panel ? '/' + panelClean(props.panel) : '') +
         (props.id ? '/' + props.id : '') +
         (!!props.postPath ? '/' + props.postPath : '');
-    var linkActive = (!props.blockActivate &&
+    const linkActive = (!props.blockActivate &&
         props.panel &&
         (window.location.pathname.startsWith(panelURLAddOn + '/') || window.location.pathname === panelURLAddOn)) ||
         (!props.panel && window.location.pathname === panelURLAddOn);
-    var displayProps = __assign({}, props);
-    var classNames = ['cursor-pointer'];
+    let displayProps = Object.assign({}, props);
+    let classNames = ['cursor-pointer'];
     if (displayProps.className)
         classNames.push(displayProps.className);
     if (linkActive)
@@ -3439,13 +3309,13 @@ var MDLink = function (props) {
     delete displayProps.badgeColor;
     delete displayProps.badgeClass;
     delete displayProps.color;
-    var selectItem = function () {
+    const selectItem = () => {
         if (!props.blockActivate) {
             window.sessionStorage.removeItem(mdContext.baseFullPath + '-LastURL');
             history.push(linkActive ? mdContext.baseFullPath : panelURLAddOn);
         }
     };
-    React.useEffect(function () {
+    React.useEffect(() => {
         var _a;
         if (!!selectedRow.current) {
             (_a = selectedRow.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ block: 'nearest' });
@@ -3454,7 +3324,7 @@ var MDLink = function (props) {
     }, [props.children]);
     switch (props.tag) {
         case 'li':
-            return (React__default['default'].createElement("li", __assign({}, displayProps, { onClick: function () {
+            return (React__default['default'].createElement("li", Object.assign({}, displayProps, { onClick: () => {
                     if (!!props.onClick) {
                         if (props.onClick() === true)
                             selectItem();
@@ -3466,49 +3336,49 @@ var MDLink = function (props) {
                 props.children,
                 React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-right ' + ((_a = props.badgeClass) !== null && _a !== void 0 ? _a : ''), style: { marginTop: '0.2rem' } })));
         case 'tr':
-            return (React__default['default'].createElement("tr", __assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default['default'].createElement("tr", Object.assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         case 'div':
-            return (React__default['default'].createElement("div", __assign({}, displayProps, { onClick: (_c = props.onClick) !== null && _c !== void 0 ? _c : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default['default'].createElement("div", Object.assign({}, displayProps, { onClick: (_c = props.onClick) !== null && _c !== void 0 ? _c : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         default:
-            return (React__default['default'].createElement("span", __assign({}, displayProps, { onClick: (_d = props.onClick) !== null && _d !== void 0 ? _d : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default['default'].createElement("span", Object.assign({}, displayProps, { onClick: (_d = props.onClick) !== null && _d !== void 0 ? _d : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
     }
 };
-var MDDetail = function (props) {
+const MDDetail = (props) => {
     var _a;
     // const dispatch = useDispatch();
-    var mdContext = React.useContext(MDContext);
-    var checkPath = mdContext.baseFullPath + '/' + panelClean(props.panel);
-    var activated = (props.panel &&
+    const mdContext = React.useContext(MDContext);
+    const checkPath = mdContext.baseFullPath + '/' + panelClean(props.panel);
+    const activated = (props.panel &&
         !props.hidden &&
         (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
         (!props.panel && window.location.pathname === mdContext.baseFullPath);
-    React.useEffect(function () {
+    React.useEffect(() => {
         if (activated) {
             if (props.panel) {
                 if (!props.titleText) {
                     console.log('titleText not set on MDDetail!');
                 }
-                mdContext.setMenuBackItemState(function (prevState) {
+                mdContext.setMenuBackItemState((prevState) => {
                     var _a, _b;
-                    var location = window.location.pathname;
-                    var newMenuBackItem = {
+                    const location = window.location.pathname;
+                    const newMenuBackItem = {
                         menuBackActive: activated,
                         menuBackButtonTitle: (_b = (_a = props.backText) !== null && _a !== void 0 ? _a : mdContext.backText) !== null && _b !== void 0 ? _b : 'Back',
                         menuBackButtonURL: mdContext.baseFullPath,
                         menuPageTitle: props.titleText,
                         menuDisplaySize: mdContext.breakAt
                     };
-                    return __spreadArrays(prevState, [newMenuBackItem]).filter(function (item) {
+                    return [...prevState, newMenuBackItem].filter((item) => {
                         return item.menuBackButtonURL.length < location.length;
                     });
                 });
                 // AddMenuBackItem(menuBackItem)(dispatch)
             }
         }
-        return function () {
-            mdContext.setMenuBackItemState(function (prevState) {
-                var location = window.location.pathname;
-                return __spreadArrays(prevState).filter(function (item) {
+        return () => {
+            mdContext.setMenuBackItemState((prevState) => {
+                const location = window.location.pathname;
+                return [...prevState].filter((item) => {
                     return item.menuBackButtonURL.length < location.length;
                 });
             });
@@ -3533,24 +3403,22 @@ var MDDetail = function (props) {
     }
 };
 
-var MasterDetailListGroup = function (props) {
+const MasterDetailListGroup = (props) => {
     var _a;
-    var listGroupItems = React.useMemo(function () {
-        return props.listGroupItems
-            .filter(function (listGroupItem) { return !listGroupItem.hidden; })
-            .map(function (listGroupItem, idx) {
-            var _a, _b, _c, _d, _e, _f, _g;
-            return (__assign(__assign({}, listGroupItem), { key: ((_b = (_a = listGroupItem.panelTitle) !== null && _a !== void 0 ? _a : listGroupItem.linkNode) !== null && _b !== void 0 ? _b : idx).toString() + ((_c = listGroupItem.id) !== null && _c !== void 0 ? _c : '') + idx, panelURLCalc: (_d = listGroupItem.panelURL) !== null && _d !== void 0 ? _d : intelliwaketsfoundation.ToPascalCase((_e = listGroupItem.panelTitle) !== null && _e !== void 0 ? _e : ((_f = listGroupItem.linkNode) !== null && _f !== void 0 ? _f : idx).toString()), collapsed: !!listGroupItem.section && ((_g = props.collapsedSections) !== null && _g !== void 0 ? _g : []).includes(listGroupItem.section) }));
-        });
-    }, [props.listGroupItems, props.collapsedSections]);
-    var prevListGroupItem = null;
+    const listGroupItems = React.useMemo(() => props.listGroupItems
+        .filter((listGroupItem) => !listGroupItem.hidden)
+        .map((listGroupItem, idx) => {
+        var _a, _b, _c, _d, _e, _f, _g;
+        return (Object.assign(Object.assign({}, listGroupItem), { key: ((_b = (_a = listGroupItem.panelTitle) !== null && _a !== void 0 ? _a : listGroupItem.linkNode) !== null && _b !== void 0 ? _b : idx).toString() + ((_c = listGroupItem.id) !== null && _c !== void 0 ? _c : '') + idx, panelURLCalc: (_d = listGroupItem.panelURL) !== null && _d !== void 0 ? _d : intelliwaketsfoundation.ToPascalCase((_e = listGroupItem.panelTitle) !== null && _e !== void 0 ? _e : ((_f = listGroupItem.linkNode) !== null && _f !== void 0 ? _f : idx).toString()), collapsed: !!listGroupItem.section && ((_g = props.collapsedSections) !== null && _g !== void 0 ? _g : []).includes(listGroupItem.section) }));
+    }), [props.listGroupItems, props.collapsedSections]);
+    let prevListGroupItem = null;
     return (React__default['default'].createElement(MasterDetail, { setMenuBackItemState: props.setMenuBackItemState, mdPath: props.mdPath, breakAt: props.breakAt, backText: props.backText, rememberLast: props.rememberLast, className: props.className },
         React__default['default'].createElement(MDMaster, { width: props.mdMasterWidth, className: props.mdMasterClassName },
             props.mdMasterTopNode,
-            React__default['default'].createElement(ListGroup, { flush: true, className: "fill-height-scroll " + (props.noTextLargeSmaller ? '' : "text-large-" + props.breakAt + "-smaller") },
-                listGroupItems.map(function (listGroupItem, idx) {
+            React__default['default'].createElement(ListGroup, { flush: true, className: `fill-height-scroll ${props.noTextLargeSmaller ? '' : `text-large-${props.breakAt}-smaller`}` },
+                listGroupItems.map((listGroupItem, idx) => {
                     var _a, _b, _c, _d;
-                    var prefix = null;
+                    let prefix = null;
                     if (!!listGroupItem.section) {
                         if (!prevListGroupItem || prevListGroupItem.section !== listGroupItem.section) {
                             switch (props.sectionBreak) {
@@ -3561,15 +3429,15 @@ var MasterDetailListGroup = function (props) {
                                     prefix = idx > 0 ? '' : null;
                                     break;
                                 default:
-                                    prefix = (React__default['default'].createElement(ListGroupItemHeading, { onClick: function () {
+                                    prefix = (React__default['default'].createElement(ListGroupItemHeading, { onClick: () => {
                                             if (!!props.setCollapsedSections && !!listGroupItem.section) {
-                                                props.setCollapsedSections(function (prevState) {
+                                                props.setCollapsedSections((prevState) => {
                                                     if (!listGroupItem.section)
                                                         return prevState;
                                                     if (prevState.includes(listGroupItem.section)) {
-                                                        return prevState.filter(function (pS) { return pS !== listGroupItem.section; });
+                                                        return prevState.filter((pS) => pS !== listGroupItem.section);
                                                     }
-                                                    return __spreadArrays(prevState, [listGroupItem.section]);
+                                                    return [...prevState, listGroupItem.section];
                                                 });
                                             }
                                         }, className: ClassNames({
@@ -3580,7 +3448,7 @@ var MasterDetailListGroup = function (props) {
                         }
                     }
                     else if (!!listGroupItem.sectionNode) {
-                        console.warn("MasterDetail " + props.mdPath + " Item " + listGroupItem.panelTitle + ":" + ((_b = listGroupItem.id) !== null && _b !== void 0 ? _b : '') + " has a sectionNode, but no section");
+                        console.warn(`MasterDetail ${props.mdPath} Item ${listGroupItem.panelTitle}:${(_b = listGroupItem.id) !== null && _b !== void 0 ? _b : ''} has a sectionNode, but no section`);
                     }
                     prevListGroupItem = listGroupItem;
                     return (React__default['default'].createElement(React__default['default'].Fragment, { key: listGroupItem.key },
@@ -3592,39 +3460,39 @@ var MasterDetailListGroup = function (props) {
                             }) +
                                 ' ' +
                                 ((_d = listGroupItem.className) !== null && _d !== void 0 ? _d : '') },
-                            !!listGroupItem.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, __assign({ fixedWidth: true }, listGroupItem.faProps)),
+                            !!listGroupItem.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
                             listGroupItem.linkNode,
                             React__default['default'].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
                             listGroupItem.counter !== undefined && (React__default['default'].createElement(Badge, { color: listGroupItem.counterColor, className: "float-right small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default['default'].createElement(Spinner, { size: "xs" }))))));
                 }),
                 props.mdMasterBottomNode),
             props.mdMasterBottomOutsideNode),
-        listGroupItems.map(function (listGroupItem) {
+        listGroupItems.map((listGroupItem) => {
             var _a;
             return !listGroupItem.collapsed &&
                 !!listGroupItem.mdDetail && (React__default['default'].createElement(MDDetail, { key: listGroupItem.key, panel: listGroupItem.panelURLCalc, titleText: (_a = listGroupItem.panelTitle) !== null && _a !== void 0 ? _a : listGroupItem.linkNode }, listGroupItem.mdDetail));
         }),
-        ((_a = props.mdDetails) !== null && _a !== void 0 ? _a : []).map(function (mdDetail, idx) {
+        ((_a = props.mdDetails) !== null && _a !== void 0 ? _a : []).map((mdDetail, idx) => {
             var _a, _b;
             return (React__default['default'].createElement(MDDetail, { key: ((_a = mdDetail.panelURL) !== null && _a !== void 0 ? _a : mdDetail.panelTitle).toString() + idx, panel: (_b = mdDetail.panelURL) !== null && _b !== void 0 ? _b : intelliwaketsfoundation.ToPascalCase(mdDetail.panelTitle), titleText: mdDetail.panelTitle }, mdDetail.mdDetail));
         })));
 };
 
-var initialMessageBoxState = {
+const initialMessageBoxState = {
     message: null
 };
 /**
  * An alert box that appears when a message is passed as a prop,and dismisses after three seconds.
  */
-var MessageBox = function (props) {
+const MessageBox = (props) => {
     var _a, _b;
     // noinspection SuspiciousTypeOfGuard
-    var propsMessageBoxState = (typeof props.messageBoxState === 'string' || props.messageBoxState instanceof String) ? __assign(__assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
-    var dismissTimeout = React.useRef(setTimeout(function () {
+    const propsMessageBoxState = (typeof props.messageBoxState === 'string' || props.messageBoxState instanceof String) ? Object.assign(Object.assign({}, initialMessageBoxState), { message: props.messageBoxState }) : props.messageBoxState;
+    const dismissTimeout = React.useRef(setTimeout(() => {
     }, 1));
-    var messageBoxHTML = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : '');
-    var dismissMessageBox = React.useCallback(props.dismissMessageBox, [props.dismissMessageBox]);
-    React.useEffect(function () {
+    const messageBoxHTML = intelliwaketsfoundation.TextToHTML((_a = propsMessageBoxState.messageBody) !== null && _a !== void 0 ? _a : '');
+    const dismissMessageBox = React.useCallback(props.dismissMessageBox, [props.dismissMessageBox]);
+    React.useEffect(() => {
         clearTimeout(dismissTimeout.current);
         if (!!propsMessageBoxState.message && !propsMessageBoxState.noDismiss) {
             dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
@@ -3660,10 +3528,10 @@ function NumberFormat(props) {
                     : intelliwaketsfoundation.ToDigits((_v = props.value) !== null && _v !== void 0 ? _v : 0, (_w = props.decimals) !== null && _w !== void 0 ? _w : 0)));
 }
 
-var SelectDD = function (props) {
+const SelectDD = (props) => {
     var _a, _b, _c, _d;
-    var _e = React.useState((_a = props.items.find(function (item) { return props.selectedID === undefined || item.id === props.selectedID; })) !== null && _a !== void 0 ? _a : undefined), selectedItem = _e[0], setSelectedItem = _e[1];
-    var handleSelect = function (item) {
+    const [selectedItem, setSelectedItem] = React.useState((_a = props.items.find((item) => props.selectedID === undefined || item.id === props.selectedID)) !== null && _a !== void 0 ? _a : undefined);
+    const handleSelect = (item) => {
         var _a, _b;
         setSelectedItem(item);
         if (!!props.handleSelectItem) {
@@ -3676,41 +3544,40 @@ var SelectDD = function (props) {
             props.handleSelectID((_b = item === null || item === void 0 ? void 0 : item.id) !== null && _b !== void 0 ? _b : null);
         }
     };
-    React.useEffect(function () {
+    React.useEffect(() => {
         var _a;
-        setSelectedItem((_a = props.items.find(function (item) { return props.selectedID === undefined || item.id === props.selectedID; })) !== null && _a !== void 0 ? _a : undefined);
+        setSelectedItem((_a = props.items.find((item) => props.selectedID === undefined || item.id === props.selectedID)) !== null && _a !== void 0 ? _a : undefined);
     }, [props.selectedID, props.items]);
-    return (React__default['default'].createElement(Dropdown, { size: props.size, className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : ''), color: (_c = props.color) !== null && _c !== void 0 ? _c : (!!props.inline ? 'primary-outline' : 'primary'), noCaret: !props.caret, buttonClassName: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : ''), buttonFAProps: props.faIcon, buttonLabel: (_d = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _d !== void 0 ? _d : 'No Selection' }, (props !== null && props !== void 0 ? props : {}).items.map(function (item) {
-        var _a;
-        var _b, _c;
-        return (React__default['default'].createElement(DropdownItem, { key: ((_b = item.id) !== null && _b !== void 0 ? _b : -1).toString(), onClick: function () { return handleSelect(item); } },
-            item.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames((_a = {}, _a[(_c = 'text-' + item.faIconColor) !== null && _c !== void 0 ? _c : ''] = !!item.faIconColor, _a)) })),
+    return (React__default['default'].createElement(Dropdown, { size: props.size, className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : ''), color: (_c = props.color) !== null && _c !== void 0 ? _c : (!!props.inline ? 'primary-outline' : 'primary'), noCaret: !props.caret, buttonClassName: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : ''), buttonFAProps: props.faIcon, buttonLabel: (_d = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _d !== void 0 ? _d : 'No Selection' }, (props !== null && props !== void 0 ? props : {}).items.map((item) => {
+        var _a, _b;
+        return (React__default['default'].createElement(DropdownItem, { key: ((_a = item.id) !== null && _a !== void 0 ? _a : -1).toString(), onClick: () => handleSelect(item) },
+            item.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames({ [(_b = 'text-' + item.faIconColor) !== null && _b !== void 0 ? _b : '']: !!item.faIconColor }) })),
             item.name));
     })));
 };
 
-var initialTextStatusState = {
+const initialTextStatusState = {
     message: null
 };
-var TextStatus = function (props) {
-    var dismissTimeout = React.useRef(setTimeout(function () { }, 1));
-    var dismissTextStatus = React.useCallback(props.clearTextStatus, [props.clearTextStatus]);
-    var textStatus = React.useMemo(function () {
+const TextStatus = (props) => {
+    const dismissTimeout = React.useRef(setTimeout(() => { }, 1));
+    const dismissTextStatus = React.useCallback(props.clearTextStatus, [props.clearTextStatus]);
+    const textStatus = React.useMemo(() => {
         if (props.textStatus === null)
-            return __assign({}, initialTextStatusState);
+            return Object.assign({}, initialTextStatusState);
         if (typeof props.textStatus === 'string') {
-            return __assign(__assign({}, initialTextStatusState), { message: props.textStatus });
+            return Object.assign(Object.assign({}, initialTextStatusState), { message: props.textStatus });
         }
         return props.textStatus;
     }, [props.textStatus]);
-    React.useEffect(function () {
+    React.useEffect(() => {
         clearTimeout(dismissTimeout.current);
         if (!!textStatus.message && !textStatus.noDismiss) {
             dismissTimeout.current = setTimeout(dismissTextStatus, 1500);
         }
     }, [textStatus.message, textStatus.noDismiss, dismissTextStatus]);
     return !!textStatus.message ?
-        React__default['default'].createElement("span", { className: (!!textStatus.className ? textStatus.className : '') + (!!textStatus.color ? " text-" + textStatus.color : '') }, textStatus.message)
+        React__default['default'].createElement("span", { className: (!!textStatus.className ? textStatus.className : '') + (!!textStatus.color ? ` text-${textStatus.color}` : '') }, textStatus.message)
         : !!props.children ?
             React__default['default'].createElement(React__default['default'].Fragment, null, props.children)
             :

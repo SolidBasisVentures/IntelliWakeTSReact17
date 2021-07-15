@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { TChangeValueFunction } from './IWInputProps';
 export interface IInputSwitchProps<T = unknown> {
     name?: (T extends object ? keyof T : string) | undefined;

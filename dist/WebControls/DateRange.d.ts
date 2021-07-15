@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { Moment } from 'moment';
 export declare const customRangeName = "Custom Range";
 export interface IDateRangeString {

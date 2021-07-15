@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { IInputSwitchProps } from './InputSwitch';
 export interface IInputCheckboxProps<T> extends IInputSwitchProps<T> {
     onChange?: (e: any) => void;

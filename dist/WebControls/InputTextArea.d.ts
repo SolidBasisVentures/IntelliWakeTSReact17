@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { IIWInputProps } from './IWInputProps';
 interface IProps<T = any, V = string, H = HTMLTextAreaElement> extends IIWInputProps<T, V, H> {
     bordered?: boolean;
