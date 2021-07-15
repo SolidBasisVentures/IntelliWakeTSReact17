@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import Cleave from 'cleave.js/react'
-import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {CleaveOptions} from 'cleave.js/options'
 import {ClassNames} from '../Functions'
@@ -19,16 +19,16 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
-	const inputProps = useMemo<ILegacyInputProps>(() =>  ReduceInputProps(OmitProperty(props,
-			'decimalScale',
-			'integerScale',
-			'allowNegative',
-			'lowerBound',
-			'upperBound',
-			'currency',
-			'hideZero',
-			'invalid',
-			'decimalScaleDisplay', 'name')), [props])
+	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps(OmitProperty(props,
+		'decimalScale',
+		'integerScale',
+		'allowNegative',
+		'lowerBound',
+		'upperBound',
+		'currency',
+		'hideZero',
+		'invalid',
+		'decimalScaleDisplay', 'name')), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === '-') {
@@ -76,10 +76,11 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				numerics: hasDecimals,
 				integers: !hasDecimals
 			})}
-			plainTextControl={
+			plainTextControl={<div className='form-control-plaintext text-right'>
 				!!props.currency
-					? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
-					: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
+				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
+				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
+			</div>
 			}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
