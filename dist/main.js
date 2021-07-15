@@ -2795,8 +2795,8 @@ function InputSwitch(props) {
             props.changeValue(checked, props.name, !!e.shiftKey, !!e.ctrlKey, !!e.altKey);
         }
     };
-    const height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 14 : props.size === 'lg' ? 18 : 14;
-    const width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 20 : props.size === 'lg' ? 30 : 26;
+    const height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
+    const width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
     return (React__default['default'].createElement("label", { className: 'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ${(_c = props.plainTextProps) !== null && _c !== void 0 ? _c : ''} ` : '') + ((_d = props.className) !== null && _d !== void 0 ? _d : ''), hidden: props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly) },
         (!props.plainText || !props.plainTextLabelOnly) &&
             React__default['default'].createElement(Switch__default['default'], { onChange: (checked, e) => {
