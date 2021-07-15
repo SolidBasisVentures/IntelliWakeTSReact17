@@ -10,6 +10,8 @@ export interface IInputSwitchProps<T = unknown> {
 	className?: string
 	// id?: string
 	plainText?: boolean
+	plainTextProps?: boolean
+	plainTextLabelOnly?: boolean
 	changeValue?: TChangeValueFunction<T>
 	hidden?: boolean
 	onColor?: string
@@ -37,13 +39,14 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	const width = props.width ?? props.size === 'sm' ? 20 : props.size === 'lg' ? 30 : 26
 	
 	return (
-		<label className={'inputSwitch ' + (props.plainText ? 'plainText ' : '') + (props.className ?? '')} hidden={props.hidden}>
+		<label className={'inputSwitch ' + (props.plainText ? `plainText ${props.plainTextProps ?? ''} ` : '') + (props.className ?? '')} hidden={props.hidden}>
 			<Switch
 				onChange={(checked, e) => {
 					if (!props.plainText) {
 						handleInputChange(checked, e)
 					}
 				}}
+				hidden={props.plainText && props.plainTextLabelOnly}
 				name={props.name as string}
 				className={'react-switch ' + (props.noPadding ? '' : ' mr-2')}
 				checked={props.checked}

@@ -5,6 +5,8 @@ export interface IInputSwitchProps<T = unknown> {
     label: any;
     className?: string;
     plainText?: boolean;
+    plainTextProps?: boolean;
+    plainTextLabelOnly?: boolean;
     changeValue?: TChangeValueFunction<T>;
     hidden?: boolean;
     onColor?: string;
