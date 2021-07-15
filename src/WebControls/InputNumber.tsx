@@ -76,12 +76,11 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				numerics: hasDecimals,
 				integers: !hasDecimals
 			})}
-			plainTextControl={<div className='form-control-plaintext text-right'>
-				{!!props.currency
+			plainTextControl={!!props.currency
 				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
-				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)}
-			</div>
+				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 			}
+			plainTextProps={`text-right ${props.plainTextProps ?? ''}`.trim()}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
 			<Cleave
