@@ -26,9 +26,7 @@ export interface IWListGroupItemProps extends Omit<React.HTMLProps<HTMLLIElement
 
 export const ListGroupItem = (props: IWListGroupItemProps) => {
 	const TagToUse =
-		props.tag ?? !!props.onClick
-			? ('button' as React.ReactType)
-			: !!props.href
+		props.tag ?? !!props.href
 			? ('a' as React.ReactType)
 			: ('li' as React.ReactType)
 
@@ -50,7 +48,7 @@ export const ListGroupItem = (props: IWListGroupItemProps) => {
 			className={`${ClassNames({
 				active: !!props.active,
 				disabled: !!props.disabled,
-				'list-group-item-action': !!props.action
+				'list-group-item-action': !!props.action || (!!props.onClick && props.action !== false)
 				// 'd-flex justify-content-between align-items-center': props.badge === null || !!props.badge
 			})} list-group-item${!!props.color ? ` list-group-item-${props.color}` : ''} ${props.className ?? ''}`.trim()}
 			disabled={!!props.onClick && props.disabled ? true : undefined}>

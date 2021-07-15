@@ -986,15 +986,13 @@ const ListGroup = (props) => {
 
 const ListGroupItem = (props) => {
     var _a, _b, _c;
-    const TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.onClick)
-        ? 'button'
-        : !!props.href
-            ? 'a'
-            : 'li';
+    const TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.href)
+        ? 'a'
+        : 'li';
     return (React__default['default'].createElement(TagToUse, Object.assign({ type: !!props.onClick ? 'button' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: `${ClassNames({
             active: !!props.active,
             disabled: !!props.disabled,
-            'list-group-item-action': !!props.action
+            'list-group-item-action': !!props.action || (!!props.onClick && props.action !== false)
             // 'd-flex justify-content-between align-items-center': props.badge === null || !!props.badge
         })} list-group-item${!!props.color ? ` list-group-item-${props.color}` : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim(), disabled: !!props.onClick && props.disabled ? true : undefined }),
         props.children,

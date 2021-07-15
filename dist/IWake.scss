@@ -483,6 +483,12 @@ table.table-sortable thead th {
   cursor: pointer !important;
 }
 
+.inputSwitch {
+  .react-switch {
+    margin-bottom: -2px;
+  }
+}
+
 .inputRadio,
 .inputRadio * {
   cursor: pointer;
