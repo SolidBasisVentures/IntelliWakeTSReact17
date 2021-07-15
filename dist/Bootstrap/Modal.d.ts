@@ -3,7 +3,7 @@ import { IWButtonLightProps } from './Button';
 export interface IWModalProps {
     isOpen?: boolean;
     autoFocusElement?: any;
-    size?: 'sm' | 'lg';
+    size?: 'sm' | 'lg' | 'xl';
     toggle?: React.KeyboardEventHandler<any> | React.MouseEventHandler<any>;
     color?: string;
     title?: ReactNode;
