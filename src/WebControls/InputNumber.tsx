@@ -80,7 +80,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 			}
-			plainTextProps={{...props.plainTextProps, className: `form-control-plaintext text-right ${props.plainTextProps.className ?? ''}`.trim()}}
+			plainTextProps={{...props.plainTextProps, className: `form-control-plaintext text-right ${props.plainTextProps?.className ?? ''}`.trim()}}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
 			<Cleave
