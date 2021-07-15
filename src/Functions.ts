@@ -103,7 +103,7 @@ export const GetPathThrough = (search: string): any | undefined => {
 	return undefined
 }
 
-export const CaptureGPS = (): Promise<Position | null> => {
+export const CaptureGPS = (): Promise<GeolocationPosition | null> => {
 	return new Promise(async (resolve) => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
