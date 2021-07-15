@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import Cleave from 'cleave.js/react'
-import {CleanNumber, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {CleaveOptions} from 'cleave.js/options'
 import {ClassNames} from '../Functions'
@@ -77,9 +77,9 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				integers: !hasDecimals
 			})}
 			plainTextControl={<div className='form-control-plaintext text-right'>
-				!!props.currency
+				{!!props.currency
 				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
-				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
+				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)}
 			</div>
 			}
 			invalid={props.invalid}
