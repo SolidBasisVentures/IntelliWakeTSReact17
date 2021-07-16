@@ -6,6 +6,7 @@ interface IProps {
     className?: string;
     hidden?: boolean;
     noTruncate?: boolean;
+    print?: boolean;
 }
 export declare const EllipsesTruncate: (props: IProps) => JSX.Element | null;
 export {};

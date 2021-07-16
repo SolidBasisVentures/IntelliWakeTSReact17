@@ -2208,7 +2208,7 @@ const EllipsesTruncate = (props) => {
         return null;
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
         props.prefix,
-        React__default['default'].createElement("div", { className: 'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), title: !!props.noTruncate ? undefined : props.text }, props.text),
+        React__default['default'].createElement("div", { className: 'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), title: !!props.noTruncate ? undefined : props.text }, props.text),
         props.suffix));
 };
 

@@ -441,13 +441,6 @@ table.table-sortable thead th {
   font-size: 50% !important;
 }
 
-.ellipses-truncate {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .hoverAction:hover {
   background-color: #f5f5f5; // !important
   color: var(--primary); // !important
@@ -610,6 +603,13 @@ table.table-sortable thead th {
     .modal-body:not(.no-overflow-scroll) {
       overflow-y: auto;
     }
+  }
+
+  .ellipses-truncate {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -810,6 +810,13 @@ img.img-inline {
   .page-break-before {
     page-break-before: always !important;
     position: static !important;
+  }
+
+  .ellipses-truncate-print {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
