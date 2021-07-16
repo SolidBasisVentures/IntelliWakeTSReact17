@@ -7,6 +7,7 @@ interface IProps {
 	className?: string
 	hidden?: boolean
 	noTruncate?: boolean
+	print?: boolean
 }
 
 export const EllipsesTruncate = (props: IProps) => {
@@ -16,7 +17,7 @@ export const EllipsesTruncate = (props: IProps) => {
 		<>
 			{props.prefix}
 			<div
-				className={'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (props.className ?? '')}
+				className={'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? '' : 'ellipses-truncate-print ') + (props.className ?? '')}
 				title={!!props.noTruncate ? undefined : props.text}>
 				{props.text}
 			</div>
