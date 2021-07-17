@@ -1,6 +1,6 @@
 {
   "name": "@solidbasisventures/intelliwaketsreact17",
-  "version": "3.0.95",
+  "version": "3.0.96",
   "description": "NPM package for IntelliWake React 17 Components",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -50,7 +50,6 @@
     "recoil": "^0.1.2",
     "rollup": "^2.10.8",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-scss": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
