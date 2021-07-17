@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ISortProperties } from './ArrayManipulators';
 import { TBootStrapExtendedSizes, TBootStrapSizes } from '../Functions';
 /**

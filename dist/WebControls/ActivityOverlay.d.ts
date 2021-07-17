@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import moment from 'moment';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 export interface IActivityOverlayState {

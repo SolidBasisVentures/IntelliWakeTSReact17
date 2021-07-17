@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 export interface IIWSpinnerProps extends Partial<FontAwesomeIconProps> {
 }

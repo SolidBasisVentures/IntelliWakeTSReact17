@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export interface MessageBoxState {
     message: string | null;
     messageBody?: string | null;

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 interface IProps {
     show: boolean;

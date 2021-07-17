@@ -10,7 +10,6 @@ var faSpinnerThird = require('@fortawesome/pro-solid-svg-icons/faSpinnerThird');
 var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
 var ReactDOM = require('react-dom');
 var reactRouterDom = require('react-router-dom');
-var ReactDatePicker = require('react-datepicker');
 var Cleave = require('cleave.js/react');
 var Switch = require('react-switch');
 var axios = require('axios');
@@ -20,7 +19,6 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
-var ReactDatePicker__default = /*#__PURE__*/_interopDefaultLegacy(ReactDatePicker);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
 var Switch__default = /*#__PURE__*/_interopDefaultLegacy(Switch);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
@@ -2322,31 +2320,6 @@ function InputDate(props) {
         : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
-/**
- * A react datetime picker wrapper. Can also be used as a plain text to display the date/time values.
- */
-function InputDatePicker(props) {
-    var _a, _b;
-    const setValue = (date) => {
-        var _a, _b, _c;
-        if (!!props.changeValue) {
-            if (!date) {
-                props.changeValue(intelliwaketsfoundation.MomentTimeString((_a = props.value) !== null && _a !== void 0 ? _a : ''), props.name);
-            }
-            else {
-                if (!Array.isArray(date)) {
-                    const dateValueString = moment__default['default'](date).format(intelliwaketsfoundation.MOMENT_FORMAT_DATE);
-                    const timeValueString = (_c = intelliwaketsfoundation.MomentTimeString((_b = props.value) !== null && _b !== void 0 ? _b : '')) !== null && _c !== void 0 ? _c : '';
-                    props.changeValue(`${dateValueString} ${timeValueString}`.trim(), props.name);
-                }
-            }
-        }
-    };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
-        ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement(ReactDatePicker__default['default'], { value: (_b = intelliwaketsfoundation.MomentDateString((_a = props.value) !== null && _a !== void 0 ? _a : '')) !== null && _b !== void 0 ? _b : '', onChange: setValue, className: "form-control inputDate", placeholderText: props.placeholder, todayButton: !props.noTodayButton ? 'Today' : undefined }))));
-}
-
 function ViewEmail(props) {
     var _a, _b;
     return React__default['default'].createElement(React__default['default'].Fragment, null, !!props.email ? React__default['default'].createElement("a", { href: 'mailto:' + props.email }, (_a = props.label) !== null && _a !== void 0 ? _a : props.email) : (_b = props.label) !== null && _b !== void 0 ? _b : null);
@@ -3648,7 +3621,6 @@ exports.IWServerData = IWServerData;
 exports.InputCheckBox = InputCheckBox;
 exports.InputColor = InputColor;
 exports.InputDate = InputDate;
-exports.InputDatePicker = InputDatePicker;
 exports.InputEmail = InputEmail;
 exports.InputGender = InputGender;
 exports.InputGroup = InputGroup;
