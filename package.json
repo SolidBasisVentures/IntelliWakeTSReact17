@@ -8,7 +8,8 @@
     "BuildAndPublish": "rollup -c && npm version patch --no-git-tag-version && npm publish",
     "YarnInstall": "yarn add -D @solidbasisventures/intelliwaketsfoundation -W && yarn install",
     "YarnUpgrade": "yarn add -D @solidbasisventures/intelliwaketsfoundation -W && yarn upgrade",
-    "YarnReactUpgrade": "yarn add -D typescript axios babel-core babel-runtime cleave.js prettier react react-datepicker react-dom react-router-dom react-switch recoil @types/cleave.js @types/react @types/react-datepicker @types/react-dom @types/react-router-dom"
+    "YarnReactUpgrade": "yarn add -D typescript axios babel-core babel-runtime cleave.js prettier react react-datepicker react-dom react-router-dom react-switch recoil @types/cleave.js @types/react @types/react-datepicker @types/react-dom @types/react-router-dom",
+    "updateImports": "npx react-codemod update-react-imports .src"
   },
   "files": [
     "dist",
