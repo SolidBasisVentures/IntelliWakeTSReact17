@@ -4,6 +4,7 @@ export interface IInputSwitchProps<T = unknown> {
     checked: boolean;
     label: any;
     className?: string;
+    switchClassName?: string;
     plainText?: boolean;
     plainTextProps?: boolean;
     plainTextLabelOnly?: boolean;

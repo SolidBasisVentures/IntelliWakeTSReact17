@@ -27,11 +27,11 @@ export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 	}
 	
 	return (
-		<label className={!props.plainText ? 'cursor-pointer' : ''}>
+		<label className={(!props.plainText ? 'cursor-pointer ' : '') + (props.className ?? '')}>
 			<input
 				type='checkbox'
 				name={props.name as string}
-				className={'inputCheckbox mr-1 ' + (props.className ?? '') + (props.plainText ? ' plainText' : '')}
+				className={'inputCheckbox mr-1 ' + (props.switchClassName ?? '') + (props.plainText ? ' plainText' : '')}
 				hidden={props.hidden}
 				checked={props.checked}
 				onChange={!props.plainText ? handleInputChange : () => {
