@@ -1356,7 +1356,7 @@ const ModalPrompt = (props) => {
 };
 
 const Tab = (props) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const isChanging = React.useRef(false);
     const loadedTabs = React.useRef([]);
     const showTabs = props.tabs.filter((tab) => !tab.hide);
@@ -1410,21 +1410,23 @@ const Tab = (props) => {
     // p-2 background-gray overflow-hidden
     return (React__default['default'].createElement("div", { className: `${props.className} tabControlParent ${ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })}`.trim() },
         React__default['default'].createElement(ModalPrompt, Object.assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
-        React__default['default'].createElement("ul", { className: `nav px-4 mt-3 mx-0 nav-${(_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs'}` }, showTabs.map((tab) => (React__default['default'].createElement("li", { key: tab.title, className: "nav-item" },
-            React__default['default'].createElement(Button, { color: "link", className: ClassNames({
-                    'nav-link': true,
-                    desktopOnly: true,
-                    active: actualOpenTab === tab.title
-                }), disabled: !!tab.disabled, onClick: () => {
-                    if (!tab.hide && !tab.disabled) {
-                        changeOpenTab(tab.title);
-                    }
-                } },
-                !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
-                React__default['default'].createElement("span", { className: "desktopOnly" }, tab.title)))))),
+        React__default['default'].createElement("ul", { className: `nav px-4 mt-3 mx-0 nav-${(_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs'} ${(_h = props.navClassName) !== null && _h !== void 0 ? _h : ''}`.trim() }, showTabs.map((tab) => {
+            var _a;
+            return (React__default['default'].createElement("li", { key: tab.title, className: `nav-item ${(_a = props.navItemClassName) !== null && _a !== void 0 ? _a : ''}`.trim() },
+                React__default['default'].createElement(Button, { color: "link", className: ClassNames({
+                        'nav-link': true,
+                        active: actualOpenTab === tab.title
+                    }), disabled: !!tab.disabled, onClick: () => {
+                        if (!tab.hide && !tab.disabled) {
+                            changeOpenTab(tab.title);
+                        }
+                    } },
+                    !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
+                    React__default['default'].createElement("span", { className: props.navItemSpanClassName }, tab.title))));
+        })),
         React__default['default'].createElement("div", { className: ClassNames({
                 'tab-content': true,
-                'fill-height': !!((_h = props.fillHeight) !== null && _h !== void 0 ? _h : true),
+                'fill-height': !!((_j = props.fillHeight) !== null && _j !== void 0 ? _j : true),
                 'border-left': !props.noPaneBorder,
                 'border-right': !props.noPaneBorder,
                 'border-bottom': !props.noPaneBorder

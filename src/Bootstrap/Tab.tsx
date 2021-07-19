@@ -33,6 +33,8 @@ export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'>
 	noPanePadding?: boolean
 	noPaneBorder?: boolean
 	navClassName?: string
+	navItemClassName?: string
+	navItemSpanClassName?: string
 }
 
 export const Tab = (props: IWTabProps) => {
@@ -102,14 +104,13 @@ export const Tab = (props: IWTabProps) => {
 	return (
 		<div className={`${props.className} tabControlParent ${ClassNames({'fill-height': !!(props.fillHeight ?? true)})}`.trim()}>
 			<ModalPrompt {...modalPromptProps} dismiss={setModalPromptProps} />
-			<ul className={`nav px-4 mt-3 mx-0 nav-${props.tabType ?? 'tabs'}`}>
+			<ul className={`nav px-4 mt-3 mx-0 nav-${props.tabType ?? 'tabs'} ${props.navClassName ?? ''}`.trim()}>
 				{showTabs.map((tab) => (
-					<li key={tab.title} className="nav-item">
+					<li key={tab.title} className={`nav-item ${props.navItemClassName ?? ''}`.trim()}>
 						<Button
 							color="link"
 							className={ClassNames({
 								'nav-link': true,
-								desktopOnly: true,
 								active: actualOpenTab === tab.title
 							})}
 							disabled={!!tab.disabled}
@@ -119,7 +120,7 @@ export const Tab = (props: IWTabProps) => {
 								}
 							}}>
 							{!!tab.faProps && <FontAwesomeIcon {...tab.faProps} fixedWidth={!!tab.title} className={!!tab.title ? "fa-fw-desktop" : ''} />}
-							<span className="desktopOnly">{tab.title}</span>
+							<span className={props.navItemSpanClassName}>{tab.title}</span>
 						</Button>
 					</li>
 				))}
