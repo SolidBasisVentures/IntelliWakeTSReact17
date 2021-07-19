@@ -8,6 +8,7 @@ export interface IInputSwitchProps<T = unknown> {
 	checked: boolean
 	label: any
 	className?: string
+	switchClassName?: string
 	// id?: string
 	plainText?: boolean
 	plainTextProps?: boolean
@@ -41,7 +42,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	
 	return (
 		<label
-			className={'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ${props.plainTextProps ?? ''} ` : '') + (props.className ?? '')}
+			className={'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
 			hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
 			{(!props.plainText || !props.plainTextLabelOnly) &&
 			<Switch
@@ -51,7 +52,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 					}
 				}}
 				name={props.name as string}
-				className={'react-switch ' + (props.noPadding ? '' : ' mr-2')}
+				className={'react-switch ' + (props.noPadding ? '' : 'mr-2 ') + (props.switchClassName ?? '')}
 				checked={props.checked}
 				disabled={props.plainText}
 				onColor={props.onColor}
