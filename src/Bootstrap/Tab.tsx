@@ -104,7 +104,7 @@ export const Tab = (props: IWTabProps) => {
 	return (
 		<div className={`${props.className} tabControlParent ${ClassNames({'fill-height': !!(props.fillHeight ?? true)})}`.trim()}>
 			<ModalPrompt {...modalPromptProps} dismiss={setModalPromptProps} />
-			<ul className={`nav px-4 mt-3 mx-0 nav-${props.tabType ?? 'tabs'} ${props.navClassName ?? ''}`.trim()}>
+			<ul className={`nav nav-${props.tabType ?? 'tabs'} ${props.navClassName ?? ''}`.trim()}>
 				{showTabs.map((tab) => (
 					<li key={tab.title} className={`nav-item ${props.navItemClassName ?? ''}`.trim()}>
 						<Button
