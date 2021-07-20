@@ -21,7 +21,7 @@ export default {
 			targets: [{src: 'src/IWake.scss', dest: 'dist'}, {
 				src: 'src/IWake-table-sticky.scss',
 				dest: 'dist'
-			}, {src: 'src/IWakeRoot.scss', dest: 'dist'}]
+			}, {src: 'src/IWakeNoRoot.scss', dest: 'dist'}]
 		})
 	],
 	external: ['react', 'react-dom']

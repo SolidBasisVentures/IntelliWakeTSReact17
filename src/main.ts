@@ -1,5 +1,5 @@
 import './IWake.scss'
-import './IWakeRoot.scss'
+import './IWakeNoRoot.scss'
 import './IWake-table-sticky.scss'
 
 export * from './Cookie'
