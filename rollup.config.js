@@ -18,7 +18,10 @@ export default {
 		scss(),
 		typescript({objectHashIgnoreUnknownHack: false}),
 		copy({
-			targets: [{src: 'src/IWake.scss', dest: 'dist'}]
+			targets: [{src: 'src/IWake.scss', dest: 'dist'}, {
+				src: 'src/IWake-table-sticky.scss',
+				dest: 'dist'
+			}, {src: 'src/IWakeRoot.scss', dest: 'dist'}]
 		})
 	],
 	external: ['react', 'react-dom']

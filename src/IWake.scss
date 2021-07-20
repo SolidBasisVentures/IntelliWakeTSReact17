@@ -494,49 +494,8 @@ table.table-sortable thead th {
 }
 
 @media screen {
-  //html,
-  //body,
-  #root.IWRoot,
-  #root.IWRoot > .App.IWApp {
-    height: 100vh !important;
-    width: 100vw !important;
-    overflow: hidden;
-  }
-
   .d-screen-none {
     display: none;
-  }
-
-  #root > .App.IWApp > nav {
-    min-height: 55px !important;
-    z-index: 1030;
-  }
-
-  #root > .App.IWApp > .AppContent {
-    position: fixed;
-    top: 55px;
-    bottom: 18px;
-    right: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-
-    > .container,
-    > .container-fluid {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
-  }
-
-  #root > .App.IWApp > footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-    height: 18px;
   }
 
   table.table-scrollable {
@@ -1681,12 +1640,6 @@ br {
 
 p {
   mso-data-placement: same-cell;
-}
-
-@media (max-width: 575.98px) {
-  #root > .App.IWApp > footer {
-    height: 36px;
-  }
 }
 
 .tabControlParent {
