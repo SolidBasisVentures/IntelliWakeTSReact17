@@ -159,6 +159,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				'noCaret',
 				'size',
 				'color',
+				'outline',
 				'className',
 				'menuStyle'
 			)}
