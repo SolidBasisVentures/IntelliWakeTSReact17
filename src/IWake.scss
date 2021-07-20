@@ -1692,4 +1692,8 @@ p {
   .nav-tabs > .nav-item button:hover {
     border-color: transparent !important;
   }
+
+  .tab-content > .active {
+    display: flex !important;
+  }
 }
