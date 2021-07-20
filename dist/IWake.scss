@@ -494,12 +494,13 @@ table.table-sortable thead th {
 }
 
 @media screen {
-  html,
-  body,
-  #root,
-  #root > .App.IWApp {
+  //html,
+  //body,
+  #root.IWRoot,
+  #root.IWRoot > .App.IWApp {
     height: 100vh !important;
     width: 100vw !important;
+    overflow: hidden;
   }
 
   .d-screen-none {
