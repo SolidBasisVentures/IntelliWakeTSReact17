@@ -23,6 +23,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
     toggle?: React.KeyboardEventHandler<any> | React.MouseEventHandler<any>;
     size?: 'sm' | 'lg';
     color?: string;
+    outline?: boolean;
     block?: boolean;
     inNavbar?: boolean;
     right?: boolean;

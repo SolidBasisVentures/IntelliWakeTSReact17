@@ -31,6 +31,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 	toggle?: React.KeyboardEventHandler<any> | React.MouseEventHandler<any>
 	size?: 'sm' | 'lg'
 	color?: string
+	outline?: boolean
 	block?: boolean
 	inNavbar?: boolean
 	right?: boolean
@@ -166,6 +167,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				color={props.color ?? (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined)}
 				block={props.block}
 				size={props.size}
+				outline={props.outline}
 				className={
 					!!props.nav || !!props.inNavbar
 						? undefined
