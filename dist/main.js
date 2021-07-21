@@ -2447,8 +2447,7 @@ const InputWrapper = (props) => {
                         if (!!props.changeValueLate &&
                             isMounted.current &&
                             lateState.current !== undefined &&
-                            lateState.current.value !== eTargetValue // props.children.props.value
-                        ) {
+                            lateState.current.value !== props.children.props.value) {
                             props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
                             lateState.current = undefined;
                         }

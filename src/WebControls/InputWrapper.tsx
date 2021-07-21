@@ -186,7 +186,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 												!!props.changeValueLate &&
 												isMounted.current &&
 												lateState.current !== undefined &&
-												lateState.current.value !== eTargetValue as any // props.children.props.value
+												lateState.current.value !== props.children.props.value
 											) {
 												props.changeValueLate(
 													lateState.current.value as V,
