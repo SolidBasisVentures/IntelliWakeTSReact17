@@ -4,6 +4,7 @@ import {IInputSwitchProps} from './InputSwitch'
 export interface IInputCheckboxProps<T> extends IInputSwitchProps<T> {
 	onChange?: (e: any) => void
 	onClick?: (e: any) => void
+	disabled?: boolean
 }
 
 export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
@@ -27,19 +28,19 @@ export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 	}
 	
 	return (
-		<label className={(!props.plainText ? 'cursor-pointer ' : '') + (props.className ?? '')}>
+		<label className={'inputCheckbox ' + (!props.plainText ? 'cursor-pointer ' : '') + (props.className ?? '')}>
 			<input
 				type='checkbox'
 				name={props.name as string}
-				className={'inputCheckbox mr-1 ' + (props.switchClassName ?? '') + (props.plainText ? ' plainText' : '')}
+				className={'mr-1 ' + (props.switchClassName ?? '') + (props.plainText ? ' plainText' : '')}
 				hidden={props.hidden}
 				checked={props.checked}
 				onChange={!props.plainText ? handleInputChange : () => {
 				}}
-				disabled={props.plainText}
+				disabled={props.disabled}
 				onClick={props.onClick}
 			/>
-			{props.label}
+			<span className='form-control-plaintext'>{props.label}</span>
 		</label>
 	)
 }

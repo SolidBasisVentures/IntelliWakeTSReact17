@@ -2224,10 +2224,10 @@ function InputCheckBox(props) {
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement("label", { className: (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
-        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'inputCheckbox mr-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : () => {
-            }, disabled: props.plainText, onClick: props.onClick }),
-        props.label));
+    return (React__default['default'].createElement("label", { className: 'inputCheckbox ' + (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
+        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'mr-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : () => {
+            }, disabled: props.disabled, onClick: props.onClick }),
+        React__default['default'].createElement("span", { className: 'form-control-plaintext' }, props.label)));
 }
 
 const ReduceInputProps = (props, classNameAdd) => {
