@@ -1784,6 +1784,15 @@ p {
   display: flex !important;
 }
 
+.inputCheckbox {
+  position: relative;
+}
+.inputCheckbox span {
+  position: absolute;
+  left: 1.5em;
+  top: 0.25em;
+}
+
 @media screen {
   table.table-sticky {
     border-collapse: separate;
@@ -3427,6 +3436,15 @@ p {
 }
 .tabControlParent .tab-content > .active {
   display: flex !important;
+}
+
+.inputCheckbox {
+  position: relative;
+}
+.inputCheckbox span {
+  position: absolute;
+  left: 1.5em;
+  top: 0.25em;
 }
 
 @media screen {
