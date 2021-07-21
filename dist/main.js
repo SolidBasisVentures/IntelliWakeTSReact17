@@ -2453,7 +2453,7 @@ const InputWrapper = (props) => {
                             lateState.current = undefined;
                         }
                     }, (_a = props.lateDelayMS) !== null && _a !== void 0 ? _a : 500);
-                    if (!props.children.props.onChange && !props.changeValue && !props.changeValueLate) {
+                    if (!props.children.props.onChange && !props.changeValue) { // && !props.changeValueLate
                         if (verbose) {
                             console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue);
                             if (!!props.internalStateValue)

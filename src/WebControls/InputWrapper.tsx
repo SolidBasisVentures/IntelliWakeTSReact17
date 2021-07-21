@@ -198,7 +198,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 												lateState.current = undefined
 											}
 										}, props.lateDelayMS ?? 500)
-										if (!props.children.props.onChange && !props.changeValue && !props.changeValueLate) {
+										if (!props.children.props.onChange && !props.changeValue) { // && !props.changeValueLate
 											if (verbose) {
 												console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue)
 												if (!!props.internalStateValue)
