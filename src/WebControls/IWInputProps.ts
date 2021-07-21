@@ -21,6 +21,7 @@ export interface IIWInputAddProps<T = any, V = any> {
 	prepend?: ReactNode
 	append?: ReactNode
 	invalid?: boolean
+	consoleVerbose?: boolean
 }
 
 export type THTMLChangeElements = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -86,7 +87,8 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 		'append',
 		'prepend',
 		'invalid',
-		'innerRef'
+		'innerRef',
+		'consoleVerbose'
 	)
 
 	if (!!classNameAdd) {
@@ -112,7 +114,8 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 		autoCompleteOn: props.autoCompleteOn,
 		prepend: props.prepend,
 		append: props.append,
-		invalid: props.invalid
+		invalid: props.invalid,
+		consoleVerbose: props.consoleVerbose
 	}
 }
 

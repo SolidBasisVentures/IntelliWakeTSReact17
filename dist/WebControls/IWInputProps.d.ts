@@ -12,6 +12,7 @@ export interface IIWInputAddProps<T = any, V = any> {
     prepend?: ReactNode;
     append?: ReactNode;
     invalid?: boolean;
+    consoleVerbose?: boolean;
 }
 export declare type THTMLChangeElements = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 export declare type TLegacyInputType = 'text' | 'email' | 'select' | 'file' | 'radio' | 'checkbox' | 'textarea' | 'button' | 'reset' | 'submit' | 'date' | 'datetime-local' | 'hidden' | 'image' | 'month' | 'number' | 'range' | 'search' | 'tel' | 'url' | 'week' | 'password' | 'datetime' | 'time' | 'color';

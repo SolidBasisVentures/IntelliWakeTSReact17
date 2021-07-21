@@ -2232,7 +2232,7 @@ function InputCheckBox(props) {
 
 const ReduceInputProps = (props, classNameAdd) => {
     var _a, _b, _c;
-    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef');
+    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef', 'consoleVerbose');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = `${(_a = subset.className) !== null && _a !== void 0 ? _a : ''} ${classNameAdd}`.trim();
@@ -2256,7 +2256,8 @@ const ReduceToInputAddProps = (props) => {
         autoCompleteOn: props.autoCompleteOn,
         prepend: props.prepend,
         append: props.append,
-        invalid: props.invalid
+        invalid: props.invalid,
+        consoleVerbose: props.consoleVerbose
     };
 };
 const HandleChangeValue = (e, changeValue, onChange) => {
@@ -2407,17 +2408,18 @@ const InputWrapper = (props) => {
                 props.children.props.onBlur(e);
         }, onChange: (e) => {
             var _a;
+            const eTargetValue = e.target.value;
             clearTimeout(lateTrigger.current);
-            if (!props.children.props.plainText && !props.children.props.disabled) {
-                const isValid = !props.inputIsValid || props.inputIsValid(e.target.value);
+            if (!props.plainText && !props.children.props.disabled) {
+                const isValid = !props.inputIsValid || props.inputIsValid(eTargetValue);
                 isManagingDirtyState.current = !isValid;
                 let customValue = (!isValid
                     ? !!props.valueOnInvalid
-                        ? props.valueOnInvalid(e.target.value)
+                        ? props.valueOnInvalid(eTargetValue)
                         : ''
-                    : (!props.transformToValid ? e.target.value : props.transformToValid(e.target.value, e)));
+                    : (!props.transformToValid ? eTargetValue : props.transformToValid(eTargetValue, e)));
                 if (verbose) {
-                    console.log('targetValue', e.target.value);
+                    console.log('targetValue', eTargetValue);
                     console.log('isValid', isValid);
                     console.log('valueOnInvalid', !!props.valueOnInvalid);
                     console.log('props.transformToValid', !!props.transformToValid);
@@ -2445,27 +2447,28 @@ const InputWrapper = (props) => {
                         if (!!props.changeValueLate &&
                             isMounted.current &&
                             lateState.current !== undefined &&
-                            lateState.current.value !== props.children.props.value) {
+                            lateState.current.value !== eTargetValue // props.children.props.value
+                        ) {
                             props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
                             lateState.current = undefined;
                         }
                     }, (_a = props.lateDelayMS) !== null && _a !== void 0 ? _a : 500);
                     if (!props.children.props.onChange && !props.changeValue && !props.changeValueLate) {
                         if (verbose) {
-                            console.log('oC Val ISV?', !!props.internalStateValue, e.target.value);
+                            console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue);
                             if (!!props.internalStateValue)
-                                console.log('oC Val ISV', props.internalStateValue(e.target.value, e));
+                                console.log('oC Val ISV', props.internalStateValue(eTargetValue, e));
                         }
-                        setInternalState(!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value);
+                        setInternalState(!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue);
                     }
                 }
                 else {
                     if (verbose) {
-                        console.log('Else Val ISV?', !!props.internalStateValue, e.target.value);
+                        console.log('Else Val ISV?', !!props.internalStateValue, eTargetValue);
                         if (!!props.internalStateValue)
-                            console.log('Else Val ISV', props.internalStateValue(e.target.value, e));
+                            console.log('Else Val ISV', props.internalStateValue(eTargetValue, e));
                     }
-                    setInternalState(!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value);
+                    setInternalState(!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue);
                 }
             }
         }, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_e = props.children.props.name) !== null && _e !== void 0 ? _e : ''}_${intelliwaketsfoundation.RandomString(5)}`, value: internalState })))))));

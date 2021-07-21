@@ -16,7 +16,6 @@ interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddP
 	invalid?: boolean
 	lateDelayMS?: number
 	isEqual?: (internalValue: any, endValue: any) => boolean
-	consoleVerbose?: boolean
 	internalStateValue?: (value: any, e: any) => any
 }
 
@@ -131,24 +130,26 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 								if (props.children.props.onBlur) props.children.props.onBlur(e as any)
 							},
 							onChange: (e: React.ChangeEvent<THTMLChangeElements>) => {
+								const eTargetValue = e.target.value
+								
 								clearTimeout(lateTrigger.current)
 
-								if (!props.children.props.plainText && !props.children.props.disabled) {
+								if (!props.plainText && !props.children.props.disabled) {
 									const isValid =
-										!props.inputIsValid || props.inputIsValid(e.target.value)
+										!props.inputIsValid || props.inputIsValid(eTargetValue)
 
 									isManagingDirtyState.current = !isValid
 
 									let customValue = (
 										!isValid
 											? !!props.valueOnInvalid
-												? props.valueOnInvalid(e.target.value)
+												? props.valueOnInvalid(eTargetValue)
 												: ''
-											: ((!props.transformToValid ? e.target.value : props.transformToValid(e.target.value, e)) as any)
+											: ((!props.transformToValid ? eTargetValue : props.transformToValid(eTargetValue, e)) as any)
 									) as V
 
 									if (verbose) {
-										console.log('targetValue', e.target.value)
+										console.log('targetValue', eTargetValue)
 										console.log('isValid', isValid)
 										console.log('valueOnInvalid', !!props.valueOnInvalid)
 										console.log('props.transformToValid', !!props.transformToValid)
@@ -185,7 +186,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 												!!props.changeValueLate &&
 												isMounted.current &&
 												lateState.current !== undefined &&
-												lateState.current.value !== props.children.props.value
+												lateState.current.value !== eTargetValue as any // props.children.props.value
 											) {
 												props.changeValueLate(
 													lateState.current.value as V,
@@ -199,22 +200,22 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 										}, props.lateDelayMS ?? 500)
 										if (!props.children.props.onChange && !props.changeValue && !props.changeValueLate) {
 											if (verbose) {
-												console.log('oC Val ISV?', !!props.internalStateValue, e.target.value)
+												console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue)
 												if (!!props.internalStateValue)
-													console.log('oC Val ISV', props.internalStateValue(e.target.value, e))
+													console.log('oC Val ISV', props.internalStateValue(eTargetValue, e))
 											}
 											setInternalState(
-												!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value
+												!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue
 											)
 										}
 									} else {
 										if (verbose) {
-											console.log('Else Val ISV?', !!props.internalStateValue, e.target.value)
+											console.log('Else Val ISV?', !!props.internalStateValue, eTargetValue)
 											if (!!props.internalStateValue)
-												console.log('Else Val ISV', props.internalStateValue(e.target.value, e))
+												console.log('Else Val ISV', props.internalStateValue(eTargetValue, e))
 										}
 										setInternalState(
-											!!props.internalStateValue ? props.internalStateValue(e.target.value, e) : e.target.value
+											!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue
 										)
 									}
 								}
