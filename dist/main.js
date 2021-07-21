@@ -2366,8 +2366,9 @@ const InputWrapper = (props) => {
         };
     });
     React.useEffect(() => {
-        lateState.current = undefined;
-        if (!isManagingDirtyState.current &&
+        // lateState.current = undefined
+        if (lateState.current === undefined &&
+            !isManagingDirtyState.current &&
             (!!props.isEqual
                 ? !props.isEqual(internalState, props.children.props.value)
                 : internalState !== props.children.props.value) &&

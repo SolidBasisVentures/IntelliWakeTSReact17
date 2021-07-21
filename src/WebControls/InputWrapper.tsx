@@ -53,8 +53,9 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 	})
 
 	useEffect(() => {
-		lateState.current = undefined
+		// lateState.current = undefined
 		if (
+			lateState.current === undefined &&
 			!isManagingDirtyState.current &&
 			(!!props.isEqual
 				? !props.isEqual(internalState, props.children.props.value)
