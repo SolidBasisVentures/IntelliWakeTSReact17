@@ -28,7 +28,7 @@ export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 	}
 	
 	return (
-		<label className={'inputCheckbox ' + (!props.plainText ? 'cursor-pointer ' : '') + (props.className ?? '')}>
+		<label className={'inputCheckbox form-control-plaintext ' + (!props.plainText ? 'cursor-pointer ' : '') + (props.className ?? '')}>
 			<input
 				type='checkbox'
 				name={props.name as string}
@@ -40,7 +40,7 @@ export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 				disabled={props.disabled}
 				onClick={props.onClick}
 			/>
-			<span className='form-control-plaintext'>{props.label}</span>
+			<span>{props.label}</span>
 		</label>
 	)
 }
