@@ -2806,15 +2806,15 @@ const InputText = (props) => {
 function InputTextArea(props) {
     const inputProps = React.useMemo(() => {
         var _a;
-        let subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered'));
+        let subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered', 'plainTextScroll'));
         subset.value = ((_a = props.value) !== null && _a !== void 0 ? _a : '');
         return subset;
     }, [props]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: "inputTextArea form-control", plainTextControl: React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext vertical-scroll horizontal-scroll' + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: {
+        React__default['default'].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: "inputTextArea form-control", plainTextControl: React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' + (!!props.plainTextScroll ? 'vertical-scroll horizontal-scroll ' : '') + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: props.plainTextScroll ? {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
-                } })) }),
+                } : undefined })) }),
             React__default['default'].createElement("textarea", Object.assign({}, inputProps)))));
 }
 
