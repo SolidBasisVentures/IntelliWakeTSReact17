@@ -29,5 +29,6 @@ export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'>
     navClassName?: string;
     navItemClassName?: string;
     navItemSpanClassName?: string;
+    padTabs?: boolean;
 }
 export declare const Tab: (props: IWTabProps) => JSX.Element | null;

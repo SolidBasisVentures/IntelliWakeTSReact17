@@ -46,8 +46,8 @@ export const GetOrientation = async (file: File): Promise<any> => {
     });
 };
 
-export const PhotoFileToData = async (file: File, maxSize: number = 4096): Promise<any> => {
-    return new Promise<any>(async resolve => {
+export const PhotoFileToData = async (file: File, maxSize: number = 4096): Promise<string | false> => {
+    return new Promise<string | false>(async resolve => {
         const srcOrientation = await GetOrientation(file);
 
         // Create a file reader
