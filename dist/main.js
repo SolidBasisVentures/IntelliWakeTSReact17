@@ -1203,6 +1203,28 @@ const NavbarToggler = (props) => {
         React__default['default'].createElement("span", { className: "navbar-toggler-icon" })));
 };
 
+const Progress = (props) => {
+    var _a, _b, _c;
+    let classes = `progress ${(_a = props.className) !== null && _a !== void 0 ? _a : ''}`.trim();
+    const progressBarProps = (bar) => {
+        var _a, _b, _c, _d, _e;
+        const spread = ((_a = bar.maxAmount) !== null && _a !== void 0 ? _a : 100) - ((_b = bar.minAmount) !== null && _b !== void 0 ? _b : 0);
+        const percentAmount = !spread ? bar.nowAmount : (bar.nowAmount - ((_c = bar.minAmount) !== null && _c !== void 0 ? _c : 0)) / (spread);
+        return {
+            className: `progress-bar${!!bar.color ? ` bg-${bar.color}` : ''}${bar.striped ? ' progress-bar-striped' : ''}${bar.striped ? ' progress-bar-animated' : ''}`.trim(),
+            role: 'progressbar',
+            style: { width: `${percentAmount}%` },
+            'aria-valuenow': bar.nowAmount,
+            'aria-valuemin': (_d = bar.minAmount) !== null && _d !== void 0 ? _d : 0,
+            'aria-valuemax': (_e = bar.maxAmount) !== null && _e !== void 0 ? _e : 100,
+            children: bar.children
+        };
+    };
+    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'nowAmount', 'minAmount', 'maxAmount', 'striped', 'color', 'otherBars', 'height', 'style', 'className', 'children'), { className: classes.trim(), style: Object.assign({ height: props.height }, ((_b = props.style) !== null && _b !== void 0 ? _b : {})) }),
+        React__default['default'].createElement("div", Object.assign({}, progressBarProps(props))),
+        ((_c = props.otherBars) !== null && _c !== void 0 ? _c : []).map((otherBar, idx) => React__default['default'].createElement("div", Object.assign({ key: otherBar.nowAmount + '-' + idx }, progressBarProps(otherBar)))));
+};
+
 const Row = (props) => {
     var _a;
     return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
@@ -3695,6 +3717,7 @@ exports.NumberFormat = NumberFormat;
 exports.OptionsActive = OptionsActive;
 exports.OptionsActiveAll = OptionsActiveAll;
 exports.PhotoFileToData = PhotoFileToData;
+exports.Progress = Progress;
 exports.ReduceInputProps = ReduceInputProps;
 exports.ReduceToInputAddProps = ReduceToInputAddProps;
 exports.RemoveActivityOverlay = RemoveActivityOverlay;

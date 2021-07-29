@@ -50,6 +50,7 @@ export * from './Bootstrap/NavLink';
 export * from './Bootstrap/NavbarBrand';
 export * from './Bootstrap/NavbarToggler';
 export * from './Bootstrap/Portal';
+export * from './Bootstrap/Progress';
 export * from './Bootstrap/Row';
 export * from './Bootstrap/Tab';
 export * from './Bootstrap/Table';
