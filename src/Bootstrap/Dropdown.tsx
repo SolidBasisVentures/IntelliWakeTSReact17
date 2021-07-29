@@ -192,7 +192,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 						setIsOpen((prevState) => !prevState)
 					}
 				}}
-				style={props.menuStyle ?? {maxHeight: '80vh'}}
+				style={props.menuStyle ?? {maxHeight: '60vh'}}
 			>
 				{hasOpened.current && (
 					<>

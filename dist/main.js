@@ -814,7 +814,7 @@ const DropdownItem = (props) => {
 };
 
 const Dropdown = (props) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const hasOpened = React.useRef(false);
     const [isOpen, setIsOpen] = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false);
     const visibleDDActions = React.useMemo(() => !props.ddActions
@@ -824,7 +824,6 @@ const Dropdown = (props) => {
     const TagToUse = ((_b = props.tag) !== null && _b !== void 0 ? _b : !!props.inNavbar) ? 'li' : 'div';
     const isControlled = props.isOpen !== undefined;
     const actualIsOpen = isControlled ? !!props.isOpen : isOpen;
-    // console.log('DD', isControlled, actualIsOpen)
     const externalClick = (e) => {
         if (actualIsOpen) {
             e.stopPropagation();
@@ -848,17 +847,9 @@ const Dropdown = (props) => {
         }
     };
     React.useEffect(() => {
-        // if (menuRef.current) {
-        // 	console.log(1)
-        // 	menuRef.current.addEventListener('resize', onResize)
-        // }
-        // if (actualIsOpen) {
-        // 	setOffset((buttonRef?.current?.offsetWidth ?? 0) - (menuRef?.current?.offsetWidth ?? 0))
-        // }
         window.addEventListener('click', externalClick);
         window.addEventListener('keydown', externalEsc);
         return () => {
-            // menuRef.current.removeEventListener('resize', onResize)
             window.removeEventListener('click', externalClick);
             window.removeEventListener('keydown', externalEsc);
         };
@@ -877,11 +868,6 @@ const Dropdown = (props) => {
             });
     if (actualIsOpen)
         hasOpened.current = true;
-    // console.log('Here', buttonRef?.current?.offsetWidth, menuRef?.current?.offsetWidth)
-    // console.log('buttonRef', buttonRef?.current)
-    // console.log('menuRef', menuRef?.current)
-    // console.log('Offset', offset)
-    //onClick={(e: any) => e.stopPropagation()}
     if (!props.children && visibleDDActions.length === 0)
         return null;
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle'), { className: classes }),
@@ -909,7 +895,7 @@ const Dropdown = (props) => {
                 if (!isControlled) {
                     setIsOpen((prevState) => !prevState);
                 }
-            }, style: props.menuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
+            }, style: (_j = props.menuStyle) !== null && _j !== void 0 ? _j : { maxHeight: '60vh' } }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
             visibleDDActions.map((ddAction, idx) => {
                 var _a;
