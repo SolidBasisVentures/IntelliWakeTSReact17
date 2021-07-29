@@ -65,8 +65,6 @@ export const Dropdown = (props: IWDropdownProps) => {
 
 	const actualIsOpen = isControlled ? !!props.isOpen : isOpen
 
-	// console.log('DD', isControlled, actualIsOpen)
-
 	const externalClick = (e: any) => {
 		if (actualIsOpen) {
 			e.stopPropagation()
@@ -96,19 +94,9 @@ export const Dropdown = (props: IWDropdownProps) => {
 	}
 
 	useEffect(() => {
-		// if (menuRef.current) {
-		// 	console.log(1)
-		// 	menuRef.current.addEventListener('resize', onResize)
-		// }
-
-		// if (actualIsOpen) {
-		// 	setOffset((buttonRef?.current?.offsetWidth ?? 0) - (menuRef?.current?.offsetWidth ?? 0))
-		// }
-
 		window.addEventListener('click', externalClick)
 		window.addEventListener('keydown', externalEsc)
 		return () => {
-			// menuRef.current.removeEventListener('resize', onResize)
 			window.removeEventListener('click', externalClick)
 			window.removeEventListener('keydown', externalEsc)
 		}
@@ -128,14 +116,6 @@ export const Dropdown = (props: IWDropdownProps) => {
 
 	if (actualIsOpen) hasOpened.current = true
 
-	// console.log('Here', buttonRef?.current?.offsetWidth, menuRef?.current?.offsetWidth)
-	// console.log('buttonRef', buttonRef?.current)
-	// console.log('menuRef', menuRef?.current)
-
-	// console.log('Offset', offset)
-
-	//onClick={(e: any) => e.stopPropagation()}
-	
 	if (!props.children && visibleDDActions.length === 0) return null
 
 	return (
@@ -212,24 +192,8 @@ export const Dropdown = (props: IWDropdownProps) => {
 						setIsOpen((prevState) => !prevState)
 					}
 				}}
-				style={props.menuStyle}
-				// style={
-				// 	!props.right
-				// 		? {
-				// 				visibility: actualIsOpen ? undefined : 'hidden'
-				// 		  }
-				// 		: {
-				// 				visibility: actualIsOpen ? undefined : 'hidden',
-				// 				position: 'absolute',
-				// 				// 'will-change': 'transform',
-				// 				top: 0,
-				// 				left: 0,
-				// 				transform: `translate3d(${offset}px, ${(buttonRef?.current?.offsetHeight ?? 0) - 2}px, 0px)`
-				// 		  }
-				// }
-				// ref={menuRef}
+				style={props.menuStyle ?? {maxHeight: '80vh'}}
 			>
-				{/*{actualIsOpen ? props.children : undefined}*/}
 				{hasOpened.current && (
 					<>
 						{props.children}
