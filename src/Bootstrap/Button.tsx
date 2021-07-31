@@ -1,4 +1,5 @@
 import React, {forwardRef, ReactNode} from 'react'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWButtonLightProps {
 	color?: string
@@ -11,16 +12,16 @@ export interface IWButtonLightProps {
 	children?: ReactNode
 }
 
-export interface IIWButtonProps extends IWButtonLightProps {
+export interface IIWButtonProps extends IWButtonLightProps, Omit<React.HTMLProps<HTMLButtonElement>, 'size' | 'ref'> {
 	tag?: string | React.ReactType
 	size?: 'sm' | 'lg'
 	block?: boolean
-	type?: 'button' | 'submit' | 'reset'
+	// type?: 'button' | 'submit' | 'reset'
 	autoFocus?: boolean
-	tabIndex?: number
+	// tabIndex?: number
 	// innerRef?: MutableRefObject<HTMLButtonElement>
-	onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
-	onKeyPress?: React.KeyboardEventHandler<HTMLButtonElement>
+	// onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
+	// onKeyPress?: React.KeyboardEventHandler<HTMLButtonElement>
 	title?: string
 	// caret?: boolean
 	classNameOverride?: string
@@ -51,18 +52,19 @@ export const Button = forwardRef<HTMLButtonElement, IIWButtonProps>((props, ref)
 				// ClassNames({'btn-block': !!props.block, caret: !!props.caret})
 			}
 			type={props.type ?? 'button'}
-			onClick={props.onClick}
-			tabIndex={props.tabIndex}
+			{...OmitProperty(props, 'tag', 'size', 'block', 'autoFocus', 'classNameOverride', 'active', 'color', 'outline', 'className')}
+			// onClick={props.onClick}
+			// tabIndex={props.tabIndex}
 			ref={ref}
-			to={props.to}
-			onKeyDown={props.onKeyDown}
-			onKeyPress={props.onKeyPress}
-			autoFocus={props.autoFocus}
-			hidden={props.hidden}
-			disabled={props.disabled}
-			style={props.style}
-			title={props.title}
-			children={props.children}
+			// to={props.to}
+			// onKeyDown={props.onKeyDown}
+			// onKeyPress={props.onKeyPress}
+			// autoFocus={props.autoFocus}
+			// hidden={props.hidden}
+			// disabled={props.disabled}
+			// style={props.style}
+			// title={props.title}
+			// children={props.children}
 		/>
 	)
 })
