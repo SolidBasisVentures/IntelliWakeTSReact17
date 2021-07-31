@@ -9,15 +9,11 @@ export interface IWButtonLightProps {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     children?: ReactNode;
 }
-export interface IIWButtonProps extends IWButtonLightProps {
+export interface IIWButtonProps extends IWButtonLightProps, Omit<React.HTMLProps<HTMLButtonElement>, 'size' | 'ref'> {
     tag?: string | React.ReactType;
     size?: 'sm' | 'lg';
     block?: boolean;
-    type?: 'button' | 'submit' | 'reset';
     autoFocus?: boolean;
-    tabIndex?: number;
-    onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
-    onKeyPress?: React.KeyboardEventHandler<HTMLButtonElement>;
     title?: string;
     classNameOverride?: string;
     to?: string;

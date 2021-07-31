@@ -624,7 +624,7 @@ const BadgeItem = (props) => {
 const Button = React.forwardRef((props, ref) => {
     var _a, _b, _c, _d, _e;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'button';
-    return (React__default['default'].createElement(TagToUse, { className: (_b = props.classNameOverride) !== null && _b !== void 0 ? _b : ((_c = props.className) !== null && _c !== void 0 ? _c : '') +
+    return (React__default['default'].createElement(TagToUse, Object.assign({ className: (_b = props.classNameOverride) !== null && _b !== void 0 ? _b : ((_c = props.className) !== null && _c !== void 0 ? _c : '') +
             ` btn ` +
             (props.color === 'inline'
                 ? 'btn btn-link btn-link-inline '
@@ -636,7 +636,10 @@ const Button = React.forwardRef((props, ref) => {
                 ? 'active '
                 : '') +
             `${!!props.size ? `btn-${props.size}` : ''}` // +
-        , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button', onClick: props.onClick, tabIndex: props.tabIndex, ref: ref, to: props.to, onKeyDown: props.onKeyDown, onKeyPress: props.onKeyPress, autoFocus: props.autoFocus, hidden: props.hidden, disabled: props.disabled, style: props.style, title: props.title, children: props.children }));
+        , type: (_e = props.type) !== null && _e !== void 0 ? _e : 'button' }, intelliwaketsfoundation.OmitProperty(props, 'tag', 'size', 'block', 'autoFocus', 'classNameOverride', 'active', 'color', 'outline', 'className'), { 
+        // onClick={props.onClick}
+        // tabIndex={props.tabIndex}
+        ref: ref })));
 });
 
 const ButtonGroup = (props) => {
