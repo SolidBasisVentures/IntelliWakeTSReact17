@@ -216,6 +216,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 	// const cancelTokenSource = useRef(null as CancelTokenSource | null)
 	const inProgress = useRef(false)
 	const lastTS = useRef(0)
+	const lastVerb = useRef<string | undefined>(undefined)
 	const attemptingGet = useRef(false)
 	const attemptingUpdate = useRef(false)
 	const [showInProgressControl, setShowInProgressControl] = useState(false)
@@ -297,7 +298,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 					const currentTS = moment().valueOf()
 
 					if (lastTS.current > currentTS - 1000) {
-						console.log('!WARNING!', props.item, props.verb ?? props.updateVerb, 'processed less than a second ago!')
+						console.log('!WARNING!', props.item, props.verb ?? props.updateVerb, 'processed less than a second ago!', 'Last: ', lastVerb.current)
 						if (props.response === undefined) console.log('Get re-run due to undefined response')
 						if (forceRefreshRef.current !== props.forceRefresh) console.log('Get re-run due to forceRefresh flag')
 						if (!props.noRefreshOnRequestChange && !DeepEqual(props.request, lastRequest.current))
@@ -309,6 +310,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 						lastRequest.current = props.request
 					}
 					lastTS.current = currentTS
+					lastVerb.current = props.verb ?? props.updateVerb
 
 					forceRefreshRef.current = props.forceRefresh
 					// cancelTokenSource.current = axios.CancelToken.source()

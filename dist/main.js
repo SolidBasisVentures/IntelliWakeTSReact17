@@ -2970,6 +2970,7 @@ const IWServerData = (props) => {
     // const cancelTokenSource = useRef(null as CancelTokenSource | null)
     const inProgress = React.useRef(false);
     const lastTS = React.useRef(0);
+    const lastVerb = React.useRef(undefined);
     const attemptingGet = React.useRef(false);
     const attemptingUpdate = React.useRef(false);
     const [showInProgressControl, setShowInProgressControl] = React.useState(false);
@@ -3012,14 +3013,14 @@ const IWServerData = (props) => {
             attemptingGet.current = isGet;
             attemptingUpdate.current = isUpdate;
             delayTimeout.current = setTimeout(() => {
-                var _a, _b, _c;
+                var _a, _b, _c, _d, _e;
                 if (isMounted.current) {
                     inProgress.current = true;
                     attemptingGet.current = false;
                     attemptingUpdate.current = false;
                     const currentTS = moment__default['default']().valueOf();
                     if (lastTS.current > currentTS - 1000) {
-                        console.log('!WARNING!', props.item, props.verb, 'processed less than a second ago!');
+                        console.log('!WARNING!', props.item, (_a = props.verb) !== null && _a !== void 0 ? _a : props.updateVerb, 'processed less than a second ago!', 'Last: ', lastVerb.current);
                         if (props.response === undefined)
                             console.log('Get re-run due to undefined response');
                         if (forceRefreshRef.current !== props.forceRefresh)
@@ -3033,6 +3034,7 @@ const IWServerData = (props) => {
                         lastRequest.current = props.request;
                     }
                     lastTS.current = currentTS;
+                    lastVerb.current = (_b = props.verb) !== null && _b !== void 0 ? _b : props.updateVerb;
                     forceRefreshRef.current = props.forceRefresh;
                     // cancelTokenSource.current = axios.CancelToken.source()
                     setShowInProgressControl(true);
@@ -3050,7 +3052,7 @@ const IWServerData = (props) => {
                     // }
                     !!startingAction && startingAction();
                     const verb = isUpdate ? props.updateVerb : props.verb;
-                    const request = isUpdate ? props.updateRequest : (_a = props.request) !== null && _a !== void 0 ? _a : {};
+                    const request = isUpdate ? props.updateRequest : (_c = props.request) !== null && _c !== void 0 ? _c : {};
                     // if (!props.noCredentials) axios.defaults.withCredentials = true
                     if (!props.noCredentials)
                         config.withCredentials = true;
@@ -3058,10 +3060,10 @@ const IWServerData = (props) => {
                     // 	config.baseURL = `${window.location.origin ?? ''}`
                     // }
                     if (!!props.verboseConsole) {
-                        console.log(`API Request for ${(_b = props.urlPrefix) !== null && _b !== void 0 ? _b : ''}/${props.item}/${verb}`, request, config);
+                        console.log(`API Request for ${(_d = props.urlPrefix) !== null && _d !== void 0 ? _d : ''}/${props.item}/${verb}`, request, config);
                     }
                     axios__default['default']
-                        .post(`${(_c = props.urlPrefix) !== null && _c !== void 0 ? _c : ''}/${props.item}/${verb}`, request, config)
+                        .post(`${(_e = props.urlPrefix) !== null && _e !== void 0 ? _e : ''}/${props.item}/${verb}`, request, config)
                         .then((response) => {
                         var _a, _b, _c, _d;
                         if (isMounted.current) {
