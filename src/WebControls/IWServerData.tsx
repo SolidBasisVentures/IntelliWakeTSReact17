@@ -297,7 +297,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 					const currentTS = moment().valueOf()
 
 					if (lastTS.current > currentTS - 1000) {
-						console.log('!WARNING!', props.item, props.verb, 'processed less than a second ago!')
+						console.log('!WARNING!', props.item, props.verb ?? props.updateVerb, 'processed less than a second ago!')
 						if (props.response === undefined) console.log('Get re-run due to undefined response')
 						if (forceRefreshRef.current !== props.forceRefresh) console.log('Get re-run due to forceRefresh flag')
 						if (!props.noRefreshOnRequestChange && !DeepEqual(props.request, lastRequest.current))
