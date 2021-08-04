@@ -53,7 +53,7 @@ export const ActivityOverlay = (props: IProps) => {
 
 	if (props.activityOverlayState.nestedCount > 0) {
 		return (
-			<div className="System_ActivityOverlay" onClick={resetActivityOverlay} color="primary">
+			<div className="System_ActivityOverlay ActivityOverlay" onClick={resetActivityOverlay} color="primary">
 				<Spinner size={props.size ?? '3x'} />
 			</div>
 		)

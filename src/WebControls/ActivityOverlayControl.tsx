@@ -12,7 +12,7 @@ interface IProps {
  */
 export const ActivityOverlayControl = (props: IProps) => {
 	return props.show ? (
-		<div className="System_ActivityOverlay_Control">
+		<div className="System_ActivityOverlay_Control ActivityOverlay">
 			<Spinner size={props.size ?? '2x'} />
 		</div>
 	) : null

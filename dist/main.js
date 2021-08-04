@@ -1585,7 +1585,7 @@ const ActivityOverlay = (props) => {
         }
     }
     if (props.activityOverlayState.nestedCount > 0) {
-        return (React__default['default'].createElement("div", { className: "System_ActivityOverlay", onClick: resetActivityOverlay, color: "primary" },
+        return (React__default['default'].createElement("div", { className: "System_ActivityOverlay ActivityOverlay", onClick: resetActivityOverlay, color: "primary" },
             React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '3x' })));
     }
     return null;
@@ -1596,7 +1596,7 @@ const ActivityOverlay = (props) => {
  */
 const ActivityOverlayControl = (props) => {
     var _a;
-    return props.show ? (React__default['default'].createElement("div", { className: "System_ActivityOverlay_Control" },
+    return props.show ? (React__default['default'].createElement("div", { className: "System_ActivityOverlay_Control ActivityOverlay" },
         React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '2x' }))) : null;
 };
 
