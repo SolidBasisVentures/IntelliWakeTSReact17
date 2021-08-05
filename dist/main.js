@@ -606,11 +606,13 @@ const Badge = (props) => {
 };
 
 const Spinner = (props) => {
-    let style = {};
-    if (!props.spin && !props.pulse) {
-        style.animation = 'fa-spin 0.75s infinite linear';
-    }
-    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird, style: style }, props, { className: "liveSpinner" }));
+    // let style: CSSProperties = {}
+    //
+    // if (!props.spin && !props.pulse) {
+    // 	style.animation = 'fa-spin 0.75s infinite linear'
+    // }
+    const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}`.trim();
+    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird }, props, { className: className }));
 };
 
 // noinspection SuspiciousTypeOfGuard

@@ -1,15 +1,17 @@
-import React, {CSSProperties} from 'react'
+import React from 'react'
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import {faSpinnerThird} from '@fortawesome/pro-solid-svg-icons/faSpinnerThird'
 
 export interface IIWSpinnerProps extends Partial<FontAwesomeIconProps> {}
 
 export const Spinner = (props: IIWSpinnerProps) => {
-	let style: CSSProperties = {}
+	// let style: CSSProperties = {}
+	//
+	// if (!props.spin && !props.pulse) {
+	// 	style.animation = 'fa-spin 0.75s infinite linear'
+	// }
+	
+	const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}`.trim()
 
-	if (!props.spin && !props.pulse) {
-		style.animation = 'fa-spin 0.75s infinite linear'
-	}
-
-	return <FontAwesomeIcon icon={faSpinnerThird} style={style} {...props} className="liveSpinner" />
+	return <FontAwesomeIcon icon={faSpinnerThird} {...props} className={className} />
 }
