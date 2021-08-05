@@ -610,7 +610,7 @@ const Spinner = (props) => {
     if (!props.spin && !props.pulse) {
         style.animation = 'fa-spin 0.75s infinite linear';
     }
-    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird, style: style }, props));
+    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird, style: style }, props, { className: "liveSpinner" }));
 };
 
 // noinspection SuspiciousTypeOfGuard

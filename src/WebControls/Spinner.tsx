@@ -11,5 +11,5 @@ export const Spinner = (props: IIWSpinnerProps) => {
 		style.animation = 'fa-spin 0.75s infinite linear'
 	}
 
-	return <FontAwesomeIcon icon={faSpinnerThird} style={style} {...props} />
+	return <FontAwesomeIcon icon={faSpinnerThird} style={style} {...props} className="liveSpinner" />
 }
