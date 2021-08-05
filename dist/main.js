@@ -2671,16 +2671,19 @@ const InputSearch = React.forwardRef((props, ref) => {
         setCurrentText((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
     }, [props.initialValue]);
     const handleOnFocus = (e) => {
+        var _a;
         if (!!props.onFocus) {
             props.onFocus(e);
         }
         if (!props.noSelectOnFocus) {
-            setTimeout(() => {
-                var _a;
-                if (!!((_a = combinedRef === null || combinedRef === void 0 ? void 0 : combinedRef.current) === null || _a === void 0 ? void 0 : _a.select)) {
-                    combinedRef.current.select();
-                }
-            }, 250);
+            if ((_a = e.target) === null || _a === void 0 ? void 0 : _a.select) {
+                e.target.select();
+            }
+            // setTimeout(() => {
+            // 	if (!!combinedRef?.current?.select) {
+            // 		combinedRef.current.select()
+            // 	}
+            // }, 250)
         }
     };
     const inputProps = {

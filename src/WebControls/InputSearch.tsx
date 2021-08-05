@@ -86,11 +86,14 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 		}
 
 		if (!props.noSelectOnFocus) {
-			setTimeout(() => {
-				if (!!combinedRef?.current?.select) {
-					combinedRef.current.select()
-				}
-			}, 250)
+			if (e.target?.select) {
+				e.target.select()
+			}
+			// setTimeout(() => {
+			// 	if (!!combinedRef?.current?.select) {
+			// 		combinedRef.current.select()
+			// 	}
+			// }, 250)
 		}
 	}
 
