@@ -1424,7 +1424,7 @@ const Tab = (props) => {
     return (React__default['default'].createElement("div", { className: `${props.className} tabControlParent ${ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })}`.trim() },
         React__default['default'].createElement(ModalPrompt, Object.assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
         React__default['default'].createElement("ul", { className: `nav nav-${(_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs'}${props.padTabs ? ' px-4' : ''} ${(_h = props.navClassName) !== null && _h !== void 0 ? _h : ''}`.trim() }, showTabs.map((tab) => {
-            var _a;
+            var _a, _b;
             return (React__default['default'].createElement("li", { key: tab.title, className: `nav-item ${(_a = props.navItemClassName) !== null && _a !== void 0 ? _a : ''}`.trim() },
                 React__default['default'].createElement(Button, { color: "link", className: ClassNames({
                         'nav-link': true,
@@ -1433,7 +1433,7 @@ const Tab = (props) => {
                         if (!tab.hide && !tab.disabled) {
                             changeOpenTab(tab.title);
                         }
-                    } },
+                    }, "aria-label": (_b = tab.ariaLabelTab) !== null && _b !== void 0 ? _b : `Tab: ${tab.title}` },
                     !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
                     React__default['default'].createElement("span", { className: props.navItemSpanClassName }, tab.title))));
         })),
@@ -1452,7 +1452,7 @@ const Tab = (props) => {
                 (props.paneLoading === 'KeepOnceLoaded' &&
                     loadedTabs.current.some((loadedTab) => tab.title === loadedTab))))
             .map((tab) => {
-            var _a, _b, _c, _d, _e;
+            var _a, _b, _c, _d, _e, _f;
             return (React__default['default'].createElement("div", { key: tab.title, className: ((_a = props.classNamePanes) !== null && _a !== void 0 ? _a : '') +
                     ' ' +
                     (tab.title === actualOpenTab ? (_b = props.classNamePaneActive) !== null && _b !== void 0 ? _b : '' : '') +
@@ -1464,7 +1464,7 @@ const Tab = (props) => {
                         'fill-height-scroll': ((_e = (_d = tab.fillHeight) !== null && _d !== void 0 ? _d : props.fillHeight) !== null && _e !== void 0 ? _e : true) === true,
                         'p-2': !props.noPanePadding
                     }) +
-                    ' tab-pane fade ' }, tab.pane));
+                    ' tab-pane fade ', "aria-label": (_f = tab.ariaLabelPane) !== null && _f !== void 0 ? _f : `Pane: ${tab.title}` }, tab.pane));
         }))));
 };
 
@@ -3273,7 +3273,7 @@ const MDMaster = (props) => {
                 ' masterDetailMaster' +
                 (mdContext.isOpen ? ' isOpen' : ''), id: id }, props.children)));
 };
-const panelClean = (panel) => intelliwaketsfoundation.ReplaceAll('/', '', (panel !== null && panel !== void 0 ? panel : '').replace(/\s+/g, ''));
+const panelClean = (panel) => intelliwaketsfoundation.ReplaceAll('/', '', (typeof panel === 'string' ? (panel !== null && panel !== void 0 ? panel : '') : '').replace(/\s+/g, ''));
 const MDLink = (props) => {
     var _a, _b, _c, _d;
     const history = reactRouterDom.useHistory();
@@ -3345,7 +3345,7 @@ const MDDetail = (props) => {
     const checkPath = mdContext.baseFullPath + '/' + panelClean(props.panel);
     const activated = (props.panel &&
         !props.hidden &&
-        (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
+        props.panel === true || (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
         (!props.panel && window.location.pathname === mdContext.baseFullPath);
     React.useEffect(() => {
         if (activated) {

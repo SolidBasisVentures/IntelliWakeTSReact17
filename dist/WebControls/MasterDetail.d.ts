@@ -44,14 +44,14 @@ interface IPropsMasterLink {
     badgeColor?: string;
     badgeClass?: string;
 }
-export declare const panelClean: (panel?: string | null | undefined) => string;
+export declare const panelClean: (panel?: string | boolean | null | undefined) => string;
 export declare const MDLink: (props: IPropsMasterLink | any) => JSX.Element;
 interface IPropsDetail {
     children: any;
     titleText: ReactNode;
     backText?: string;
     exact?: boolean;
-    panel?: string;
+    panel?: string | boolean;
     hidden?: boolean;
     className?: string;
 }

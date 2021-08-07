@@ -13,6 +13,8 @@ export interface IIWTab {
 	pane: ReactNode
 	fillHeight?: boolean | 'noScroll'
 	loadedOnlyWhenActive?: boolean
+	ariaLabelTab?: string
+	ariaLabelPane?: string
 }
 
 export type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded'
@@ -119,7 +121,8 @@ export const Tab = (props: IWTabProps) => {
 								if (!tab.hide && !tab.disabled) {
 									changeOpenTab(tab.title)
 								}
-							}}>
+							}}
+						aria-label={tab.ariaLabelTab ?? `Tab: ${tab.title}`}>
 							{!!tab.faProps && <FontAwesomeIcon {...tab.faProps} fixedWidth={!!tab.title} className={!!tab.title ? "fa-fw-desktop" : ''} />}
 							<span className={props.navItemSpanClassName}>{tab.title}</span>
 						</Button>
@@ -161,7 +164,8 @@ export const Tab = (props: IWTabProps) => {
 									'p-2': !props.noPanePadding
 								}) +
 								' tab-pane fade '
-							}>
+							}
+							aria-label={tab.ariaLabelPane ?? `Pane: ${tab.title}`}>
 							{tab.pane}
 						</div>
 					))}
