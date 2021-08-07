@@ -152,7 +152,7 @@ interface IPropsMasterLink {
 	badgeClass?: string
 }
 
-export const panelClean = (panel?: string | null): string => ReplaceAll('/', '', (panel ?? '').replace(/\s+/g, ''))
+export const panelClean = (panel?: string | null | boolean): string => ReplaceAll('/', '', (typeof panel === 'string' ? (panel ?? '') : '').replace(/\s+/g, ''))
 
 export const MDLink = (props: IPropsMasterLink | any) => {
 	const history = useHistory()
@@ -270,7 +270,7 @@ interface IPropsDetail {
 	titleText: ReactNode
 	backText?: string
 	exact?: boolean
-	panel?: string
+	panel?: string | boolean
 	hidden?: boolean
 	className?: string
 }
@@ -284,7 +284,7 @@ export const MDDetail = (props: IPropsDetail) => {
 	const activated =
 		(props.panel &&
 			!props.hidden &&
-			(window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
+			props.panel === true || (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
 		(!props.panel && window.location.pathname === mdContext.baseFullPath)
 
 	useEffect(() => {
