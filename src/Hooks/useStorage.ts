@@ -46,7 +46,7 @@ export const getStorage = <T>(key: string | null | undefined, remember: TStorage
 	) as T
 
 	if (!!newValue && typeof newValue === 'string' && newValue.startsWith('json:')) {
-		return JSONStringToObject(newValue) ?? newValue
+		return JSONStringToObject(newValue)
 	}
 
 	return newValue

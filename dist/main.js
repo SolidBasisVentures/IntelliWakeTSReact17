@@ -1257,7 +1257,7 @@ const setStorage = (key, newValue, remember, defaultValue) => {
     }
 };
 const getStorage = (key, remember, defaultValue) => {
-    var _a, _b, _c;
+    var _a, _b;
     if (!key)
         return defaultValue;
     let newValue = (remember === 'local'
@@ -1266,7 +1266,7 @@ const getStorage = (key, remember, defaultValue) => {
             ? (_b = window.sessionStorage.getItem(key)) !== null && _b !== void 0 ? _b : defaultValue
             : defaultValue);
     if (!!newValue && typeof newValue === 'string' && newValue.startsWith('json:')) {
-        return (_c = intelliwaketsfoundation.JSONStringToObject(newValue)) !== null && _c !== void 0 ? _c : newValue;
+        return intelliwaketsfoundation.JSONStringToObject(newValue);
     }
     return newValue;
 };
