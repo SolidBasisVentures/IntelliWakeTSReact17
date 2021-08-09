@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {IInputSwitchProps} from './InputSwitch'
 
 export interface IInputCheckboxProps<T> extends IInputSwitchProps<T> {
@@ -8,6 +8,12 @@ export interface IInputCheckboxProps<T> extends IInputSwitchProps<T> {
 }
 
 export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
+	const [showChecked, setShowChecked] = useState(props.checked)
+	
+	useEffect(() => {
+		setShowChecked(props.checked)
+	}, [props.checked])
+	
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.target.value = e.target.checked.toString()
 		;(e.target as any).customValue = e.target.checked
@@ -25,6 +31,8 @@ export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 				(e.nativeEvent as any).altKey
 			)
 		}
+		
+		setShowChecked(e.target.checked)
 	}
 	
 	return (
@@ -34,7 +42,7 @@ export function InputCheckBox<T>(props: IInputCheckboxProps<T>) {
 				name={props.name as string}
 				className={'mr-1 ' + (props.switchClassName ?? '') + (props.plainText ? ' plainText' : '')}
 				hidden={props.hidden}
-				checked={props.checked}
+				checked={showChecked}
 				onChange={!props.plainText ? handleInputChange : () => {
 				}}
 				disabled={props.disabled}

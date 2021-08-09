@@ -9,6 +9,8 @@ export interface IIWTab {
     pane: ReactNode;
     fillHeight?: boolean | 'noScroll';
     loadedOnlyWhenActive?: boolean;
+    ariaLabelTab?: string;
+    ariaLabelPane?: string;
 }
 export declare type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded';
 export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
