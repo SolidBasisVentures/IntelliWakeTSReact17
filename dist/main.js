@@ -2227,6 +2227,10 @@ const EllipsesTruncate = (props) => {
 
 function InputCheckBox(props) {
     var _a, _b;
+    const [showChecked, setShowChecked] = React.useState(props.checked);
+    React.useEffect(() => {
+        setShowChecked(props.checked);
+    }, [props.checked]);
     const handleInputChange = (e) => {
         e.target.value = e.target.checked.toString();
         e.target.customValue = e.target.checked;
@@ -2236,9 +2240,10 @@ function InputCheckBox(props) {
         if (!!props.changeValue) {
             props.changeValue(e.target.checked, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
+        setShowChecked(e.target.checked);
     };
     return (React__default['default'].createElement("label", { className: 'inputCheckbox form-control-plaintext ' + (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
-        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'mr-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: props.checked, onChange: !props.plainText ? handleInputChange : () => {
+        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'mr-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
             }, disabled: props.disabled, onClick: props.onClick }),
         React__default['default'].createElement("span", null, props.label)));
 }
