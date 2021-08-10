@@ -1,13 +1,13 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
+import {OmitProperty
+} from '@solidbasisventures/intelliwaketsfoundation'
 import {
 	MOMENT_FORMAT_TIME_NO_SECONDS,
-	MOMENT_FORMAT_TIME_SECONDS,
-	MomentDateString,
-	MomentDisplayTime,
+	MOMENT_FORMAT_TIME_SECONDS, MomentDateString, MomentDisplayTime,
 	MomentFormatString,
-	MomentTimeString, OmitProperty
-} from '@solidbasisventures/intelliwaketsfoundation'
+	MomentTimeString
+} from '../Moment'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	includeDate?: boolean

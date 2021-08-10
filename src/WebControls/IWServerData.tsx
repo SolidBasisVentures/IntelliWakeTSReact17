@@ -1,12 +1,10 @@
 import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios'
-import moment from 'moment'
 import React, {ReactNode, ReactNodeArray, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {ActivityOverlayControl} from './ActivityOverlayControl'
 import {
 	DeepEqual,
 	IsStageDevFocused,
-	JSONParse,
-	MOMENT_FORMAT_DATE_TIME
+	JSONParse
 } from '@solidbasisventures/intelliwaketsfoundation'
 
 /**
@@ -295,7 +293,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 					attemptingGet.current = false
 					attemptingUpdate.current = false
 
-					const currentTS = moment().valueOf()
+					const currentTS = Date.now()
 
 					if (lastTS.current > currentTS - 1000) {
 						console.log('!WARNING!', props.item, props.verb ?? props.updateVerb, 'processed less than a second ago!', 'Last: ', lastVerb.current)
@@ -319,7 +317,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 
 					const authorizationHeader = {
 						timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
-						localtime: moment().format(MOMENT_FORMAT_DATE_TIME),
+						localtime: new Date().toISOString(),
 						locationhref: window.location.href,
 						...props.authorizationHeader
 					} as any

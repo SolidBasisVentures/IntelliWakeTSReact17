@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react'
-import moment, {Moment} from 'moment'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCalendarAlt} from '@fortawesome/pro-regular-svg-icons'
-import {MomentDateString, MomentFromString} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
+import {MomentDateString} from '../Moment'
+import moment, {Moment} from 'moment'
 
 export const customRangeName = 'Custom Range'
 
@@ -23,7 +23,7 @@ export const CreateCustomDateRange = (dateStart: Moment | string, dateEnd: Momen
 
 export const DateRangeDateMomentToString = (date: Moment | string): string => typeof date === 'string' ? date : MomentDateString(date.startOf('day')) ?? moment().format('YYYY-MM-DD')
 
-export const DateRangeDateStringToMoment = (date: Moment | string): Moment => typeof date === 'string' ? MomentFromString(date) ?? moment() : date
+export const DateRangeDateStringToMoment = (date: Moment | string): Moment => typeof date === 'string' ? moment(date) ?? moment() : date
 
 export const DateRangeToMoment = (dateRange: IDateRange | IDateRangeString): IDateRange => ({
 	name: dateRange.name,

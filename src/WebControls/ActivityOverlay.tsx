@@ -1,11 +1,10 @@
 import React from 'react'
-import moment from 'moment'
 import {Spinner} from './Spinner'
 import {SizeProp} from '@fortawesome/fontawesome-svg-core'
 
 export interface IActivityOverlayState {
 	nestedCount: number
-	lastStart: moment.Moment | undefined
+	lastStart: number | undefined
 }
 
 export const initialActivityOverlayState: IActivityOverlayState = {
@@ -22,7 +21,7 @@ interface IProps {
 export const AddActivityOverlay = (prevState: IActivityOverlayState): IActivityOverlayState => {
 	return {
 		nestedCount: prevState.nestedCount + 1,
-		lastStart: moment()
+		lastStart: Date.now()
 	}
 }
 
@@ -34,7 +33,7 @@ export const RemoveActivityOverlay = (prevState: IActivityOverlayState): IActivi
 
 	return {
 		nestedCount: prevState.nestedCount - 1,
-		lastStart: moment()
+		lastStart: Date.now()
 	}
 }
 
@@ -44,8 +43,8 @@ export const RemoveActivityOverlay = (prevState: IActivityOverlayState): IActivi
 export const ActivityOverlay = (props: IProps) => {
 	function resetActivityOverlay() {
 		if (props.activityOverlayState.nestedCount > 0) {
-			const seconds = 5
-			if (moment().diff(props.activityOverlayState.lastStart ?? 0, 'seconds') >= seconds) {
+			const ms = 5000
+			if (Date.now() - (props.activityOverlayState.lastStart ?? 0) >= ms) {
 				props.resetActivityOverlay()
 			}
 		}

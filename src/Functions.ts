@@ -1,6 +1,5 @@
 import React, {LegacyRef, MutableRefObject} from 'react'
 import {CleanNumber, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
-import moment from 'moment'
 
 export const KEY_UP_ARROW = 38
 export const KEY_DOWN_ARROW = 40
@@ -232,7 +231,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 
 export const TableIDToExcel = (tableID: string, fileName?: string, appendDateTime = true) => {
 	const downloadName = `${fileName ?? tableID}${
-		appendDateTime ? `-${moment(new Date()).format('YYYY-MM-DD_HH-mm-ss')}.xls` : ''
+		appendDateTime ? `-${(new Date()).getFullYear()}-${(new Date()).getMonth().toString().padStart(2, '0')}-${(new Date()).getDate().toString().padStart(2, '0')}_${(new Date()).getHours().toString().padStart(2, '0')}-${(new Date()).getMinutes().toString().padStart(2, '0')}-${(new Date()).getSeconds().toString().padStart(2, '0')}.xls` : ''
 	}`
 	// const dataType = 'application/vnd.ms-excel'
 	const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

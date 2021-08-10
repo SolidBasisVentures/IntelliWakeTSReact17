@@ -1,4 +1,3 @@
-import moment from 'moment'
 import {ISortProperties, SetSort} from './ArrayManipulators'
 import React from 'react'
 import {
@@ -66,16 +65,16 @@ export const ComputeValue = (
 	return computedValue
 }
 
-export const FormatValue = (value: any | null | undefined, column: IArrayColumn): any | null | undefined => {
-	if (column.momentTSFormat) {
-		if (value) {
-			if (!isNaN(parseInt(value))) {
-				value = moment.unix(value / 1000).format(column.momentTSFormat)
-			}
-		} else {
-			value = null
-		}
-	}
+export const FormatValue = (value: any | null | undefined, _column: IArrayColumn): any | null | undefined => {
+	// if (column.momentTSFormat) {
+	// 	if (value) {
+	// 		if (!isNaN(parseInt(value))) {
+	// 			value = moment.unix(value / 1000).format(column.momentTSFormat)
+	// 		}
+	// 	} else {
+	// 		value = null
+	// 	}
+	// }
 
 	return value
 }
