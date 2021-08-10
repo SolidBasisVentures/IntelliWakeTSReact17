@@ -4,11 +4,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var intelliwaketsfoundation = require('@solidbasisventures/intelliwaketsfoundation');
 var React = require('react');
-var moment = require('moment');
 var reactFontawesome = require('@fortawesome/react-fontawesome');
 var faSpinnerThird = require('@fortawesome/pro-solid-svg-icons/faSpinnerThird');
 var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
 var ReactDOM = require('react-dom');
+var momentTimezone = require('moment-timezone');
+var moment$1 = require('moment');
 var reactRouterDom = require('react-router-dom');
 var Cleave = require('cleave.js/react');
 var Switch = require('react-switch');
@@ -17,8 +18,8 @@ var axios = require('axios');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
+var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment$1);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
 var Switch__default = /*#__PURE__*/_interopDefaultLegacy(Switch);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
@@ -331,7 +332,7 @@ const CopyRefToClipboard = (ref, tryFormatted = true) => {
     return false;
 };
 const TableIDToExcel = (tableID, fileName, appendDateTime = true) => {
-    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${moment__default['default'](new Date()).format('YYYY-MM-DD_HH-mm-ss')}.xls` : ''}`;
+    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${intelliwaketsfoundation.YYYY_MM_DD_HH_mm_ss()}.xls` : ''}`;
     // const dataType = 'application/vnd.ms-excel'
     const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const tableSelect = document.getElementById(tableID);
@@ -1559,7 +1560,7 @@ const initialActivityOverlayState = {
 const AddActivityOverlay = (prevState) => {
     return {
         nestedCount: prevState.nestedCount + 1,
-        lastStart: moment__default['default']()
+        lastStart: Date.now()
     };
 };
 const RemoveActivityOverlay = (prevState) => {
@@ -1569,7 +1570,7 @@ const RemoveActivityOverlay = (prevState) => {
     }
     return {
         nestedCount: prevState.nestedCount - 1,
-        lastStart: moment__default['default']()
+        lastStart: Date.now()
     };
 };
 /**
@@ -1580,8 +1581,8 @@ const ActivityOverlay = (props) => {
     function resetActivityOverlay() {
         var _a;
         if (props.activityOverlayState.nestedCount > 0) {
-            const seconds = 5;
-            if (moment__default['default']().diff((_a = props.activityOverlayState.lastStart) !== null && _a !== void 0 ? _a : 0, 'seconds') >= seconds) {
+            const ms = 5000;
+            if (Date.now() - ((_a = props.activityOverlayState.lastStart) !== null && _a !== void 0 ? _a : 0) >= ms) {
                 props.resetActivityOverlay();
             }
         }
@@ -1684,17 +1685,16 @@ const ComputeValue = (value, column, rowData, sumsInFooter) => {
     }
     return computedValue;
 };
-const FormatValue = (value, column) => {
-    if (column.momentTSFormat) {
-        if (value) {
-            if (!isNaN(parseInt(value))) {
-                value = moment__default['default'].unix(value / 1000).format(column.momentTSFormat);
-            }
-        }
-        else {
-            value = null;
-        }
-    }
+const FormatValue = (value, _column) => {
+    // if (column.momentTSFormat) {
+    // 	if (value) {
+    // 		if (!isNaN(parseInt(value))) {
+    // 			value = moment.unix(value / 1000).format(column.momentTSFormat)
+    // 		}
+    // 	} else {
+    // 		value = null
+    // 	}
+    // }
     return value;
 };
 const IsColumnEmpty = (arrayData, fieldName) => {
@@ -1713,10 +1713,10 @@ const StructuredArray = (arrayData, arrayStructure) => {
     const validColumns = ValidColumns(arrayData, arrayStructure);
     structuredArray.push(validColumns.map((column) => column.title));
     for (const row of arrayData !== null && arrayData !== void 0 ? arrayData : []) {
-        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue(ComputeValue((_a = row[column.fieldName]) !== null && _a !== void 0 ? _a : null, column, row, sumsInFooter), column); }));
+        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue(ComputeValue((_a = row[column.fieldName]) !== null && _a !== void 0 ? _a : null, column, row, sumsInFooter)); }));
     }
     if (Object.keys(sumsInFooter).length > 0) {
-        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue((_a = sumsInFooter[column.fieldName]) !== null && _a !== void 0 ? _a : null, column); }));
+        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue((_a = sumsInFooter[column.fieldName]) !== null && _a !== void 0 ? _a : null); }));
     }
     return structuredArray;
 };
@@ -1744,7 +1744,7 @@ const ScreenFormatValue = (value, column) => {
         }
     }
     else {
-        value = FormatValue(value, column);
+        value = FormatValue(value);
     }
     return value;
 };
@@ -1833,6 +1833,171 @@ const BRBefore = (props) => {
         props.suffix));
 };
 
+const moment = require('moment-timezone');
+// import {ISO_8601, Moment} from 'moment-timezone'
+// import {utc} from 'moment'
+const MOMENT_FORMAT_DATE = 'YYYY-MM-DD';
+const MOMENT_FORMAT_TIME_SECONDS = 'HH:mm:ss';
+const MOMENT_FORMAT_TIME_NO_SECONDS = 'HH:mm';
+const MOMENT_FORMAT_DATE_TIME = MOMENT_FORMAT_DATE + ' ' + MOMENT_FORMAT_TIME_SECONDS;
+const MOMENT_FORMAT_DATE_DISPLAY = `MMM D, YYYY`;
+const MOMENT_FORMAT_DATE_DISPLAY_DOW = `dd, ${MOMENT_FORMAT_DATE_DISPLAY}`;
+const MOMENT_FORMAT_TIME_DISPLAY = 'h:mm a';
+const MOMENT_FORMAT_DATE_TIME_DISPLAY = `${MOMENT_FORMAT_DATE_DISPLAY}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW = `${MOMENT_FORMAT_DATE_DISPLAY_DOW}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const MOMENT_FORMAT_DATE_DISPLAY_LONG = `MMMM D, YYYY`;
+const MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG = `${MOMENT_FORMAT_DATE_DISPLAY_LONG}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const DATE_FORMAT_TRIES = [
+    'YYYY-MM-DD',
+    'M-D-YYYY',
+    'MM-DD-YYYY',
+    momentTimezone.ISO_8601,
+    'YYYYMMDD'
+];
+const TIME_FORMAT_TRIES = [
+    momentTimezone.ISO_8601,
+    'YYYY-MM-DD HH:mm:ss',
+    'YYYY-MM-DD HH:mm',
+    'HH:mm:ss',
+    'HH:mm',
+    'D-M-YYYY HH:mm:ss',
+    'D-M-YYYY HH:mm',
+    'DD-MM-YYYY HH:mm:ss',
+    'DD-MM-YYYY HH:mm'
+];
+var EDateAndOrTime;
+(function (EDateAndOrTime) {
+    EDateAndOrTime[EDateAndOrTime["DATE"] = 0] = "DATE";
+    EDateAndOrTime[EDateAndOrTime["TIME"] = 1] = "TIME";
+    EDateAndOrTime[EDateAndOrTime["DATETIME"] = 2] = "DATETIME";
+})(EDateAndOrTime || (EDateAndOrTime = {}));
+const StringHasTimeData = (value) => value.includes(':');
+const StringHasDateData = (value) => value.includes('-') || /\d{8}/.test(value);
+const StringHasTimeZoneData = (value) => value.includes('T') || value.includes('+') || value.substr(15).includes('-');
+const FormatIsTime = (format) => [MOMENT_FORMAT_TIME_SECONDS, MOMENT_FORMAT_TIME_NO_SECONDS, MOMENT_FORMAT_TIME_DISPLAY].includes(format);
+const FormatIsDate = (format) => [MOMENT_FORMAT_DATE, MOMENT_FORMAT_DATE_DISPLAY, MOMENT_FORMAT_DATE_DISPLAY_DOW].includes(format);
+const FormatIsDateTime = (format) => [MOMENT_FORMAT_DATE_TIME, MOMENT_FORMAT_DATE_TIME_DISPLAY, MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW].includes(format);
+/**
+ * Returns the current time zone.
+ */
+const MomentCurrentTimeZone = () => moment.tz().format('z');
+/**
+ * Returns a list of olson time zone items, sorted by hour diff from UTC
+ *
+ * Defaults to 'US'
+ */
+const TimeZoneOlsons = (forCountry = 'US') => moment.tz.zonesForCountry(forCountry)
+    .map(tzItem => ({
+    zone: moment.tz(tzItem).zoneAbbr(),
+    olson: tzItem,
+    hours: moment.tz(tzItem).format('Z')
+}))
+    .sort((a, b) => (a.hours !== b.hours ? a.hours.localeCompare(b.hours) : a.olson.localeCompare(b.olson)));
+/**
+ * Returns the Moment object from a given value. If the given value is invalid,
+ * it returns null.
+ *
+ *
+ * @example
+ * // returns Moment<2020-10-02T00:00:00Z>
+ * MomentFromString('2020-10-02')
+ */
+const MomentFromString = (value) => {
+    if (!value) {
+        return null;
+    }
+    const formatTries = [...DATE_FORMAT_TRIES, ...TIME_FORMAT_TRIES];
+    if (typeof value !== 'string') {
+        const momentObject = moment(value);
+        if (momentObject.isValid()) {
+            return momentObject.utc().tz(MomentCurrentTimeZone());
+        }
+    }
+    else {
+        const momentObject = StringHasTimeZoneData(value) ? moment(value, formatTries, true) : momentTimezone.utc(value, formatTries, true);
+        if (momentObject.isValid()) {
+            return momentObject;
+        }
+    }
+    return null;
+};
+/**
+ * Does the same thing as MomentFromString() but instead returns a string based on the format specified.
+ *
+ * @example
+ * // returns "Oct 2, 2020"
+ * MomentFromString('2020-10-02', 'll')
+ */
+const MomentFormatString = (value, format) => {
+    var _a, _b, _c, _d;
+    if (!value)
+        return null;
+    if (typeof value == 'string') {
+        if (FormatIsTime(format) && !StringHasTimeData(value)) {
+            return null;
+        }
+        if ((FormatIsDateTime(format) || FormatIsDate(format)) && !StringHasDateData(value))
+            return null;
+        let moment = (_b = (_a = MomentFromString(value)) === null || _a === void 0 ? void 0 : _a.format(format)) !== null && _b !== void 0 ? _b : null;
+        if (!moment)
+            return null;
+        if (format === MOMENT_FORMAT_TIME_SECONDS || format === MOMENT_FORMAT_TIME_NO_SECONDS) {
+            if (!StringHasTimeData(moment))
+                return null;
+            return moment.substr(format.length * -1, format.length);
+        }
+        if (format === MOMENT_FORMAT_DATE) {
+            if (!StringHasDateData(moment))
+                return null;
+            return moment.substr(0, format.length);
+        }
+        if (format === MOMENT_FORMAT_DATE_TIME) {
+            if (!StringHasDateData(moment) || !StringHasTimeData(moment))
+                return null;
+        }
+        return moment;
+    }
+    return (_d = (_c = MomentFromString(value)) === null || _c === void 0 ? void 0 : _c.format(format)) !== null && _d !== void 0 ? _d : null;
+};
+/**
+ * Returns the moment time string in the format of "HH:mm:ss".
+ */
+const MomentTimeString = (value) => MomentFormatString(value, MOMENT_FORMAT_TIME_SECONDS);
+/**
+ * Returns the moment date string in the format of "YYYY-MM-DD".
+ */
+const MomentDateString = (value) => MomentFormatString(value, MOMENT_FORMAT_DATE);
+/**
+ * Returns display day date time format.
+ */
+const MomentDisplayDayDateTime = (value, showLong = false) => {
+    const momentObject = MomentFromString(value);
+    if (!momentObject) {
+        return null;
+    }
+    if (!!MomentTimeString(value)) {
+        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG : MOMENT_FORMAT_DATE_TIME_DISPLAY);
+    }
+    else {
+        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_LONG : MOMENT_FORMAT_DATE_DISPLAY);
+    }
+};
+/**
+ * Returns display day date format.
+ */
+const MomentDisplayDayDate = (value, showLong = false) => {
+    const momentObject = MomentFromString(value);
+    if (!momentObject) {
+        return null;
+    }
+    return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_LONG : MOMENT_FORMAT_DATE_DISPLAY);
+};
+/**
+ * Returns the time with 12-hour clock format.
+ */
+const MomentDisplayTime = (value) => MomentFormatString(value, MOMENT_FORMAT_TIME_DISPLAY);
+const IANAZoneAbbr = (ianaValue) => moment.tz(ianaValue).format('z');
+
 const customRangeName = 'Custom Range';
 const CreateCustomDateRange = (dateStart, dateEnd) => {
     return {
@@ -1841,8 +2006,8 @@ const CreateCustomDateRange = (dateStart, dateEnd) => {
         end: DateRangeDateMomentToString(dateEnd)
     };
 };
-const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = intelliwaketsfoundation.MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
-const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = intelliwaketsfoundation.MomentFromString(date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
+const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
+const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = moment__default['default'](date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
 const DateRangeToMoment = (dateRange) => ({
     name: dateRange.name,
     start: DateRangeDateStringToMoment(dateRange.start),
@@ -2314,20 +2479,20 @@ function InputDate(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
-        if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastDateValue.current = (_c = intelliwaketsfoundation.MomentDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastDateValue.current, nextDateValue.current].includes((_a = MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastDateValue.current = (_c = MomentDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }
         else {
-            lastDateValue.current = (_e = intelliwaketsfoundation.MomentDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
+            lastDateValue.current = (_e = MomentDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
         }
     }, [props.value]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextDateValue.current = (_a = intelliwaketsfoundation.MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextDateValue.current = (_a = MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (nextDateValue.current + ' ' + ((_b = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
+        const customValue = (nextDateValue.current + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2336,9 +2501,9 @@ function InputDate(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
-        ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
+        ? MomentDisplayDayDateTime(props.value)
+        : MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 function ViewEmail(props) {
@@ -2847,20 +3012,20 @@ function InputTime(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e, _f;
-        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastTimeValue.current = (_c = intelliwaketsfoundation.MomentTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastTimeValue.current = (_c = MomentTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextTimeValue.current = lastTimeValue.current;
-            setOverrideValue((_d = intelliwaketsfoundation.MomentFormatString(lastTimeValue.current, !!props.editSeconds ? intelliwaketsfoundation.MOMENT_FORMAT_TIME_SECONDS : intelliwaketsfoundation.MOMENT_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
+            setOverrideValue((_d = MomentFormatString(lastTimeValue.current, !!props.editSeconds ? MOMENT_FORMAT_TIME_SECONDS : MOMENT_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
         }
         else {
-            lastTimeValue.current = (_f = intelliwaketsfoundation.MomentTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
+            lastTimeValue.current = (_f = MomentTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextTimeValue.current = (_a = intelliwaketsfoundation.MomentTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextTimeValue.current = (_a = MomentTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (((_b = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
+        const customValue = (((_b = MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2869,7 +3034,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
@@ -2883,13 +3048,13 @@ function InputTimeZone(props) {
         return subset;
     }, [props]);
     const timeZonesList = React.useMemo(() => {
-        let tzItems = intelliwaketsfoundation.TimeZoneOlsons();
+        let tzItems = TimeZoneOlsons();
         if (!!props.value && !tzItems.map((tzItem) => tzItem.olson).includes(props.value)) {
             tzItems.push({ zone: '', olson: props.value, hours: '' });
         }
         return tzItems;
     }, []);
-    const valueTZ = React.useMemo(() => (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr(props.value)), [props.value]);
+    const valueTZ = React.useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.value)), [props.value]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
             valueTZ,
@@ -3028,7 +3193,7 @@ const IWServerData = (props) => {
                     inProgress.current = true;
                     attemptingGet.current = false;
                     attemptingUpdate.current = false;
-                    const currentTS = moment__default['default']().valueOf();
+                    const currentTS = Date.now();
                     if (lastTS.current > currentTS - 1000) {
                         console.log('!WARNING!', props.item, (_a = props.verb) !== null && _a !== void 0 ? _a : props.updateVerb, 'processed less than a second ago!', 'Last: ', lastVerb.current);
                         if (props.response === undefined)
@@ -3048,7 +3213,7 @@ const IWServerData = (props) => {
                     forceRefreshRef.current = props.forceRefresh;
                     // cancelTokenSource.current = axios.CancelToken.source()
                     setShowInProgressControl(true);
-                    const authorizationHeader = Object.assign({ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null, localtime: moment__default['default']().format(intelliwaketsfoundation.MOMENT_FORMAT_DATE_TIME), locationhref: window.location.href }, props.authorizationHeader);
+                    const authorizationHeader = Object.assign({ timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null, localtime: new Date().toISOString(), locationhref: window.location.href }, props.authorizationHeader);
                     if (!!props.superVerboseConsole)
                         console.log('aH', authorizationHeader);
                     let headers = {

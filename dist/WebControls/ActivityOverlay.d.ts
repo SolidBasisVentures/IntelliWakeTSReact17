@@ -1,8 +1,7 @@
-import moment from 'moment';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
 export interface IActivityOverlayState {
     nestedCount: number;
-    lastStart: moment.Moment | undefined;
+    lastStart: number | undefined;
 }
 export declare const initialActivityOverlayState: IActivityOverlayState;
 interface IProps {
