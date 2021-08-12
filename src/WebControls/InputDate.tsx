@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
-import { OmitProperty,
+import {
+	DayjsDateString, DayjsDisplayDayDate, DayjsDisplayDayDateTime, DayjsTimeString, OmitProperty,
 	RandomString
 } from '@solidbasisventures/intelliwaketsfoundation'
-import {DayjsDateString, DayjsDisplayDayDate, DayjsDisplayDayDateTime, DayjsTimeString} from '../Dayjs'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	showTime?: boolean

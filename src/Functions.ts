@@ -1,5 +1,5 @@
 import React, {LegacyRef, MutableRefObject} from 'react'
-import {CleanNumber, ReplaceAll, YYYY_MM_DD_HH_mm_ss} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, DayjsFormatString, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
 
 export const KEY_UP_ARROW = 38
 export const KEY_DOWN_ARROW = 40
@@ -231,7 +231,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 
 export const TableIDToExcel = (tableID: string, fileName?: string, appendDateTime = true) => {
 	const downloadName = `${fileName ?? tableID}${
-		appendDateTime ? `-${YYYY_MM_DD_HH_mm_ss()}.xls` : ''
+		appendDateTime ? `-${DayjsFormatString(new Date(), 'YYYY-MM-DD_HH-mm-ss', false)}.xls` : ''
 	}`
 	// const dataType = 'application/vnd.ms-excel'
 	const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

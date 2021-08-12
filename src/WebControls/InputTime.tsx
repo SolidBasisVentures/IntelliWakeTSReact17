@@ -1,13 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {OmitProperty
-} from '@solidbasisventures/intelliwaketsfoundation'
 import {
 	DAYJS_FORMAT_TIME_NO_SECONDS,
-	DAYJS_FORMAT_TIME_SECONDS, DayjsDateString, DayjsDisplayTime,
+	DAYJS_FORMAT_TIME_SECONDS,
+	DayjsDateString,
+	DayjsDisplayTime,
 	DayjsFormatString,
-	DayjsTimeString
-} from '../Dayjs'
+	DayjsTimeString,
+	OmitProperty
+} from '@solidbasisventures/intelliwaketsfoundation'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	includeDate?: boolean
@@ -31,7 +32,7 @@ export function InputTime<T>(props: IProps<T>) {
 				DayjsFormatString(
 					lastTimeValue.current,
 					!!props.editSeconds ? DAYJS_FORMAT_TIME_SECONDS : DAYJS_FORMAT_TIME_NO_SECONDS
-				) ?? ''
+				, false) ?? ''
 			)
 		} else {
 			lastTimeValue.current = DayjsTimeString((props.value ?? '') as string) ?? ''

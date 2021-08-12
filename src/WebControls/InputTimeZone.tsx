@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import {IANAZoneAbbr, TimeZoneOlsons } from '../Dayjs'
 import {InputSelect, IPropsSelect} from './InputSelect'
 import {HandleChangeValue, IIWInputProps, ReduceInputProps} from './IWInputProps'
+import {IANAZoneAbbr, TimeZoneOlsons} from '@solidbasisventures/intelliwaketsfoundation'
 
 export function InputTimeZone<T>(props: IIWInputProps<T>) {
 	const inputProps = useMemo(() => {

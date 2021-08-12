@@ -12,10 +12,6 @@ var dayjs = require('dayjs');
 var quarterOfYear = require('dayjs/plugin/quarterOfYear');
 var isBetween = require('dayjs/plugin/isBetween');
 var reactRouterDom = require('react-router-dom');
-var duration = require('dayjs/plugin/duration');
-var isoWeek = require('dayjs/plugin/isoWeek');
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
 var Cleave = require('cleave.js/react');
 var Switch = require('react-switch');
 var axios = require('axios');
@@ -27,10 +23,6 @@ var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
 var dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
 var quarterOfYear__default = /*#__PURE__*/_interopDefaultLegacy(quarterOfYear);
 var isBetween__default = /*#__PURE__*/_interopDefaultLegacy(isBetween);
-var duration__default = /*#__PURE__*/_interopDefaultLegacy(duration);
-var isoWeek__default = /*#__PURE__*/_interopDefaultLegacy(isoWeek);
-var utc__default = /*#__PURE__*/_interopDefaultLegacy(utc);
-var timezone__default = /*#__PURE__*/_interopDefaultLegacy(timezone);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
 var Switch__default = /*#__PURE__*/_interopDefaultLegacy(Switch);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
@@ -343,7 +335,7 @@ const CopyRefToClipboard = (ref, tryFormatted = true) => {
     return false;
 };
 const TableIDToExcel = (tableID, fileName, appendDateTime = true) => {
-    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${intelliwaketsfoundation.YYYY_MM_DD_HH_mm_ss()}.xls` : ''}`;
+    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${intelliwaketsfoundation.DayjsFormatString(new Date(), 'YYYY-MM-DD_HH-mm-ss', false)}.xls` : ''}`;
     // const dataType = 'application/vnd.ms-excel'
     const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const tableSelect = document.getElementById(tableID);
@@ -2319,310 +2311,6 @@ function InputColor(props) {
         props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) })))));
 }
 
-dayjs__default['default'].extend(duration__default['default']);
-dayjs__default['default'].extend(isoWeek__default['default']);
-dayjs__default['default'].extend(utc__default['default']);
-dayjs__default['default'].extend(timezone__default['default']);
-const DAYJS_FORMAT_DATE = 'YYYY-MM-DD';
-const DAYJS_FORMAT_TIME_SECONDS = 'HH:mm:ss';
-const DAYJS_FORMAT_TIME_NO_SECONDS = 'HH:mm';
-const DAYJS_FORMAT_DATE_TIME = DAYJS_FORMAT_DATE + ' ' + DAYJS_FORMAT_TIME_SECONDS;
-const DAYJS_FORMAT_DATE_DISPLAY = `MMM D, YYYY`;
-const DAYJS_FORMAT_DATE_DISPLAY_DOW = `dd, ${DAYJS_FORMAT_DATE_DISPLAY}`;
-const DAYJS_FORMAT_TIME_DISPLAY = 'h:mm a';
-const DAYJS_FORMAT_DATE_TIME_DISPLAY = `${DAYJS_FORMAT_DATE_DISPLAY}, ${DAYJS_FORMAT_TIME_DISPLAY}`;
-const DAYJS_FORMAT_DATE_TIME_DISPLAY_DOW = `${DAYJS_FORMAT_DATE_DISPLAY_DOW}, ${DAYJS_FORMAT_TIME_DISPLAY}`;
-const DAYJS_FORMAT_DATE_DISPLAY_LONG = `MMMM D, YYYY`;
-const DAYJS_FORMAT_DATE_TIME_DISPLAY_LONG = `${DAYJS_FORMAT_DATE_DISPLAY_LONG}, ${DAYJS_FORMAT_TIME_DISPLAY}`;
-const DATE_FORMAT_TRIES = [
-    'YYYY-MM-DD',
-    'M-D-YYYY',
-    'MM-DD-YYYY',
-    'YYYYMMDD'
-];
-const TIME_FORMAT_TRIES = [
-    'YYYY-MM-DD HH:mm:ss',
-    'YYYY-MM-DD HH:mm',
-    'HH:mm:ss',
-    'HH:mm',
-    'D-M-YYYY HH:mm:ss',
-    'D-M-YYYY HH:mm',
-    'DD-MM-YYYY HH:mm:ss',
-    'DD-MM-YYYY HH:mm'
-];
-var EDateAndOrTime;
-(function (EDateAndOrTime) {
-    EDateAndOrTime[EDateAndOrTime["DATE"] = 0] = "DATE";
-    EDateAndOrTime[EDateAndOrTime["TIME"] = 1] = "TIME";
-    EDateAndOrTime[EDateAndOrTime["DATETIME"] = 2] = "DATETIME";
-})(EDateAndOrTime || (EDateAndOrTime = {}));
-const StringHasTimeData = (value) => value.includes(':');
-const StringHasDateData = (value) => value.includes('-') || /\d{8}/.test(value);
-const StringHasTimeZoneData = (value) => value.includes('T') || value.includes('+') || value.substr(15).includes('-');
-const FormatIsTime = (format) => [DAYJS_FORMAT_TIME_SECONDS, DAYJS_FORMAT_TIME_NO_SECONDS, DAYJS_FORMAT_TIME_DISPLAY].includes(format);
-const FormatIsDate = (format) => [DAYJS_FORMAT_DATE, DAYJS_FORMAT_DATE_DISPLAY, DAYJS_FORMAT_DATE_DISPLAY_DOW].includes(format);
-const FormatIsDateTime = (format) => [DAYJS_FORMAT_DATE_TIME, DAYJS_FORMAT_DATE_TIME_DISPLAY, DAYJS_FORMAT_DATE_TIME_DISPLAY_DOW].includes(format);
-/**
- * Returns the current time zone.
- */
-const DayjsCurrentTimeZone = () => dayjs__default['default']().tz().format('z');
-/**
- * Returns a list of olson time zone items, sorted by hour diff from UTC
- *
- * Defaults to 'US'
- */
-const TimeZoneOlsons = () => [
-    {
-        "zone": "EDT",
-        "olson": "America/Detroit",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Indiana/Indianapolis",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Indiana/Marengo",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Indiana/Petersburg",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Indiana/Vevay",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Indiana/Vincennes",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Indiana/Winamac",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Kentucky/Louisville",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/Kentucky/Monticello",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "EDT",
-        "olson": "America/New_York",
-        "hours": "-04:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/Chicago",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/Indiana/Knox",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/Indiana/Tell_City",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/Menominee",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/North_Dakota/Beulah",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/North_Dakota/Center",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "CDT",
-        "olson": "America/North_Dakota/New_Salem",
-        "hours": "-05:00"
-    },
-    {
-        "zone": "MDT",
-        "olson": "America/Boise",
-        "hours": "-06:00"
-    },
-    {
-        "zone": "MDT",
-        "olson": "America/Denver",
-        "hours": "-06:00"
-    },
-    {
-        "zone": "PDT",
-        "olson": "America/Los_Angeles",
-        "hours": "-07:00"
-    },
-    {
-        "zone": "MST",
-        "olson": "America/Phoenix",
-        "hours": "-07:00"
-    },
-    {
-        "zone": "AKDT",
-        "olson": "America/Anchorage",
-        "hours": "-08:00"
-    },
-    {
-        "zone": "AKDT",
-        "olson": "America/Juneau",
-        "hours": "-08:00"
-    },
-    {
-        "zone": "AKDT",
-        "olson": "America/Metlakatla",
-        "hours": "-08:00"
-    },
-    {
-        "zone": "AKDT",
-        "olson": "America/Nome",
-        "hours": "-08:00"
-    },
-    {
-        "zone": "AKDT",
-        "olson": "America/Sitka",
-        "hours": "-08:00"
-    },
-    {
-        "zone": "AKDT",
-        "olson": "America/Yakutat",
-        "hours": "-08:00"
-    },
-    {
-        "zone": "HDT",
-        "olson": "America/Adak",
-        "hours": "-09:00"
-    },
-    {
-        "zone": "HST",
-        "olson": "Pacific/Honolulu",
-        "hours": "-10:00"
-    }
-];
-/**
- * Returns the Dayjs object from a given value. If the given value is invalid,
- * it returns null.
- *
- *
- * @example
- * // returns Dayjs<2020-10-02T00:00:00Z>
- * DayjsFromString('2020-10-02')
- */
-const DayjsFromString = (value) => {
-    if (!value) {
-        return null;
-    }
-    const formatTries = [...DATE_FORMAT_TRIES, ...TIME_FORMAT_TRIES];
-    if (typeof value !== 'string') {
-        const dayjsObject = dayjs__default['default'](value);
-        if (dayjsObject.isValid()) {
-            return dayjsObject.utc().tz(DayjsCurrentTimeZone());
-        }
-    }
-    else {
-        const dayjsObject = StringHasTimeZoneData(value) ? dayjs__default['default'](value, formatTries, true) : dayjs__default['default'].utc(value); // , formatTries, true
-        if (dayjsObject.isValid()) {
-            return dayjsObject;
-        }
-    }
-    return null;
-};
-/**
- * Does the same thing as DayjsFromString() but instead returns a string based on the format specified.
- *
- * @example
- * // returns "Oct 2, 2020"
- * DayjsFromString('2020-10-02', 'll')
- */
-const DayjsFormatString = (value, format) => {
-    var _a, _b, _c, _d;
-    if (!value)
-        return null;
-    if (typeof value == 'string') {
-        if (FormatIsTime(format) && !StringHasTimeData(value)) {
-            return null;
-        }
-        if ((FormatIsDateTime(format) || FormatIsDate(format)) && !StringHasDateData(value))
-            return null;
-        let dayjs = (_b = (_a = DayjsFromString(value)) === null || _a === void 0 ? void 0 : _a.format(format)) !== null && _b !== void 0 ? _b : null;
-        if (!dayjs)
-            return null;
-        if (format === DAYJS_FORMAT_TIME_SECONDS || format === DAYJS_FORMAT_TIME_NO_SECONDS) {
-            if (!StringHasTimeData(dayjs))
-                return null;
-            return dayjs.substr(format.length * -1, format.length);
-        }
-        if (format === DAYJS_FORMAT_DATE) {
-            if (!StringHasDateData(dayjs))
-                return null;
-            return dayjs.substr(0, format.length);
-        }
-        if (format === DAYJS_FORMAT_DATE_TIME) {
-            if (!StringHasDateData(dayjs) || !StringHasTimeData(dayjs))
-                return null;
-        }
-        return dayjs;
-    }
-    return (_d = (_c = DayjsFromString(value)) === null || _c === void 0 ? void 0 : _c.format(format)) !== null && _d !== void 0 ? _d : null;
-};
-/**
- * Returns the dayjs time string in the format of "HH:mm:ss".
- */
-const DayjsTimeString = (value) => DayjsFormatString(value, DAYJS_FORMAT_TIME_SECONDS);
-/**
- * Returns the dayjs date string in the format of "YYYY-MM-DD".
- */
-const DayjsDateString = (value) => DayjsFormatString(value, DAYJS_FORMAT_DATE);
-/**
- * Returns display day date time format.
- */
-const DayjsDisplayDayDateTime = (value, showLong = false) => {
-    const dayjsObject = DayjsFromString(value);
-    if (!dayjsObject) {
-        return null;
-    }
-    if (!!DayjsTimeString(value)) {
-        return dayjsObject.format(showLong ? DAYJS_FORMAT_DATE_TIME_DISPLAY_LONG : DAYJS_FORMAT_DATE_TIME_DISPLAY);
-    }
-    else {
-        return dayjsObject.format(showLong ? DAYJS_FORMAT_DATE_DISPLAY_LONG : DAYJS_FORMAT_DATE_DISPLAY);
-    }
-};
-/**
- * Returns display day date format.
- */
-const DayjsDisplayDayDate = (value, showLong = false) => {
-    const dayjsObject = DayjsFromString(value);
-    if (!dayjsObject) {
-        return null;
-    }
-    return dayjsObject.format(showLong ? DAYJS_FORMAT_DATE_DISPLAY_LONG : DAYJS_FORMAT_DATE_DISPLAY);
-};
-/**
- * Returns the time with 12-hour clock format.
- */
-const DayjsDisplayTime = (value) => DayjsFormatString(value, DAYJS_FORMAT_TIME_DISPLAY);
-const IANAZoneAbbr = (ianaValue) => dayjs__default['default'].tz(ianaValue).format('z');
-
 const originalValue$1 = ' ';
 function InputDate(props) {
     var _a;
@@ -2632,20 +2320,20 @@ function InputDate(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
-        if (![lastDateValue.current, nextDateValue.current].includes((_a = DayjsDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastDateValue.current = (_c = DayjsDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.DayjsDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastDateValue.current = (_c = intelliwaketsfoundation.DayjsDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }
         else {
-            lastDateValue.current = (_e = DayjsDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
+            lastDateValue.current = (_e = intelliwaketsfoundation.DayjsDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
         }
     }, [props.value]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextDateValue.current = (_a = DayjsDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextDateValue.current = (_a = intelliwaketsfoundation.DayjsDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (nextDateValue.current + ' ' + ((_b = DayjsTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
+        const customValue = (nextDateValue.current + ' ' + ((_b = intelliwaketsfoundation.DayjsTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2654,9 +2342,9 @@ function InputDate(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!DayjsTimeString(props.value)
-        ? DayjsDisplayDayDateTime(props.value)
-        : DayjsDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.DayjsTimeString(props.value)
+        ? intelliwaketsfoundation.DayjsDisplayDayDateTime(props.value)
+        : intelliwaketsfoundation.DayjsDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 function ViewEmail(props) {
@@ -3165,20 +2853,20 @@ function InputTime(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e, _f;
-        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = DayjsTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastTimeValue.current = (_c = DayjsTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.DayjsTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastTimeValue.current = (_c = intelliwaketsfoundation.DayjsTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextTimeValue.current = lastTimeValue.current;
-            setOverrideValue((_d = DayjsFormatString(lastTimeValue.current, !!props.editSeconds ? DAYJS_FORMAT_TIME_SECONDS : DAYJS_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
+            setOverrideValue((_d = intelliwaketsfoundation.DayjsFormatString(lastTimeValue.current, !!props.editSeconds ? intelliwaketsfoundation.DAYJS_FORMAT_TIME_SECONDS : intelliwaketsfoundation.DAYJS_FORMAT_TIME_NO_SECONDS, false)) !== null && _d !== void 0 ? _d : '');
         }
         else {
-            lastTimeValue.current = (_f = DayjsTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
+            lastTimeValue.current = (_f = intelliwaketsfoundation.DayjsTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextTimeValue.current = (_a = DayjsTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextTimeValue.current = (_a = intelliwaketsfoundation.DayjsTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (((_b = DayjsDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
+        const customValue = (((_b = intelliwaketsfoundation.DayjsDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -3187,7 +2875,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), DayjsDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.DayjsDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
@@ -3201,13 +2889,13 @@ function InputTimeZone(props) {
         return subset;
     }, [props]);
     const timeZonesList = React.useMemo(() => {
-        let tzItems = TimeZoneOlsons();
+        let tzItems = intelliwaketsfoundation.TimeZoneOlsons();
         if (!!props.value && !tzItems.map((tzItem) => tzItem.olson).includes(props.value)) {
             tzItems.push({ zone: '', olson: props.value, hours: '' });
         }
         return tzItems;
     }, []);
-    const valueTZ = React.useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.value)), [props.value]);
+    const valueTZ = React.useMemo(() => (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr(props.value)), [props.value]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
             valueTZ,
