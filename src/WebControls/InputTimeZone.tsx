@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
-import {IANAZoneAbbr, TimeZoneOlsons } from '../DayJSWrappers'
+import {IANAZoneAbbr, TimeZoneOlsons } from '../Dayjs'
 import {InputSelect, IPropsSelect} from './InputSelect'
 import {HandleChangeValue, IIWInputProps, ReduceInputProps} from './IWInputProps'
 

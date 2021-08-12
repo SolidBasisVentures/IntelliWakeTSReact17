@@ -20,25 +20,25 @@ export interface IDateRangeString {
 export const CreateCustomDateRange = (dateStart: Dayjs | string, dateEnd: Dayjs | string): IDateRangeString => {
 	return {
 		name: customRangeName,
-		start: DateRangeDateMomentToString(dateStart),
-		end: DateRangeDateMomentToString(dateEnd)
+		start: DateRangeDateDayjsToString(dateStart),
+		end: DateRangeDateDayjsToString(dateEnd)
 	}
 }
 
-export const DateRangeDateMomentToString = (date: Dayjs | string): string => typeof date === 'string' ? date : (dayjs(date.startOf('day')) ?? dayjs()).format('YYYY-MM-DD')
+export const DateRangeDateDayjsToString = (date: Dayjs | string): string => typeof date === 'string' ? date : (dayjs(date.startOf('day')) ?? dayjs()).format('YYYY-MM-DD')
 
-export const DateRangeDateStringToMoment = (date: Dayjs | string): Dayjs => typeof date === 'string' ? dayjs(date) ?? dayjs() : date
+export const DateRangeDateStringToDayjs = (date: Dayjs | string): Dayjs => typeof date === 'string' ? dayjs(date) ?? dayjs() : date
 
-export const DateRangeToMoment = (dateRange: IDateRange | IDateRangeString): IDateRange => ({
+export const DateRangeToDayjs = (dateRange: IDateRange | IDateRangeString): IDateRange => ({
 	name: dateRange.name,
-	start: DateRangeDateStringToMoment(dateRange.start),
-	end: DateRangeDateStringToMoment(dateRange.end)
+	start: DateRangeDateStringToDayjs(dateRange.start),
+	end: DateRangeDateStringToDayjs(dateRange.end)
 })
 
 export const DateRangeToString = (dateRange: IDateRange | IDateRangeString): IDateRangeString => ({
 	name: dateRange.name,
-	start: DateRangeDateMomentToString(dateRange.start),
-	end: DateRangeDateMomentToString(dateRange.end)
+	start: DateRangeDateDayjsToString(dateRange.start),
+	end: DateRangeDateDayjsToString(dateRange.end)
 })
 
 export interface IDateRange {
@@ -164,11 +164,11 @@ export const DateRange = (props: IPropsDateRange) => {
 	const getStartRange = (): IDateRange => {
 		if (props.defaultRange && props.defaultRange.name) {
 			if (props.defaultRange.name === customRangeName) {
-				return DateRangeToMoment(props.defaultRange)
+				return DateRangeToDayjs(props.defaultRange)
 			}
 			
 			if (!!props.presetRanges) {
-				const presetRanges = props.presetRanges.map(range => DateRangeToMoment(range))
+				const presetRanges = props.presetRanges.map(range => DateRangeToDayjs(range))
 				
 				if (presetRanges.length > 0) {
 					const foundItem = presetRanges.find((item: IDateRange) => props.defaultRange!.name === item.name)
@@ -184,7 +184,7 @@ export const DateRange = (props: IPropsDateRange) => {
 			}
 		}
 		
-		if (props.presetRanges && props.presetRanges.length > 0) return DateRangeToMoment(props.presetRanges[0])
+		if (props.presetRanges && props.presetRanges.length > 0) return DateRangeToDayjs(props.presetRanges[0])
 		
 		return initialDateRange
 	}
@@ -286,7 +286,7 @@ export const DateRange = (props: IPropsDateRange) => {
 	
 	useEffect(() => {
 		if (!!props.defaultRange) {
-			setState({...state, selectedRange: DateRangeToMoment(props.defaultRange)})
+			setState({...state, selectedRange: DateRangeToDayjs(props.defaultRange)})
 		}
 	}, [props.defaultRange])
 	

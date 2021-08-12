@@ -3,7 +3,7 @@ import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import { OmitProperty,
 	RandomString
 } from '@solidbasisventures/intelliwaketsfoundation'
-import {DayjsDateString, DayjsDisplayDayDate, DayjsDisplayDayDateTime, DayjsTimeString} from '../DayJSWrappers'
+import {DayjsDateString, DayjsDisplayDayDate, DayjsDisplayDayDateTime, DayjsTimeString} from '../Dayjs'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	showTime?: boolean

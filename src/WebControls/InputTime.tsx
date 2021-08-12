@@ -3,11 +3,11 @@ import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {OmitProperty
 } from '@solidbasisventures/intelliwaketsfoundation'
 import {
-	MOMENT_FORMAT_TIME_NO_SECONDS,
-	MOMENT_FORMAT_TIME_SECONDS, MomentDateString, MomentDisplayTime,
-	MomentFormatString,
-	MomentTimeString
-} from '../Moment'
+	DAYJS_FORMAT_TIME_NO_SECONDS,
+	DAYJS_FORMAT_TIME_SECONDS, DayjsDateString, DayjsDisplayTime,
+	DayjsFormatString,
+	DayjsTimeString
+} from '../Dayjs'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	includeDate?: boolean
@@ -24,26 +24,26 @@ export function InputTime<T>(props: IProps<T>) {
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props])
 
 	useEffect(() => {
-		if (![lastTimeValue.current, nextTimeValue.current].includes(MomentTimeString(props.value as string) ?? '')) {
-			lastTimeValue.current = MomentTimeString((props.value ?? '') as string) ?? ''
+		if (![lastTimeValue.current, nextTimeValue.current].includes(DayjsTimeString(props.value as string) ?? '')) {
+			lastTimeValue.current = DayjsTimeString((props.value ?? '') as string) ?? ''
 			nextTimeValue.current = lastTimeValue.current
 			setOverrideValue(
-				MomentFormatString(
+				DayjsFormatString(
 					lastTimeValue.current,
-					!!props.editSeconds ? MOMENT_FORMAT_TIME_SECONDS : MOMENT_FORMAT_TIME_NO_SECONDS
+					!!props.editSeconds ? DAYJS_FORMAT_TIME_SECONDS : DAYJS_FORMAT_TIME_NO_SECONDS
 				) ?? ''
 			)
 		} else {
-			lastTimeValue.current = MomentTimeString((props.value ?? '') as string) ?? ''
+			lastTimeValue.current = DayjsTimeString((props.value ?? '') as string) ?? ''
 		}
 	}, [props.value, props.editSeconds])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		nextTimeValue.current = MomentTimeString(e.target.value) ?? ''
+		nextTimeValue.current = DayjsTimeString(e.target.value) ?? ''
 
 		setOverrideValue(e.target.value)
 
-		const customValue = ((MomentDateString(props.value as string) ?? '') + ' ' + nextTimeValue.current).trim()
+		const customValue = ((DayjsDateString(props.value as string) ?? '') + ' ' + nextTimeValue.current).trim()
 
 		if (!!props.onChange) {
 			;(e.target as any).customValue = customValue
@@ -66,7 +66,7 @@ export function InputTime<T>(props: IProps<T>) {
 		<>
 			{!!props.plainText ? (
 				<div className="form-control-plaintext" {...props.plainTextProps}>
-					{MomentDisplayTime(props.value as string)}
+					{DayjsDisplayTime(props.value as string)}
 				</div>
 			) : (
 				<input
