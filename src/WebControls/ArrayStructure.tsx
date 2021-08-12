@@ -9,6 +9,7 @@ import {
 	ToDigitsDash
 } from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames, TBootStrapExtendedSizes, TBootStrapSizes} from '../Functions'
+import dayjs from 'dayjs'
 
 /**
  * Functions to write Table rows and columns
@@ -25,7 +26,7 @@ export interface IArrayColumn {
 	hideOnFunction?: (rowData: any | null | undefined) => boolean
 	toDigitsPrecision?: number
 	toCurrencyPrecision?: number
-	momentTSFormat?: string
+	dayjsTSFormat?: string
 	dashIfBlank?: boolean
 	blankIfBlank?: boolean
 	sumInFooter?: boolean
@@ -65,16 +66,16 @@ export const ComputeValue = (
 	return computedValue
 }
 
-export const FormatValue = (value: any | null | undefined, _column: IArrayColumn): any | null | undefined => {
-	// if (column.momentTSFormat) {
-	// 	if (value) {
-	// 		if (!isNaN(parseInt(value))) {
-	// 			value = moment.unix(value / 1000).format(column.momentTSFormat)
-	// 		}
-	// 	} else {
-	// 		value = null
-	// 	}
-	// }
+export const FormatValue = (value: any | null | undefined, column: IArrayColumn): any | null | undefined => {
+	if (column.dayjsTSFormat) {
+		if (value) {
+			if (!isNaN(parseInt(value))) {
+				value = dayjs(value).format(column.dayjsTSFormat)
+			}
+		} else {
+			value = null
+		}
+	}
 
 	return value
 }
@@ -164,7 +165,7 @@ export const ColumnClassNames = (column: IArrayColumn, otherClasses: {[key: stri
 		'text-right':
 			column.toDigitsPrecision !== undefined ||
 			column.toCurrencyPrecision !== undefined ||
-			column.momentTSFormat !== undefined,
+			column.dayjsTSFormat !== undefined,
 		['td-' + (column.size ?? '')]: !!column.size,
 		...otherClasses
 	})
