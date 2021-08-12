@@ -9,7 +9,7 @@ import {
 	ToDigitsDash
 } from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames, TBootStrapExtendedSizes, TBootStrapSizes} from '../Functions'
-import dayjs from 'dayjs'
+import moment from 'moment-timezone'
 
 /**
  * Functions to write Table rows and columns
@@ -70,7 +70,7 @@ export const FormatValue = (value: any | null | undefined, column: IArrayColumn)
 	if (column.dayjsTSFormat) {
 		if (value) {
 			if (!isNaN(parseInt(value))) {
-				value = dayjs(value).format(column.dayjsTSFormat)
+				value = moment(value).format(column.dayjsTSFormat)
 			}
 		} else {
 			value = null

@@ -24,6 +24,5 @@ export default {
 			}, {src: 'src/IWakeNoRoot.scss', dest: 'dist'}]
 		})
 	],
-	external: ['react', 'react-dom', 'path', 'fs', 'dayjs', 'readline', '@solidbasisventures/intelliwaketsfoundation', '@fortawesome/react-fontawesome', '@fortawesome/pro-regular-svg-icons',
-		'dayjs/plugin/quarterOfYear', 'dayjs/plugin/isBetwee', 'cleave.js/react', 'react-router-dom', 'react-switch', 'axios', '@fortawesome/pro-solid-svg-icons/faSpinnerThird', 'dayjs/plugin/isBetween']
+	external: ['react', 'react-dom', 'path', 'fs', 'moment-timezone', 'readline', '@solidbasisventures/intelliwaketsfoundation', '@fortawesome/react-fontawesome', '@fortawesome/pro-regular-svg-icons', 'cleave.js/react', 'react-router-dom', 'react-switch', 'axios', '@fortawesome/pro-solid-svg-icons/faSpinnerThird']
 }

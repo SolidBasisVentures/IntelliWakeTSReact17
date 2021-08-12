@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
-	DayjsDateString, DayjsDisplayDayDate, DayjsDisplayDayDateTime, DayjsTimeString, OmitProperty,
+	MomentDateString, MomentDisplayDayDate, MomentDisplayDayDateTime, MomentTimeString, OmitProperty,
 	RandomString
 } from '@solidbasisventures/intelliwaketsfoundation'
 
@@ -20,21 +20,21 @@ export function InputDate<T>(props: IProps<T>) {
 		, [props])
 	
 	useEffect(() => {
-		if (![lastDateValue.current, nextDateValue.current].includes(DayjsDateString(props.value as string) ?? '')) {
-			lastDateValue.current = DayjsDateString((props.value ?? '') as string) ?? ''
+		if (![lastDateValue.current, nextDateValue.current].includes(MomentDateString(props.value as string) ?? '')) {
+			lastDateValue.current = MomentDateString((props.value ?? '') as string) ?? ''
 			nextDateValue.current = lastDateValue.current
 			setOverrideValue(lastDateValue.current)
 		} else {
-			lastDateValue.current = DayjsDateString((props.value ?? '') as string) ?? ''
+			lastDateValue.current = MomentDateString((props.value ?? '') as string) ?? ''
 		}
 	}, [props.value])
 	
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		nextDateValue.current = DayjsDateString(e.target.value) ?? ''
+		nextDateValue.current = MomentDateString(e.target.value) ?? ''
 		
 		setOverrideValue(e.target.value)
 		
-		const customValue = (nextDateValue.current + ' ' + (DayjsTimeString(props.value as string) ?? '')).trim()
+		const customValue = (nextDateValue.current + ' ' + (MomentTimeString(props.value as string) ?? '')).trim()
 		
 		if (!!props.onChange) {
 			;(e.target as any).customValue = customValue
@@ -57,9 +57,9 @@ export function InputDate<T>(props: IProps<T>) {
 		<>
 			{!!props.plainText ? (
 				<div className='form-control-plaintext' {...props.plainTextProps}>
-					{!!props.showTime && !!DayjsTimeString(props.value as string)
-						? DayjsDisplayDayDateTime(props.value as string)
-						: DayjsDisplayDayDate(props.value as string)}
+					{!!props.showTime && !!MomentTimeString(props.value as string)
+						? MomentDisplayDayDateTime(props.value as string)
+						: MomentDisplayDayDate(props.value as string)}
 				</div>
 			) : (
 				<input

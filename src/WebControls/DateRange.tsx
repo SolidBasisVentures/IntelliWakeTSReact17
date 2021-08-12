@@ -2,14 +2,10 @@ import React, {useEffect, useRef, useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCalendarAlt} from '@fortawesome/pro-regular-svg-icons'
 import {ClassNames} from '../Functions'
-import dayjs, {Dayjs} from 'dayjs'
-import quarterOfYear from 'dayjs/plugin/quarterOfYear'
-import isBetween from 'dayjs/plugin/isBetween'
+import moment, {Moment} from 'moment-timezone'
+import {MomentDateString} from '@solidbasisventures/intelliwaketsfoundation'
 
 export const customRangeName = 'Custom Range'
-
-dayjs.extend(quarterOfYear)
-dayjs.extend(isBetween)
 
 export interface IDateRangeString {
 	name: string,
@@ -17,69 +13,69 @@ export interface IDateRangeString {
 	end: string
 }
 
-export const CreateCustomDateRange = (dateStart: Dayjs | string, dateEnd: Dayjs | string): IDateRangeString => {
+export const CreateCustomDateRange = (dateStart: Moment | string, dateEnd: Moment | string): IDateRangeString => {
 	return {
 		name: customRangeName,
-		start: DateRangeDateDayjsToString(dateStart),
-		end: DateRangeDateDayjsToString(dateEnd)
+		start: DateRangeDateMomentToString(dateStart),
+		end: DateRangeDateMomentToString(dateEnd)
 	}
 }
 
-export const DateRangeDateDayjsToString = (date: Dayjs | string): string => typeof date === 'string' ? date : (dayjs(date.startOf('day')) ?? dayjs()).format('YYYY-MM-DD')
+export const DateRangeDateMomentToString = (date: Moment | string): string => typeof date === 'string' ? date : MomentDateString(date.startOf('day')) ?? moment().format('YYYY-MM-DD')
 
-export const DateRangeDateStringToDayjs = (date: Dayjs | string): Dayjs => typeof date === 'string' ? dayjs(date) ?? dayjs() : date
+export const DateRangeDateStringToMoment = (date: Moment | string): Moment => typeof date === 'string' ? moment(date) ?? moment() : date
 
-export const DateRangeToDayjs = (dateRange: IDateRange | IDateRangeString): IDateRange => ({
+export const DateRangeToMoment = (dateRange: IDateRange | IDateRangeString): IDateRange => ({
 	name: dateRange.name,
-	start: DateRangeDateStringToDayjs(dateRange.start),
-	end: DateRangeDateStringToDayjs(dateRange.end)
+	start: DateRangeDateStringToMoment(dateRange.start),
+	end: DateRangeDateStringToMoment(dateRange.end)
 })
 
 export const DateRangeToString = (dateRange: IDateRange | IDateRangeString): IDateRangeString => ({
 	name: dateRange.name,
-	start: DateRangeDateDayjsToString(dateRange.start),
-	end: DateRangeDateDayjsToString(dateRange.end)
+	start: DateRangeDateMomentToString(dateRange.start),
+	end: DateRangeDateMomentToString(dateRange.end)
 })
 
 export interface IDateRange {
 	name: string,
-	start: Dayjs,
-	end: Dayjs
+	start: Moment,
+	end: Moment
 }
 
 export const initialDateRange: IDateRange = {
 	name: customRangeName,
-	start: dayjs(),
-	end: dayjs()
+	start: moment(),
+	end: moment()
 }
 
 export const initialDateRangeString: IDateRangeString = DateRangeToString(initialDateRange)
 
 interface IPropsCalendar {
-	month: Dayjs,
-	startSelected: Dayjs,
-	endSelected: Dayjs,
-	dateClick: ((date: Dayjs) => void),
+	month: Moment,
+	startSelected: Moment,
+	endSelected: Moment,
+	dateClick: ((date: Moment) => void),
 	prevMonth?: Function,
 	nextMonth?: Function
 }
 
 export const DateRangeCalendar = (props: IPropsCalendar) => {
-	let dayjss: (Dayjs[])[] = []
+	let moments: (Moment[])[] = []
 	
 	let firstDay = props.month.clone().startOf('month')
 	let currentDay = firstDay.clone().startOf('week')
 	let lastDay = props.month.clone().endOf('month')
 	
 	while (currentDay.isBefore(lastDay)) {
-		let week: Dayjs[] = []
+		let week: Moment[] = []
 		
 		do {
 			week.push(currentDay.clone())
 			currentDay.add(1, 'day')
-		} while (currentDay.day() > 0)
+		} while (currentDay.weekday() > 0)
 		
-		dayjss.push(week)
+		moments.push(week)
 	}
 	
 	const prev = () => {
@@ -100,14 +96,14 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 			<tr>
 				{props.prevMonth !== undefined
 					?
-					<th className='prev available' onClick={prev}><span> </span></th>
+					<th className="prev available" onClick={prev}><span> </span></th>
 					:
 					<th />
 				}
-				<th colSpan={5} className='month'>{firstDay.format('MMM YYYY')}</th>
+				<th colSpan={5} className="month">{firstDay.format('MMM YYYY')}</th>
 				{props.nextMonth !== undefined
 					?
-					<th className='next available' onClick={next}><span> </span></th>
+					<th className="next available" onClick={next}><span> </span></th>
 					:
 					<th />
 				}
@@ -123,7 +119,7 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 			</tr>
 			</thead>
 			<tbody>
-			{dayjss.map((week, idx: number) =>
+			{moments.map((week, idx: number) =>
 				<tr key={idx}>
 					{week.map((day) =>
 						<td className={
@@ -164,11 +160,11 @@ export const DateRange = (props: IPropsDateRange) => {
 	const getStartRange = (): IDateRange => {
 		if (props.defaultRange && props.defaultRange.name) {
 			if (props.defaultRange.name === customRangeName) {
-				return DateRangeToDayjs(props.defaultRange)
+				return DateRangeToMoment(props.defaultRange)
 			}
 			
 			if (!!props.presetRanges) {
-				const presetRanges = props.presetRanges.map(range => DateRangeToDayjs(range))
+				const presetRanges = props.presetRanges.map(range => DateRangeToMoment(range))
 				
 				if (presetRanges.length > 0) {
 					const foundItem = presetRanges.find((item: IDateRange) => props.defaultRange!.name === item.name)
@@ -184,7 +180,7 @@ export const DateRange = (props: IPropsDateRange) => {
 			}
 		}
 		
-		if (props.presetRanges && props.presetRanges.length > 0) return DateRangeToDayjs(props.presetRanges[0])
+		if (props.presetRanges && props.presetRanges.length > 0) return DateRangeToMoment(props.presetRanges[0])
 		
 		return initialDateRange
 	}
@@ -208,7 +204,7 @@ export const DateRange = (props: IPropsDateRange) => {
 	const currentRange = getCurrentRange()
 	
 	const rangeDescription = (range: IDateRange): string => {
-		return (range.name === customRangeName ? (dayjs(range.start).format('L') + ' - ' + dayjs(range.end).format('L')) : range.name)
+		return (range.name === customRangeName ? (moment(range.start).format('L') + ' - ' + moment(range.end).format('L')) : range.name)
 	}
 	
 	const setOpen = (e: any) => {
@@ -249,7 +245,7 @@ export const DateRange = (props: IPropsDateRange) => {
 		setState({...state, prevPreset: null, customRange: customRange})
 	}
 	
-	const handleDateClick = (day: Dayjs) => {
+	const handleDateClick = (day: Moment) => {
 		let newState = {...state}
 		
 		if (newState.applyToFirst) {
@@ -286,30 +282,27 @@ export const DateRange = (props: IPropsDateRange) => {
 	
 	useEffect(() => {
 		if (!!props.defaultRange) {
-			setState({...state, selectedRange: DateRangeToDayjs(props.defaultRange)})
+			setState({...state, selectedRange: DateRangeToMoment(props.defaultRange)})
 		}
 	}, [props.defaultRange])
 	
 	return (
-		<div
-			className={'DateRangeDD ' + (props.className ?? '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : '')}
-			onClick={setOpen} ref={nodeParent} color={props.color}>
+		<div className={'DateRangeDD ' + (props.className ?? '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : '')}
+		     onClick={setOpen} ref={nodeParent} color={props.color}>
 			{props.faIcon !== null &&
 			<FontAwesomeIcon icon={props.faIcon ? props.faIcon : faCalendarAlt} fixedWidth />
 			} {rangeDescription(state.selectedRange!)}
-			<div className={ClassNames({DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen})}
-			     ref={nodeBody}>
+			<div className={ClassNames({DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen})} ref={nodeBody}>
 				<div className={'ranges' + (state.prevPreset ? ' d-none' : '')}>
 					<ul>
 						{props.presetRanges!.map((preset: IDateRange, idx: number) =>
-							<li key={idx} onClick={() => handlePresetClick(preset)}
-							    className={(preset.name === currentRange.name ? 'active' : '')}>
+							<li key={idx} onClick={() => handlePresetClick(preset)} className={(preset.name === currentRange.name ? 'active' : '')}>
 								{preset.name}
 							</li>
 						)}
 						<li onClick={handleCustomClick}>
 							{customRangeName}
-							<span className='float-right'>&gt;</span>
+							<span className="float-right">&gt;</span>
 						</li>
 					</ul>
 				</div>
@@ -319,16 +312,14 @@ export const DateRange = (props: IPropsDateRange) => {
                     </span>
 				</div>
 				<div className={'drp-calendar left' + (!state.prevPreset ? ' d-none' : '')}>
-					<div className='calendar-table'>
+					<div className="calendar-table">
 						
-						<DateRangeCalendar month={state.monthToShow} startSelected={state.customRange.start}
-						                   endSelected={state.customRange.end} prevMonth={prevMonth} nextMonth={nextMonth}
-						                   dateClick={handleDateClick} />
+						<DateRangeCalendar month={state.monthToShow} startSelected={state.customRange.start} endSelected={state.customRange.end} prevMonth={prevMonth} nextMonth={nextMonth} dateClick={handleDateClick} />
 					</div>
 				</div>
 				<div className={'drp-buttons' + (!state.prevPreset ? ' d-none' : '')}>
-					<span className='drp-selected'>{rangeDescription(state.customRange)}</span>
-					<button className='btn btn-sm btn-primary' type='button' onClick={handleCustomApplyClick}>Apply</button>
+					<span className="drp-selected">{rangeDescription(state.customRange)}</span>
+					<button className="btn btn-sm btn-primary" type="button" onClick={handleCustomApplyClick}>Apply</button>
 				</div>
 			</div>
 		</div>
@@ -337,39 +328,39 @@ export const DateRange = (props: IPropsDateRange) => {
 
 export const defaultRanges: IDateRange[] = [
 	{
-		name: 'This Week #' + dayjs().format('w'),
-		start: dayjs().startOf('week'),
-		end: dayjs().endOf('week')
+		name: 'This Week #' + moment().format('w'),
+		start: moment().startOf('week'),
+		end: moment().endOf('week')
 	},
 	{
-		name: 'Last Week #' + dayjs().subtract(1, 'week').format('w'),
-		start: dayjs().subtract(1, 'week').startOf('week'),
-		end: dayjs().subtract(1, 'week').endOf('week')
+		name: 'Last Week #' + moment().subtract(1, 'week').format('w'),
+		start: moment().subtract(1, 'week').startOf('week'),
+		end: moment().subtract(1, 'week').endOf('week')
 	},
 	{
 		name: 'Previous 4 Weeks',
-		start: dayjs().subtract(4, 'week').startOf('week'),
-		end: dayjs().subtract(1, 'week').endOf('week')
+		start: moment().subtract(4, 'week').startOf('week'),
+		end: moment().subtract(1, 'week').endOf('week')
 	},
 	{
 		name: 'This Month',
-		start: dayjs().startOf('month'),
-		end: dayjs().endOf('month')
+		start: moment().startOf('month'),
+		end: moment().endOf('month')
 	},
 	{
 		name: 'Last Month',
-		start: dayjs().subtract(1, 'month').startOf('month'),
-		end: dayjs().subtract(1, 'month').endOf('month')
+		start: moment().subtract(1, 'month').startOf('month'),
+		end: moment().subtract(1, 'month').endOf('month')
 	},
 	{
 		name: 'Last 7 Days',
-		start: dayjs().subtract(6, 'days').startOf('day'),
-		end: dayjs().endOf('day')
+		start: moment().subtract(6, 'days').startOf('day'),
+		end: moment().endOf('day')
 	},
 	{
 		name: 'Last 30 Days',
-		start: dayjs().subtract(29, 'days').startOf('day'),
-		end: dayjs().endOf('day')
+		start: moment().subtract(29, 'days').startOf('day'),
+		end: moment().endOf('day')
 	}
 ]
 
@@ -378,33 +369,33 @@ export const defaultRangeStrings: IDateRangeString[] = defaultRanges.map(range =
 export const defaultRangesReport: IDateRange[] = [
 	{
 		name: 'This Week',
-		start: dayjs().startOf('week'),
-		end: dayjs().endOf('week')
+		start: moment().startOf('week'),
+		end: moment().endOf('week')
 	},
 	{
 		name: 'Last Week',
-		start: dayjs().subtract(1, 'week').startOf('week'),
-		end: dayjs().subtract(1, 'week').endOf('week')
+		start: moment().subtract(1, 'week').startOf('week'),
+		end: moment().subtract(1, 'week').endOf('week')
 	},
 	{
 		name: 'This Month',
-		start: dayjs().startOf('month'),
-		end: dayjs().endOf('month')
+		start: moment().startOf('month'),
+		end: moment().endOf('month')
 	},
 	{
 		name: 'Last Month',
-		start: dayjs().subtract(1, 'month').startOf('month'),
-		end: dayjs().subtract(1, 'month').endOf('month')
+		start: moment().subtract(1, 'month').startOf('month'),
+		end: moment().subtract(1, 'month').endOf('month')
 	},
 	{
 		name: 'Year-to-Date',
-		start: dayjs().startOf('year'),
-		end: dayjs().endOf('year')
+		start: moment().startOf('year'),
+		end: moment().endOf('year')
 	},
 	{
 		name: 'Last Year',
-		start: dayjs().subtract(1, 'year').startOf('year'),
-		end: dayjs().subtract(1, 'year').endOf('year')
+		start: moment().subtract(1, 'year').startOf('year'),
+		end: moment().subtract(1, 'year').endOf('year')
 	}
 ]
 
@@ -413,53 +404,53 @@ export const defaultRangeStringsReport: IDateRangeString[] = defaultRangesReport
 export const defaultRangesReportQuarterly: IDateRange[] = [
 	{
 		name: 'This Month',
-		start: dayjs().startOf('month'),
-		end: dayjs().endOf('month')
+		start: moment().startOf('month'),
+		end: moment().endOf('month')
 	},
 	{
 		name: 'Last Month',
-		start: dayjs().subtract(1, 'month').startOf('month'),
-		end: dayjs().subtract(1, 'month').endOf('month')
+		start: moment().subtract(1, 'month').startOf('month'),
+		end: moment().subtract(1, 'month').endOf('month')
 	},
 	{
 		name: 'This Quarter',
-		start: dayjs().startOf('quarter'),
-		end: dayjs().endOf('quarter')
+		start: moment().startOf('quarter'),
+		end: moment().endOf('quarter')
 	},
 	{
 		name: 'Last Quarter',
-		start: dayjs().subtract(1, 'quarter').startOf('quarter'),
-		end: dayjs().subtract(1, 'quarter').endOf('quarter')
+		start: moment().subtract(1, 'quarter').startOf('quarter'),
+		end: moment().subtract(1, 'quarter').endOf('quarter')
 	},
 	{
 		name: '2 Quarters ago',
-		start: dayjs().subtract(2, 'quarter').startOf('quarter'),
-		end: dayjs().subtract(2, 'quarter').endOf('quarter')
+		start: moment().subtract(2, 'quarter').startOf('quarter'),
+		end: moment().subtract(2, 'quarter').endOf('quarter')
 	},
 	{
 		name: '3 Quarters ago',
-		start: dayjs().subtract(3, 'quarter').startOf('quarter'),
-		end: dayjs().subtract(3, 'quarter').endOf('quarter')
+		start: moment().subtract(3, 'quarter').startOf('quarter'),
+		end: moment().subtract(3, 'quarter').endOf('quarter')
 	},
 	{
 		name: '4 Quarters ago',
-		start: dayjs().subtract(4, 'quarter').startOf('quarter'),
-		end: dayjs().subtract(4, 'quarter').endOf('quarter')
+		start: moment().subtract(4, 'quarter').startOf('quarter'),
+		end: moment().subtract(4, 'quarter').endOf('quarter')
 	},
 	{
 		name: 'Year to Date',
-		start: dayjs().startOf('year'),
-		end: dayjs()
+		start: moment().startOf('year'),
+		end: moment()
 	},
 	{
 		name: 'This Year',
-		start: dayjs().startOf('year'),
-		end: dayjs().endOf('year')
+		start: moment().startOf('year'),
+		end: moment().endOf('year')
 	},
 	{
 		name: 'Last Year',
-		start: dayjs().subtract(1, 'year').startOf('year'),
-		end: dayjs().subtract(1, 'year').endOf('year')
+		start: moment().subtract(1, 'year').startOf('year'),
+		end: moment().subtract(1, 'year').endOf('year')
 	}
 ]
 
@@ -472,8 +463,8 @@ export const defaultRangeStringsReportQuarterly: IDateRangeString[] = defaultRan
  */
 export const defaultRange: IDateRange = {
 	name: 'This Month',
-	start: dayjs().startOf('month'),
-	end: dayjs().endOf('month')
+	start: moment().startOf('month'),
+	end: moment().endOf('month')
 }
 
 /**
@@ -483,8 +474,8 @@ export const defaultRange: IDateRange = {
  */
 export const defaultRangeWeek: IDateRange = {
 	name: 'This Week',
-	start: dayjs().startOf('week'),
-	end: dayjs().endOf('week')
+	start: moment().startOf('week'),
+	end: moment().endOf('week')
 }
 
 /**
@@ -494,8 +485,8 @@ export const defaultRangeWeek: IDateRange = {
  */
 export const defaultRangeLast4Weeks: IDateRange = {
 	name: 'Last 4 Weeks',
-	start: dayjs().subtract(3, 'week').startOf('week'),
-	end: dayjs().endOf('week')
+	start: moment().subtract(3, 'week').startOf('week'),
+	end: moment().endOf('week')
 }
 
 /**
@@ -505,8 +496,8 @@ export const defaultRangeLast4Weeks: IDateRange = {
  */
 export const defaultRangeYear: IDateRange = {
 	name: 'Year-to-Date',
-	start: dayjs().startOf('year'),
-	end: dayjs().endOf('year')
+	start: moment().startOf('year'),
+	end: moment().endOf('year')
 }
 
 export const defaultRangeString = DateRangeToString(defaultRange)
