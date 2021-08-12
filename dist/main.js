@@ -8,9 +8,14 @@ var reactFontawesome = require('@fortawesome/react-fontawesome');
 var faSpinnerThird = require('@fortawesome/pro-solid-svg-icons/faSpinnerThird');
 var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
 var ReactDOM = require('react-dom');
-var momentTimezone = require('moment-timezone');
-var moment$1 = require('moment');
+var dayjs = require('dayjs');
+var quarterOfYear = require('dayjs/plugin/quarterOfYear');
+var isBetween = require('dayjs/plugin/isBetween');
 var reactRouterDom = require('react-router-dom');
+var duration = require('dayjs/plugin/duration');
+var isoWeek = require('dayjs/plugin/isoWeek');
+var utc = require('dayjs/plugin/utc');
+var timezone = require('dayjs/plugin/timezone');
 var Cleave = require('cleave.js/react');
 var Switch = require('react-switch');
 var axios = require('axios');
@@ -19,7 +24,13 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
-var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment$1);
+var dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
+var quarterOfYear__default = /*#__PURE__*/_interopDefaultLegacy(quarterOfYear);
+var isBetween__default = /*#__PURE__*/_interopDefaultLegacy(isBetween);
+var duration__default = /*#__PURE__*/_interopDefaultLegacy(duration);
+var isoWeek__default = /*#__PURE__*/_interopDefaultLegacy(isoWeek);
+var utc__default = /*#__PURE__*/_interopDefaultLegacy(utc);
+var timezone__default = /*#__PURE__*/_interopDefaultLegacy(timezone);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
 var Switch__default = /*#__PURE__*/_interopDefaultLegacy(Switch);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
@@ -1685,16 +1696,17 @@ const ComputeValue = (value, column, rowData, sumsInFooter) => {
     }
     return computedValue;
 };
-const FormatValue = (value, _column) => {
-    // if (column.momentTSFormat) {
-    // 	if (value) {
-    // 		if (!isNaN(parseInt(value))) {
-    // 			value = moment.unix(value / 1000).format(column.momentTSFormat)
-    // 		}
-    // 	} else {
-    // 		value = null
-    // 	}
-    // }
+const FormatValue = (value, column) => {
+    if (column.dayjsTSFormat) {
+        if (value) {
+            if (!isNaN(parseInt(value))) {
+                value = dayjs__default['default'](value).format(column.dayjsTSFormat);
+            }
+        }
+        else {
+            value = null;
+        }
+    }
     return value;
 };
 const IsColumnEmpty = (arrayData, fieldName) => {
@@ -1713,10 +1725,10 @@ const StructuredArray = (arrayData, arrayStructure) => {
     const validColumns = ValidColumns(arrayData, arrayStructure);
     structuredArray.push(validColumns.map((column) => column.title));
     for (const row of arrayData !== null && arrayData !== void 0 ? arrayData : []) {
-        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue(ComputeValue((_a = row[column.fieldName]) !== null && _a !== void 0 ? _a : null, column, row, sumsInFooter)); }));
+        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue(ComputeValue((_a = row[column.fieldName]) !== null && _a !== void 0 ? _a : null, column, row, sumsInFooter), column); }));
     }
     if (Object.keys(sumsInFooter).length > 0) {
-        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue((_a = sumsInFooter[column.fieldName]) !== null && _a !== void 0 ? _a : null); }));
+        structuredArray.push(validColumns.map((column) => { var _a; return FormatValue((_a = sumsInFooter[column.fieldName]) !== null && _a !== void 0 ? _a : null, column); }));
     }
     return structuredArray;
 };
@@ -1744,7 +1756,7 @@ const ScreenFormatValue = (value, column) => {
         }
     }
     else {
-        value = FormatValue(value);
+        value = FormatValue(value, column);
     }
     return value;
 };
@@ -1758,7 +1770,7 @@ const ColumnClassNames = (column, otherClasses = {}) => {
     var _a;
     return ClassNames(Object.assign({ 'text-right': column.toDigitsPrecision !== undefined ||
             column.toCurrencyPrecision !== undefined ||
-            column.momentTSFormat !== undefined, ['td-' + ((_a = column.size) !== null && _a !== void 0 ? _a : '')]: !!column.size }, otherClasses));
+            column.dayjsTSFormat !== undefined, ['td-' + ((_a = column.size) !== null && _a !== void 0 ? _a : '')]: !!column.size }, otherClasses));
 };
 const ColumnHeaderClick = (column, arrayStructure, sorter, setSorter) => {
     if (!!arrayStructure.sortable && !column.doNotSort) {
@@ -1833,199 +1845,36 @@ const BRBefore = (props) => {
         props.suffix));
 };
 
-const moment = require('moment-timezone');
-// import {ISO_8601, Moment} from 'moment-timezone'
-// import {utc} from 'moment'
-const MOMENT_FORMAT_DATE = 'YYYY-MM-DD';
-const MOMENT_FORMAT_TIME_SECONDS = 'HH:mm:ss';
-const MOMENT_FORMAT_TIME_NO_SECONDS = 'HH:mm';
-const MOMENT_FORMAT_DATE_TIME = MOMENT_FORMAT_DATE + ' ' + MOMENT_FORMAT_TIME_SECONDS;
-const MOMENT_FORMAT_DATE_DISPLAY = `MMM D, YYYY`;
-const MOMENT_FORMAT_DATE_DISPLAY_DOW = `dd, ${MOMENT_FORMAT_DATE_DISPLAY}`;
-const MOMENT_FORMAT_TIME_DISPLAY = 'h:mm a';
-const MOMENT_FORMAT_DATE_TIME_DISPLAY = `${MOMENT_FORMAT_DATE_DISPLAY}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
-const MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW = `${MOMENT_FORMAT_DATE_DISPLAY_DOW}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
-const MOMENT_FORMAT_DATE_DISPLAY_LONG = `MMMM D, YYYY`;
-const MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG = `${MOMENT_FORMAT_DATE_DISPLAY_LONG}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
-const DATE_FORMAT_TRIES = [
-    'YYYY-MM-DD',
-    'M-D-YYYY',
-    'MM-DD-YYYY',
-    momentTimezone.ISO_8601,
-    'YYYYMMDD'
-];
-const TIME_FORMAT_TRIES = [
-    momentTimezone.ISO_8601,
-    'YYYY-MM-DD HH:mm:ss',
-    'YYYY-MM-DD HH:mm',
-    'HH:mm:ss',
-    'HH:mm',
-    'D-M-YYYY HH:mm:ss',
-    'D-M-YYYY HH:mm',
-    'DD-MM-YYYY HH:mm:ss',
-    'DD-MM-YYYY HH:mm'
-];
-var EDateAndOrTime;
-(function (EDateAndOrTime) {
-    EDateAndOrTime[EDateAndOrTime["DATE"] = 0] = "DATE";
-    EDateAndOrTime[EDateAndOrTime["TIME"] = 1] = "TIME";
-    EDateAndOrTime[EDateAndOrTime["DATETIME"] = 2] = "DATETIME";
-})(EDateAndOrTime || (EDateAndOrTime = {}));
-const StringHasTimeData = (value) => value.includes(':');
-const StringHasDateData = (value) => value.includes('-') || /\d{8}/.test(value);
-const StringHasTimeZoneData = (value) => value.includes('T') || value.includes('+') || value.substr(15).includes('-');
-const FormatIsTime = (format) => [MOMENT_FORMAT_TIME_SECONDS, MOMENT_FORMAT_TIME_NO_SECONDS, MOMENT_FORMAT_TIME_DISPLAY].includes(format);
-const FormatIsDate = (format) => [MOMENT_FORMAT_DATE, MOMENT_FORMAT_DATE_DISPLAY, MOMENT_FORMAT_DATE_DISPLAY_DOW].includes(format);
-const FormatIsDateTime = (format) => [MOMENT_FORMAT_DATE_TIME, MOMENT_FORMAT_DATE_TIME_DISPLAY, MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW].includes(format);
-/**
- * Returns the current time zone.
- */
-const MomentCurrentTimeZone = () => moment.tz().format('z');
-/**
- * Returns a list of olson time zone items, sorted by hour diff from UTC
- *
- * Defaults to 'US'
- */
-const TimeZoneOlsons = (forCountry = 'US') => moment.tz.zonesForCountry(forCountry)
-    .map(tzItem => ({
-    zone: moment.tz(tzItem).zoneAbbr(),
-    olson: tzItem,
-    hours: moment.tz(tzItem).format('Z')
-}))
-    .sort((a, b) => (a.hours !== b.hours ? a.hours.localeCompare(b.hours) : a.olson.localeCompare(b.olson)));
-/**
- * Returns the Moment object from a given value. If the given value is invalid,
- * it returns null.
- *
- *
- * @example
- * // returns Moment<2020-10-02T00:00:00Z>
- * MomentFromString('2020-10-02')
- */
-const MomentFromString = (value) => {
-    if (!value) {
-        return null;
-    }
-    const formatTries = [...DATE_FORMAT_TRIES, ...TIME_FORMAT_TRIES];
-    if (typeof value !== 'string') {
-        const momentObject = moment(value);
-        if (momentObject.isValid()) {
-            return momentObject.utc().tz(MomentCurrentTimeZone());
-        }
-    }
-    else {
-        const momentObject = StringHasTimeZoneData(value) ? moment(value, formatTries, true) : momentTimezone.utc(value, formatTries, true);
-        if (momentObject.isValid()) {
-            return momentObject;
-        }
-    }
-    return null;
-};
-/**
- * Does the same thing as MomentFromString() but instead returns a string based on the format specified.
- *
- * @example
- * // returns "Oct 2, 2020"
- * MomentFromString('2020-10-02', 'll')
- */
-const MomentFormatString = (value, format) => {
-    var _a, _b, _c, _d;
-    if (!value)
-        return null;
-    if (typeof value == 'string') {
-        if (FormatIsTime(format) && !StringHasTimeData(value)) {
-            return null;
-        }
-        if ((FormatIsDateTime(format) || FormatIsDate(format)) && !StringHasDateData(value))
-            return null;
-        let moment = (_b = (_a = MomentFromString(value)) === null || _a === void 0 ? void 0 : _a.format(format)) !== null && _b !== void 0 ? _b : null;
-        if (!moment)
-            return null;
-        if (format === MOMENT_FORMAT_TIME_SECONDS || format === MOMENT_FORMAT_TIME_NO_SECONDS) {
-            if (!StringHasTimeData(moment))
-                return null;
-            return moment.substr(format.length * -1, format.length);
-        }
-        if (format === MOMENT_FORMAT_DATE) {
-            if (!StringHasDateData(moment))
-                return null;
-            return moment.substr(0, format.length);
-        }
-        if (format === MOMENT_FORMAT_DATE_TIME) {
-            if (!StringHasDateData(moment) || !StringHasTimeData(moment))
-                return null;
-        }
-        return moment;
-    }
-    return (_d = (_c = MomentFromString(value)) === null || _c === void 0 ? void 0 : _c.format(format)) !== null && _d !== void 0 ? _d : null;
-};
-/**
- * Returns the moment time string in the format of "HH:mm:ss".
- */
-const MomentTimeString = (value) => MomentFormatString(value, MOMENT_FORMAT_TIME_SECONDS);
-/**
- * Returns the moment date string in the format of "YYYY-MM-DD".
- */
-const MomentDateString = (value) => MomentFormatString(value, MOMENT_FORMAT_DATE);
-/**
- * Returns display day date time format.
- */
-const MomentDisplayDayDateTime = (value, showLong = false) => {
-    const momentObject = MomentFromString(value);
-    if (!momentObject) {
-        return null;
-    }
-    if (!!MomentTimeString(value)) {
-        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG : MOMENT_FORMAT_DATE_TIME_DISPLAY);
-    }
-    else {
-        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_LONG : MOMENT_FORMAT_DATE_DISPLAY);
-    }
-};
-/**
- * Returns display day date format.
- */
-const MomentDisplayDayDate = (value, showLong = false) => {
-    const momentObject = MomentFromString(value);
-    if (!momentObject) {
-        return null;
-    }
-    return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_LONG : MOMENT_FORMAT_DATE_DISPLAY);
-};
-/**
- * Returns the time with 12-hour clock format.
- */
-const MomentDisplayTime = (value) => MomentFormatString(value, MOMENT_FORMAT_TIME_DISPLAY);
-const IANAZoneAbbr = (ianaValue) => moment.tz(ianaValue).format('z');
-
 const customRangeName = 'Custom Range';
+dayjs__default['default'].extend(quarterOfYear__default['default']);
+dayjs__default['default'].extend(isBetween__default['default']);
 const CreateCustomDateRange = (dateStart, dateEnd) => {
     return {
         name: customRangeName,
-        start: DateRangeDateMomentToString(dateStart),
-        end: DateRangeDateMomentToString(dateEnd)
+        start: DateRangeDateDayjsToString(dateStart),
+        end: DateRangeDateDayjsToString(dateEnd)
     };
 };
-const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
-const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = moment__default['default'](date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
-const DateRangeToMoment = (dateRange) => ({
+const DateRangeDateDayjsToString = (date) => { var _a; return typeof date === 'string' ? date : ((_a = dayjs__default['default'](date.startOf('day'))) !== null && _a !== void 0 ? _a : dayjs__default['default']()).format('YYYY-MM-DD'); };
+const DateRangeDateStringToDayjs = (date) => { var _a; return typeof date === 'string' ? (_a = dayjs__default['default'](date)) !== null && _a !== void 0 ? _a : dayjs__default['default']() : date; };
+const DateRangeToDayjs = (dateRange) => ({
     name: dateRange.name,
-    start: DateRangeDateStringToMoment(dateRange.start),
-    end: DateRangeDateStringToMoment(dateRange.end)
+    start: DateRangeDateStringToDayjs(dateRange.start),
+    end: DateRangeDateStringToDayjs(dateRange.end)
 });
 const DateRangeToString = (dateRange) => ({
     name: dateRange.name,
-    start: DateRangeDateMomentToString(dateRange.start),
-    end: DateRangeDateMomentToString(dateRange.end)
+    start: DateRangeDateDayjsToString(dateRange.start),
+    end: DateRangeDateDayjsToString(dateRange.end)
 });
 const initialDateRange = {
     name: customRangeName,
-    start: moment__default['default'](),
-    end: moment__default['default']()
+    start: dayjs__default['default'](),
+    end: dayjs__default['default']()
 };
 const initialDateRangeString = DateRangeToString(initialDateRange);
 const DateRangeCalendar = (props) => {
-    let moments = [];
+    let dayjss = [];
     let firstDay = props.month.clone().startOf('month');
     let currentDay = firstDay.clone().startOf('week');
     let lastDay = props.month.clone().endOf('month');
@@ -2034,8 +1883,8 @@ const DateRangeCalendar = (props) => {
         do {
             week.push(currentDay.clone());
             currentDay.add(1, 'day');
-        } while (currentDay.weekday() > 0);
-        moments.push(week);
+        } while (currentDay.day() > 0);
+        dayjss.push(week);
     }
     const prev = () => {
         if (props.prevMonth) {
@@ -2052,14 +1901,14 @@ const DateRangeCalendar = (props) => {
             React__default['default'].createElement("tr", null,
                 props.prevMonth !== undefined
                     ?
-                        React__default['default'].createElement("th", { className: "prev available", onClick: prev },
+                        React__default['default'].createElement("th", { className: 'prev available', onClick: prev },
                             React__default['default'].createElement("span", null, " "))
                     :
                         React__default['default'].createElement("th", null),
-                React__default['default'].createElement("th", { colSpan: 5, className: "month" }, firstDay.format('MMM YYYY')),
+                React__default['default'].createElement("th", { colSpan: 5, className: 'month' }, firstDay.format('MMM YYYY')),
                 props.nextMonth !== undefined
                     ?
-                        React__default['default'].createElement("th", { className: "next available", onClick: next },
+                        React__default['default'].createElement("th", { className: 'next available', onClick: next },
                             React__default['default'].createElement("span", null, " "))
                     :
                         React__default['default'].createElement("th", null)),
@@ -2071,7 +1920,7 @@ const DateRangeCalendar = (props) => {
                 React__default['default'].createElement("th", null, "Th"),
                 React__default['default'].createElement("th", null, "Fr"),
                 React__default['default'].createElement("th", null, "Sa"))),
-        React__default['default'].createElement("tbody", null, moments.map((week, idx) => React__default['default'].createElement("tr", { key: idx }, week.map((day) => React__default['default'].createElement("td", { className: (day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
+        React__default['default'].createElement("tbody", null, dayjss.map((week, idx) => React__default['default'].createElement("tr", { key: idx }, week.map((day) => React__default['default'].createElement("td", { className: (day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
                 ((day.isBefore(firstDay, 'day') || day.isAfter(lastDay, 'day')) && !day.isBetween(props.startSelected, props.endSelected, 'day', '[]') ? 'off ends ' : '') +
                 (day.isSame(props.startSelected, 'day') ? 'active start-date ' : '') +
                 (day.isBetween(props.startSelected, props.endSelected, 'day') ? 'in-range ' : '') +
@@ -2085,10 +1934,10 @@ const DateRange = (props) => {
     const getStartRange = () => {
         if (props.defaultRange && props.defaultRange.name) {
             if (props.defaultRange.name === customRangeName) {
-                return DateRangeToMoment(props.defaultRange);
+                return DateRangeToDayjs(props.defaultRange);
             }
             if (!!props.presetRanges) {
-                const presetRanges = props.presetRanges.map(range => DateRangeToMoment(range));
+                const presetRanges = props.presetRanges.map(range => DateRangeToDayjs(range));
                 if (presetRanges.length > 0) {
                     const foundItem = presetRanges.find((item) => props.defaultRange.name === item.name);
                     if (foundItem) {
@@ -2102,7 +1951,7 @@ const DateRange = (props) => {
             }
         }
         if (props.presetRanges && props.presetRanges.length > 0)
-            return DateRangeToMoment(props.presetRanges[0]);
+            return DateRangeToDayjs(props.presetRanges[0]);
         return initialDateRange;
     };
     const [state, setState] = React.useState({
@@ -2121,7 +1970,7 @@ const DateRange = (props) => {
     };
     const currentRange = getCurrentRange();
     const rangeDescription = (range) => {
-        return (range.name === customRangeName ? (moment__default['default'](range.start).format('L') + ' - ' + moment__default['default'](range.end).format('L')) : range.name);
+        return (range.name === customRangeName ? (dayjs__default['default'](range.start).format('L') + ' - ' + dayjs__default['default'](range.end).format('L')) : range.name);
     };
     const setOpen = (e) => {
         if (!nodeBody.current.contains(e.target)) {
@@ -2185,7 +2034,7 @@ const DateRange = (props) => {
     });
     React.useEffect(() => {
         if (!!props.defaultRange) {
-            setState(Object.assign(Object.assign({}, state), { selectedRange: DateRangeToMoment(props.defaultRange) }));
+            setState(Object.assign(Object.assign({}, state), { selectedRange: DateRangeToDayjs(props.defaultRange) }));
         }
     }, [props.defaultRange]);
     return (React__default['default'].createElement("div", { className: 'DateRangeDD ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : ''), onClick: setOpen, ref: nodeParent, color: props.color },
@@ -2199,137 +2048,137 @@ const DateRange = (props) => {
                     props.presetRanges.map((preset, idx) => React__default['default'].createElement("li", { key: idx, onClick: () => handlePresetClick(preset), className: (preset.name === currentRange.name ? 'active' : '') }, preset.name)),
                     React__default['default'].createElement("li", { onClick: handleCustomClick },
                         customRangeName,
-                        React__default['default'].createElement("span", { className: "float-right" }, ">")))),
+                        React__default['default'].createElement("span", { className: 'float-right' }, ">")))),
             React__default['default'].createElement("div", { className: 'drp-headers' + (!state.prevPreset ? ' d-none' : ''), onClick: handleUnCustomClick },
                 React__default['default'].createElement("span", null, "< Presets")),
             React__default['default'].createElement("div", { className: 'drp-calendar left' + (!state.prevPreset ? ' d-none' : '') },
-                React__default['default'].createElement("div", { className: "calendar-table" },
+                React__default['default'].createElement("div", { className: 'calendar-table' },
                     React__default['default'].createElement(DateRangeCalendar, { month: state.monthToShow, startSelected: state.customRange.start, endSelected: state.customRange.end, prevMonth: prevMonth, nextMonth: nextMonth, dateClick: handleDateClick }))),
             React__default['default'].createElement("div", { className: 'drp-buttons' + (!state.prevPreset ? ' d-none' : '') },
-                React__default['default'].createElement("span", { className: "drp-selected" }, rangeDescription(state.customRange)),
-                React__default['default'].createElement("button", { className: "btn btn-sm btn-primary", type: "button", onClick: handleCustomApplyClick }, "Apply")))));
+                React__default['default'].createElement("span", { className: 'drp-selected' }, rangeDescription(state.customRange)),
+                React__default['default'].createElement("button", { className: 'btn btn-sm btn-primary', type: 'button', onClick: handleCustomApplyClick }, "Apply")))));
 };
 const defaultRanges = [
     {
-        name: 'This Week #' + moment__default['default']().format('w'),
-        start: moment__default['default']().startOf('week'),
-        end: moment__default['default']().endOf('week')
+        name: 'This Week #' + dayjs__default['default']().format('w'),
+        start: dayjs__default['default']().startOf('week'),
+        end: dayjs__default['default']().endOf('week')
     },
     {
-        name: 'Last Week #' + moment__default['default']().subtract(1, 'week').format('w'),
-        start: moment__default['default']().subtract(1, 'week').startOf('week'),
-        end: moment__default['default']().subtract(1, 'week').endOf('week')
+        name: 'Last Week #' + dayjs__default['default']().subtract(1, 'week').format('w'),
+        start: dayjs__default['default']().subtract(1, 'week').startOf('week'),
+        end: dayjs__default['default']().subtract(1, 'week').endOf('week')
     },
     {
         name: 'Previous 4 Weeks',
-        start: moment__default['default']().subtract(4, 'week').startOf('week'),
-        end: moment__default['default']().subtract(1, 'week').endOf('week')
+        start: dayjs__default['default']().subtract(4, 'week').startOf('week'),
+        end: dayjs__default['default']().subtract(1, 'week').endOf('week')
     },
     {
         name: 'This Month',
-        start: moment__default['default']().startOf('month'),
-        end: moment__default['default']().endOf('month')
+        start: dayjs__default['default']().startOf('month'),
+        end: dayjs__default['default']().endOf('month')
     },
     {
         name: 'Last Month',
-        start: moment__default['default']().subtract(1, 'month').startOf('month'),
-        end: moment__default['default']().subtract(1, 'month').endOf('month')
+        start: dayjs__default['default']().subtract(1, 'month').startOf('month'),
+        end: dayjs__default['default']().subtract(1, 'month').endOf('month')
     },
     {
         name: 'Last 7 Days',
-        start: moment__default['default']().subtract(6, 'days').startOf('day'),
-        end: moment__default['default']().endOf('day')
+        start: dayjs__default['default']().subtract(6, 'days').startOf('day'),
+        end: dayjs__default['default']().endOf('day')
     },
     {
         name: 'Last 30 Days',
-        start: moment__default['default']().subtract(29, 'days').startOf('day'),
-        end: moment__default['default']().endOf('day')
+        start: dayjs__default['default']().subtract(29, 'days').startOf('day'),
+        end: dayjs__default['default']().endOf('day')
     }
 ];
 const defaultRangeStrings = defaultRanges.map(range => DateRangeToString(range));
 const defaultRangesReport = [
     {
         name: 'This Week',
-        start: moment__default['default']().startOf('week'),
-        end: moment__default['default']().endOf('week')
+        start: dayjs__default['default']().startOf('week'),
+        end: dayjs__default['default']().endOf('week')
     },
     {
         name: 'Last Week',
-        start: moment__default['default']().subtract(1, 'week').startOf('week'),
-        end: moment__default['default']().subtract(1, 'week').endOf('week')
+        start: dayjs__default['default']().subtract(1, 'week').startOf('week'),
+        end: dayjs__default['default']().subtract(1, 'week').endOf('week')
     },
     {
         name: 'This Month',
-        start: moment__default['default']().startOf('month'),
-        end: moment__default['default']().endOf('month')
+        start: dayjs__default['default']().startOf('month'),
+        end: dayjs__default['default']().endOf('month')
     },
     {
         name: 'Last Month',
-        start: moment__default['default']().subtract(1, 'month').startOf('month'),
-        end: moment__default['default']().subtract(1, 'month').endOf('month')
+        start: dayjs__default['default']().subtract(1, 'month').startOf('month'),
+        end: dayjs__default['default']().subtract(1, 'month').endOf('month')
     },
     {
         name: 'Year-to-Date',
-        start: moment__default['default']().startOf('year'),
-        end: moment__default['default']().endOf('year')
+        start: dayjs__default['default']().startOf('year'),
+        end: dayjs__default['default']().endOf('year')
     },
     {
         name: 'Last Year',
-        start: moment__default['default']().subtract(1, 'year').startOf('year'),
-        end: moment__default['default']().subtract(1, 'year').endOf('year')
+        start: dayjs__default['default']().subtract(1, 'year').startOf('year'),
+        end: dayjs__default['default']().subtract(1, 'year').endOf('year')
     }
 ];
 const defaultRangeStringsReport = defaultRangesReport.map(range => DateRangeToString(range));
 const defaultRangesReportQuarterly = [
     {
         name: 'This Month',
-        start: moment__default['default']().startOf('month'),
-        end: moment__default['default']().endOf('month')
+        start: dayjs__default['default']().startOf('month'),
+        end: dayjs__default['default']().endOf('month')
     },
     {
         name: 'Last Month',
-        start: moment__default['default']().subtract(1, 'month').startOf('month'),
-        end: moment__default['default']().subtract(1, 'month').endOf('month')
+        start: dayjs__default['default']().subtract(1, 'month').startOf('month'),
+        end: dayjs__default['default']().subtract(1, 'month').endOf('month')
     },
     {
         name: 'This Quarter',
-        start: moment__default['default']().startOf('quarter'),
-        end: moment__default['default']().endOf('quarter')
+        start: dayjs__default['default']().startOf('quarter'),
+        end: dayjs__default['default']().endOf('quarter')
     },
     {
         name: 'Last Quarter',
-        start: moment__default['default']().subtract(1, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(1, 'quarter').endOf('quarter')
+        start: dayjs__default['default']().subtract(1, 'quarter').startOf('quarter'),
+        end: dayjs__default['default']().subtract(1, 'quarter').endOf('quarter')
     },
     {
         name: '2 Quarters ago',
-        start: moment__default['default']().subtract(2, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(2, 'quarter').endOf('quarter')
+        start: dayjs__default['default']().subtract(2, 'quarter').startOf('quarter'),
+        end: dayjs__default['default']().subtract(2, 'quarter').endOf('quarter')
     },
     {
         name: '3 Quarters ago',
-        start: moment__default['default']().subtract(3, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(3, 'quarter').endOf('quarter')
+        start: dayjs__default['default']().subtract(3, 'quarter').startOf('quarter'),
+        end: dayjs__default['default']().subtract(3, 'quarter').endOf('quarter')
     },
     {
         name: '4 Quarters ago',
-        start: moment__default['default']().subtract(4, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(4, 'quarter').endOf('quarter')
+        start: dayjs__default['default']().subtract(4, 'quarter').startOf('quarter'),
+        end: dayjs__default['default']().subtract(4, 'quarter').endOf('quarter')
     },
     {
         name: 'Year to Date',
-        start: moment__default['default']().startOf('year'),
-        end: moment__default['default']()
+        start: dayjs__default['default']().startOf('year'),
+        end: dayjs__default['default']()
     },
     {
         name: 'This Year',
-        start: moment__default['default']().startOf('year'),
-        end: moment__default['default']().endOf('year')
+        start: dayjs__default['default']().startOf('year'),
+        end: dayjs__default['default']().endOf('year')
     },
     {
         name: 'Last Year',
-        start: moment__default['default']().subtract(1, 'year').startOf('year'),
-        end: moment__default['default']().subtract(1, 'year').endOf('year')
+        start: dayjs__default['default']().subtract(1, 'year').startOf('year'),
+        end: dayjs__default['default']().subtract(1, 'year').endOf('year')
     }
 ];
 const defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(range => DateRangeToString(range));
@@ -2340,8 +2189,8 @@ const defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(rang
  */
 const defaultRange = {
     name: 'This Month',
-    start: moment__default['default']().startOf('month'),
-    end: moment__default['default']().endOf('month')
+    start: dayjs__default['default']().startOf('month'),
+    end: dayjs__default['default']().endOf('month')
 };
 /**
  * Default to this week
@@ -2350,8 +2199,8 @@ const defaultRange = {
  */
 const defaultRangeWeek = {
     name: 'This Week',
-    start: moment__default['default']().startOf('week'),
-    end: moment__default['default']().endOf('week')
+    start: dayjs__default['default']().startOf('week'),
+    end: dayjs__default['default']().endOf('week')
 };
 /**
  * Default to last 4 weeks
@@ -2360,8 +2209,8 @@ const defaultRangeWeek = {
  */
 const defaultRangeLast4Weeks = {
     name: 'Last 4 Weeks',
-    start: moment__default['default']().subtract(3, 'week').startOf('week'),
-    end: moment__default['default']().endOf('week')
+    start: dayjs__default['default']().subtract(3, 'week').startOf('week'),
+    end: dayjs__default['default']().endOf('week')
 };
 /**
  * Default to this year
@@ -2370,8 +2219,8 @@ const defaultRangeLast4Weeks = {
  */
 const defaultRangeYear = {
     name: 'Year-to-Date',
-    start: moment__default['default']().startOf('year'),
-    end: moment__default['default']().endOf('year')
+    start: dayjs__default['default']().startOf('year'),
+    end: dayjs__default['default']().endOf('year')
 };
 const defaultRangeString = DateRangeToString(defaultRange);
 // DateRange.defaultProps = {
@@ -2470,6 +2319,310 @@ function InputColor(props) {
         props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) })))));
 }
 
+dayjs__default['default'].extend(duration__default['default']);
+dayjs__default['default'].extend(isoWeek__default['default']);
+dayjs__default['default'].extend(utc__default['default']);
+dayjs__default['default'].extend(timezone__default['default']);
+const DAYJS_FORMAT_DATE = 'YYYY-MM-DD';
+const DAYJS_FORMAT_TIME_SECONDS = 'HH:mm:ss';
+const DAYJS_FORMAT_TIME_NO_SECONDS = 'HH:mm';
+const DAYJS_FORMAT_DATE_TIME = DAYJS_FORMAT_DATE + ' ' + DAYJS_FORMAT_TIME_SECONDS;
+const DAYJS_FORMAT_DATE_DISPLAY = `MMM D, YYYY`;
+const DAYJS_FORMAT_DATE_DISPLAY_DOW = `dd, ${DAYJS_FORMAT_DATE_DISPLAY}`;
+const DAYJS_FORMAT_TIME_DISPLAY = 'h:mm a';
+const DAYJS_FORMAT_DATE_TIME_DISPLAY = `${DAYJS_FORMAT_DATE_DISPLAY}, ${DAYJS_FORMAT_TIME_DISPLAY}`;
+const DAYJS_FORMAT_DATE_TIME_DISPLAY_DOW = `${DAYJS_FORMAT_DATE_DISPLAY_DOW}, ${DAYJS_FORMAT_TIME_DISPLAY}`;
+const DAYJS_FORMAT_DATE_DISPLAY_LONG = `MMMM D, YYYY`;
+const DAYJS_FORMAT_DATE_TIME_DISPLAY_LONG = `${DAYJS_FORMAT_DATE_DISPLAY_LONG}, ${DAYJS_FORMAT_TIME_DISPLAY}`;
+const DATE_FORMAT_TRIES = [
+    'YYYY-MM-DD',
+    'M-D-YYYY',
+    'MM-DD-YYYY',
+    'YYYYMMDD'
+];
+const TIME_FORMAT_TRIES = [
+    'YYYY-MM-DD HH:mm:ss',
+    'YYYY-MM-DD HH:mm',
+    'HH:mm:ss',
+    'HH:mm',
+    'D-M-YYYY HH:mm:ss',
+    'D-M-YYYY HH:mm',
+    'DD-MM-YYYY HH:mm:ss',
+    'DD-MM-YYYY HH:mm'
+];
+var EDateAndOrTime;
+(function (EDateAndOrTime) {
+    EDateAndOrTime[EDateAndOrTime["DATE"] = 0] = "DATE";
+    EDateAndOrTime[EDateAndOrTime["TIME"] = 1] = "TIME";
+    EDateAndOrTime[EDateAndOrTime["DATETIME"] = 2] = "DATETIME";
+})(EDateAndOrTime || (EDateAndOrTime = {}));
+const StringHasTimeData = (value) => value.includes(':');
+const StringHasDateData = (value) => value.includes('-') || /\d{8}/.test(value);
+const StringHasTimeZoneData = (value) => value.includes('T') || value.includes('+') || value.substr(15).includes('-');
+const FormatIsTime = (format) => [DAYJS_FORMAT_TIME_SECONDS, DAYJS_FORMAT_TIME_NO_SECONDS, DAYJS_FORMAT_TIME_DISPLAY].includes(format);
+const FormatIsDate = (format) => [DAYJS_FORMAT_DATE, DAYJS_FORMAT_DATE_DISPLAY, DAYJS_FORMAT_DATE_DISPLAY_DOW].includes(format);
+const FormatIsDateTime = (format) => [DAYJS_FORMAT_DATE_TIME, DAYJS_FORMAT_DATE_TIME_DISPLAY, DAYJS_FORMAT_DATE_TIME_DISPLAY_DOW].includes(format);
+/**
+ * Returns the current time zone.
+ */
+const DayjsCurrentTimeZone = () => dayjs__default['default']().tz().format('z');
+/**
+ * Returns a list of olson time zone items, sorted by hour diff from UTC
+ *
+ * Defaults to 'US'
+ */
+const TimeZoneOlsons = () => [
+    {
+        "zone": "EDT",
+        "olson": "America/Detroit",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Indiana/Indianapolis",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Indiana/Marengo",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Indiana/Petersburg",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Indiana/Vevay",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Indiana/Vincennes",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Indiana/Winamac",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Kentucky/Louisville",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/Kentucky/Monticello",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "EDT",
+        "olson": "America/New_York",
+        "hours": "-04:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/Chicago",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/Indiana/Knox",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/Indiana/Tell_City",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/Menominee",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/North_Dakota/Beulah",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/North_Dakota/Center",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "CDT",
+        "olson": "America/North_Dakota/New_Salem",
+        "hours": "-05:00"
+    },
+    {
+        "zone": "MDT",
+        "olson": "America/Boise",
+        "hours": "-06:00"
+    },
+    {
+        "zone": "MDT",
+        "olson": "America/Denver",
+        "hours": "-06:00"
+    },
+    {
+        "zone": "PDT",
+        "olson": "America/Los_Angeles",
+        "hours": "-07:00"
+    },
+    {
+        "zone": "MST",
+        "olson": "America/Phoenix",
+        "hours": "-07:00"
+    },
+    {
+        "zone": "AKDT",
+        "olson": "America/Anchorage",
+        "hours": "-08:00"
+    },
+    {
+        "zone": "AKDT",
+        "olson": "America/Juneau",
+        "hours": "-08:00"
+    },
+    {
+        "zone": "AKDT",
+        "olson": "America/Metlakatla",
+        "hours": "-08:00"
+    },
+    {
+        "zone": "AKDT",
+        "olson": "America/Nome",
+        "hours": "-08:00"
+    },
+    {
+        "zone": "AKDT",
+        "olson": "America/Sitka",
+        "hours": "-08:00"
+    },
+    {
+        "zone": "AKDT",
+        "olson": "America/Yakutat",
+        "hours": "-08:00"
+    },
+    {
+        "zone": "HDT",
+        "olson": "America/Adak",
+        "hours": "-09:00"
+    },
+    {
+        "zone": "HST",
+        "olson": "Pacific/Honolulu",
+        "hours": "-10:00"
+    }
+];
+/**
+ * Returns the Dayjs object from a given value. If the given value is invalid,
+ * it returns null.
+ *
+ *
+ * @example
+ * // returns Dayjs<2020-10-02T00:00:00Z>
+ * DayjsFromString('2020-10-02')
+ */
+const DayjsFromString = (value) => {
+    if (!value) {
+        return null;
+    }
+    const formatTries = [...DATE_FORMAT_TRIES, ...TIME_FORMAT_TRIES];
+    if (typeof value !== 'string') {
+        const dayjsObject = dayjs__default['default'](value);
+        if (dayjsObject.isValid()) {
+            return dayjsObject.utc().tz(DayjsCurrentTimeZone());
+        }
+    }
+    else {
+        const dayjsObject = StringHasTimeZoneData(value) ? dayjs__default['default'](value, formatTries, true) : dayjs__default['default'].utc(value); // , formatTries, true
+        if (dayjsObject.isValid()) {
+            return dayjsObject;
+        }
+    }
+    return null;
+};
+/**
+ * Does the same thing as DayjsFromString() but instead returns a string based on the format specified.
+ *
+ * @example
+ * // returns "Oct 2, 2020"
+ * DayjsFromString('2020-10-02', 'll')
+ */
+const DayjsFormatString = (value, format) => {
+    var _a, _b, _c, _d;
+    if (!value)
+        return null;
+    if (typeof value == 'string') {
+        if (FormatIsTime(format) && !StringHasTimeData(value)) {
+            return null;
+        }
+        if ((FormatIsDateTime(format) || FormatIsDate(format)) && !StringHasDateData(value))
+            return null;
+        let dayjs = (_b = (_a = DayjsFromString(value)) === null || _a === void 0 ? void 0 : _a.format(format)) !== null && _b !== void 0 ? _b : null;
+        if (!dayjs)
+            return null;
+        if (format === DAYJS_FORMAT_TIME_SECONDS || format === DAYJS_FORMAT_TIME_NO_SECONDS) {
+            if (!StringHasTimeData(dayjs))
+                return null;
+            return dayjs.substr(format.length * -1, format.length);
+        }
+        if (format === DAYJS_FORMAT_DATE) {
+            if (!StringHasDateData(dayjs))
+                return null;
+            return dayjs.substr(0, format.length);
+        }
+        if (format === DAYJS_FORMAT_DATE_TIME) {
+            if (!StringHasDateData(dayjs) || !StringHasTimeData(dayjs))
+                return null;
+        }
+        return dayjs;
+    }
+    return (_d = (_c = DayjsFromString(value)) === null || _c === void 0 ? void 0 : _c.format(format)) !== null && _d !== void 0 ? _d : null;
+};
+/**
+ * Returns the dayjs time string in the format of "HH:mm:ss".
+ */
+const DayjsTimeString = (value) => DayjsFormatString(value, DAYJS_FORMAT_TIME_SECONDS);
+/**
+ * Returns the dayjs date string in the format of "YYYY-MM-DD".
+ */
+const DayjsDateString = (value) => DayjsFormatString(value, DAYJS_FORMAT_DATE);
+/**
+ * Returns display day date time format.
+ */
+const DayjsDisplayDayDateTime = (value, showLong = false) => {
+    const dayjsObject = DayjsFromString(value);
+    if (!dayjsObject) {
+        return null;
+    }
+    if (!!DayjsTimeString(value)) {
+        return dayjsObject.format(showLong ? DAYJS_FORMAT_DATE_TIME_DISPLAY_LONG : DAYJS_FORMAT_DATE_TIME_DISPLAY);
+    }
+    else {
+        return dayjsObject.format(showLong ? DAYJS_FORMAT_DATE_DISPLAY_LONG : DAYJS_FORMAT_DATE_DISPLAY);
+    }
+};
+/**
+ * Returns display day date format.
+ */
+const DayjsDisplayDayDate = (value, showLong = false) => {
+    const dayjsObject = DayjsFromString(value);
+    if (!dayjsObject) {
+        return null;
+    }
+    return dayjsObject.format(showLong ? DAYJS_FORMAT_DATE_DISPLAY_LONG : DAYJS_FORMAT_DATE_DISPLAY);
+};
+/**
+ * Returns the time with 12-hour clock format.
+ */
+const DayjsDisplayTime = (value) => DayjsFormatString(value, DAYJS_FORMAT_TIME_DISPLAY);
+const IANAZoneAbbr = (ianaValue) => dayjs__default['default'].tz(ianaValue).format('z');
+
 const originalValue$1 = ' ';
 function InputDate(props) {
     var _a;
@@ -2479,20 +2632,20 @@ function InputDate(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
-        if (![lastDateValue.current, nextDateValue.current].includes((_a = MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastDateValue.current = (_c = MomentDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastDateValue.current, nextDateValue.current].includes((_a = DayjsDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastDateValue.current = (_c = DayjsDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }
         else {
-            lastDateValue.current = (_e = MomentDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
+            lastDateValue.current = (_e = DayjsDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
         }
     }, [props.value]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextDateValue.current = (_a = MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextDateValue.current = (_a = DayjsDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (nextDateValue.current + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
+        const customValue = (nextDateValue.current + ' ' + ((_b = DayjsTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2501,9 +2654,9 @@ function InputDate(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
-        ? MomentDisplayDayDateTime(props.value)
-        : MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!DayjsTimeString(props.value)
+        ? DayjsDisplayDayDateTime(props.value)
+        : DayjsDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 function ViewEmail(props) {
@@ -3012,20 +3165,20 @@ function InputTime(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e, _f;
-        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastTimeValue.current = (_c = MomentTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = DayjsTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastTimeValue.current = (_c = DayjsTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextTimeValue.current = lastTimeValue.current;
-            setOverrideValue((_d = MomentFormatString(lastTimeValue.current, !!props.editSeconds ? MOMENT_FORMAT_TIME_SECONDS : MOMENT_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
+            setOverrideValue((_d = DayjsFormatString(lastTimeValue.current, !!props.editSeconds ? DAYJS_FORMAT_TIME_SECONDS : DAYJS_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
         }
         else {
-            lastTimeValue.current = (_f = MomentTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
+            lastTimeValue.current = (_f = DayjsTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextTimeValue.current = (_a = MomentTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextTimeValue.current = (_a = DayjsTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (((_b = MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
+        const customValue = (((_b = DayjsDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -3034,7 +3187,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), DayjsDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
@@ -3790,9 +3943,9 @@ exports.CopyRefToClipboard = CopyRefToClipboard;
 exports.CreateCustomDateRange = CreateCustomDateRange;
 exports.DateRange = DateRange;
 exports.DateRangeCalendar = DateRangeCalendar;
-exports.DateRangeDateMomentToString = DateRangeDateMomentToString;
-exports.DateRangeDateStringToMoment = DateRangeDateStringToMoment;
-exports.DateRangeToMoment = DateRangeToMoment;
+exports.DateRangeDateDayjsToString = DateRangeDateDayjsToString;
+exports.DateRangeDateStringToDayjs = DateRangeDateStringToDayjs;
+exports.DateRangeToDayjs = DateRangeToDayjs;
 exports.DateRangeToString = DateRangeToString;
 exports.DownloadBase64Data = DownloadBase64Data;
 exports.Dropdown = Dropdown;

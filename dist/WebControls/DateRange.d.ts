@@ -1,27 +1,27 @@
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 export declare const customRangeName = "Custom Range";
 export interface IDateRangeString {
     name: string;
     start: string;
     end: string;
 }
-export declare const CreateCustomDateRange: (dateStart: Moment | string, dateEnd: Moment | string) => IDateRangeString;
-export declare const DateRangeDateMomentToString: (date: Moment | string) => string;
-export declare const DateRangeDateStringToMoment: (date: Moment | string) => Moment;
-export declare const DateRangeToMoment: (dateRange: IDateRange | IDateRangeString) => IDateRange;
+export declare const CreateCustomDateRange: (dateStart: Dayjs | string, dateEnd: Dayjs | string) => IDateRangeString;
+export declare const DateRangeDateDayjsToString: (date: Dayjs | string) => string;
+export declare const DateRangeDateStringToDayjs: (date: Dayjs | string) => Dayjs;
+export declare const DateRangeToDayjs: (dateRange: IDateRange | IDateRangeString) => IDateRange;
 export declare const DateRangeToString: (dateRange: IDateRange | IDateRangeString) => IDateRangeString;
 export interface IDateRange {
     name: string;
-    start: Moment;
-    end: Moment;
+    start: Dayjs;
+    end: Dayjs;
 }
 export declare const initialDateRange: IDateRange;
 export declare const initialDateRangeString: IDateRangeString;
 interface IPropsCalendar {
-    month: Moment;
-    startSelected: Moment;
-    endSelected: Moment;
-    dateClick: ((date: Moment) => void);
+    month: Dayjs;
+    startSelected: Dayjs;
+    endSelected: Dayjs;
+    dateClick: ((date: Dayjs) => void);
     prevMonth?: Function;
     nextMonth?: Function;
 }

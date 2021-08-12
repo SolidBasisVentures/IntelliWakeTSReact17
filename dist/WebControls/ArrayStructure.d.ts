@@ -14,7 +14,7 @@ export interface IArrayColumn {
     hideOnFunction?: (rowData: any | null | undefined) => boolean;
     toDigitsPrecision?: number;
     toCurrencyPrecision?: number;
-    momentTSFormat?: string;
+    dayjsTSFormat?: string;
     dashIfBlank?: boolean;
     blankIfBlank?: boolean;
     sumInFooter?: boolean;
@@ -33,7 +33,7 @@ export interface IArrayStructure {
 export declare const ComputeValue: (value: any | null | undefined, column: IArrayColumn, rowData: any | null, sumsInFooter: {
     [key: string]: number;
 }) => any | null | undefined;
-export declare const FormatValue: (value: any | null | undefined, _column: IArrayColumn) => any | null | undefined;
+export declare const FormatValue: (value: any | null | undefined, column: IArrayColumn) => any | null | undefined;
 export declare const IsColumnEmpty: (arrayData: any[] | null, fieldName: string) => boolean;
 export declare const ValidColumns: (arrayData: any[] | null, arrayStructure: IArrayStructure) => IArrayColumn[];
 export declare const StructuredArray: (arrayData: any[] | null, arrayStructure: IArrayStructure) => any[];
