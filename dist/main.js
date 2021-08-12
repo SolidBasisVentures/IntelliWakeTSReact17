@@ -257,33 +257,41 @@ const CopyRefToClipboard = (ref, tryFormatted = true) => {
         if (sel) {
             // unselect any element in the page
             sel.removeAllRanges();
-            let ths = ref.current.getElementsByTagName('th');
-            for (let i = 0; i < ths.length; i++) {
-                ths[i].setAttribute('copyuserselect', ths[i].style.userSelect);
-                ths[i].style.userSelect = ths[i].classList.contains('noCopy') ? 'none' : 'auto';
-                if (ths[i].classList.contains('onlyCopy')) {
-                    ths[i].setAttribute('copyuserdisplay', ths[i].style.display);
-                    ths[i].style.display = 'inherit !important';
-                }
+            const elsNoCopy = ref.current.getElementsByClassName('noCopy');
+            for (let el of elsNoCopy) {
+                el.classList.add('noCopyActive');
             }
-            let tds = ref.current.getElementsByTagName('td');
-            for (let i = 0; i < tds.length; i++) {
-                tds[i].setAttribute('copyuserselect', tds[i].style.userSelect);
-                tds[i].style.userSelect = tds[i].classList.contains('noCopy') ? 'none' : 'auto';
-                if (tds[i].classList.contains('onlyCopy')) {
-                    tds[i].setAttribute('copyuserdisplay', ths[i].style.display);
-                    tds[i].style.display = 'inherit !important';
-                }
+            const elsOnlyCopy = ref.current.getElementsByClassName('onlyCopy');
+            for (let el of elsOnlyCopy) {
+                el.classList.add('onlyCopyActive');
             }
+            // let ths = ref.current.getElementsByTagName('th') as any[]
+            // for (let i = 0; i < ths.length; i++) {
+            // 	ths[i].setAttribute('copyuserselect', ths[i].style.userSelect)
+            // 	ths[i].style.userSelect = ths[i].classList.contains('noCopy') ? 'none' : 'auto'
+            // 	if (ths[i].classList.contains('onlyCopy')) {
+            // 		ths[i].setAttribute('copyuserdisplay', ths[i].style.display)
+            // 		ths[i].style.display = 'inherit'
+            // 	}
+            // }
+            // let tds = ref.current.getElementsByTagName('td') as any[]
+            // for (let i = 0; i < tds.length; i++) {
+            // 	tds[i].setAttribute('copyuserselect', tds[i].style.userSelect)
+            // 	tds[i].style.userSelect = tds[i].classList.contains('noCopy') ? 'none' : 'auto'
+            // 	if (tds[i].classList.contains('onlyCopy')) {
+            // 		tds[i].setAttribute('copyuserdisplay', ths[i].style.display)
+            // 		tds[i].style.display = 'inherit'
+            // 	}
+            // }
             let brs = ref.current.getElementsByTagName('br');
             for (let i = 0; i < brs.length; i++) {
                 brs[i].setAttribute('copyuserdisplay', brs[i].style.display);
-                brs[i].style.display = 'none !important';
+                brs[i].style.display = 'none';
             }
             let hrs = ref.current.getElementsByTagName('hr');
             for (let i = 0; i < hrs.length; i++) {
                 hrs[i].setAttribute('copyuserdisplay', hrs[i].style.display);
-                hrs[i].style.display = 'none !important';
+                hrs[i].style.display = 'none';
             }
             if (tryFormatted) {
                 try {
@@ -301,21 +309,27 @@ const CopyRefToClipboard = (ref, tryFormatted = true) => {
             }
             document.execCommand('copy');
             sel.removeAllRanges();
-            for (let i = 0; i < ths.length; i++) {
-                ths[i].style.userSelect = ths[i].getAttribute('copyuserselect');
-                ths[i].removeAttribute('copyuserselect');
-                if (ths[i].classList.contains('onlyCopy')) {
-                    ths[i].style.display = ths[i].getAttribute('display');
-                    ths[i].removeAttribute('copyuserdisplay');
-                }
+            // for (let i = 0; i < ths.length; i++) {
+            // 	ths[i].style.userSelect = ths[i].getAttribute('copyuserselect')
+            // 	ths[i].removeAttribute('copyuserselect')
+            // 	if (ths[i].classList.contains('onlyCopy')) {
+            // 		ths[i].style.display = ths[i].getAttribute('display')
+            // 		ths[i].removeAttribute('copyuserdisplay')
+            // 	}
+            // }
+            // for (let i = 0; i < tds.length; i++) {
+            // 	tds[i].style.userSelect = tds[i].getAttribute('copyuserselect')
+            // 	tds[i].removeAttribute('copyuserselect')
+            // 	if (tds[i].classList.contains('onlyCopy')) {
+            // 		tds[i].style.display = tds[i].getAttribute('display')
+            // 		tds[i].removeAttribute('copyuserdisplay')
+            // 	}
+            // }
+            for (let el of elsNoCopy) {
+                el.classList.remove('noCopyActive');
             }
-            for (let i = 0; i < tds.length; i++) {
-                tds[i].style.userSelect = tds[i].getAttribute('copyuserselect');
-                tds[i].removeAttribute('copyuserselect');
-                if (tds[i].classList.contains('onlyCopy')) {
-                    tds[i].style.display = tds[i].getAttribute('display');
-                    tds[i].removeAttribute('copyuserdisplay');
-                }
+            for (let el of elsOnlyCopy) {
+                el.classList.remove('onlyCopyActive');
             }
             for (let i = 0; i < brs.length; i++) {
                 brs[i].style.display = brs[i].getAttribute('display');

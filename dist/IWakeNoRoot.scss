@@ -1664,3 +1664,13 @@ p {
 .liveSpinnerSpin {
   animation: fa-spin 0.75s infinite linear;
 }
+
+.onlyCopy:not(.onlyCopyActive) {
+  display: none;
+}
+
+.noCopyActive {
+  display: none;
+}
+
+
