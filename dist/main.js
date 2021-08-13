@@ -2241,6 +2241,14 @@ const EllipsesTruncate = (props) => {
         props.suffix));
 };
 
+const HTMLFromText = (props) => {
+    return !!props.text ?
+        React__default['default'].createElement("span", Object.assign({ dangerouslySetInnerHTML: {
+                __html: intelliwaketsfoundation.TextToHTML(props.text)
+            } }, intelliwaketsfoundation.OmitProperty(props, 'text')))
+        : null;
+};
+
 function InputCheckBox(props) {
     var _a, _b;
     const [showChecked, setShowChecked] = React.useState(props.checked);
@@ -3667,6 +3675,7 @@ exports.FormatValue = FormatValue;
 exports.GetOrientation = GetOrientation;
 exports.GetPathComponentAfter = GetPathComponentAfter;
 exports.GetPathThrough = GetPathThrough;
+exports.HTMLFromText = HTMLFromText;
 exports.HandleChangeValue = HandleChangeValue;
 exports.HasPathComponent = HasPathComponent;
 exports.IWServerData = IWServerData;
