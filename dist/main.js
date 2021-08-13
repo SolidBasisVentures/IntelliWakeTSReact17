@@ -1062,7 +1062,9 @@ const Modal = (props) => {
                     toggle(e);
                     break;
                 case KEY_ENTER:
-                    okAction(e);
+                    if (!props.okActionNotOnEnter) {
+                        okAction(e);
+                    }
                     break;
             }
         }
@@ -2845,12 +2847,20 @@ function InputTextArea(props) {
         subset.value = ((_a = props.value) !== null && _a !== void 0 ? _a : '');
         return subset;
     }, [props]);
+    const keyDown = (e) => {
+        if (!!props.onKeyDown) {
+            props.onKeyDown(e);
+        }
+        else if (e.keyCode === KEY_ENTER) {
+            e.stopPropagation();
+        }
+    };
     return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: "inputTextArea form-control", plainTextControl: React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' + (!!props.plainTextScroll ? 'vertical-scroll horizontal-scroll ' : '') + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: props.plainTextScroll ? {
+        React__default['default'].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: 'inputTextArea form-control', plainTextControl: React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' + (!!props.plainTextScroll ? 'vertical-scroll horizontal-scroll ' : '') + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: props.plainTextScroll ? {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } : undefined })) }),
-            React__default['default'].createElement("textarea", Object.assign({}, inputProps, { ref: props.innerRef })))));
+            React__default['default'].createElement("textarea", Object.assign({}, inputProps, { ref: props.innerRef, onKeyDown: keyDown })))));
 }
 
 const originalValue = ' ';

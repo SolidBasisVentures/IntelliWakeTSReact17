@@ -22,6 +22,7 @@ export interface IWModalProps {
 	cancelLabel?: ReactNode
 	noCancelButton?: boolean
 	okAction?: () => void | false
+	okActionNotOnEnter?: boolean
 	okLabel?: ReactNode
 	okDisabled?: boolean
 	footerLeft?: ReactNode
@@ -66,7 +67,9 @@ export const Modal = (props: IWModalProps) => {
 					toggle(e)
 					break
 				case KEY_ENTER:
-					okAction(e)
+					if (!props.okActionNotOnEnter) {
+						okAction(e)
+					}
 					break
 			}
 		}

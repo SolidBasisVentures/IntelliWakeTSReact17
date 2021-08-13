@@ -17,6 +17,7 @@ export interface IWModalProps {
     cancelLabel?: ReactNode;
     noCancelButton?: boolean;
     okAction?: () => void | false;
+    okActionNotOnEnter?: boolean;
     okLabel?: ReactNode;
     okDisabled?: boolean;
     footerLeft?: ReactNode;
