@@ -2850,7 +2850,7 @@ function InputTextArea(props) {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } : undefined })) }),
-            React__default['default'].createElement("textarea", Object.assign({}, inputProps)))));
+            React__default['default'].createElement("textarea", Object.assign({}, inputProps, { ref: props.innerRef })))));
 }
 
 const originalValue = ' ';

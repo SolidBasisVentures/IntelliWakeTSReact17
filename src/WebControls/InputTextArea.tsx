@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {Ref, useMemo} from 'react'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {CleanScripts, OmitProperty, ReplaceLinks} from '@solidbasisventures/intelliwaketsfoundation'
 import {InputWrapper} from './InputWrapper'
@@ -9,7 +9,7 @@ interface IProps<T = any, V = string, H = HTMLTextAreaElement> extends IIWInputP
 	plainTextScroll?: boolean
 }
 
-export function InputTextArea<T = any, V = string, H = HTMLTextAreaElement>(props: IProps<T, V, H>) {
+export function InputTextArea<T = any, V = string, H = HTMLTextAreaElement>(props: IProps<T, V, H> & {innerRef?: Ref<HTMLTextAreaElement>}) {
 	const inputProps = useMemo(() => {
 		let subset = ReduceInputProps(OmitProperty(props, 'bordered', 'plainTextScroll'))
 
@@ -35,7 +35,7 @@ export function InputTextArea<T = any, V = string, H = HTMLTextAreaElement>(prop
 						} : undefined}
 					/>
 				}>
-				<textarea {...inputProps} />
+				<textarea {...inputProps} ref={props.innerRef} />
 			</InputWrapper>
 		</>
 	)
