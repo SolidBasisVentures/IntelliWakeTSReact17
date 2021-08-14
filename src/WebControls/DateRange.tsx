@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCalendarAlt} from '@fortawesome/pro-regular-svg-icons'
 import {ClassNames} from '../Functions'
 import moment, {Moment} from 'moment-timezone'
-import {MomentDateString} from '@solidbasisventures/intelliwaketsfoundation'
+import {MomentDateString} from '../Moment'
 
 export const customRangeName = 'Custom Range'
 

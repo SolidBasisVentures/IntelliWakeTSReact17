@@ -1,5 +1,6 @@
 import React, {LegacyRef, MutableRefObject} from 'react'
-import {CleanNumber, MomentFormatString, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
+import {MomentFormatString} from './Moment'
 
 export const KEY_UP_ARROW = 38
 export const KEY_DOWN_ARROW = 40
