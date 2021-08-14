@@ -5,6 +5,7 @@ export * from './Cookie';
 export * from './ArrayIDMap';
 export * from './Environment';
 export * from './Functions';
+export * from './Moment';
 export * from './Photos';
 export * from './Bootstrap/Alert';
 export * from './Bootstrap/Badge';

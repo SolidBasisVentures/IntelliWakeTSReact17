@@ -4,11 +4,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var intelliwaketsfoundation = require('@solidbasisventures/intelliwaketsfoundation');
 var React = require('react');
+var moment$1 = require('moment-timezone');
 var reactFontawesome = require('@fortawesome/react-fontawesome');
 var faSpinnerThird = require('@fortawesome/pro-solid-svg-icons/faSpinnerThird');
 var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
 var ReactDOM = require('react-dom');
-var moment = require('moment-timezone');
 var reactRouterDom = require('react-router-dom');
 var Cleave = require('cleave.js/react');
 var Switch = require('react-switch');
@@ -17,8 +17,8 @@ var axios = require('axios');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment$1);
 var ReactDOM__default = /*#__PURE__*/_interopDefaultLegacy(ReactDOM);
-var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var Cleave__default = /*#__PURE__*/_interopDefaultLegacy(Cleave);
 var Switch__default = /*#__PURE__*/_interopDefaultLegacy(Switch);
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
@@ -136,6 +136,408 @@ function __awaiter(thisArg, _arguments, P, generator) {
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 }
+
+const moment = require('moment-timezone');
+// import {ISO_8601, Moment} from 'moment-timezone'
+// import {utc} from 'moment'
+const MOMENT_FORMAT_DATE = 'YYYY-MM-DD';
+const MOMENT_FORMAT_TIME_SECONDS = 'HH:mm:ss';
+const MOMENT_FORMAT_TIME_NO_SECONDS = 'HH:mm';
+const MOMENT_FORMAT_DATE_TIME = MOMENT_FORMAT_DATE + ' ' + MOMENT_FORMAT_TIME_SECONDS;
+const MOMENT_FORMAT_DATE_DISPLAY = `MMM D, YYYY`;
+const MOMENT_FORMAT_DATE_DISPLAY_DOW = `dd, ${MOMENT_FORMAT_DATE_DISPLAY}`;
+const MOMENT_FORMAT_TIME_DISPLAY = 'h:mm a';
+const MOMENT_FORMAT_DATE_TIME_DISPLAY = `${MOMENT_FORMAT_DATE_DISPLAY}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW = `${MOMENT_FORMAT_DATE_DISPLAY_DOW}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const MOMENT_FORMAT_DATE_DISPLAY_LONG = `MMMM D, YYYY`;
+const MOMENT_FORMAT_DATE_DISPLAY_DOW_LONG = `dddd, ${MOMENT_FORMAT_DATE_DISPLAY_LONG}`;
+const MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG = `${MOMENT_FORMAT_DATE_DISPLAY_LONG}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW_LONG = `${MOMENT_FORMAT_DATE_DISPLAY_DOW_LONG}, ${MOMENT_FORMAT_TIME_DISPLAY}`;
+const DATE_FORMAT_TRIES = ['YYYY-MM-DD', 'M-D-YYYY', 'MM-DD-YYYY', moment$1.ISO_8601, 'YYYYMMDD'];
+const TIME_FORMAT_TRIES = [
+    moment$1.ISO_8601,
+    'YYYY-MM-DD HH:mm:ss',
+    'YYYY-MM-DD HH:mm',
+    'HH:mm:ss',
+    'HH:mm',
+    'D-M-YYYY HH:mm:ss',
+    'D-M-YYYY HH:mm',
+    'DD-MM-YYYY HH:mm:ss',
+    'DD-MM-YYYY HH:mm'
+];
+exports.EDateAndOrTime = void 0;
+(function (EDateAndOrTime) {
+    EDateAndOrTime[EDateAndOrTime["DATE"] = 0] = "DATE";
+    EDateAndOrTime[EDateAndOrTime["TIME"] = 1] = "TIME";
+    EDateAndOrTime[EDateAndOrTime["DATETIME"] = 2] = "DATETIME";
+})(exports.EDateAndOrTime || (exports.EDateAndOrTime = {}));
+const AnyDateValueIsObject = (value) => (!value ? false : typeof value !== 'string');
+const FormatIsTime = (format) => [MOMENT_FORMAT_TIME_SECONDS, MOMENT_FORMAT_TIME_NO_SECONDS, MOMENT_FORMAT_TIME_DISPLAY].includes(format);
+const FormatIsDate = (format) => [MOMENT_FORMAT_DATE, MOMENT_FORMAT_DATE_DISPLAY, MOMENT_FORMAT_DATE_DISPLAY_DOW].includes(format);
+const FormatIsDateTime = (format) => [MOMENT_FORMAT_DATE_TIME, MOMENT_FORMAT_DATE_TIME_DISPLAY, MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW].includes(format);
+/**
+ * Returns the current time zone.
+ */
+const MomentCurrentTimeZone = () => moment.tz().format('z');
+/**
+ * Returns the current olson time zone.
+ */
+const MomentCurrentTimeZoneOlson = () => moment.tz.guess();
+/**
+ * Returns a list of olson time zone items, sorted by hour diff from UTC
+ *
+ * Defaults to 'US'
+ */
+const TimeZoneOlsons = (forCountry = 'US') => moment.tz.zonesForCountry(forCountry)
+    .map((tzItem) => ({
+    zone: moment.tz(tzItem).zoneAbbr(),
+    olson: tzItem,
+    hours: moment.tz(tzItem).format('Z')
+}))
+    .sort((a, b) => (a.hours !== b.hours ? a.hours.localeCompare(b.hours) : a.olson.localeCompare(b.olson)));
+/**
+ * Display timezone and olson
+ */
+const DisplayTZItem = (tzItem) => !tzItem || !tzItem.olson ? '' : !tzItem.zone ? tzItem.olson : `${tzItem.zone}: ${tzItem.olson}`;
+const IsDateStringMoment = (value) => {
+    if (!value || typeof value !== 'string')
+        return false;
+    // if (!DATE_FORMAT_TRIES.some(DFT => DFT.toString().length === value.length) && !TIME_FORMAT_TRIES.some(DFT => DFT.toString().length === value.length)) {
+    // 	return false
+    // }
+    if (!intelliwaketsfoundation.StringHasDateData(value))
+        return false;
+    return !!MomentFromString(value);
+};
+/**
+ * Returns the Moment object from a given value. If the given value is invalid,
+ * it returns null.
+ *
+ *
+ * @example
+ * // returns Moment<2020-10-02T00:00:00Z>
+ * MomentFromString('2020-10-02')
+ */
+const MomentFromString = (value) => {
+    if (!value) {
+        return null;
+    }
+    const formatTries = [...DATE_FORMAT_TRIES, ...TIME_FORMAT_TRIES];
+    if (typeof value !== 'string') {
+        const momentObject = moment(value);
+        if (momentObject.isValid()) {
+            return momentObject.utc().tz(MomentCurrentTimeZone());
+        }
+    }
+    else {
+        const momentObject = intelliwaketsfoundation.StringHasTimeZoneData(value) ? moment(value, formatTries, true) : moment$1.utc(value, formatTries, true);
+        if (momentObject.isValid()) {
+            return momentObject;
+        }
+    }
+    return null;
+};
+/**
+ * Does the same thing as MomentFromString() but instead returns a string based on the format specified.
+ *
+ * @example
+ * // returns "Oct 2, 2020"
+ * MomentFromString('2020-10-02', 'll')
+ */
+const MomentFormatString = (value, format) => {
+    var _a, _b, _c, _d;
+    if (!value)
+        return null;
+    if (typeof value == 'string') {
+        if (FormatIsTime(format) && !intelliwaketsfoundation.StringHasTimeData(value)) {
+            return null;
+        }
+        if ((FormatIsDateTime(format) || FormatIsDate(format)) && !intelliwaketsfoundation.StringHasDateData(value))
+            return null;
+        let moment = (_b = (_a = MomentFromString(value)) === null || _a === void 0 ? void 0 : _a.format(format)) !== null && _b !== void 0 ? _b : null;
+        if (!moment)
+            return null;
+        if (format === MOMENT_FORMAT_TIME_SECONDS || format === MOMENT_FORMAT_TIME_NO_SECONDS) {
+            if (!intelliwaketsfoundation.StringHasTimeData(moment))
+                return null;
+            return moment.substr(format.length * -1, format.length);
+        }
+        if (format === MOMENT_FORMAT_DATE) {
+            if (!intelliwaketsfoundation.StringHasDateData(moment))
+                return null;
+            return moment.substr(0, format.length);
+        }
+        if (format === MOMENT_FORMAT_DATE_TIME) {
+            if (!intelliwaketsfoundation.StringHasDateData(moment) || !intelliwaketsfoundation.StringHasTimeData(moment))
+                return null;
+        }
+        return moment;
+    }
+    return (_d = (_c = MomentFromString(value)) === null || _c === void 0 ? void 0 : _c.format(format)) !== null && _d !== void 0 ? _d : null;
+};
+/**
+ * Returns the moment time string in the format of "HH:mm:ss".
+ */
+const MomentTimeString = (value) => MomentFormatString(value, MOMENT_FORMAT_TIME_SECONDS);
+/**
+ * Returns the moment date string in the format of "YYYY-MM-DD".
+ */
+const MomentDateString = (value) => MomentFormatString(value, MOMENT_FORMAT_DATE);
+/**
+ * Returns the moment date string in the format of "YYYY-MM-DD HH:mm:ss".
+ */
+const MomentDateTimeString = (value) => MomentFormatString(value, MOMENT_FORMAT_DATE_TIME);
+/**
+ * Returns display day date time format.
+ */
+const MomentDisplayDayDateTime = (value, showLong = false) => {
+    const momentObject = MomentFromString(value);
+    if (!momentObject) {
+        return null;
+    }
+    if (!!MomentTimeString(value)) {
+        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG : MOMENT_FORMAT_DATE_TIME_DISPLAY);
+    }
+    else {
+        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_LONG : MOMENT_FORMAT_DATE_DISPLAY);
+    }
+};
+/**
+ * Returns display day date format.
+ */
+const MomentDisplayDayDate = (value, showLong = false) => {
+    const momentObject = MomentFromString(value);
+    if (!momentObject) {
+        return null;
+    }
+    return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_LONG : MOMENT_FORMAT_DATE_DISPLAY);
+};
+/**
+ * Returns display day date time format with day of week.
+ */
+const MomentDisplayDayDateTimeDoW = (value, showLong = false) => {
+    const momentObject = MomentFromString(value);
+    if (!momentObject) {
+        return null;
+    }
+    if (!!MomentTimeString(value)) {
+        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW_LONG : MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW);
+    }
+    else {
+        return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_DOW_LONG : MOMENT_FORMAT_DATE_DISPLAY_DOW);
+    }
+};
+/**
+ * Returns display day date format with day of week.
+ */
+const MomentDisplayDayDateDoW = (value, showLong = false) => {
+    const momentObject = MomentFromString(value);
+    if (!momentObject) {
+        return null;
+    }
+    return momentObject.format(showLong ? MOMENT_FORMAT_DATE_DISPLAY_DOW_LONG : MOMENT_FORMAT_DATE_DISPLAY_DOW);
+};
+/**
+ * Returns the time with 12-hour clock format.
+ */
+const MomentDisplayTime = (value) => MomentFormatString(value, MOMENT_FORMAT_TIME_DISPLAY);
+/**
+ * Displays difference between two times in a simplified duration format.
+ *
+ * If the second parameter is empty, the current date/time is used.
+ *
+ * @example
+ * MomentDurationShortText('2020-01-01 13:00:00', '2020-01-01 13:30:20') // result: 30m 20s
+ * MomentDurationShortText('2020-01-01 13:00:00', '2020-01-01 13:30:20') // result: 30m 20s
+ */
+const MomentDurationShortText = (start, end) => { var _a, _b; return DurationShortText(((_a = MomentFromString(end)) !== null && _a !== void 0 ? _a : moment()).diff((_b = MomentFromString(start)) !== null && _b !== void 0 ? _b : moment()) / 1000); };
+/**
+ * Displays difference between two times in a simplified duration format.
+ *
+ * If the second parameter is empty, the current date/time is used.
+ *
+ * @example
+ * MomentDurationShortText('2020-01-01 13:00:00', '2020-01-01 13:30:20') // result: 30 Minutes 20 Seconds
+ * MomentDurationShortText('2020-01-01 13:00:00', '2020-01-01 13:30:20') // result: 30 Minutes 20 Seconds
+ */
+const MomentDurationLongText = (start, end, trimSeconds = false) => { var _a, _b; return DurationLongText(((_a = MomentFromString(end)) !== null && _a !== void 0 ? _a : moment()).diff((_b = MomentFromString(start)) !== null && _b !== void 0 ? _b : moment()) / 1000, trimSeconds); };
+/**
+ * Displays a simplified duration format from seconds.
+ *
+ * @example
+ * MomentDurationShortText((30 * 60) + 20) // result: 30m 20s
+ */
+const DurationShortText = (seconds) => {
+    const duration = moment.duration(seconds * 1000);
+    let text = '';
+    if (duration.years()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.years(), 0)}Y`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.months(), 0)}M`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0)}D`;
+    }
+    else if (duration.months()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.months(), 0)}M`;
+        if (duration.days()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0)}D`;
+        }
+    }
+    else if (duration.days()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0)}D`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0)}h`;
+        if (duration.minutes()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0)}m`;
+        }
+    }
+    else if (duration.hours()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0)}h`;
+        if (duration.minutes()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0)}m`;
+        }
+    }
+    else {
+        if (duration.minutes()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0)}m`;
+        }
+        if (duration.seconds()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0)}s`;
+        }
+    }
+    return text.trim();
+};
+/**
+ * Displays a simplified duration format from seconds.
+ *
+ * @example
+ * MomentDurationShortText((30 * 60) + 20) // result: 30 Minutes 20 Seconds
+ */
+const DurationLongText = (seconds, trimSeconds = false) => {
+    const duration = moment.duration(seconds * 1000);
+    let text = '';
+    if (duration.years()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.years(), 0)} ${intelliwaketsfoundation.AddS('Year', duration.years())}`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.months(), 0)} ${intelliwaketsfoundation.AddS('Month', duration.months())}`;
+        if (duration.days()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0)} ${intelliwaketsfoundation.AddS('Day', duration.days())}`;
+        }
+    }
+    else if (duration.months()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.months(), 0)} ${intelliwaketsfoundation.AddS('Month', duration.months())}`;
+        if (duration.days()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0)} ${intelliwaketsfoundation.AddS('Day', duration.days())}`;
+        }
+    }
+    else if (duration.days()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0)} ${intelliwaketsfoundation.AddS('Day', duration.days())}`;
+        if (duration.hours()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0)} ${intelliwaketsfoundation.AddS('Hour', duration.hours())}`;
+        }
+        if (duration.minutes()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0)} ${intelliwaketsfoundation.AddS('Minute', duration.minutes())}`;
+        }
+    }
+    else if (duration.hours()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0)} ${intelliwaketsfoundation.AddS('Hour', duration.hours())}`;
+        if (duration.minutes()) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0)} ${intelliwaketsfoundation.AddS('Minute', duration.minutes())}`;
+        }
+    }
+    else {
+        if (duration.minutes() || (!text && trimSeconds)) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0)} ${intelliwaketsfoundation.AddS('Minute', duration.minutes())}`;
+        }
+        if (!text || (!trimSeconds && duration.seconds())) {
+            text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0)} ${intelliwaketsfoundation.AddS('Second', duration.seconds())}`;
+        }
+    }
+    return text.trim();
+};
+/**
+ * Displays difference between two times in a simplified duration format.  The format will always show down to the second, and will always align in columns vertically (e.g. padding so that the length of '12' is the same as ' 2')
+ *
+ * If the second parameter is empty, the current date/time is used.
+ 
+ * @example
+ * MomentDurationShortTextAligned('2020-01-01 13:00:00', '2020-01-03 14:30:20') // result: 2D  1h 30m 20s
+ */
+const MomentDurationShortTextAligned = (start, end) => {
+    var _a, _b;
+    const duration = moment.duration(((_a = MomentFromString(end)) !== null && _a !== void 0 ? _a : moment()).diff((_b = MomentFromString(start)) !== null && _b !== void 0 ? _b : moment()));
+    let text = '';
+    if (duration.years()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.years(), 0)}Y`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.months(), 0).padStart(2)}M`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0).padStart(2)}D`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0).padStart(2)}h`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0).padStart(2)}m`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0).padStart(2)}s`;
+    }
+    else if (duration.months()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.months(), 0).padStart(2)}M`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0).padStart(2)}D`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0).padStart(2)}h`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0).padStart(2)}m`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0).padStart(2)}s`;
+    }
+    else if (duration.days()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.days(), 0).padStart(2)}D`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0).padStart(2)}h`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0).padStart(2)}m`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0).padStart(2)}s`;
+    }
+    else if (duration.hours()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.hours(), 0).padStart(2)}h`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0).padStart(2)}m`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0).padStart(2)}s`;
+    }
+    else if (duration.minutes()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.minutes(), 0).padStart(2)}m`;
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0).padStart(2)}s`;
+    }
+    else if (duration.seconds()) {
+        text += ` ${intelliwaketsfoundation.ToDigits(duration.seconds(), 0).padStart(2)}s`;
+    }
+    return text.trim();
+};
+const MomentStringToDateLocale = (value) => { var _a; return (_a = MomentFormatString(value, 'MM/DD/YYYY')) !== null && _a !== void 0 ? _a : ''; };
+const DateAndTimeToDateTime = (valueDate, valueTime) => { var _a, _b, _c; return (_c = MomentDateTimeString(`${(_a = MomentDateString(valueDate)) !== null && _a !== void 0 ? _a : ''} ${(_b = MomentTimeString(valueTime)) !== null && _b !== void 0 ? _b : ''}`)) !== null && _c !== void 0 ? _c : ''; };
+const MomentID = (value = null, offsetHours = 5) => MomentFormatString(value !== null && value !== void 0 ? value : moment().subtract(offsetHours, 'hours'), `YYYY-MM-DD_HH-mm-ss`);
+const IANAZoneAbbr = (ianaValue) => moment.tz(ianaValue).format('z');
+const MomentAddWeekDays = (weekDays, value) => {
+    var _a;
+    let newMoment = ((_a = MomentFromString(value)) !== null && _a !== void 0 ? _a : moment()).startOf('day');
+    while (newMoment.isoWeekday() >= 5) {
+        newMoment.add(1, 'day');
+    }
+    newMoment.add(Math.floor(weekDays / 5), 'weeks');
+    let days = weekDays % 5;
+    if ((newMoment.isoWeekday() + days) >= 6)
+        days += 2;
+    newMoment.add(days, 'days');
+    return newMoment;
+};
+const MomentWeekDays = (startDate, endDate) => {
+    var _a, _b;
+    let start = (_a = MomentFromString(startDate)) !== null && _a !== void 0 ? _a : MomentFromString(moment().subtract(5, 'hours'));
+    let end = (_b = MomentFromString(endDate)) !== null && _b !== void 0 ? _b : MomentFromString(moment().subtract(5, 'hours'));
+    if (!start || !end)
+        return 0;
+    while (start.isoWeekday() >= 5) {
+        start.add(1, 'day');
+    }
+    while (end.isoWeekday() > 5) {
+        end.subtract(1, 'day');
+    }
+    const weeks = end.startOf('day').diff(start.startOf('day'), 'weeks');
+    let weekDays = weeks * 5;
+    let checkDate = start.add(weeks, 'weeks');
+    while (checkDate.isBefore(end, 'day')) {
+        checkDate.add(1, 'day');
+        if (checkDate.isoWeekday() <= 5) {
+            weekDays++;
+        }
+    }
+    return weekDays;
+};
 
 const KEY_UP_ARROW = 38;
 const KEY_DOWN_ARROW = 40;
@@ -345,7 +747,7 @@ const CopyRefToClipboard = (ref, tryFormatted = true) => {
     return false;
 };
 const TableIDToExcel = (tableID, fileName, appendDateTime = true) => {
-    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${intelliwaketsfoundation.MomentFormatString(new Date(), 'YYYY-MM-DD_HH-mm-ss')}.xls` : ''}`;
+    const downloadName = `${fileName !== null && fileName !== void 0 ? fileName : tableID}${appendDateTime ? `-${MomentFormatString(new Date(), 'YYYY-MM-DD_HH-mm-ss')}.xls` : ''}`;
     // const dataType = 'application/vnd.ms-excel'
     const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const tableSelect = document.getElementById(tableID);
@@ -1857,7 +2259,7 @@ const CreateCustomDateRange = (dateStart, dateEnd) => {
         end: DateRangeDateMomentToString(dateEnd)
     };
 };
-const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = intelliwaketsfoundation.MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
+const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
 const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = moment__default['default'](date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
 const DateRangeToMoment = (dateRange) => ({
     name: dateRange.name,
@@ -2338,20 +2740,20 @@ function InputDate(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
-        if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastDateValue.current = (_c = intelliwaketsfoundation.MomentDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastDateValue.current, nextDateValue.current].includes((_a = MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastDateValue.current = (_c = MomentDateString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }
         else {
-            lastDateValue.current = (_e = intelliwaketsfoundation.MomentDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
+            lastDateValue.current = (_e = MomentDateString(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
         }
     }, [props.value]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextDateValue.current = (_a = intelliwaketsfoundation.MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextDateValue.current = (_a = MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (nextDateValue.current + ' ' + ((_b = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
+        const customValue = (nextDateValue.current + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2360,9 +2762,9 @@ function InputDate(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.MomentTimeString(props.value)
-        ? intelliwaketsfoundation.MomentDisplayDayDateTime(props.value)
-        : intelliwaketsfoundation.MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
+        ? MomentDisplayDayDateTime(props.value)
+        : MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 function ViewEmail(props) {
@@ -2879,20 +3281,20 @@ function InputTime(props) {
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e, _f;
-        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastTimeValue.current = (_c = intelliwaketsfoundation.MomentTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+        if (![lastTimeValue.current, nextTimeValue.current].includes((_a = MomentTimeString(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            lastTimeValue.current = (_c = MomentTimeString(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextTimeValue.current = lastTimeValue.current;
-            setOverrideValue((_d = intelliwaketsfoundation.MomentFormatString(lastTimeValue.current, !!props.editSeconds ? intelliwaketsfoundation.MOMENT_FORMAT_TIME_SECONDS : intelliwaketsfoundation.MOMENT_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
+            setOverrideValue((_d = MomentFormatString(lastTimeValue.current, !!props.editSeconds ? MOMENT_FORMAT_TIME_SECONDS : MOMENT_FORMAT_TIME_NO_SECONDS)) !== null && _d !== void 0 ? _d : '');
         }
         else {
-            lastTimeValue.current = (_f = intelliwaketsfoundation.MomentTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
+            lastTimeValue.current = (_f = MomentTimeString(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
         var _a, _b;
-        nextTimeValue.current = (_a = intelliwaketsfoundation.MomentTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextTimeValue.current = (_a = MomentTimeString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (((_b = intelliwaketsfoundation.MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
+        const customValue = (((_b = MomentDateString(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
@@ -2901,7 +3303,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), intelliwaketsfoundation.MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
@@ -2915,13 +3317,13 @@ function InputTimeZone(props) {
         return subset;
     }, [props]);
     const timeZonesList = React.useMemo(() => {
-        let tzItems = intelliwaketsfoundation.TimeZoneOlsons();
+        let tzItems = TimeZoneOlsons();
         if (!!props.value && !tzItems.map((tzItem) => tzItem.olson).includes(props.value)) {
             tzItems.push({ zone: '', olson: props.value, hours: '' });
         }
         return tzItems;
     }, []);
-    const valueTZ = React.useMemo(() => (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr(props.value)), [props.value]);
+    const valueTZ = React.useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.value)), [props.value]);
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
             valueTZ,
@@ -3620,6 +4022,7 @@ exports.ActivityOverlay = ActivityOverlay;
 exports.ActivityOverlayControl = ActivityOverlayControl;
 exports.AddActivityOverlay = AddActivityOverlay;
 exports.Alert = Alert;
+exports.AnyDateValueIsObject = AnyDateValueIsObject;
 exports.ApplyColumnProp = ApplyColumnProp;
 exports.ArrayTable = ArrayTable;
 exports.BRAfter = BRAfter;
@@ -3655,15 +4058,19 @@ exports.CookieErase = CookieErase;
 exports.CookieRead = CookieRead;
 exports.CopyRefToClipboard = CopyRefToClipboard;
 exports.CreateCustomDateRange = CreateCustomDateRange;
+exports.DateAndTimeToDateTime = DateAndTimeToDateTime;
 exports.DateRange = DateRange;
 exports.DateRangeCalendar = DateRangeCalendar;
 exports.DateRangeDateMomentToString = DateRangeDateMomentToString;
 exports.DateRangeDateStringToMoment = DateRangeDateStringToMoment;
 exports.DateRangeToMoment = DateRangeToMoment;
 exports.DateRangeToString = DateRangeToString;
+exports.DisplayTZItem = DisplayTZItem;
 exports.DownloadBase64Data = DownloadBase64Data;
 exports.Dropdown = Dropdown;
 exports.DropdownItem = DropdownItem;
+exports.DurationLongText = DurationLongText;
+exports.DurationShortText = DurationShortText;
 exports.ElementCustomValue = ElementCustomValue;
 exports.EllipsesTruncate = EllipsesTruncate;
 exports.FileToBase64 = FileToBase64;
@@ -3678,6 +4085,7 @@ exports.GetPathThrough = GetPathThrough;
 exports.HTMLFromText = HTMLFromText;
 exports.HandleChangeValue = HandleChangeValue;
 exports.HasPathComponent = HasPathComponent;
+exports.IANAZoneAbbr = IANAZoneAbbr;
 exports.IWServerData = IWServerData;
 exports.InputCheckBox = InputCheckBox;
 exports.InputColor = InputColor;
@@ -3706,6 +4114,7 @@ exports.InputUrl = InputUrl;
 exports.InputWrapper = InputWrapper;
 exports.InputZip = InputZip;
 exports.IsColumnEmpty = IsColumnEmpty;
+exports.IsDateStringMoment = IsDateStringMoment;
 exports.IsDevFocused = IsDevFocused;
 exports.IsENV = IsENV;
 exports.KEY_BACKSPACE = KEY_BACKSPACE;
@@ -3733,6 +4142,19 @@ exports.ListGroupItemText = ListGroupItemText;
 exports.MDDetail = MDDetail;
 exports.MDLink = MDLink;
 exports.MDMaster = MDMaster;
+exports.MOMENT_FORMAT_DATE = MOMENT_FORMAT_DATE;
+exports.MOMENT_FORMAT_DATE_DISPLAY = MOMENT_FORMAT_DATE_DISPLAY;
+exports.MOMENT_FORMAT_DATE_DISPLAY_DOW = MOMENT_FORMAT_DATE_DISPLAY_DOW;
+exports.MOMENT_FORMAT_DATE_DISPLAY_DOW_LONG = MOMENT_FORMAT_DATE_DISPLAY_DOW_LONG;
+exports.MOMENT_FORMAT_DATE_DISPLAY_LONG = MOMENT_FORMAT_DATE_DISPLAY_LONG;
+exports.MOMENT_FORMAT_DATE_TIME = MOMENT_FORMAT_DATE_TIME;
+exports.MOMENT_FORMAT_DATE_TIME_DISPLAY = MOMENT_FORMAT_DATE_TIME_DISPLAY;
+exports.MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW = MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW;
+exports.MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW_LONG = MOMENT_FORMAT_DATE_TIME_DISPLAY_DOW_LONG;
+exports.MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG = MOMENT_FORMAT_DATE_TIME_DISPLAY_LONG;
+exports.MOMENT_FORMAT_TIME_DISPLAY = MOMENT_FORMAT_TIME_DISPLAY;
+exports.MOMENT_FORMAT_TIME_NO_SECONDS = MOMENT_FORMAT_TIME_NO_SECONDS;
+exports.MOMENT_FORMAT_TIME_SECONDS = MOMENT_FORMAT_TIME_SECONDS;
 exports.MasterDetail = MasterDetail;
 exports.MasterDetailListGroup = MasterDetailListGroup;
 exports.MessageBox = MessageBox;
@@ -3741,6 +4163,25 @@ exports.ModalBody = ModalBody;
 exports.ModalFooter = ModalFooter;
 exports.ModalHeader = ModalHeader;
 exports.ModalPrompt = ModalPrompt;
+exports.MomentAddWeekDays = MomentAddWeekDays;
+exports.MomentCurrentTimeZone = MomentCurrentTimeZone;
+exports.MomentCurrentTimeZoneOlson = MomentCurrentTimeZoneOlson;
+exports.MomentDateString = MomentDateString;
+exports.MomentDateTimeString = MomentDateTimeString;
+exports.MomentDisplayDayDate = MomentDisplayDayDate;
+exports.MomentDisplayDayDateDoW = MomentDisplayDayDateDoW;
+exports.MomentDisplayDayDateTime = MomentDisplayDayDateTime;
+exports.MomentDisplayDayDateTimeDoW = MomentDisplayDayDateTimeDoW;
+exports.MomentDisplayTime = MomentDisplayTime;
+exports.MomentDurationLongText = MomentDurationLongText;
+exports.MomentDurationShortText = MomentDurationShortText;
+exports.MomentDurationShortTextAligned = MomentDurationShortTextAligned;
+exports.MomentFormatString = MomentFormatString;
+exports.MomentFromString = MomentFromString;
+exports.MomentID = MomentID;
+exports.MomentStringToDateLocale = MomentStringToDateLocale;
+exports.MomentTimeString = MomentTimeString;
+exports.MomentWeekDays = MomentWeekDays;
 exports.Nav = Nav;
 exports.NavItem = NavItem;
 exports.NavLink = NavLink;
@@ -3770,6 +4211,7 @@ exports.Tab = Tab;
 exports.Table = Table;
 exports.TableIDToExcel = TableIDToExcel;
 exports.TextStatus = TextStatus;
+exports.TimeZoneOlsons = TimeZoneOlsons;
 exports.ValidColumns = ValidColumns;
 exports.ViewEmail = ViewEmail;
 exports.WriteBodyTD = WriteBodyTD;
