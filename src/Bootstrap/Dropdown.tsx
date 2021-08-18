@@ -109,7 +109,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 		ClassNames({
 			dropdown: true,
 			show: actualIsOpen,
-			'd-inline-block': !props.block,
+			'd-inline-block': !props.block && !props.hidden,
 			'navbar-nav': !!props.inNavbar,
 			'nav-item': !!props.nav
 		})
