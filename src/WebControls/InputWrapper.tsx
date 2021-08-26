@@ -67,6 +67,11 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 				console.log('UE Val', props.children.props.value)
 			}
 			setInternalState(props.children.props.value as any)
+		} else if (verbose) {
+			console.log('UE Val NC', props.children.props.value, lateState.current, isManagingDirtyState.current, (!!props.isEqual
+				? !props.isEqual(internalState, props.children.props.value)
+				: internalState !== props.children.props.value), (!props.invalid ||
+				(!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState))))
 		}
 	}, [props.children.props.value])
 

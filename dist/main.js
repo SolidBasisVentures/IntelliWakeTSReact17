@@ -2823,6 +2823,12 @@ const InputWrapper = (props) => {
             }
             setInternalState(props.children.props.value);
         }
+        else if (verbose) {
+            console.log('UE Val NC', props.children.props.value, lateState.current, isManagingDirtyState.current, (!!props.isEqual
+                ? !props.isEqual(internalState, props.children.props.value)
+                : internalState !== props.children.props.value), (!props.invalid ||
+                (!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState))));
+        }
     }, [props.children.props.value]);
     // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
@@ -3233,7 +3239,7 @@ function InputSwitch(props) {
 }
 
 function InputTel(props) {
-    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'showFAIcon'), 'form-control'), [props]);
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'showFAIcon'), 'form-control'), [props, props.value]);
     const faIconToShow = React.useMemo(() => {
         if (!props.showFAIcon)
             return null;
@@ -3256,7 +3262,7 @@ function InputTextArea(props) {
         let subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'bordered', 'plainTextScroll'));
         subset.value = ((_a = props.value) !== null && _a !== void 0 ? _a : '');
         return subset;
-    }, [props]);
+    }, [props, props.value]);
     const keyDown = (e) => {
         if (!!props.onKeyDown) {
             props.onKeyDown(e);

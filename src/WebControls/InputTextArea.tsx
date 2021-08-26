@@ -17,7 +17,7 @@ export function InputTextArea<T = any, V = string, H = HTMLTextAreaElement>(prop
 		subset.value = (props.value ?? '') as any
 		
 		return subset
-	}, [props])
+	}, [props, props.value])
 	
 	const keyDown = (e: any) => {
 		if (!!props.onKeyDown) {

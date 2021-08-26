@@ -12,7 +12,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {
 
 export function InputTel<T>(props: IProps<T>) {
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'showFAIcon'), 'form-control')
-, [props])
+, [props, props.value])
 
 	const faIconToShow = useMemo((): null | IconProp => {
 		if (!props.showFAIcon) return null

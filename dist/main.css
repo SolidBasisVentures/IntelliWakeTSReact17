@@ -1808,52 +1808,6 @@ p {
 }
 
 @media screen {
-  html,
-body,
-#root,
-#root > .App.IWApp {
-    height: 100vh !important;
-    width: 100vw !important;
-    overflow: hidden;
-  }
-
-  #root > .App.IWApp > nav {
-    min-height: 55px !important;
-    z-index: 1030;
-  }
-
-  #root > .App.IWApp > .AppContent {
-    position: fixed;
-    top: 55px;
-    bottom: 18px;
-    right: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  #root > .App.IWApp > .AppContent > .container,
-#root > .App.IWApp > .AppContent > .container-fluid {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-
-  #root > .App.IWApp > footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-    height: 18px;
-  }
-}
-@media (max-width: 575.98px) {
-  #root > .App.IWApp > footer {
-    height: 36px;
-  }
-}
-@media screen {
   table.table-sticky {
     border-collapse: separate;
     /* Don't collapse */
@@ -3519,4 +3473,51 @@ p {
 
 .noCopyActive {
   display: none;
+}
+
+@media screen {
+  html,
+body,
+#root,
+#root > .App.IWApp {
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden;
+  }
+
+  #root > .App.IWApp > nav {
+    min-height: 55px !important;
+    z-index: 1030;
+  }
+
+  #root > .App.IWApp > .AppContent {
+    position: fixed;
+    top: 55px;
+    bottom: 18px;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  #root > .App.IWApp > .AppContent > .container,
+#root > .App.IWApp > .AppContent > .container-fluid {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  #root > .App.IWApp > footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    height: 18px;
+  }
+}
+@media (max-width: 575.98px) {
+  #root > .App.IWApp > footer {
+    height: 36px;
+  }
 }
