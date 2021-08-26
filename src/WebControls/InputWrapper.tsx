@@ -21,8 +21,9 @@ interface IProps<T = any, V = any, H = THTMLChangeElements> extends IIWInputAddP
 
 export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, H>) => {
 	const isMounted = useRef(false)
-	const lateTrigger = useRef(setTimeout(() => {}, 100))
-
+	const lateTrigger = useRef(setTimeout(() => {
+	}, 100))
+	
 	interface IState {
 		name?: (T extends object ? keyof T : string) | undefined
 		value: V
@@ -30,28 +31,28 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 		ctrlKey: boolean
 		altKey: boolean
 	}
-
+	
 	const lateState = useRef<IState | undefined>(undefined)
-
+	
 	const [internalState, setInternalState] = useState<ILegacyInputProps['value'] | undefined>(
 		props.children.props.value as ILegacyInputProps['value'] | undefined
 	)
 	const isManagingDirtyState = useRef(false)
-
+	
 	const verbose = props.consoleVerbose
-
+	
 	if (props.consoleVerbose) {
 		console.log('IntState', props.children.props.name, ' = ', internalState)
 	}
-
+	
 	useEffect(() => {
 		isMounted.current = true
-
+		
 		return () => {
 			isMounted.current = false
 		}
 	})
-
+	
 	useEffect(() => {
 		// lateState.current = undefined
 		if (
@@ -60,8 +61,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 			(!!props.isEqual
 				? !props.isEqual(internalState, props.children.props.value)
 				: internalState !== props.children.props.value) &&
-			(!props.invalid ||
-				(!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState)))
+			(!props.valueOnInvalid || props.children.props.value !== props.valueOnInvalid(internalState))
 		) {
 			if (verbose) {
 				console.log('UE Val', props.children.props.value)
@@ -69,19 +69,19 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 			setInternalState(props.children.props.value as any)
 		} else if (verbose) {
 			console.log('UE Val NC', props.children.props.value, lateState.current, isManagingDirtyState.current, (!!props.isEqual
-				? !props.isEqual(internalState, props.children.props.value)
-				: internalState !== props.children.props.value), (!props.invalid ||
-				(!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState))))
+					? !props.isEqual(internalState, props.children.props.value)
+					: internalState !== props.children.props.value), props.invalid,
+				props.valueOnInvalid, !!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState))
 		}
 	}, [props.children.props.value])
-
+	
 	// noinspection PointlessBooleanExpressionJS
 	return (
 		<>
 			{props.plainText ? (
 				!!props.plainTextURL ? (
 					<Link to={props.plainTextURL}>
-						<div className="form-control-plaintext " {...props.plainTextProps}>
+						<div className='form-control-plaintext ' {...props.plainTextProps}>
 							<AppendPrependWrapper append={props.append} prepend={props.prepend}>
 								{props.plainTextControl ?? props.children.props.value}
 							</AppendPrependWrapper>
@@ -139,13 +139,13 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 								const eTargetValue = e.target.value
 								
 								clearTimeout(lateTrigger.current)
-
+								
 								if (!props.plainText && !props.children.props.disabled) {
 									const isValid =
 										!props.inputIsValid || props.inputIsValid(eTargetValue)
-
+									
 									isManagingDirtyState.current = !isValid
-
+									
 									let customValue = (
 										!isValid
 											? !!props.valueOnInvalid
@@ -153,7 +153,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 												: ''
 											: ((!props.transformToValid ? eTargetValue : props.transformToValid(eTargetValue, e)) as any)
 									) as V
-
+									
 									if (verbose) {
 										console.log('targetValue', eTargetValue)
 										console.log('isValid', isValid)
@@ -162,7 +162,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 										console.log('customValue', customValue)
 									}
 									;(e.target as any).customValue = customValue
-
+									
 									const newState: IState = {
 										value: customValue,
 										name: e.target.name as any,
@@ -170,7 +170,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 										ctrlKey: (e.nativeEvent as any).ctrlKey,
 										altKey: (e.nativeEvent as any).altKey
 									}
-
+									
 									if (!!props.children.props.onChange) {
 										props.children.props.onChange(e as any)
 									}

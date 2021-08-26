@@ -2795,7 +2795,8 @@ const AppendPrependWrapper = (props) => {
 const InputWrapper = (props) => {
     var _a, _b, _c, _d, _e;
     const isMounted = React.useRef(false);
-    const lateTrigger = React.useRef(setTimeout(() => { }, 100));
+    const lateTrigger = React.useRef(setTimeout(() => {
+    }, 100));
     const lateState = React.useRef(undefined);
     const [internalState, setInternalState] = React.useState(props.children.props.value);
     const isManagingDirtyState = React.useRef(false);
@@ -2816,8 +2817,7 @@ const InputWrapper = (props) => {
             (!!props.isEqual
                 ? !props.isEqual(internalState, props.children.props.value)
                 : internalState !== props.children.props.value) &&
-            (!props.invalid ||
-                (!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState)))) {
+            (!props.valueOnInvalid || props.children.props.value !== props.valueOnInvalid(internalState))) {
             if (verbose) {
                 console.log('UE Val', props.children.props.value);
             }
@@ -2826,13 +2826,12 @@ const InputWrapper = (props) => {
         else if (verbose) {
             console.log('UE Val NC', props.children.props.value, lateState.current, isManagingDirtyState.current, (!!props.isEqual
                 ? !props.isEqual(internalState, props.children.props.value)
-                : internalState !== props.children.props.value), (!props.invalid ||
-                (!!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState))));
+                : internalState !== props.children.props.value), props.invalid, props.valueOnInvalid, !!props.valueOnInvalid && props.children.props.value !== props.valueOnInvalid(internalState));
         }
     }, [props.children.props.value]);
     // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext " }, props.plainTextProps),
+        React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' }, props.plainTextProps),
             React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
             if (!!props.plainOnClick)
                 props.plainOnClick();
