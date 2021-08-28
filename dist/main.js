@@ -1122,7 +1122,7 @@ const CardColumns = (props) => {
 const CardDeck = (props) => {
     var _a, _b, _c, _d, _e;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-deck ${!props.breakAt ? `row-cols-${(_b = props.smallRows) !== null && _b !== void 0 ? _b : 'auto'}` : `row-cols-${props.breakAt}-${(_c = props.largeRows) !== null && _c !== void 0 ? _c : 'auto'} row-cols-${(_d = props.smallRows) !== null && _d !== void 0 ? _d : 'auto'}`} row ${(_e = props.className) !== null && _e !== void 0 ? _e : ''}`.trim() })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'breakAt', 'smallRows', 'largeRows'), { className: `card-deck ${!props.breakAt ? `row-cols-${(_b = props.smallRows) !== null && _b !== void 0 ? _b : 'auto'}` : `row-cols-${props.breakAt}-${(_c = props.largeRows) !== null && _c !== void 0 ? _c : 'auto'} row-cols-${(_d = props.smallRows) !== null && _d !== void 0 ? _d : 'auto'}`} row ${(_e = props.className) !== null && _e !== void 0 ? _e : ''}`.trim() })));
 };
 
 const CardFooter = (props) => {
