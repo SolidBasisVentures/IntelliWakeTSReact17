@@ -181,7 +181,7 @@ export const FieldSetRow = (props: IProps) => {
 	// noinspection SuspiciousTypeOfGuard
 	return (
 		<Row
-			className={`${fieldSetContext.condensed ? '' : 'mb-3'} fieldRow ${props.className ?? ''}`.trim()}
+			className={`${fieldSetContext.condensed ? '' : 'mb-3'} fieldSetRow ${props.className ?? ''}`.trim()}
 			hidden={props.hidden}>
 			{!!props.label && !!settings.labelColProps && (
 				<Col {...settings.labelColProps}>
