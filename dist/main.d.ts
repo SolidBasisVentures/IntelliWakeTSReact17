@@ -29,6 +29,8 @@ export * from './Bootstrap/Collapse';
 export * from './Bootstrap/Container';
 export * from './Bootstrap/Dropdown';
 export * from './Bootstrap/DropdownItem';
+export * from './Bootstrap/FieldSet';
+export * from './Bootstrap/FieldSetRow';
 export * from './Bootstrap/Form';
 export * from './Bootstrap/FormFeedback';
 export * from './Bootstrap/FormGroup';

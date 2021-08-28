@@ -1326,6 +1326,205 @@ const Dropdown = (props) => {
             }))))));
 };
 
+exports.EFieldSetGroupings = void 0;
+(function (EFieldSetGroupings) {
+    EFieldSetGroupings[EFieldSetGroupings["Half"] = 0] = "Half";
+    EFieldSetGroupings[EFieldSetGroupings["Thirds"] = 1] = "Thirds";
+    EFieldSetGroupings[EFieldSetGroupings["QuartersEven"] = 2] = "QuartersEven";
+    EFieldSetGroupings[EFieldSetGroupings["QuartersSmallLabel"] = 3] = "QuartersSmallLabel";
+    EFieldSetGroupings[EFieldSetGroupings["LabelOver"] = 4] = "LabelOver";
+})(exports.EFieldSetGroupings || (exports.EFieldSetGroupings = {}));
+const initialFieldSetContext = {
+    hidden: false,
+    breakAt: 'xs',
+    groupings: exports.EFieldSetGroupings.Half,
+    uuid: intelliwaketsfoundation.RandomString(5),
+    condensed: false,
+    fluid: false
+};
+const FieldSetContext = React.createContext(initialFieldSetContext);
+const FieldSet = (props) => {
+    var _a;
+    const contextProps = React.useMemo(() => {
+        var _a, _b, _c, _d, _e;
+        return ({
+            hidden: (_a = props.hidden) !== null && _a !== void 0 ? _a : initialFieldSetContext.hidden,
+            breakAt: (_b = props.breakAt) !== null && _b !== void 0 ? _b : initialFieldSetContext.breakAt,
+            groupings: (_c = props.groupings) !== null && _c !== void 0 ? _c : initialFieldSetContext.groupings,
+            condensed: (_d = props.condensed) !== null && _d !== void 0 ? _d : initialFieldSetContext.condensed,
+            fluid: (_e = props.fluid) !== null && _e !== void 0 ? _e : initialFieldSetContext.fluid,
+            uuid: intelliwaketsfoundation.RandomString(5)
+        });
+    }, [props]);
+    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'}`.trim(), hidden: props.hidden },
+        React__default['default'].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
+};
+
+const Row = (props) => {
+    var _a;
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+            row: true,
+            'no-gutters': !!props.noGutters
+        })}`.trim() }), props.children));
+};
+
+exports.EFieldRowInputWidth = void 0;
+(function (EFieldRowInputWidth) {
+    EFieldRowInputWidth[EFieldRowInputWidth["Medium"] = 0] = "Medium";
+    EFieldRowInputWidth[EFieldRowInputWidth["Short"] = 1] = "Short";
+})(exports.EFieldRowInputWidth || (exports.EFieldRowInputWidth = {}));
+const FieldSetRow = (props) => {
+    var _a, _b, _c;
+    const fieldSetContext = React.useContext(FieldSetContext);
+    const settings = React.useMemo(() => {
+        const items = {
+            uuid: `Input${fieldSetContext.uuid}${intelliwaketsfoundation.RandomString(5)}`,
+            inputColProps: {}
+        };
+        const breakAt = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver ? 'xs' : fieldSetContext.breakAt;
+        const firstLabelSize = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver
+            ? 12
+            : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
+                ? 6
+                : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
+                    ? 4
+                    : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
+                        ? 3
+                        : 2;
+        const firstFieldSize = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver
+            ? 12
+            : !props.inputThird
+                ? !props.inputSecond
+                    ? props.inputWidth === undefined
+                        ? 12 - firstLabelSize
+                        : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
+                            ? 6
+                            : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
+                                ? 4
+                                : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
+                                    ? props.inputWidth === exports.EFieldRowInputWidth.Medium
+                                        ? 6
+                                        : 3
+                                    : props.inputWidth === exports.EFieldRowInputWidth.Medium
+                                        ? 6
+                                        : props.inputWidth === exports.EFieldRowInputWidth.Short
+                                            ? 4
+                                            : 10
+                    : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
+                        ? 3
+                        : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
+                            ? 4
+                            : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
+                                ? props.inputWidth === exports.EFieldRowInputWidth.Medium
+                                    ? 6
+                                    : 3
+                                : props.inputWidth === exports.EFieldRowInputWidth.Medium
+                                    ? 6
+                                    : 2
+                : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
+                    ? 2
+                    : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
+                        ? props.inputWidth === exports.EFieldRowInputWidth.Short
+                            ? 2
+                            : 3
+                        : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
+                            ? 3
+                            : props.inputWidth === exports.EFieldRowInputWidth.Short
+                                ? 2
+                                : 4;
+        const secondFieldSize = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver
+            ? 12
+            : !props.inputThird
+                ? 12 - firstLabelSize - firstFieldSize
+                : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
+                    ? 3
+                    : 2;
+        const thirdFieldSize = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver
+            ? 12
+            : 12 - firstLabelSize - firstFieldSize - secondFieldSize;
+        if (!!props.label) {
+            items.labelColProps = {};
+            items.labelColProps.className = 'strong';
+            if (breakAt === 'xs') {
+                items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-right';
+                items.labelColProps.xs = firstLabelSize;
+                items.inputColProps.xs = firstFieldSize;
+            }
+            else {
+                items.labelColProps.className += ` text-${breakAt}-right text-left`;
+                items.labelColProps.xs = 12;
+                items.labelColProps[breakAt] = firstLabelSize;
+                items.inputColProps.xs = 12;
+                items.inputColProps[breakAt] = firstFieldSize;
+            }
+        }
+        else {
+            if (breakAt === 'xs') {
+                items.inputColProps.xs = { offset: firstLabelSize, size: firstFieldSize };
+            }
+            else {
+                items.inputColProps.xs = firstFieldSize + firstLabelSize; // Change this if want to spread over other fields
+                items.inputColProps[breakAt] = { offset: firstLabelSize, size: firstFieldSize };
+            }
+        }
+        if (!!props.inputSecond) {
+            items.input2ColProps = {};
+            if (!!props.inputThird) {
+                items.input3ColProps = {};
+                if (breakAt === 'xs') {
+                    items.input2ColProps.xs = secondFieldSize;
+                    items.input3ColProps.xs = thirdFieldSize;
+                }
+                else {
+                    items.input2ColProps.xs = 12;
+                    items.input3ColProps.xs = 12;
+                    items.input2ColProps[breakAt] = secondFieldSize;
+                    items.input3ColProps[breakAt] = thirdFieldSize;
+                }
+                if (typeof props.inputThird === 'string') {
+                    items.input3ColProps.className = 'form-text';
+                }
+            }
+            else {
+                if (breakAt === 'xs') {
+                    items.input2ColProps.xs = secondFieldSize;
+                }
+                else {
+                    items.input2ColProps.xs = 12;
+                    items.input2ColProps[breakAt] = secondFieldSize;
+                }
+            }
+            if (typeof props.inputSecond === 'string') {
+                items.input2ColProps.className = 'form-text strong';
+                if (breakAt === 'xs') {
+                    items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-right';
+                }
+                else {
+                    items.input2ColProps.className += ` text-${breakAt}-right text-left`;
+                }
+            }
+        }
+        return items;
+    }, [props, fieldSetContext]);
+    // noinspection SuspiciousTypeOfGuard
+    const element = !!props.input && typeof props.input === 'object'
+        ? React__default['default'].cloneElement(React__default['default'].createElement(React__default['default'].Fragment, null, props.input), { id: (_a = props.input.props.id) !== null && _a !== void 0 ? _a : settings.uuid })
+        : React__default['default'].cloneElement(React__default['default'].createElement("span", { className: "form-control-plaintext" }, (_b = props.input) !== null && _b !== void 0 ? _b : ''), { id: settings.uuid });
+    // noinspection SuspiciousTypeOfGuard
+    return (React__default['default'].createElement(Row, { className: `${fieldSetContext.condensed ? '' : 'mb-3'} fieldRow ${(_c = props.className) !== null && _c !== void 0 ? _c : ''}`.trim(), hidden: props.hidden },
+        !!props.label && !!settings.labelColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.labelColProps),
+            React__default['default'].createElement("label", { className: "col-form-label", htmlFor: element.props.id }, props.label))),
+        React__default['default'].createElement(Col, Object.assign({}, settings.inputColProps),
+            element,
+            props.inputFeedback),
+        !!props.inputSecond && !!settings.input2ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input2ColProps),
+            props.inputSecond,
+            props.inputSecondFeedback)),
+        !!props.inputThird && !!settings.input3ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input3ColProps),
+            props.inputThird,
+            props.inputThirdFeedback))));
+};
+
 const Form = (props) => {
     var _a;
     return (React__default['default'].createElement("form", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'innerRef', 'inline', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
@@ -1632,14 +1831,6 @@ const Progress = (props) => {
     return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'nowAmount', 'minAmount', 'maxAmount', 'striped', 'color', 'otherBars', 'height', 'style', 'className', 'children'), { className: classes.trim(), style: Object.assign({ height: props.height }, ((_b = props.style) !== null && _b !== void 0 ? _b : {})) }),
         React__default['default'].createElement("div", Object.assign({}, progressBarProps(props))),
         ((_c = props.otherBars) !== null && _c !== void 0 ? _c : []).map((otherBar, idx) => React__default['default'].createElement("div", Object.assign({ key: otherBar.nowAmount + '-' + idx }, progressBarProps(otherBar)))));
-};
-
-const Row = (props) => {
-    var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
-            row: true,
-            'no-gutters': !!props.noGutters
-        })}`.trim() }), props.children));
 };
 
 const setStorage = (key, newValue, remember, defaultValue) => {
@@ -4078,6 +4269,9 @@ exports.DurationLongText = DurationLongText;
 exports.DurationShortText = DurationShortText;
 exports.ElementCustomValue = ElementCustomValue;
 exports.EllipsesTruncate = EllipsesTruncate;
+exports.FieldSet = FieldSet;
+exports.FieldSetContext = FieldSetContext;
+exports.FieldSetRow = FieldSetRow;
 exports.FileToBase64 = FileToBase64;
 exports.FilterObjects = FilterObjects;
 exports.Form = Form;
