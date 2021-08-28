@@ -1356,8 +1356,7 @@ const FieldSet = (props) => {
             uuid: intelliwaketsfoundation.RandomString(5)
         });
     }, [props]);
-    //'form-condensed p-1' : 'p-3'
-    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed' : ''}`.trim(), hidden: props.hidden },
+    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'}`.trim(), hidden: props.hidden },
         React__default['default'].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
 };
 
