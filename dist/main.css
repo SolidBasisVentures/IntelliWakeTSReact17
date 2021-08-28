@@ -1807,6 +1807,27 @@ p {
   display: none;
 }
 
+.form-condensed .form-control:not(textarea),
+.form-condensed input,
+.form-condensed select,
+.form-condensed .col-form-label,
+.form-condensed .input-dd > button,
+.form-condensed .input-group-text {
+  padding: 0.1em 0.25em !important;
+  height: 1.8em !important;
+}
+.form-condensed .form-text,
+.form-condensed .form-control-plaintext,
+.form-condensed textarea {
+  padding: 0.1em 0.25em;
+}
+.form-condensed .fieldSetRow {
+  margin: -0.1em 0;
+}
+.form-condensed .fieldSetRow > * {
+  padding: 0.1em 0.2em;
+}
+
 @media screen {
   table.table-sticky {
     border-collapse: separate;
@@ -3473,6 +3494,27 @@ p {
 
 .noCopyActive {
   display: none;
+}
+
+.form-condensed .form-control:not(textarea),
+.form-condensed input,
+.form-condensed select,
+.form-condensed .col-form-label,
+.form-condensed .input-dd > button,
+.form-condensed .input-group-text {
+  padding: 0.1em 0.25em !important;
+  height: 1.8em !important;
+}
+.form-condensed .form-text,
+.form-condensed .form-control-plaintext,
+.form-condensed textarea {
+  padding: 0.1em 0.25em;
+}
+.form-condensed .fieldSetRow {
+  margin: -0.1em 0;
+}
+.form-condensed .fieldSetRow > * {
+  padding: 0.1em 0.2em;
 }
 
 @media screen {

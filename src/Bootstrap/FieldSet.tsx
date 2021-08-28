@@ -49,10 +49,12 @@ export const FieldSet = (props: IFieldSetProps) => {
 		[props]
 	)
 
+	//'form-condensed p-1' : 'p-3'
+	
 	return (
 		<fieldset
 			className={`${props.className ?? ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${
-				props.condensed ? 'form-condensed p-1' : 'p-3'
+				props.condensed ? 'form-condensed' : ''
 			}`.trim()}
 			hidden={props.hidden}>
 			<FieldSetContext.Provider value={contextProps}>{props.children}</FieldSetContext.Provider>

@@ -1675,4 +1675,28 @@ p {
   display: none;
 }
 
+.form-condensed {
+  .form-control:not(textarea),
+  input,
+  select,
+  .col-form-label,
+  .input-dd > button,
+  .input-group-text {
+    padding: 0.1em 0.25em !important;
+    height: 1.8em !important;
+  }
 
+  .form-text,
+  .form-control-plaintext,
+  textarea {
+    padding: 0.1em 0.25em;
+  }
+
+  .fieldSetRow {
+    margin: -0.1em 0;
+  }
+
+  .fieldSetRow > * {
+    padding: 0.1em 0.2em;
+  }
+}

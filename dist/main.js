@@ -1356,7 +1356,8 @@ const FieldSet = (props) => {
             uuid: intelliwaketsfoundation.RandomString(5)
         });
     }, [props]);
-    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'}`.trim(), hidden: props.hidden },
+    //'form-condensed p-1' : 'p-3'
+    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed' : ''}`.trim(), hidden: props.hidden },
         React__default['default'].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
 };
 
@@ -1511,7 +1512,7 @@ const FieldSetRow = (props) => {
         ? React__default['default'].cloneElement(React__default['default'].createElement(React__default['default'].Fragment, null, props.input), { id: (_a = props.input.props.id) !== null && _a !== void 0 ? _a : settings.uuid })
         : React__default['default'].cloneElement(React__default['default'].createElement("span", { className: "form-control-plaintext" }, (_b = props.input) !== null && _b !== void 0 ? _b : ''), { id: settings.uuid });
     // noinspection SuspiciousTypeOfGuard
-    return (React__default['default'].createElement(Row, { className: `${fieldSetContext.condensed ? '' : 'mb-3'} fieldRow ${(_c = props.className) !== null && _c !== void 0 ? _c : ''}`.trim(), hidden: props.hidden },
+    return (React__default['default'].createElement(Row, { className: `${fieldSetContext.condensed ? '' : 'mb-3'} fieldSetRow ${(_c = props.className) !== null && _c !== void 0 ? _c : ''}`.trim(), hidden: props.hidden },
         !!props.label && !!settings.labelColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.labelColProps),
             React__default['default'].createElement("label", { className: "col-form-label", htmlFor: element.props.id }, props.label))),
         React__default['default'].createElement(Col, Object.assign({}, settings.inputColProps),
