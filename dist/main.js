@@ -1722,7 +1722,7 @@ const Modal = (props) => {
                         props.body,
                         props.children))),
                     (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: "modal-footer" },
-                        React__default['default'].createElement("div", { className: "mr-auto" },
+                        React__default['default'].createElement("div", { className: "me-auto" },
                             (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: " btn btn-link  ", type: "button", onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
                             ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton) => (React__default['default'].createElement(Button, Object.assign({}, leftButton)))),
                             props.footerLeft),
@@ -2860,7 +2860,7 @@ function InputCheckBox(props) {
         setShowChecked(e.target.checked);
     };
     return (React__default['default'].createElement("label", { className: 'inputCheckbox form-control-plaintext ' + (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
-        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'mr-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
+        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'me-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
             }, disabled: props.disabled, onClick: props.onClick }),
         React__default['default'].createElement("span", null, props.label)));
 }
@@ -3424,7 +3424,7 @@ function InputSwitch(props) {
                     if (!props.plainText) {
                         handleInputChange(checked, e);
                     }
-                }, name: props.name, className: 'react-switch ' + (props.noPadding ? '' : 'mr-2 ') + ((_d = props.switchClassName) !== null && _d !== void 0 ? _d : ''), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_e = props.checkedIcon) !== null && _e !== void 0 ? _e : false, uncheckedIcon: (_f = props.uncheckedIcon) !== null && _f !== void 0 ? _f : false, height: height, width: width }),
+                }, name: props.name, className: 'react-switch ' + (props.noPadding ? '' : 'me-2 ') + ((_d = props.switchClassName) !== null && _d !== void 0 ? _d : ''), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_e = props.checkedIcon) !== null && _e !== void 0 ? _e : false, uncheckedIcon: (_f = props.uncheckedIcon) !== null && _f !== void 0 ? _f : false, height: height, width: width }),
         props.label));
 }
 

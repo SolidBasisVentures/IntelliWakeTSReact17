@@ -1,5 +1,5 @@
 import React from 'react';
-export interface IWInputGroupTextAddonProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+export interface IWInputGroupTextAddonProps extends Omit<React.HTMLProps<HTMLSpanElement>, 'ref'> {
     tag?: string | React.ReactType;
     addonType: 'prepend' | 'append';
 }

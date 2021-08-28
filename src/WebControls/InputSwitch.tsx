@@ -52,7 +52,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 					}
 				}}
 				name={props.name as string}
-				className={'react-switch ' + (props.noPadding ? '' : 'mr-2 ') + (props.switchClassName ?? '')}
+				className={'react-switch ' + (props.noPadding ? '' : 'me-2 ') + (props.switchClassName ?? '')}
 				checked={props.checked}
 				disabled={props.plainText}
 				onColor={props.onColor}
