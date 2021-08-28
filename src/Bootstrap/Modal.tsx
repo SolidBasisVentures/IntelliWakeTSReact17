@@ -171,7 +171,7 @@ export const Modal = (props: IWModalProps) => {
 											))}
 											{props.footerLeft}
 										</div>
-										<div className="text-right">
+										<div className="text-end">
 											{props.footerRight}
 											{(props.rightButtons ?? []).map((rightButton) => (
 												<Button {...rightButton} />

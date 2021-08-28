@@ -23,8 +23,8 @@
   //noinspection CssUnknownProperty
   -webkit-logical-width: auto;
   /* Chrome ignores auto, but here for completeness */
-    outline: none !important;
-    box-shadow: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .btn-link-inline:hover,
@@ -1656,6 +1656,7 @@ p {
 
 .inputCheckbox {
   position: relative;
+
   span {
     position: absolute;
     left: 1.5em;
@@ -1700,3 +1701,18 @@ p {
     padding: 0.1em 0.2em;
   }
 }
+
+
+/* Legacy Bootstrap 4 */
+
+.pre-scrollable {
+  max-height: 340px;
+  overflow-y: scroll;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+

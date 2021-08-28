@@ -158,7 +158,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 									{listGroupItem.counter !== undefined && (
 										<Badge
 											color={listGroupItem.counterColor}
-											className="float-right small text-white border-round ml-2">
+											className="float-end small text-white border-round ml-2">
 											{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) : <Spinner size="xs" />}
 										</Badge>
 									)}

@@ -113,11 +113,11 @@ export const FieldSetRow = (props: IProps) => {
 			items.labelColProps = {}
 			items.labelColProps.className = 'strong'
 			if (breakAt === 'xs') {
-				items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-right'
+				items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-end'
 				items.labelColProps.xs = firstLabelSize
 				items.inputColProps.xs = firstFieldSize
 			} else {
-				items.labelColProps.className += ` text-${breakAt}-right text-left`
+				items.labelColProps.className += ` text-${breakAt}-end text-start`
 				items.labelColProps.xs = 12
 				items.labelColProps[breakAt] = firstLabelSize
 				items.inputColProps.xs = 12
@@ -162,9 +162,9 @@ export const FieldSetRow = (props: IProps) => {
 			if (typeof props.inputSecond === 'string') {
 				items.input2ColProps.className = 'form-text strong'
 				if (breakAt === 'xs') {
-					items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-right'
+					items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-end'
 				} else {
-					items.input2ColProps.className += ` text-${breakAt}-right text-left`
+					items.input2ColProps.className += ` text-${breakAt}-end text-start`
 				}
 			}
 		}

@@ -156,7 +156,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				}
 				classNameOverride={
 					!!props.nav || !!props.inNavbar
-						? `text-left nav-link ${props.buttonClassName ?? ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+						? `text-start nav-link ${props.buttonClassName ?? ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
 						: undefined
 				}
 				onClick={(e: any) => {

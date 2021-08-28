@@ -1011,12 +1011,12 @@ const Badge = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
     let classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
-    classes += !!props.color ? ` badge-${props.color}` : '';
+    classes += !!props.color ? ` bg-${props.color}` : '';
     classes +=
         ' ' +
             ClassNames({
                 badge: true,
-                'badge-pill': !props.notPill
+                'rounded-pill': !props.notPill
             });
     return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'notPill', 'className'), { className: classes.trim() }));
 };
@@ -1295,7 +1295,7 @@ const Dropdown = (props) => {
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: !!props.nav || !!props.inNavbar
                 ? undefined
                 : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim(), classNameOverride: !!props.nav || !!props.inNavbar
-                ? `text-left nav-link ${(_f = props.buttonClassName) !== null && _f !== void 0 ? _f : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+                ? `text-start nav-link ${(_f = props.buttonClassName) !== null && _f !== void 0 ? _f : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
                 : undefined, onClick: (e) => {
                 // e.stopPropagation()
                 if (!!props.toggle) {
@@ -1446,12 +1446,12 @@ const FieldSetRow = (props) => {
             items.labelColProps = {};
             items.labelColProps.className = 'strong';
             if (breakAt === 'xs') {
-                items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-right';
+                items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-end';
                 items.labelColProps.xs = firstLabelSize;
                 items.inputColProps.xs = firstFieldSize;
             }
             else {
-                items.labelColProps.className += ` text-${breakAt}-right text-left`;
+                items.labelColProps.className += ` text-${breakAt}-end text-start`;
                 items.labelColProps.xs = 12;
                 items.labelColProps[breakAt] = firstLabelSize;
                 items.inputColProps.xs = 12;
@@ -1497,10 +1497,10 @@ const FieldSetRow = (props) => {
             if (typeof props.inputSecond === 'string') {
                 items.input2ColProps.className = 'form-text strong';
                 if (breakAt === 'xs') {
-                    items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-right';
+                    items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-end';
                 }
                 else {
-                    items.input2ColProps.className += ` text-${breakAt}-right text-left`;
+                    items.input2ColProps.className += ` text-${breakAt}-end text-start`;
                 }
             }
         }
@@ -1557,13 +1557,13 @@ const InputGroup = (props) => {
 
 const InputGroupAddon = (props) => {
     var _a, _b;
-    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'addonType'), { className: `input-group-${props.addonType} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'addonType'), { className: `input-group-text input-group-${props.addonType} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const InputGroupText = (props) => {
     var _a, _b;
-    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
+    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
@@ -1600,7 +1600,7 @@ const ListGroupItem = (props) => {
             // 'd-flex justify-content-between align-items-center': props.badge === null || !!props.badge
         })} list-group-item${!!props.color ? ` list-group-item-${props.color}` : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim(), disabled: !!props.onClick && props.disabled ? true : undefined }),
         props.children,
-        React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-right ' + ((_c = props.badgeClass) !== null && _c !== void 0 ? _c : ''), style: { marginTop: '0.2rem' } })));
+        React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-end ' + ((_c = props.badgeClass) !== null && _c !== void 0 ? _c : ''), style: { marginTop: '0.2rem' } })));
 };
 
 const ListGroupItemHeading = (props) => {
@@ -1726,7 +1726,7 @@ const Modal = (props) => {
                             (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: " btn btn-link  ", type: "button", onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
                             ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton) => (React__default['default'].createElement(Button, Object.assign({}, leftButton)))),
                             props.footerLeft),
-                        React__default['default'].createElement("div", { className: "text-right" },
+                        React__default['default'].createElement("div", { className: "text-end" },
                             props.footerRight,
                             ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton) => (React__default['default'].createElement(Button, Object.assign({}, rightButton)))),
                             !!props.okAction && (React__default['default'].createElement("button", { className: `ml-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: "button", disabled: props.okDisabled, onClick: (e) => {
@@ -2049,8 +2049,8 @@ const Tab = (props) => {
         React__default['default'].createElement("div", { className: ClassNames({
                 'tab-content': true,
                 'fill-height': !!((_j = props.fillHeight) !== null && _j !== void 0 ? _j : true),
-                'border-left': !props.noPaneBorder,
-                'border-right': !props.noPaneBorder,
+                'border-start': !props.noPaneBorder,
+                'border-end': !props.noPaneBorder,
                 'border-bottom': !props.noPaneBorder
             }) }, showTabs
             .filter((tab) => !tab.hide &&
@@ -2365,7 +2365,7 @@ const ColumnBodyClassNames = (column, otherClasses = {}) => {
 };
 const ColumnClassNames = (column, otherClasses = {}) => {
     var _a;
-    return ClassNames(Object.assign({ 'text-right': column.toDigitsPrecision !== undefined ||
+    return ClassNames(Object.assign({ 'text-end': column.toDigitsPrecision !== undefined ||
             column.toCurrencyPrecision !== undefined ||
             column.dayjsTSFormat !== undefined, ['td-' + ((_a = column.size) !== null && _a !== void 0 ? _a : '')]: !!column.size }, otherClasses));
 };
@@ -2643,7 +2643,7 @@ const DateRange = (props) => {
                     props.presetRanges.map((preset, idx) => React__default['default'].createElement("li", { key: idx, onClick: () => handlePresetClick(preset), className: (preset.name === currentRange.name ? 'active' : '') }, preset.name)),
                     React__default['default'].createElement("li", { onClick: handleCustomClick },
                         customRangeName,
-                        React__default['default'].createElement("span", { className: "float-right" }, ">")))),
+                        React__default['default'].createElement("span", { className: "float-end" }, ">")))),
             React__default['default'].createElement("div", { className: 'drp-headers' + (!state.prevPreset ? ' d-none' : ''), onClick: handleUnCustomClick },
                 React__default['default'].createElement("span", null, "< Presets")),
             React__default['default'].createElement("div", { className: 'drp-calendar left' + (!state.prevPreset ? ' d-none' : '') },
@@ -3233,7 +3233,7 @@ function InputNumber(props) {
             integers: !hasDecimals
         }), plainTextControl: !!props.currency
             ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
-            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext text-right ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
+            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext text-end ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
         React__default['default'].createElement(Cleave__default['default'], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { name: props.name }))));
 }
 
@@ -3964,7 +3964,7 @@ const MDLink = (props) => {
                     }
                 }, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }),
                 props.children,
-                React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-right ' + ((_a = props.badgeClass) !== null && _a !== void 0 ? _a : ''), style: { marginTop: '0.2rem' } })));
+                React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-end ' + ((_a = props.badgeClass) !== null && _a !== void 0 ? _a : ''), style: { marginTop: '0.2rem' } })));
         case 'tr':
             return (React__default['default'].createElement("tr", Object.assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         case 'div':
@@ -4093,7 +4093,7 @@ const MasterDetailListGroup = (props) => {
                             !!listGroupItem.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
                             listGroupItem.linkNode,
                             React__default['default'].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
-                            listGroupItem.counter !== undefined && (React__default['default'].createElement(Badge, { color: listGroupItem.counterColor, className: "float-right small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default['default'].createElement(Spinner, { size: "xs" }))))));
+                            listGroupItem.counter !== undefined && (React__default['default'].createElement(Badge, { color: listGroupItem.counterColor, className: "float-end small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default['default'].createElement(Spinner, { size: "xs" }))))));
                 }),
                 props.mdMasterBottomNode),
             props.mdMasterBottomOutsideNode),

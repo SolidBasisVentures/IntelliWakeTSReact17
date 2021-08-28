@@ -162,7 +162,7 @@ export const ColumnBodyClassNames = (column: IArrayColumn, otherClasses: {[key: 
 
 export const ColumnClassNames = (column: IArrayColumn, otherClasses: {[key: string]: boolean} = {}): string => {
 	return ClassNames({
-		'text-right':
+		'text-end':
 			column.toDigitsPrecision !== undefined ||
 			column.toCurrencyPrecision !== undefined ||
 			column.dayjsTSFormat !== undefined,

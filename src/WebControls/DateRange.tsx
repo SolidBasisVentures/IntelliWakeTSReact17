@@ -302,7 +302,7 @@ export const DateRange = (props: IPropsDateRange) => {
 						)}
 						<li onClick={handleCustomClick}>
 							{customRangeName}
-							<span className="float-right">&gt;</span>
+							<span className="float-end">&gt;</span>
 						</li>
 					</ul>
 				</div>
