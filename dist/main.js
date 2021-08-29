@@ -1703,9 +1703,7 @@ const Modal = (props) => {
                 React__default['default'].createElement("div", { className: "modal-content", onClick: (e) => e.stopPropagation() }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
                     !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default['default'].createElement("h5", { className: "modal-title" }, props.title),
-                        !props.noCancel && (React__default['default'].createElement("button", { className: "btn-close", onClick: toggle },
-                            "\u00D7",
-                            ' ')))),
+                        !props.noCancel && (React__default['default'].createElement("button", { className: "btn-close", onClick: toggle })))),
                     React__default['default'].createElement("div", { className: 'modal-body ' + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
                             e.preventDefault();
                             if (!props.okDisabled) {

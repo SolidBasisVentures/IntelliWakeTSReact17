@@ -1,12 +1,15 @@
 @media screen {
+  table.table-sticky {
+    margin-bottom: 0 !important;
+  }
   table.table-sticky thead tr {
     position: sticky;
-    top: 0;
+    top: -1px;
     z-index: 1020;
   }
   table.table-sticky tfoot tr {
     position: sticky;
-    bottom: 0;
+    bottom: -1px;
     z-index: 1020;
   }
 
@@ -151,14 +154,17 @@
   }
 }
 @media screen {
+  table.table-sticky {
+    margin-bottom: 0 !important;
+  }
   table.table-sticky thead tr {
     position: sticky;
-    top: 0;
+    top: -1px;
     z-index: 1020;
   }
   table.table-sticky tfoot tr {
     position: sticky;
-    bottom: 0;
+    bottom: -1px;
     z-index: 1020;
   }
 
@@ -1878,14 +1884,17 @@ p {
 }
 
 @media screen {
+  table.table-sticky {
+    margin-bottom: 0 !important;
+  }
   table.table-sticky thead tr {
     position: sticky;
-    top: 0;
+    top: -1px;
     z-index: 1020;
   }
   table.table-sticky tfoot tr {
     position: sticky;
-    bottom: 0;
+    bottom: -1px;
     z-index: 1020;
   }
 
