@@ -4,7 +4,6 @@
   }
   table.table-sticky > thead > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) td, table.table-sticky > thead > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) th {
     background-color: white;
-    border-width: 1px;
   }
   table.table-sticky > thead > tr > td, table.table-sticky > thead > tr > th {
     position: sticky;
@@ -31,7 +30,6 @@
   }
   table.table-sticky > tfoot > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) td, table.table-sticky > tfoot > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) th {
     background-color: white;
-    border-width: 1px;
   }
   table.table-sticky > tfoot > tr > td, table.table-sticky > tfoot > tr > th {
     position: sticky;
