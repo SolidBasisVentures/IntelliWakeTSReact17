@@ -1307,7 +1307,7 @@ const Dropdown = (props) => {
             }, style: !!props.nav || !!props.inNavbar ? { background: 'none', border: 'none' } : undefined }, (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog })),
         React__default['default'].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
-                'dropdown-menu-right': !!props.right
+                'dropdown-menu-end': !!props.right
             })} dropdown-menu ${(_h = props.menuClassName) !== null && _h !== void 0 ? _h : ''}`.trim(), onClick: (e) => {
                 e.stopPropagation();
                 if (!!props.toggle) {

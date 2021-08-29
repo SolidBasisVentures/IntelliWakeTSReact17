@@ -1839,6 +1839,18 @@ p {
   width: 100%;
 }
 
+.dropdown-menu-end {
+  right: 0;
+  left: auto;
+}
+
+.dropup .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 0.125rem;
+}
+
 @media screen {
   html,
 body,
@@ -3583,4 +3595,16 @@ p {
 .btn-block {
   display: block;
   width: 100%;
+}
+
+.dropdown-menu-end {
+  right: 0;
+  left: auto;
+}
+
+.dropup .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 0.125rem;
 }
