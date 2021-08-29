@@ -12,7 +12,7 @@ export interface IIWTableProps extends Omit<React.HTMLProps<HTMLTableElement>, '
 	dark?: boolean
 	caption?: string
 	textSmall?: boolean
-	sticky?: boolean
+	legacySticky?: boolean
 	sortable?: boolean
 }
 
@@ -33,7 +33,7 @@ export const Table = forwardRef<HTMLTableElement, IIWTableProps>((props, ref) =>
 					'table-sortable': !!props.sortable,
 					'table-sm': props.size !== 'lg',
 					small: !!props.textSmall,
-					'table-sticky': !!props.sticky
+					'table-sticky': !!props.legacySticky
 				})
 			}
 			ref={ref}
@@ -47,7 +47,7 @@ export const Table = forwardRef<HTMLTableElement, IIWTableProps>((props, ref) =>
 				'dark',
 				'caption',
 				'textSmall',
-				'sticky',
+				'legacySticky',
 				'sortable',
 				'className'
 			)}>
