@@ -1,6 +1,4 @@
 import './IWake.scss'
-import './IWakeNoRoot.scss'
-import './IWake-table-sticky.scss'
 
 export * from './Cookie'
 export * from './ArrayIDMap'
