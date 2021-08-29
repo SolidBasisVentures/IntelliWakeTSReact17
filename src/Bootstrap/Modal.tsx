@@ -124,7 +124,7 @@ export const Modal = (props: IWModalProps) => {
 									<div className={`alert-${props.color ?? 'primary'} modal-header`}>
 										<h5 className="modal-title">{props.title}</h5>
 										{!props.noCancel && (
-											<button className="close" onClick={toggle}>
+											<button className="btn-close" onClick={toggle}>
 												×{' '}
 											</button>
 										)}

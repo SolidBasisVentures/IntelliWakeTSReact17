@@ -1703,7 +1703,7 @@ const Modal = (props) => {
                 React__default['default'].createElement("div", { className: "modal-content", onClick: (e) => e.stopPropagation() }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
                     !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default['default'].createElement("h5", { className: "modal-title" }, props.title),
-                        !props.noCancel && (React__default['default'].createElement("button", { className: "close", onClick: toggle },
+                        !props.noCancel && (React__default['default'].createElement("button", { className: "btn-close", onClick: toggle },
                             "\u00D7",
                             ' ')))),
                     React__default['default'].createElement("div", { className: 'modal-body ' + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
@@ -2092,8 +2092,8 @@ const Table = React.forwardRef((props, ref) => {
                 'table-sortable': !!props.sortable,
                 'table-sm': props.size !== 'lg',
                 small: !!props.textSmall,
-                'table-sticky': !!props.sticky
-            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'sticky', 'sortable', 'className')),
+                'table-sticky': !!props.legacySticky
+            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'legacySticky', 'sortable', 'className')),
         !!props.caption && React__default['default'].createElement("caption", null, props.caption),
         props.children));
 });
