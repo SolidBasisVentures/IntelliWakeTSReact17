@@ -2092,8 +2092,9 @@ const Table = React.forwardRef((props, ref) => {
                 'table-sortable': !!props.sortable,
                 'table-sm': props.size !== 'lg',
                 small: !!props.textSmall,
-                'table-sticky': !!props.legacySticky
-            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'legacySticky', 'sortable', 'className')),
+                'table-sticky': !!props.sticky,
+                'table-sticky-legacy': !!props.legacySticky
+            }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'sticky', 'legacySticky', 'sortable', 'className')),
         !!props.caption && React__default['default'].createElement("caption", null, props.caption),
         props.children));
 });

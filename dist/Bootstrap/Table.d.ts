@@ -10,6 +10,7 @@ export interface IIWTableProps extends Omit<React.HTMLProps<HTMLTableElement>, '
     caption?: string;
     textSmall?: boolean;
     legacySticky?: boolean;
+    sticky?: boolean;
     sortable?: boolean;
 }
 export declare const Table: React.ForwardRefExoticComponent<IIWTableProps & React.RefAttributes<HTMLTableElement>>;
