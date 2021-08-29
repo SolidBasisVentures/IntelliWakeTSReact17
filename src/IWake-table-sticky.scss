@@ -36,6 +36,7 @@
 
       > .stickyTR0, > .stickyTR, > .stickyTRL2, > .stickyTRL3 {
         > td, > th {
+          background-color: white;
           position: sticky;
           position: -webkit-sticky;
           z-index: 1;
