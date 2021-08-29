@@ -1555,12 +1555,6 @@ const InputGroup = (props) => {
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-const InputGroupAddon = (props) => {
-    var _a, _b;
-    const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'addonType'), { className: `input-group-text input-group-${props.addonType} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
-};
-
 const InputGroupText = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
@@ -2964,11 +2958,9 @@ function ViewEmail(props) {
 
 const InputGroupWrapper = (props) => {
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.prepend || !!props.append ? (React__default['default'].createElement(InputGroup, null,
-        !!props.prepend && (React__default['default'].createElement(InputGroupAddon, { addonType: "prepend" },
-            React__default['default'].createElement(InputGroupText, null, props.prepend))),
+        !!props.prepend && (React__default['default'].createElement(InputGroupText, null, props.prepend)),
         props.children,
-        !!props.append && (React__default['default'].createElement(InputGroupAddon, { addonType: "append" },
-            React__default['default'].createElement(InputGroupText, null, props.append))))) : (React__default['default'].createElement(React__default['default'].Fragment, null, props.children))));
+        !!props.append && (React__default['default'].createElement(InputGroupText, null, props.append)))) : (React__default['default'].createElement(React__default['default'].Fragment, null, props.children))));
 };
 
 const AppendPrependWrapper = (props) => {
@@ -4291,7 +4283,6 @@ exports.InputDate = InputDate;
 exports.InputEmail = InputEmail;
 exports.InputGender = InputGender;
 exports.InputGroup = InputGroup;
-exports.InputGroupAddon = InputGroupAddon;
 exports.InputGroupText = InputGroupText;
 exports.InputGroupWrapper = InputGroupWrapper;
 exports.InputNumber = InputNumber;

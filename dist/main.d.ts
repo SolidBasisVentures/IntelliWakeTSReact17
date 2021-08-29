@@ -33,7 +33,6 @@ export * from './Bootstrap/Form';
 export * from './Bootstrap/FormFeedback';
 export * from './Bootstrap/FormGroup';
 export * from './Bootstrap/InputGroup';
-export * from './Bootstrap/InputGroupAddon';
 export * from './Bootstrap/InputGroupText';
 export * from './Bootstrap/Label';
 export * from './Bootstrap/ListGroup';
