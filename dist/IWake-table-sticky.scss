@@ -26,7 +26,7 @@
         > td, > th {
           position: sticky;
           position: -webkit-sticky;
-          z-index: 1;
+          //z-index: 1;
         }
       }
 
@@ -38,14 +38,21 @@
     }
 
     > tbody {
-      border-width: 0 !important;
+      //border-width: 0 !important;
+      z-index: -1;
 
       > .stickyTR0, > .stickyTR, > .stickyTRL2, > .stickyTRL3 {
         > td, > th {
           background-color: white;
           position: sticky;
           position: -webkit-sticky;
-          z-index: 1;
+          //z-index: 1;
+        }
+      }
+
+      > tr:not(.stickyTR0):not(.stickyTR):not(.stickyTRL2):not(.stickyTRL3) {
+        > td, > th {
+          z-index: -1;
         }
       }
     }
@@ -53,7 +60,7 @@
     > tfoot {
       position: sticky;
       position: -webkit-sticky;
-      z-index: 1;
+      //z-index: 1;
       bottom: -1px;
 
       > tr:not([class*="table-"]):not([class*="alert-"]):not([class*="active"]):not([class*="selected"]) {
@@ -66,7 +73,7 @@
         > td, > th {
           position: sticky;
           position: -webkit-sticky;
-          z-index: 1;
+          //z-index: 1;
           bottom: -1px;
         }
       }

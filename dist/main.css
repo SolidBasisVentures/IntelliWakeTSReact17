@@ -8,24 +8,24 @@
   table.table-sticky > thead > tr > td, table.table-sticky > thead > tr > th {
     position: sticky;
     position: -webkit-sticky;
-    z-index: 1;
   }
   table.table-sticky > thead > tr:first-child > td, table.table-sticky > thead > tr:first-child > th {
     top: -1px;
   }
   table.table-sticky > tbody {
-    border-width: 0 !important;
+    z-index: -1;
   }
   table.table-sticky > tbody > .stickyTR0 > td, table.table-sticky > tbody > .stickyTR0 > th, table.table-sticky > tbody > .stickyTR > td, table.table-sticky > tbody > .stickyTR > th, table.table-sticky > tbody > .stickyTRL2 > td, table.table-sticky > tbody > .stickyTRL2 > th, table.table-sticky > tbody > .stickyTRL3 > td, table.table-sticky > tbody > .stickyTRL3 > th {
     background-color: white;
     position: sticky;
     position: -webkit-sticky;
-    z-index: 1;
+  }
+  table.table-sticky > tbody > tr:not(.stickyTR0):not(.stickyTR):not(.stickyTRL2):not(.stickyTRL3) > td, table.table-sticky > tbody > tr:not(.stickyTR0):not(.stickyTR):not(.stickyTRL2):not(.stickyTRL3) > th {
+    z-index: -1;
   }
   table.table-sticky > tfoot {
     position: sticky;
     position: -webkit-sticky;
-    z-index: 1;
     bottom: -1px;
   }
   table.table-sticky > tfoot > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) td, table.table-sticky > tfoot > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) th {
@@ -34,7 +34,6 @@
   table.table-sticky > tfoot > tr > td, table.table-sticky > tfoot > tr > th {
     position: sticky;
     position: -webkit-sticky;
-    z-index: 1;
     bottom: -1px;
   }
 
