@@ -16,6 +16,13 @@
     > thead {
       //border-width: 0 !important;
 
+      > tr:not([class*="table-"]):not([class*="alert-"]):not([class*="active"]):not([class*="selected"]) {
+        td, th {
+          background-color: white;
+          border-width: 1px;
+        }
+      }
+
       > tr {
         > td, > th {
           position: sticky;
@@ -26,7 +33,7 @@
 
       > tr:first-child {
         > td, > th {
-          top: 0;
+          top: -1px;
         }
       }
     }
@@ -49,6 +56,13 @@
       position: -webkit-sticky;
       z-index: 1;
       bottom: -1px;
+
+      > tr:not([class*="table-"]):not([class*="alert-"]):not([class*="active"]):not([class*="selected"]) {
+        td, th {
+          background-color: white;
+          border-width: 1px;
+        }
+      }
 
       > tr {
         > td, > th {
