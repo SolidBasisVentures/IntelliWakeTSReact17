@@ -1,5 +1,8 @@
 @media screen {
   table.table-sticky {
+    border-collapse: separate;
+    /* Don't collapse */
+    border-spacing: 0;
     margin-bottom: 0;
   }
   table.table-sticky > thead > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) td, table.table-sticky > thead > tr:not([class*=table-]):not([class*=alert-]):not([class*=active]):not([class*=selected]) th {
