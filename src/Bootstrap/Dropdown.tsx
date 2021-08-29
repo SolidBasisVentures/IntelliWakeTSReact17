@@ -179,7 +179,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				tabIndex={-1}
 				className={`${ClassNames({
 					show: actualIsOpen,
-					'dropdown-menu-right': !!props.right
+					'dropdown-menu-end': !!props.right
 				})} dropdown-menu ${props.menuClassName ?? ''}`.trim()}
 				onClick={(e: any) => {
 					e.stopPropagation()
