@@ -473,30 +473,37 @@ table.table-hover tbody tr,
 }
 .td-xs, .width-xs {
   width: 25px !important;
+  max-width: 25px !important;
 }
 
 .td-sm, .width-sm {
   width: 50px !important;
+  max-width: 50px !important;
 }
 
 .td-md, .width-md {
   width: 75px !important;
+  max-width: 75px !important;
 }
 
 .td-lg, .width-lg {
   width: 100px !important;
+  max-width: 100px !important;
 }
 
 .td-xl, .width-xl {
   width: 125px !important;
+  max-width: 125px !important;
 }
 
 .td-xxl, .width-xxl {
   width: 150px !important;
+  max-width: 150px !important;
 }
 
 .td-xxxl, .width-xxxl {
   width: 175px !important;
+  max-width: 175px !important;
 }
 
 table.table-col-min-xs td, table.table-col-min-xs th {
