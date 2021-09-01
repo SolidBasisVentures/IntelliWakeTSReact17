@@ -3279,7 +3279,7 @@ const InputRatingStars = (props) => {
             if (isMouseDown.current && localValue !== props.value) {
                 setLocalValue(props.value);
             }
-        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: "link", className: "px-1", key: starValue, onMouseDown: e => {
+        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: "link", className: "px-1 py-0", key: starValue, onMouseDown: e => {
             isMouseDown.current = true;
             mouseEvent(e, starValue);
         }, size: buttonSize, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
