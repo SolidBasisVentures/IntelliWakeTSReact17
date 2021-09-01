@@ -3279,7 +3279,7 @@ const InputRatingStars = (props) => {
             if (isMouseDown.current && localValue !== props.value) {
                 setLocalValue(props.value);
             }
-        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: "link", className: "px-1 py-0", key: starValue, onMouseDown: e => {
+        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: 'link', className: 'px-1 py-0', key: starValue, onMouseDown: e => {
             isMouseDown.current = true;
             mouseEvent(e, starValue);
         }, size: buttonSize, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
@@ -3288,7 +3288,7 @@ const InputRatingStars = (props) => {
                 if (props.value !== newValue)
                     props.changeValue(newValue, props.name);
             }
-        } },
+        }, tabIndex: -1 },
         React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: !!localValue && starValue <= localValue ? proSolidSvgIcons.faStar : proRegularSvgIcons.faStar, style: { color: !!localValue && starValue <= localValue ? 'gold' : 'gray' }, size: iconSize }))))));
 };
 

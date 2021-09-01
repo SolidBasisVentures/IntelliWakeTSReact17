@@ -16,39 +16,39 @@ export interface IIWRatingStarsProps<T> {
 	allowNull?: boolean
 }
 
-export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
+export const InputRatingStars = <T, >(props: IIWRatingStarsProps<T>) => {
 	const isMouseDown = useRef(false)
 	const starValues = useMemo(() => [1, 2, 3, 4, 5], [])
 	const [localValue, setLocalValue] = useState<number | null>(props.value)
-
+	
 	useEffect(() => setLocalValue(props.value), [props.value])
-
+	
 	const editable = !props.plainText && !!props.changeValue
-
+	
 	const globalMouseUp = useCallback(() => {
 		isMouseDown.current = false
 	}, [])
-
+	
 	useEffect(() => {
 		document.addEventListener('mouseup', globalMouseUp)
-
+		
 		return () => {
 			document.removeEventListener('mouseup', globalMouseUp)
 		}
 	}, [globalMouseUp])
-
+	
 	const mouseEventValue = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>, value: number): number | null => {
 			if (value === 1 && props.allowNull) {
 				const bounding = e.currentTarget.getBoundingClientRect()
 				if (e.clientX - bounding.x < bounding.width / 2) return null
 			}
-
+			
 			return value
 		},
 		[props.allowNull]
 	)
-
+	
 	const mouseEvent = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>, value: number) => {
 			if (isMouseDown.current && editable) {
@@ -62,7 +62,7 @@ export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
 	const iconSize = useMemo<SizeProp>(() => props.size ?? 'lg', [props.size])
 	
 	const buttonSize = useMemo<'sm' | 'lg'>(() => props.buttonSize ?? (['xs', 'sm', '1x'] as SizeProp[]).includes(iconSize) ? 'sm' : 'lg', [iconSize, props.buttonSize])
-
+	
 	return (
 		<ButtonGroup
 			onMouseLeave={() => {
@@ -72,8 +72,8 @@ export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
 			}}>
 			{starValues.map(starValue => (
 				<Button
-					color="link"
-					className="px-1 py-0"
+					color='link'
+					className='px-1 py-0'
 					key={starValue}
 					onMouseDown={e => {
 						isMouseDown.current = true
@@ -86,7 +86,7 @@ export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
 							const newValue = mouseEventValue(e, starValue)
 							if (props.value !== newValue) props.changeValue(newValue, props.name)
 						}
-					}}>
+					}} tabIndex={-1}>
 					<FontAwesomeIcon
 						icon={!!localValue && starValue <= localValue ? faStarOn : faStarOff}
 						style={{color: !!localValue && starValue <= localValue ? 'gold' : 'gray'}}
