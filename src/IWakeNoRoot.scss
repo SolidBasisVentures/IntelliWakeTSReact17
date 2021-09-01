@@ -358,13 +358,14 @@ table.table-sortable thead th {
 }
 
 @media (min-width: 1400px) {
-  .d-xxl-none-larger {
+  .d-xxxl-none-larger,
+  .d-xxl-none-and-larger {
     display: none !important;
   }
 }
 
 @media (min-width: 1500px) {
-  .d-xxxl-none-larger {
+  .d-xxxl-none-and-larger {
     display: none !important;
   }
 }
