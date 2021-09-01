@@ -5,6 +5,7 @@ export interface IIWRatingStarsProps<T> {
     plainText?: boolean;
     changeValue?: (value: any, name?: keyof T) => void;
     size?: SizeProp;
+    buttonSize?: 'sm' | 'lg';
     allowNull?: boolean;
 }
 export declare const InputRatingStars: <T>(props: IIWRatingStarsProps<T>) => JSX.Element;

@@ -12,6 +12,7 @@ export interface IIWRatingStarsProps<T> {
 	plainText?: boolean
 	changeValue?: (value: any, name?: keyof T) => void
 	size?: SizeProp
+	buttonSize?: 'sm' | 'lg'
 	allowNull?: boolean
 }
 
@@ -57,6 +58,10 @@ export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
 		},
 		[editable, localValue, mouseEventValue]
 	)
+	
+	const iconSize = useMemo<SizeProp>(() => props.size ?? 'lg', [props.size])
+	
+	const buttonSize = useMemo<'sm' | 'lg'>(() => props.buttonSize ?? (['xs', 'sm', '1x'] as SizeProp[]).includes(iconSize) ? 'sm' : 'lg', [iconSize, props.buttonSize])
 
 	return (
 		<ButtonGroup
@@ -74,6 +79,7 @@ export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
 						isMouseDown.current = true
 						mouseEvent(e, starValue)
 					}}
+					size={buttonSize}
 					onMouseMove={e => mouseEvent(e, starValue)}
 					onMouseUp={e => {
 						if (props.changeValue) {
@@ -84,7 +90,7 @@ export const InputRatingStars = <T,>(props: IIWRatingStarsProps<T>) => {
 					<FontAwesomeIcon
 						icon={!!localValue && starValue <= localValue ? faStarOn : faStarOff}
 						style={{color: !!localValue && starValue <= localValue ? 'gold' : 'gray'}}
-						size={props.size ?? 'lg'}
+						size={iconSize}
 					/>
 				</Button>
 			))}

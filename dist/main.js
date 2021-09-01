@@ -3273,24 +3273,23 @@ const InputRatingStars = (props) => {
                 setLocalValue(newValue);
         }
     }, [editable, localValue, mouseEventValue]);
+    const iconSize = React.useMemo(() => { var _a; return (_a = props.size) !== null && _a !== void 0 ? _a : 'lg'; }, [props.size]);
+    const buttonSize = React.useMemo(() => { var _a; return ((_a = props.buttonSize) !== null && _a !== void 0 ? _a : ['xs', 'sm', '1x'].includes(iconSize)) ? 'sm' : 'lg'; }, [iconSize, props.buttonSize]);
     return (React__default['default'].createElement(ButtonGroup, { onMouseLeave: () => {
             if (isMouseDown.current && localValue !== props.value) {
                 setLocalValue(props.value);
             }
-        } }, starValues.map(starValue => {
-        var _a;
-        return (React__default['default'].createElement(Button, { color: "link", className: "px-1", key: starValue, onMouseDown: e => {
-                isMouseDown.current = true;
-                mouseEvent(e, starValue);
-            }, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
-                if (props.changeValue) {
-                    const newValue = mouseEventValue(e, starValue);
-                    if (props.value !== newValue)
-                        props.changeValue(newValue, props.name);
-                }
-            } },
-            React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: !!localValue && starValue <= localValue ? proSolidSvgIcons.faStar : proRegularSvgIcons.faStar, style: { color: !!localValue && starValue <= localValue ? 'gold' : 'gray' }, size: (_a = props.size) !== null && _a !== void 0 ? _a : 'lg' })));
-    })));
+        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: "link", className: "px-1", key: starValue, onMouseDown: e => {
+            isMouseDown.current = true;
+            mouseEvent(e, starValue);
+        }, size: buttonSize, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
+            if (props.changeValue) {
+                const newValue = mouseEventValue(e, starValue);
+                if (props.value !== newValue)
+                    props.changeValue(newValue, props.name);
+            }
+        } },
+        React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: !!localValue && starValue <= localValue ? proSolidSvgIcons.faStar : proRegularSvgIcons.faStar, style: { color: !!localValue && starValue <= localValue ? 'gold' : 'gray' }, size: iconSize }))))));
 };
 
 /**
