@@ -78,6 +78,7 @@ export * from './WebControls/InputGroupWrapper';
 export * from './WebControls/InputNumber';
 export * from './WebControls/InputPassword';
 export * from './WebControls/InputRadio';
+export * from './WebControls/InputRatingStars';
 export * from './WebControls/InputSearch';
 export * from './WebControls/InputSelect';
 export * from './WebControls/InputSelectStep';

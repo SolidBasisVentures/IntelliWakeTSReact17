@@ -11,6 +11,7 @@ var proRegularSvgIcons = require('@fortawesome/pro-regular-svg-icons');
 var ReactDOM = require('react-dom');
 var reactRouterDom = require('react-router-dom');
 var Cleave = require('cleave.js/react');
+var proSolidSvgIcons = require('@fortawesome/pro-solid-svg-icons');
 var Switch = require('react-switch');
 var axios = require('axios');
 
@@ -3242,6 +3243,56 @@ function InputRadio(props) {
         props.label));
 }
 
+const InputRatingStars = (props) => {
+    const isMouseDown = React.useRef(false);
+    const starValues = React.useMemo(() => [1, 2, 3, 4, 5], []);
+    const [localValue, setLocalValue] = React.useState(props.value);
+    React.useEffect(() => setLocalValue(props.value), [props.value]);
+    const editable = !props.plainText && !!props.changeValue;
+    const globalMouseUp = React.useCallback(() => {
+        isMouseDown.current = false;
+    }, []);
+    React.useEffect(() => {
+        document.addEventListener('mouseup', globalMouseUp);
+        return () => {
+            document.removeEventListener('mouseup', globalMouseUp);
+        };
+    }, [globalMouseUp]);
+    const mouseEventValue = React.useCallback((e, value) => {
+        if (value === 1 && props.allowNull) {
+            const bounding = e.currentTarget.getBoundingClientRect();
+            if (e.clientX - bounding.x < bounding.width / 2)
+                return null;
+        }
+        return value;
+    }, [props.allowNull]);
+    const mouseEvent = React.useCallback((e, value) => {
+        if (isMouseDown.current && editable) {
+            const newValue = mouseEventValue(e, value);
+            if (localValue !== newValue)
+                setLocalValue(newValue);
+        }
+    }, [editable, localValue, mouseEventValue]);
+    return (React__default['default'].createElement(ButtonGroup, { onMouseLeave: () => {
+            if (isMouseDown.current && localValue !== props.value) {
+                setLocalValue(props.value);
+            }
+        } }, starValues.map(starValue => {
+        var _a;
+        return (React__default['default'].createElement(Button, { color: "link", className: "px-1", key: starValue, onMouseDown: e => {
+                isMouseDown.current = true;
+                mouseEvent(e, starValue);
+            }, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
+                if (props.changeValue) {
+                    const newValue = mouseEventValue(e, starValue);
+                    if (props.value !== newValue)
+                        props.changeValue(newValue, props.name);
+                }
+            } },
+            React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: !!localValue && starValue <= localValue ? proSolidSvgIcons.faStar : proRegularSvgIcons.faStar, style: { color: !!localValue && starValue <= localValue ? 'gold' : 'gray' }, size: (_a = props.size) !== null && _a !== void 0 ? _a : 'lg' })));
+    })));
+};
+
 /**
  * A search input with an option to have a trigger delay or not.
  */
@@ -4288,6 +4339,7 @@ exports.InputGroupWrapper = InputGroupWrapper;
 exports.InputNumber = InputNumber;
 exports.InputPassword = InputPassword;
 exports.InputRadio = InputRadio;
+exports.InputRatingStars = InputRatingStars;
 exports.InputSSN = InputSSN;
 exports.InputSearch = InputSearch;
 exports.InputSelect = InputSelect;
