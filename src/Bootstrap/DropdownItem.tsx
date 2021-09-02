@@ -12,7 +12,6 @@ export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElemen
 	header?: boolean
 	loading?: boolean
 	active?: boolean
-	maxWidth?: string
 }
 
 export const DropdownItem = (props: IWDropdownItemProps) => {
@@ -42,17 +41,16 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 				'size',
 				'type',
 				'children',
-				'loading',
-				'maxWidth'
+				'loading'
 			)}
 			className={classes}
-			style={{cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined, maxWidth: props.maxWidth}}>
+			style={{cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined}}>
 			<EllipsesTruncate text={props.children ??
 				(!!props.loading && (
 					<i className="text-muted">
 						<Spinner fixedWidth /> Loading...
 					</i>
-				))} noTruncate={!props.maxWidth}/>
+				))}/>
 		</TagToUse>
 	)
 }

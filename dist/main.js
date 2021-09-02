@@ -1240,14 +1240,14 @@ const DropdownItem = (props) => {
                 'active': !!props.active,
                 disabled: !!props.disabled
             });
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading', 'maxWidth'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined, maxWidth: props.maxWidth } }),
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }),
         React__default['default'].createElement(EllipsesTruncate, { text: (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
                 React__default['default'].createElement(Spinner, { fixedWidth: true }),
-                " Loading..."))), noTruncate: !props.maxWidth })));
+                " Loading..."))) })));
 };
 
 const Dropdown = (props) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const hasOpened = React.useRef(false);
     const [isOpen, setIsOpen] = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false);
     const visibleDDActions = React.useMemo(() => !props.ddActions
@@ -1311,9 +1311,16 @@ const Dropdown = (props) => {
             items.maxWidth = props.maxWidth;
         return items;
     }, []);
+    const dropdownMenuStyle = React.useMemo(() => {
+        var _a;
+        const style = (_a = props.menuStyle) !== null && _a !== void 0 ? _a : { maxHeight: '60vh' };
+        if (props.maxWidthAction)
+            style.maxWidth = props.maxWidthAction;
+        return style;
+    }, []);
     if (!props.children && visibleDDActions.length === 0)
         return null;
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth'), { className: classes }),
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: !!props.nav || !!props.inNavbar
                 ? undefined
                 : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim(), classNameOverride: !!props.nav || !!props.inNavbar
@@ -1339,12 +1346,12 @@ const Dropdown = (props) => {
                 if (!isControlled) {
                     setIsOpen((prevState) => !prevState);
                 }
-            }, style: (_j = props.menuStyle) !== null && _j !== void 0 ? _j : { maxHeight: '60vh' } }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
+            }, style: dropdownMenuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
             visibleDDActions.map((ddAction, idx) => {
-                var _a, _b;
+                var _a;
                 return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: () => (!!ddAction.action ? ddAction.action() : () => {
-                    }), maxWidth: props.maxWidthAction === false ? undefined : ((_b = props.maxWidthAction) !== null && _b !== void 0 ? _b : props.maxWidth) },
+                    }) },
                     showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
                     ddAction.title));
             }))))));

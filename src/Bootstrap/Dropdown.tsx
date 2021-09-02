@@ -132,6 +132,14 @@ export const Dropdown = (props: IWDropdownProps) => {
 		return items
 	}, [])
 	
+	const dropdownMenuStyle = useMemo<React.CSSProperties>(() => {
+		const style: React.CSSProperties = props.menuStyle ?? {maxHeight: '60vh'}
+		
+		if (props.maxWidthAction) style.maxWidth = props.maxWidthAction
+		
+		return style
+	}, [])
+	
 	if (!props.children && visibleDDActions.length === 0) return null
 	
 	return (
@@ -158,7 +166,8 @@ export const Dropdown = (props: IWDropdownProps) => {
 				'outline',
 				'className',
 				'menuStyle',
-				'maxWidth'
+				'maxWidth',
+				'maxWidthAction'
 			)}
 			className={classes}>
 			<Button
@@ -209,7 +218,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 						setIsOpen((prevState) => !prevState)
 					}
 				}}
-				style={props.menuStyle ?? {maxHeight: '60vh'}}
+				style={dropdownMenuStyle}
 			>
 				{hasOpened.current && (
 					<>
@@ -223,8 +232,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 								divider={!!ddAction.divider}
 								header={!!ddAction.header}
 								onClick={() => (!!ddAction.action ? ddAction.action() : () => {
-								})}
-								maxWidth={props.maxWidthAction === false ? undefined : (props.maxWidthAction ?? props.maxWidth)}>
+								})}>
 								{showFAProps && (
 									<FontAwesomeIcon
 										icon={faCog}
