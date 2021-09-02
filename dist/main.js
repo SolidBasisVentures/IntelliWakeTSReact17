@@ -1313,7 +1313,7 @@ const Dropdown = (props) => {
     }, []);
     if (!props.children && visibleDDActions.length === 0)
         return null;
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle'), { className: classes }),
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth'), { className: classes }),
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: !!props.nav || !!props.inNavbar
                 ? undefined
                 : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim(), classNameOverride: !!props.nav || !!props.inNavbar
@@ -1326,7 +1326,8 @@ const Dropdown = (props) => {
                 if (!isControlled) {
                     setIsOpen((prevState) => !prevState);
                 }
-            }, style: buttonStyle }, (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog })),
+            }, style: buttonStyle },
+            React__default['default'].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }), noTruncate: !props.maxWidth })),
         React__default['default'].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
                 'dropdown-menu-end': !!props.right

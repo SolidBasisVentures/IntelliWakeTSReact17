@@ -1,6 +1,6 @@
 import { ReactNode, ReactNodeArray } from 'react';
 interface IProps {
-    text: string | null | undefined;
+    text: ReactNode;
     prefix?: ReactNode | ReactNodeArray | string | boolean | null;
     suffix?: ReactNode | ReactNodeArray | string | boolean | null;
     className?: string;

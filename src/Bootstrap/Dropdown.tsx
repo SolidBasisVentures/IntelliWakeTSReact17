@@ -5,6 +5,7 @@ import {ClassNames, KEY_ESCAPE} from '../Functions'
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import {faCog} from '@fortawesome/pro-regular-svg-icons'
 import {DropdownItem} from './DropdownItem'
+import {EllipsesTruncate} from '../WebControls/EllipsesTruncate'
 
 export type Direction = 'up' | 'down' | 'left' | 'right'
 
@@ -156,7 +157,8 @@ export const Dropdown = (props: IWDropdownProps) => {
 				'color',
 				'outline',
 				'className',
-				'menuStyle'
+				'menuStyle',
+				'maxWidth'
 			)}
 			className={classes}>
 			<Button
@@ -188,7 +190,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				style={buttonStyle}
 				// ref={buttonRef}
 			>
-				{props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />}
+				<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} noTruncate={!props.maxWidth}/>
 			</Button>
 			<div
 				tabIndex={-1}
