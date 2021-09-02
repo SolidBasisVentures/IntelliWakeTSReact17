@@ -12,13 +12,14 @@ interface IProps {
 
 export const EllipsesTruncate = (props: IProps) => {
 	if (props.hidden || !props.text) return null
-
+	
 	return (
 		<>
 			{props.prefix}
 			<div
-				className={'w-100 py-0 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + (props.className ?? '')}
-				title={!!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text}>
+				className={'w-auto py-0 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + (props.className ?? '')}
+				title={!!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text}
+				style={{maxWidth: '100%'}}>
 				{props.text}
 			</div>
 			{props.suffix}
