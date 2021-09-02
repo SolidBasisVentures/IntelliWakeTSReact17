@@ -41,6 +41,8 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 	menuClassName?: string
 	noCaret?: boolean
 	menuStyle?: CSSProperties
+	maxWidth?: string
+	maxWidthAction?: string | false
 	ddActions?: IDDAction[] | (() => IDDAction[])
 }
 
@@ -52,47 +54,47 @@ export const Dropdown = (props: IWDropdownProps) => {
 			!props.ddActions
 				? []
 				: (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
-						(ddAction) => !ddAction.hidden
-				  ),
+					(ddAction) => !ddAction.hidden
+				),
 		[props.ddActions]
 	)
-
+	
 	const showFAProps = useMemo(() => !!visibleDDActions.find((ddAction) => !!ddAction.faProps), [visibleDDActions])
-
+	
 	const TagToUse = props.tag ?? !!props.inNavbar ? 'li' : ('div' as React.ReactType)
-
+	
 	const isControlled = props.isOpen !== undefined
-
+	
 	const actualIsOpen = isControlled ? !!props.isOpen : isOpen
-
+	
 	const externalClick = (e: any) => {
 		if (actualIsOpen) {
 			e.stopPropagation()
-
+			
 			if (!!props.toggle) {
 				props.toggle(e)
 			}
-
+			
 			if (!isControlled) {
 				setIsOpen(false)
 			}
 		}
 	}
-
+	
 	const externalEsc = (e: any) => {
 		if (e.keyCode === KEY_ESCAPE && actualIsOpen) {
 			e.stopPropagation()
-
+			
 			if (!!props.toggle) {
 				props.toggle(e)
 			}
-
+			
 			if (!isControlled) {
 				setIsOpen(false)
 			}
 		}
 	}
-
+	
 	useEffect(() => {
 		window.addEventListener('click', externalClick)
 		window.addEventListener('keydown', externalEsc)
@@ -101,7 +103,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 			window.removeEventListener('keydown', externalEsc)
 		}
 	})
-
+	
 	let classes = props.className ?? ''
 	if (!!props.direction) classes += ` drop${props.direction}`
 	classes +=
@@ -113,11 +115,24 @@ export const Dropdown = (props: IWDropdownProps) => {
 			'navbar-nav': !!props.inNavbar,
 			'nav-item': !!props.nav
 		})
-
+	
 	if (actualIsOpen) hasOpened.current = true
-
+	
+	const buttonStyle = useMemo<React.CSSProperties>(() => {
+		let items: React.CSSProperties = {}
+		
+		if (!!props.nav || !!props.inNavbar) {
+			items.background = 'none'
+			items.border = 'none'
+		}
+		
+		if (!!props.maxWidth) items.maxWidth = props.maxWidth
+		
+		return items
+	}, [])
+	
 	if (!props.children && visibleDDActions.length === 0) return null
-
+	
 	return (
 		<TagToUse
 			{...OmitProperty(
@@ -161,16 +176,16 @@ export const Dropdown = (props: IWDropdownProps) => {
 				}
 				onClick={(e: any) => {
 					// e.stopPropagation()
-
+					
 					if (!!props.toggle) {
 						props.toggle(e)
 					}
-
+					
 					if (!isControlled) {
 						setIsOpen((prevState) => !prevState)
 					}
 				}}
-				style={!!props.nav || !!props.inNavbar ? {background: 'none', border: 'none'} : undefined}
+				style={buttonStyle}
 				// ref={buttonRef}
 			>
 				{props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />}
@@ -183,11 +198,11 @@ export const Dropdown = (props: IWDropdownProps) => {
 				})} dropdown-menu ${props.menuClassName ?? ''}`.trim()}
 				onClick={(e: any) => {
 					e.stopPropagation()
-
+					
 					if (!!props.toggle) {
 						props.toggle(e)
 					}
-
+					
 					if (!isControlled) {
 						setIsOpen((prevState) => !prevState)
 					}
@@ -205,7 +220,9 @@ export const Dropdown = (props: IWDropdownProps) => {
 								disabled={!!ddAction.disabled || !ddAction.action}
 								divider={!!ddAction.divider}
 								header={!!ddAction.header}
-								onClick={() => (!!ddAction.action ? ddAction.action() : () => {})}>
+								onClick={() => (!!ddAction.action ? ddAction.action() : () => {
+								})}
+								maxWidth={props.maxWidthAction === false ? undefined : (props.maxWidthAction ?? props.maxWidth)}>
 								{showFAProps && (
 									<FontAwesomeIcon
 										icon={faCog}

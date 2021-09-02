@@ -1217,6 +1217,16 @@ const Container = (props) => {
         })}`.trim() }), props.children));
 };
 
+const EllipsesTruncate = (props) => {
+    var _a;
+    if (props.hidden || !props.text)
+        return null;
+    return (React__default['default'].createElement(React__default['default'].Fragment, null,
+        props.prefix,
+        React__default['default'].createElement("div", { className: 'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), title: !!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text }, props.text),
+        props.suffix));
+};
+
 const DropdownItem = (props) => {
     var _a, _b, _c;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : (!!props.href ? 'a' : 'div');
@@ -1230,9 +1240,10 @@ const DropdownItem = (props) => {
                 'active': !!props.active,
                 disabled: !!props.disabled
             });
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
-        React__default['default'].createElement(Spinner, { fixedWidth: true }),
-        " Loading...")))));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading', 'maxWidth'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined, maxWidth: props.maxWidth } }),
+        React__default['default'].createElement(EllipsesTruncate, { text: (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
+                React__default['default'].createElement(Spinner, { fixedWidth: true }),
+                " Loading..."))), noTruncate: !props.maxWidth })));
 };
 
 const Dropdown = (props) => {
@@ -1290,6 +1301,16 @@ const Dropdown = (props) => {
             });
     if (actualIsOpen)
         hasOpened.current = true;
+    const buttonStyle = React.useMemo(() => {
+        let items = {};
+        if (!!props.nav || !!props.inNavbar) {
+            items.background = 'none';
+            items.border = 'none';
+        }
+        if (!!props.maxWidth)
+            items.maxWidth = props.maxWidth;
+        return items;
+    }, []);
     if (!props.children && visibleDDActions.length === 0)
         return null;
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle'), { className: classes }),
@@ -1305,7 +1326,7 @@ const Dropdown = (props) => {
                 if (!isControlled) {
                     setIsOpen((prevState) => !prevState);
                 }
-            }, style: !!props.nav || !!props.inNavbar ? { background: 'none', border: 'none' } : undefined }, (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog })),
+            }, style: buttonStyle }, (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog })),
         React__default['default'].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
                 'dropdown-menu-end': !!props.right
@@ -1320,8 +1341,9 @@ const Dropdown = (props) => {
             }, style: (_j = props.menuStyle) !== null && _j !== void 0 ? _j : { maxHeight: '60vh' } }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
             visibleDDActions.map((ddAction, idx) => {
-                var _a;
-                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: () => (!!ddAction.action ? ddAction.action() : () => { }) },
+                var _a, _b;
+                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: () => (!!ddAction.action ? ddAction.action() : () => {
+                    }), maxWidth: props.maxWidthAction === false ? undefined : ((_b = props.maxWidthAction) !== null && _b !== void 0 ? _b : props.maxWidth) },
                     showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
                     ddAction.title));
             }))))));
@@ -2817,16 +2839,6 @@ const defaultRangeString = DateRangeToString(defaultRange);
 // 	showCaret: true,
 // 	borderless: false
 // } as Partial<IPropsDateRange>
-
-const EllipsesTruncate = (props) => {
-    var _a;
-    if (props.hidden || !props.text)
-        return null;
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        props.prefix,
-        React__default['default'].createElement("div", { className: 'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), title: !!props.noTruncate ? undefined : props.text }, props.text),
-        props.suffix));
-};
 
 const HTMLFromText = (props) => {
     return !!props.text ?

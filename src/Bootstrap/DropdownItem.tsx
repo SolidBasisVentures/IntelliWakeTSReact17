@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 import {Spinner} from '../WebControls/Spinner'
+import {EllipsesTruncate} from '../WebControls/EllipsesTruncate'
 
 export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElement>, 'ref'> {
 	disabled?: boolean
@@ -11,6 +12,7 @@ export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElemen
 	header?: boolean
 	loading?: boolean
 	active?: boolean
+	maxWidth?: string
 }
 
 export const DropdownItem = (props: IWDropdownItemProps) => {
@@ -40,16 +42,17 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 				'size',
 				'type',
 				'children',
-				'loading'
+				'loading',
+				'maxWidth'
 			)}
 			className={classes}
-			style={{cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined}}>
-			{props.children ??
+			style={{cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined, maxWidth: props.maxWidth}}>
+			<EllipsesTruncate text={props.children ??
 				(!!props.loading && (
 					<i className="text-muted">
 						<Spinner fixedWidth /> Loading...
 					</i>
-				))}
+				))} noTruncate={!props.maxWidth}/>
 		</TagToUse>
 	)
 }

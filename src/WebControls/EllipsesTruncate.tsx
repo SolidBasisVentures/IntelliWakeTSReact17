@@ -1,7 +1,7 @@
 import React, {ReactNode, ReactNodeArray} from 'react'
 
 interface IProps {
-	text: string | null | undefined
+	text: ReactNode
 	prefix?: ReactNode | ReactNodeArray | string | boolean | null
 	suffix?: ReactNode | ReactNodeArray | string | boolean | null
 	className?: string
@@ -18,7 +18,7 @@ export const EllipsesTruncate = (props: IProps) => {
 			{props.prefix}
 			<div
 				className={'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + (props.className ?? '')}
-				title={!!props.noTruncate ? undefined : props.text}>
+				title={!!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text}>
 				{props.text}
 			</div>
 			{props.suffix}
