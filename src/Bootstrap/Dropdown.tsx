@@ -177,13 +177,13 @@ export const Dropdown = (props: IWDropdownProps) => {
 				size={props.size}
 				outline={props.outline}
 				className={(props.allowWrap ? '' : 'text-nowrap ') +
-					!!props.nav || !!props.inNavbar
+				(!!props.nav || !!props.inNavbar
 						? undefined
-						: `${props.buttonClassName ?? ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+						: `${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim())
 				}
 				classNameOverride={
 					!!props.nav || !!props.inNavbar
-						? `text-start nav-link ${props.buttonClassName ?? ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+						? `text-start nav-link ${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()
 						: undefined
 				}
 				onClick={(e: any) => {

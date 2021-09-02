@@ -1322,10 +1322,10 @@ const Dropdown = (props) => {
         return null;
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: (props.allowWrap ? '' : 'text-nowrap ') +
-                !!props.nav || !!props.inNavbar
-                ? undefined
-                : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim(), classNameOverride: !!props.nav || !!props.inNavbar
-                ? `text-start nav-link ${(_f = props.buttonClassName) !== null && _f !== void 0 ? _f : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+                (!!props.nav || !!props.inNavbar
+                    ? undefined
+                    : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()), classNameOverride: !!props.nav || !!props.inNavbar
+                ? `text-start nav-link ${(_f = props.buttonClassName) !== null && _f !== void 0 ? _f : ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()
                 : undefined, onClick: (e) => {
                 // e.stopPropagation()
                 if (!!props.toggle) {
