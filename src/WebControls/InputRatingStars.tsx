@@ -64,7 +64,7 @@ export const InputRatingStars = <T, >(props: IIWRatingStarsProps<T>) => {
 	const buttonSize = useMemo<'sm' | 'lg'>(() => props.buttonSize ?? (['xs', 'sm', '1x'] as SizeProp[]).includes(iconSize) ? 'sm' : 'lg', [iconSize, props.buttonSize])
 	
 	return (
-		<ButtonGroup
+		<ButtonGroup className="inputRatingStars"
 			onMouseLeave={() => {
 				if (isMouseDown.current && localValue !== props.value) {
 					setLocalValue(props.value)
@@ -73,7 +73,7 @@ export const InputRatingStars = <T, >(props: IIWRatingStarsProps<T>) => {
 			{starValues.map(starValue => (
 				<Button
 					color='link'
-					className='px-1 py-0'
+					className='p-0'
 					key={starValue}
 					onMouseDown={e => {
 						isMouseDown.current = true

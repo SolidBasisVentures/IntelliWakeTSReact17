@@ -3275,11 +3275,11 @@ const InputRatingStars = (props) => {
     }, [editable, localValue, mouseEventValue]);
     const iconSize = React.useMemo(() => { var _a; return (_a = props.size) !== null && _a !== void 0 ? _a : 'lg'; }, [props.size]);
     const buttonSize = React.useMemo(() => { var _a; return ((_a = props.buttonSize) !== null && _a !== void 0 ? _a : ['xs', 'sm', '1x'].includes(iconSize)) ? 'sm' : 'lg'; }, [iconSize, props.buttonSize]);
-    return (React__default['default'].createElement(ButtonGroup, { onMouseLeave: () => {
+    return (React__default['default'].createElement(ButtonGroup, { className: "inputRatingStars", onMouseLeave: () => {
             if (isMouseDown.current && localValue !== props.value) {
                 setLocalValue(props.value);
             }
-        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: 'link', className: 'px-1 py-0', key: starValue, onMouseDown: e => {
+        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: 'link', className: 'p-0', key: starValue, onMouseDown: e => {
             isMouseDown.current = true;
             mouseEvent(e, starValue);
         }, size: buttonSize, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
