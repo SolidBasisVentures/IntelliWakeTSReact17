@@ -17,7 +17,7 @@ export const EllipsesTruncate = (props: IProps) => {
 		<>
 			{props.prefix}
 			<div
-				className={'w-100 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + (props.className ?? '')}
+				className={'w-100 py-0 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + (props.className ?? '')}
 				title={!!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text}>
 				{props.text}
 			</div>
