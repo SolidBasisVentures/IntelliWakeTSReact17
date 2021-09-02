@@ -44,6 +44,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 	menuStyle?: CSSProperties
 	maxWidth?: string
 	maxWidthAction?: string | false
+	allowWrap?: boolean
 	ddActions?: IDDAction[] | (() => IDDAction[])
 }
 
@@ -175,7 +176,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				block={props.block}
 				size={props.size}
 				outline={props.outline}
-				className={
+				className={(props.allowWrap ? '' : 'text-nowrap ') +
 					!!props.nav || !!props.inNavbar
 						? undefined
 						: `${props.buttonClassName ?? ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
@@ -199,7 +200,10 @@ export const Dropdown = (props: IWDropdownProps) => {
 				style={buttonStyle}
 				// ref={buttonRef}
 			>
-				<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} noTruncate={!props.maxWidth}/>
+				{!!props.maxWidth ?
+					<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} />
+					: (props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />)
+				}
 			</Button>
 			<div
 				tabIndex={-1}

@@ -1247,7 +1247,7 @@ const DropdownItem = (props) => {
 };
 
 const Dropdown = (props) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const hasOpened = React.useRef(false);
     const [isOpen, setIsOpen] = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false);
     const visibleDDActions = React.useMemo(() => !props.ddActions
@@ -1321,7 +1321,8 @@ const Dropdown = (props) => {
     if (!props.children && visibleDDActions.length === 0)
         return null;
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
-        React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: !!props.nav || !!props.inNavbar
+        React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: (props.allowWrap ? '' : 'text-nowrap ') +
+                !!props.nav || !!props.inNavbar
                 ? undefined
                 : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim(), classNameOverride: !!props.nav || !!props.inNavbar
                 ? `text-start nav-link ${(_f = props.buttonClassName) !== null && _f !== void 0 ? _f : ''} ${props.noCaret ? '' : 'dropdown-toggle'}`.trim()
@@ -1333,12 +1334,13 @@ const Dropdown = (props) => {
                 if (!isControlled) {
                     setIsOpen((prevState) => !prevState);
                 }
-            }, style: buttonStyle },
-            React__default['default'].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }), noTruncate: !props.maxWidth })),
+            }, style: buttonStyle }, !!props.maxWidth ?
+            React__default['default'].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }) })
+            : ((_h = props.buttonLabel) !== null && _h !== void 0 ? _h : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }))),
         React__default['default'].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
                 'dropdown-menu-end': !!props.right
-            })} dropdown-menu ${(_h = props.menuClassName) !== null && _h !== void 0 ? _h : ''}`.trim(), onClick: (e) => {
+            })} dropdown-menu ${(_j = props.menuClassName) !== null && _j !== void 0 ? _j : ''}`.trim(), onClick: (e) => {
                 e.stopPropagation();
                 if (!!props.toggle) {
                     props.toggle(e);
