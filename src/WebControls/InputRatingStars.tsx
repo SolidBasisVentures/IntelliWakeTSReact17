@@ -73,7 +73,7 @@ export const InputRatingStars = <T, >(props: IIWRatingStarsProps<T>) => {
 			{starValues.map(starValue => (
 				<Button
 					color='link'
-					className='p-0'
+					className='py-0'
 					key={starValue}
 					onMouseDown={e => {
 						isMouseDown.current = true

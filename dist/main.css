@@ -1904,6 +1904,11 @@ p {
   padding: 0.1em 0.2em;
 }
 
+.inputRatingStars button {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
 /* Legacy Bootstrap 4 */
 .pre-scrollable {
   max-height: 340px;
