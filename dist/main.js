@@ -4146,7 +4146,7 @@ const MasterDetailListGroup = (props) => {
                     prevListGroupItem = listGroupItem;
                     return (React__default['default'].createElement(React__default['default'].Fragment, { key: listGroupItem.key },
                         prefix,
-                        React__default['default'].createElement(MDLink, { hidden: listGroupItem.collapsed, tag: "li", id: listGroupItem.id, panel: listGroupItem.panelURLCalc, onClick: (_c = listGroupItem.linkClick) !== null && _c !== void 0 ? _c : undefined, className: ClassNames({
+                        React__default['default'].createElement(MDLink, { hidden: listGroupItem.collapsed, tag: "li", id: listGroupItem.id, panel: !listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined, onClick: (_c = listGroupItem.linkClick) !== null && _c !== void 0 ? _c : undefined, className: ClassNames({
                                 'list-group-item': true,
                                 'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
                                 'mt-4': prefix === ''

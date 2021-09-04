@@ -28,6 +28,7 @@ export interface IMasterDetailListGroupMDLink {
 	section?: string
 	sectionNode?: ReactNode
 	className?: string
+	plainText?: boolean
 }
 
 export interface IMasterDetailListGroupDetail {
@@ -141,7 +142,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 									hidden={listGroupItem.collapsed}
 									tag="li"
 									id={listGroupItem.id}
-									panel={listGroupItem.panelURLCalc}
+									panel={!listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined}
 									onClick={listGroupItem.linkClick ?? undefined}
 									className={
 										ClassNames({
