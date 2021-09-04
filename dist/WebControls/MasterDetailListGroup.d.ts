@@ -20,6 +20,7 @@ export interface IMasterDetailListGroupMDLink {
     section?: string;
     sectionNode?: ReactNode;
     className?: string;
+    plainText?: boolean;
 }
 export interface IMasterDetailListGroupDetail {
     panelTitle: string;

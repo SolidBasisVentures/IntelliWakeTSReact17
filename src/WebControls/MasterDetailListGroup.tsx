@@ -3,7 +3,7 @@ import React, {Dispatch, ReactNode, SetStateAction, useMemo} from 'react'
 import {IMasterDetailProps, MasterDetail, MDDetail, MDLink, MDMaster} from './MasterDetail'
 import {ToDigits, ToPascalCase} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
-import {TBadgeValues} from '../Bootstrap/ListGroupItem'
+import {ListGroupItem, TBadgeValues} from '../Bootstrap/ListGroupItem'
 import {BadgeItem} from '../Bootstrap/BadgeItem'
 import {ListGroup} from '../Bootstrap/ListGroup'
 import {ListGroupItemHeading} from '../Bootstrap/ListGroupItemHeading'
@@ -138,32 +138,56 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 						return (
 							<React.Fragment key={listGroupItem.key}>
 								{prefix}
-								<MDLink
-									hidden={listGroupItem.collapsed}
-									tag="li"
-									id={listGroupItem.id}
-									panel={!listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined}
-									onClick={listGroupItem.linkClick ?? undefined}
-									className={
-										ClassNames({
-											'list-group-item': true,
-											'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
-											'mt-4': prefix === ''
-										}) +
-										' ' +
-										(listGroupItem.className ?? '')
-									}>
-									{!!listGroupItem.faProps && <FontAwesomeIcon fixedWidth {...listGroupItem.faProps} />}
-									{listGroupItem.linkNode}
-									<BadgeItem badge={listGroupItem.badge} color={listGroupItem.badgeColor} />
-									{listGroupItem.counter !== undefined && (
-										<Badge
-											color={listGroupItem.counterColor}
-											className="float-end small text-white border-round ml-2">
-											{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) : <Spinner size="xs" />}
-										</Badge>
-									)}
-								</MDLink>
+								{listGroupItem.plainText ?
+									<ListGroupItem hidden={listGroupItem.collapsed} onClick={listGroupItem.linkClick ?? undefined}
+									               className={
+										               ClassNames({
+											               'list-group-item': true,
+											               'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
+											               'mt-4': prefix === ''
+										               }) +
+										               ' ' +
+										               (listGroupItem.className ?? '')
+									               }>
+										{!!listGroupItem.faProps && <FontAwesomeIcon fixedWidth {...listGroupItem.faProps} />}
+										{listGroupItem.linkNode}
+										<BadgeItem badge={listGroupItem.badge} color={listGroupItem.badgeColor} />
+										{listGroupItem.counter !== undefined && (
+											<Badge
+												color={listGroupItem.counterColor}
+												className="float-end small text-white border-round ml-2">
+												{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) : <Spinner size="xs" />}
+											</Badge>
+										)}
+									</ListGroupItem>
+									:
+									<MDLink
+										hidden={listGroupItem.collapsed}
+										tag="li"
+										id={listGroupItem.id}
+										panel={!listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined}
+										onClick={listGroupItem.linkClick ?? undefined}
+										className={
+											ClassNames({
+												'list-group-item': true,
+												'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
+												'mt-4': prefix === ''
+											}) +
+											' ' +
+											(listGroupItem.className ?? '')
+										}>
+										{!!listGroupItem.faProps && <FontAwesomeIcon fixedWidth {...listGroupItem.faProps} />}
+										{listGroupItem.linkNode}
+										<BadgeItem badge={listGroupItem.badge} color={listGroupItem.badgeColor} />
+										{listGroupItem.counter !== undefined && (
+											<Badge
+												color={listGroupItem.counterColor}
+												className="float-end small text-white border-round ml-2">
+												{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) : <Spinner size="xs" />}
+											</Badge>
+										)}
+									</MDLink>
+								}
 							</React.Fragment>
 						)
 					})}
