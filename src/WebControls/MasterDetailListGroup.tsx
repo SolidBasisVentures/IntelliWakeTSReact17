@@ -143,7 +143,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 									               className={
 										               ClassNames({
 											               'list-group-item': true,
-											               'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
+											               'list-group-item-action': !listGroupItem.plainText && (!!listGroupItem.mdDetail || !!listGroupItem.linkClick),
 											               'mt-4': prefix === ''
 										               }) +
 										               ' ' +
@@ -170,7 +170,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 										className={
 											ClassNames({
 												'list-group-item': true,
-												'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
+												'list-group-item-action': !listGroupItem.plainText && (!!listGroupItem.mdDetail || !!listGroupItem.linkClick),
 												'mt-4': prefix === ''
 											}) +
 											' ' +

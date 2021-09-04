@@ -4149,7 +4149,7 @@ const MasterDetailListGroup = (props) => {
                         listGroupItem.plainText ?
                             React__default['default'].createElement(ListGroupItem, { hidden: listGroupItem.collapsed, onClick: (_c = listGroupItem.linkClick) !== null && _c !== void 0 ? _c : undefined, className: ClassNames({
                                     'list-group-item': true,
-                                    'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
+                                    'list-group-item-action': !listGroupItem.plainText && (!!listGroupItem.mdDetail || !!listGroupItem.linkClick),
                                     'mt-4': prefix === ''
                                 }) +
                                     ' ' +
@@ -4161,7 +4161,7 @@ const MasterDetailListGroup = (props) => {
                             :
                                 React__default['default'].createElement(MDLink, { hidden: listGroupItem.collapsed, tag: "li", id: listGroupItem.id, panel: !listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined, onClick: (_e = listGroupItem.linkClick) !== null && _e !== void 0 ? _e : undefined, className: ClassNames({
                                         'list-group-item': true,
-                                        'list-group-item-action': !!listGroupItem.mdDetail || !!listGroupItem.linkClick,
+                                        'list-group-item-action': !listGroupItem.plainText && (!!listGroupItem.mdDetail || !!listGroupItem.linkClick),
                                         'mt-4': prefix === ''
                                     }) +
                                         ' ' +
