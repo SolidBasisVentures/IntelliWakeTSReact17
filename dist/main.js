@@ -1433,7 +1433,9 @@ const FieldSetRow = (props) => {
                         : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
                             ? 6
                             : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
-                                ? 4
+                                ? props.inputWidth === exports.EFieldRowInputWidth.Medium
+                                    ? 6
+                                    : 4
                                 : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
                                     ? props.inputWidth === exports.EFieldRowInputWidth.Medium
                                         ? 6
