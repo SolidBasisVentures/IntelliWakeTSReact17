@@ -4,6 +4,7 @@ import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 export enum EFieldSetGroupings {
 	Half,
 	Thirds,
+	TwoThirds,
 	QuartersEven,
 	QuartersSmallLabel,
 	LabelOver

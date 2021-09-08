@@ -44,6 +44,8 @@ export const FieldSetRow = (props: IProps) => {
 		const firstLabelSize =
 			fieldSetContext.groupings === EFieldSetGroupings.LabelOver
 				? 12
+				: fieldSetContext.groupings === EFieldSetGroupings.TwoThirds
+				? 8
 				: fieldSetContext.groupings === EFieldSetGroupings.Half
 				? 6
 				: fieldSetContext.groupings === EFieldSetGroupings.Thirds
