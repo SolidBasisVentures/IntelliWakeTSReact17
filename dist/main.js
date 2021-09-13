@@ -1363,9 +1363,10 @@ exports.EFieldSetGroupings = void 0;
 (function (EFieldSetGroupings) {
     EFieldSetGroupings[EFieldSetGroupings["Half"] = 0] = "Half";
     EFieldSetGroupings[EFieldSetGroupings["Thirds"] = 1] = "Thirds";
-    EFieldSetGroupings[EFieldSetGroupings["QuartersEven"] = 2] = "QuartersEven";
-    EFieldSetGroupings[EFieldSetGroupings["QuartersSmallLabel"] = 3] = "QuartersSmallLabel";
-    EFieldSetGroupings[EFieldSetGroupings["LabelOver"] = 4] = "LabelOver";
+    EFieldSetGroupings[EFieldSetGroupings["TwoThirds"] = 2] = "TwoThirds";
+    EFieldSetGroupings[EFieldSetGroupings["QuartersEven"] = 3] = "QuartersEven";
+    EFieldSetGroupings[EFieldSetGroupings["QuartersSmallLabel"] = 4] = "QuartersSmallLabel";
+    EFieldSetGroupings[EFieldSetGroupings["LabelOver"] = 5] = "LabelOver";
 })(exports.EFieldSetGroupings || (exports.EFieldSetGroupings = {}));
 const initialFieldSetContext = {
     hidden: false,
@@ -1417,13 +1418,15 @@ const FieldSetRow = (props) => {
         const breakAt = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver ? 'xs' : fieldSetContext.breakAt;
         const firstLabelSize = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver
             ? 12
-            : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
-                ? 6
-                : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
-                    ? 4
-                    : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
-                        ? 3
-                        : 2;
+            : fieldSetContext.groupings === exports.EFieldSetGroupings.TwoThirds
+                ? 8
+                : fieldSetContext.groupings === exports.EFieldSetGroupings.Half
+                    ? 6
+                    : fieldSetContext.groupings === exports.EFieldSetGroupings.Thirds
+                        ? 4
+                        : fieldSetContext.groupings === exports.EFieldSetGroupings.QuartersEven
+                            ? 3
+                            : 2;
         const firstFieldSize = fieldSetContext.groupings === exports.EFieldSetGroupings.LabelOver
             ? 12
             : !props.inputThird
@@ -3304,10 +3307,16 @@ const InputRatingStars = (props) => {
                 setLocalValue(props.value);
             }
         } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: 'link', className: 'py-0', key: starValue, onMouseDown: e => {
-            isMouseDown.current = true;
-            mouseEvent(e, starValue);
-        }, size: buttonSize, onMouseMove: e => mouseEvent(e, starValue), onMouseUp: e => {
-            if (props.changeValue) {
+            if (editable) {
+                isMouseDown.current = true;
+                mouseEvent(e, starValue);
+            }
+        }, size: buttonSize, onMouseMove: e => {
+            if (editable) {
+                mouseEvent(e, starValue);
+            }
+        }, onMouseUp: e => {
+            if (editable && props.changeValue) {
                 const newValue = mouseEventValue(e, starValue);
                 if (props.value !== newValue)
                     props.changeValue(newValue, props.name);

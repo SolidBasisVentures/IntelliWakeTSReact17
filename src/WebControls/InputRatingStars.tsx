@@ -76,13 +76,19 @@ export const InputRatingStars = <T, >(props: IIWRatingStarsProps<T>) => {
 					className='py-0'
 					key={starValue}
 					onMouseDown={e => {
-						isMouseDown.current = true
-						mouseEvent(e, starValue)
+						if (editable) {
+							isMouseDown.current = true
+							mouseEvent(e, starValue)
+						}
 					}}
 					size={buttonSize}
-					onMouseMove={e => mouseEvent(e, starValue)}
+					onMouseMove={e => {
+						if (editable) {
+							mouseEvent(e, starValue)
+						}
+					}}
 					onMouseUp={e => {
-						if (props.changeValue) {
+						if (editable && props.changeValue) {
 							const newValue = mouseEventValue(e, starValue)
 							if (props.value !== newValue) props.changeValue(newValue, props.name)
 						}

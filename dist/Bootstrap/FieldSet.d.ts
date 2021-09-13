@@ -2,9 +2,10 @@ import React, { ReactNode, ReactNodeArray } from 'react';
 export declare enum EFieldSetGroupings {
     Half = 0,
     Thirds = 1,
-    QuartersEven = 2,
-    QuartersSmallLabel = 3,
-    LabelOver = 4
+    TwoThirds = 2,
+    QuartersEven = 3,
+    QuartersSmallLabel = 4,
+    LabelOver = 5
 }
 export declare type TFieldSetBreakAt = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export interface IFieldSetProps {
