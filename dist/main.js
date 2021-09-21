@@ -2819,6 +2819,16 @@ const defaultRange = {
     end: moment__default['default']().endOf('month')
 };
 /**
+ * Default to last month
+ *
+ * Use DateRangeToString(defaultRange) to get a string of it
+ */
+const defaultRangeLastMonth = {
+    name: 'Last Month',
+    start: moment__default['default']().subtract(1, 'month').startOf('month'),
+    end: moment__default['default']().subtract(1, 'month').endOf('month')
+};
+/**
  * Default to this week
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it
@@ -4510,6 +4520,7 @@ exports.checkDeps = checkDeps;
 exports.customRangeName = customRangeName;
 exports.defaultRange = defaultRange;
 exports.defaultRangeLast4Weeks = defaultRangeLast4Weeks;
+exports.defaultRangeLastMonth = defaultRangeLastMonth;
 exports.defaultRangeString = defaultRangeString;
 exports.defaultRangeStrings = defaultRangeStrings;
 exports.defaultRangeStringsReport = defaultRangeStringsReport;

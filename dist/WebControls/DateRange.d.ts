@@ -52,6 +52,12 @@ export declare const defaultRangeStringsReportQuarterly: IDateRangeString[];
  */
 export declare const defaultRange: IDateRange;
 /**
+ * Default to last month
+ *
+ * Use DateRangeToString(defaultRange) to get a string of it
+ */
+export declare const defaultRangeLastMonth: IDateRange;
+/**
  * Default to this week
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it

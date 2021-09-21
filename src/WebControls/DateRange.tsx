@@ -468,6 +468,17 @@ export const defaultRange: IDateRange = {
 }
 
 /**
+ * Default to last month
+ *
+ * Use DateRangeToString(defaultRange) to get a string of it
+ */
+export const defaultRangeLastMonth: IDateRange = {
+	name: 'Last Month',
+	start: moment().subtract(1, 'month').startOf('month'),
+	end: moment().subtract(1, 'month').endOf('month')
+}
+
+/**
  * Default to this week
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it
