@@ -60,7 +60,9 @@ export const HasPathComponent = (search: string): boolean => {
 	return pathName.indexOf(searchCalc) >= 0
 }
 
-export const GetPathComponentAfter = (search: string): any | undefined => {
+export const GetPathComponentAfter = (search: string | undefined | null): string | undefined => {
+	if (!search) return undefined
+	
 	let searchCalc = search.toLowerCase()
 
 	if (!searchCalc.endsWith('/')) {
@@ -81,7 +83,36 @@ export const GetPathComponentAfter = (search: string): any | undefined => {
 	return undefined
 }
 
-export const GetPathThrough = (search: string): any | undefined => {
+export const GetPathComponentAt = (search: string | undefined | null, toEnd = true): string | undefined => {
+	if (!search) return undefined
+	
+	let searchCalc = search.toLowerCase()
+
+	if (!searchCalc.startsWith('/')) {
+		searchCalc = '/' + searchCalc
+	}
+
+	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
+
+	if (startPos >= 0) {
+		let result = window.location.pathname.substr(startPos + 1)
+		
+		if (toEnd) return result
+		
+		const slashPos = result.indexOf('/')
+		if (slashPos >= 0) {
+			return result.substring(0, slashPos)
+		} else {
+			return result
+		}
+	}
+	
+	return undefined
+}
+
+export const GetPathThrough = (search: string | undefined | null): string | undefined => {
+	if (!search) return undefined
+	
 	let searchCalc = search.toLowerCase()
 
 	const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/')

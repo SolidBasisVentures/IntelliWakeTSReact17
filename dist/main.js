@@ -587,6 +587,8 @@ const HasPathComponent = (search) => {
     return pathName.indexOf(searchCalc) >= 0;
 };
 const GetPathComponentAfter = (search) => {
+    if (!search)
+        return undefined;
     let searchCalc = search.toLowerCase();
     if (!searchCalc.endsWith('/')) {
         searchCalc += '/';
@@ -604,7 +606,31 @@ const GetPathComponentAfter = (search) => {
     }
     return undefined;
 };
+const GetPathComponentAt = (search, toEnd = true) => {
+    if (!search)
+        return undefined;
+    let searchCalc = search.toLowerCase();
+    if (!searchCalc.startsWith('/')) {
+        searchCalc = '/' + searchCalc;
+    }
+    const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc);
+    if (startPos >= 0) {
+        let result = window.location.pathname.substr(startPos + 1);
+        if (toEnd)
+            return result;
+        const slashPos = result.indexOf('/');
+        if (slashPos >= 0) {
+            return result.substring(0, slashPos);
+        }
+        else {
+            return result;
+        }
+    }
+    return undefined;
+};
 const GetPathThrough = (search) => {
+    if (!search)
+        return undefined;
     let searchCalc = search.toLowerCase();
     const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/');
     if (startPosSlash >= 0) {
@@ -4377,6 +4403,7 @@ exports.FormGroup = FormGroup;
 exports.FormatValue = FormatValue;
 exports.GetOrientation = GetOrientation;
 exports.GetPathComponentAfter = GetPathComponentAfter;
+exports.GetPathComponentAt = GetPathComponentAt;
 exports.GetPathThrough = GetPathThrough;
 exports.HTMLFromText = HTMLFromText;
 exports.HandleChangeValue = HandleChangeValue;

@@ -22,8 +22,9 @@ export declare type TClassNames = {
 };
 export declare const ClassNames: (classes: TClassNames) => string;
 export declare const HasPathComponent: (search: string) => boolean;
-export declare const GetPathComponentAfter: (search: string) => any | undefined;
-export declare const GetPathThrough: (search: string) => any | undefined;
+export declare const GetPathComponentAfter: (search: string | undefined | null) => string | undefined;
+export declare const GetPathComponentAt: (search: string | undefined | null, toEnd?: boolean) => string | undefined;
+export declare const GetPathThrough: (search: string | undefined | null) => string | undefined;
 export declare const CaptureGPS: () => Promise<GeolocationPosition | null>;
 export declare const DownloadBase64Data: (fileName: string, base64: string, type: string) => void;
 export declare const CopyRefToClipboard: (ref: any, tryFormatted?: boolean) => boolean;
