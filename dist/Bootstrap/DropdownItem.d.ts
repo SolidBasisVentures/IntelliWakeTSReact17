@@ -7,5 +7,6 @@ export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElemen
     header?: boolean;
     loading?: boolean;
     active?: boolean;
+    noTruncate?: boolean;
 }
 export declare const DropdownItem: (props: IWDropdownItemProps) => JSX.Element;

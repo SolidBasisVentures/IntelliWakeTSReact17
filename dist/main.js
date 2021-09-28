@@ -1254,7 +1254,7 @@ const EllipsesTruncate = (props) => {
 };
 
 const DropdownItem = (props) => {
-    var _a, _b, _c;
+    var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : (!!props.href ? 'a' : 'div');
     let classes = (_b = props.className) !== null && _b !== void 0 ? _b : '';
     classes +=
@@ -1266,10 +1266,11 @@ const DropdownItem = (props) => {
                 'active': !!props.active,
                 disabled: !!props.disabled
             });
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }),
-        React__default['default'].createElement(EllipsesTruncate, { text: (_c = props.children) !== null && _c !== void 0 ? _c : (!!props.loading && (React__default['default'].createElement("i", { className: "text-muted" },
-                React__default['default'].createElement(Spinner, { fixedWidth: true }),
-                " Loading..."))) })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading', 'noTruncate'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), !!props.loading ? (React__default['default'].createElement("i", { className: 'text-muted' },
+        React__default['default'].createElement(Spinner, { fixedWidth: true }),
+        " Loading...")) : !!props.noTruncate ?
+        props.children :
+        React__default['default'].createElement(EllipsesTruncate, { text: props.children })));
 };
 
 const Dropdown = (props) => {

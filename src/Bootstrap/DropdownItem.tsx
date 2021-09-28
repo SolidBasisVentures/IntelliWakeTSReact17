@@ -42,7 +42,8 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 				'size',
 				'type',
 				'children',
-				'loading'
+				'loading',
+				'noTruncate'
 			)}
 			className={classes}
 			style={{cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined}}>
