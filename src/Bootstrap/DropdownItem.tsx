@@ -12,11 +12,12 @@ export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElemen
 	header?: boolean
 	loading?: boolean
 	active?: boolean
+	noTruncate?: boolean
 }
 
 export const DropdownItem = (props: IWDropdownItemProps) => {
 	const TagToUse = props.tag ?? (!!props.href ? ('a' as React.ReactType) : ('div' as React.ReactType))
-
+	
 	let classes = props.className ?? ''
 	classes +=
 		' ' +
@@ -27,7 +28,7 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 			'active': !!props.active,
 			disabled: !!props.disabled
 		})
-
+	
 	return (
 		<TagToUse
 			{...OmitProperty(
@@ -45,12 +46,13 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 			)}
 			className={classes}
 			style={{cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined}}>
-			<EllipsesTruncate text={props.children ??
-				(!!props.loading && (
-					<i className="text-muted">
-						<Spinner fixedWidth /> Loading...
-					</i>
-				))}/>
+			{!!props.loading ? (
+				<i className='text-muted'>
+					<Spinner fixedWidth /> Loading...
+				</i>
+			) : !!props.noTruncate ?
+				props.children :
+				<EllipsesTruncate text={props.children} />}
 		</TagToUse>
 	)
 }
