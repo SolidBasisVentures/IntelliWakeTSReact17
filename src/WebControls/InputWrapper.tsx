@@ -89,7 +89,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 					</Link>
 				) : (
 					<div
-						className={'form-control-plaintext' + (!!props.plainOnClick ? ' cursor-pointer' : '')}
+						className={'form-control-plaintext' + (!!props.plainOnClick ? ' hoverAction cursor-pointer' : '')}
 						{...props.plainTextProps}
 						onClick={() => {
 							if (!!props.plainOnClick) props.plainOnClick()
