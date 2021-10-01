@@ -1167,7 +1167,7 @@ const CardGroup = (props) => {
 const CardHeader = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-header ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'color'), { className: `card-header ${!!props.color ? 'alert-' + props.color : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardText = (props) => {
@@ -3079,7 +3079,7 @@ const InputWrapper = (props) => {
     // noinspection PointlessBooleanExpressionJS
     return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' }, props.plainTextProps),
-            React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
+            React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' hoverAction cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
             if (!!props.plainOnClick)
                 props.plainOnClick();
         } }),
