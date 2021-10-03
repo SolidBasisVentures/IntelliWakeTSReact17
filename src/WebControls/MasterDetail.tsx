@@ -7,6 +7,7 @@ import {RandomString, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundat
 import {StyleControl} from './StyleControl'
 import {TBadgeValues} from '../Bootstrap/ListGroupItem'
 import {BadgeItem} from '../Bootstrap/BadgeItem'
+import moment from 'moment-timezone'
 
 export interface MenuBackItem {
 	menuBackActive: boolean
@@ -55,6 +56,7 @@ export interface IMasterDetailProps {
 }
 
 export const MasterDetail = (props: IMasterDetailProps) => {
+	const lastRedirectTS = useRef<number | null>(null)
 	const mdContextParent_RAW = useContext(MDContext)
 
 	const mdContextParent = mdContextParent_RAW.baseFullPath ? mdContextParent_RAW : undefined
@@ -82,7 +84,15 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 		previousDashboardLastURL &&
 		previousDashboardLastURL !== window.location.pathname
 	) {
-		return <Redirect to={previousDashboardLastURL} />
+		const currentTS = moment().valueOf()
+		
+		if (!lastRedirectTS.current || (currentTS - lastRedirectTS.current) > 2000) {
+			lastRedirectTS.current = currentTS
+			return <Redirect to={previousDashboardLastURL} />
+		} else {
+			window.sessionStorage.removeItem(basePath + '-LastURL')
+			return <Redirect to={basePath} />
+		}
 	} else {
 		if (props.rememberLast) {
 			window.sessionStorage.setItem(basePath + '-LastURL', window.location.pathname)
