@@ -1131,7 +1131,10 @@ const BreadCrumbItem = (props) => {
 const Card = React.forwardRef((props, ref) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim(), ref: ref }));
+    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'fillHeight', 'fillHeightScroll'), { className: `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} card ${ClassNames({
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
+        })}`.trim(), ref: ref }));
 });
 
 const CardBody = (props) => {
@@ -1143,13 +1146,19 @@ const CardBody = (props) => {
 const CardColumns = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-columns ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'fillHeight', 'fillHeightScroll'), { className: `card-columns ${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${ClassNames({
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
+        })}`.trim() })));
 };
 
 const CardDeck = (props) => {
     var _a, _b, _c, _d, _e;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'breakAt', 'smallRows', 'largeRows'), { className: `card-deck ${!props.breakAt ? `row-cols-${(_b = props.smallRows) !== null && _b !== void 0 ? _b : 'auto'}` : `row-cols-${props.breakAt}-${(_c = props.largeRows) !== null && _c !== void 0 ? _c : 'auto'} row-cols-${(_d = props.smallRows) !== null && _d !== void 0 ? _d : 'auto'}`} row ${(_e = props.className) !== null && _e !== void 0 ? _e : ''}`.trim() })));
+    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'breakAt', 'smallRows', 'largeRows', 'fillHeight', 'fillHeightScroll'), { className: `card-deck ${!props.breakAt ? `row-cols-${(_b = props.smallRows) !== null && _b !== void 0 ? _b : 'auto'}` : `row-cols-${props.breakAt}-${(_c = props.largeRows) !== null && _c !== void 0 ? _c : 'auto'} row-cols-${(_d = props.smallRows) !== null && _d !== void 0 ? _d : 'auto'}`} row ${(_e = props.className) !== null && _e !== void 0 ? _e : ''} ${ClassNames({
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
+        })}`.trim() })));
 };
 
 const CardFooter = (props) => {
@@ -1223,7 +1232,10 @@ const Col = (props) => {
     classes += ApplyColumnProp('md', props.md);
     classes += ApplyColumnProp('lg', props.lg);
     classes += ApplyColumnProp('xl', props.xl);
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children'), { className: classes.trim() }), props.children));
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${classes.trim()} ${ClassNames({
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
+        })}`.trim() }), props.children));
 };
 
 const Collapse = (props) => {
@@ -1237,9 +1249,11 @@ const Collapse = (props) => {
 
 const Container = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             container: !props.fluid,
-            'container-fluid': !!props.fluid
+            'container-fluid': !!props.fluid,
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim() }), props.children));
 };
 
@@ -1401,7 +1415,9 @@ const initialFieldSetContext = {
     groupings: exports.EFieldSetGroupings.Half,
     uuid: intelliwaketsfoundation.RandomString(5),
     condensed: false,
-    fluid: false
+    fluid: false,
+    fillHeight: false,
+    fillHeightScroll: false
 };
 const FieldSetContext = React.createContext(initialFieldSetContext);
 const FieldSet = (props) => {
@@ -1414,18 +1430,25 @@ const FieldSet = (props) => {
             groupings: (_c = props.groupings) !== null && _c !== void 0 ? _c : initialFieldSetContext.groupings,
             condensed: (_d = props.condensed) !== null && _d !== void 0 ? _d : initialFieldSetContext.condensed,
             fluid: (_e = props.fluid) !== null && _e !== void 0 ? _e : initialFieldSetContext.fluid,
-            uuid: intelliwaketsfoundation.RandomString(5)
+            uuid: intelliwaketsfoundation.RandomString(5),
+            fillHeight: !!props.fillHeight,
+            fillHeightScroll: !!props.fillHeightScroll
         });
     }, [props]);
-    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'}`.trim(), hidden: props.hidden },
+    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'} ${ClassNames({
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
+        })}`.trim(), hidden: props.hidden },
         React__default['default'].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
 };
 
 const Row = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             row: true,
-            'no-gutters': !!props.noGutters
+            'no-gutters': !!props.noGutters,
+            'fill-height': !!props.fillHeight,
+            'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim() }), props.children));
 };
 
@@ -3973,6 +3996,7 @@ const initialMDContext = {
 const MDContext = React__default['default'].createContext(initialMDContext);
 const MasterDetail = (props) => {
     var _a, _b, _c;
+    const lastRedirectTS = React.useRef(null);
     const mdContextParent_RAW = React.useContext(MDContext);
     const mdContextParent = mdContextParent_RAW.baseFullPath ? mdContextParent_RAW : undefined;
     // const basePath = mdContextParent_RAW.baseFullPath ?
@@ -3995,7 +4019,15 @@ const MasterDetail = (props) => {
         !GetPathComponentAfter(basePath) &&
         previousDashboardLastURL &&
         previousDashboardLastURL !== window.location.pathname) {
-        return React__default['default'].createElement(reactRouterDom.Redirect, { to: previousDashboardLastURL });
+        const currentTS = moment__default['default']().valueOf();
+        if (!lastRedirectTS.current || (currentTS - lastRedirectTS.current) > 2000) {
+            lastRedirectTS.current = currentTS;
+            return React__default['default'].createElement(reactRouterDom.Redirect, { to: previousDashboardLastURL });
+        }
+        else {
+            window.sessionStorage.removeItem(basePath + '-LastURL');
+            return React__default['default'].createElement(reactRouterDom.Redirect, { to: basePath });
+        }
     }
     else {
         if (props.rememberLast) {

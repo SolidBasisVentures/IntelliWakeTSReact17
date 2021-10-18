@@ -1,5 +1,6 @@
 import React, {createContext, ReactNode, ReactNodeArray, useMemo} from 'react'
 import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
+import {ClassNames} from '../Functions'
 
 export enum EFieldSetGroupings {
 	Half,
@@ -20,6 +21,8 @@ export interface IFieldSetProps {
 	hidden?: boolean
 	condensed?: boolean
 	fluid?: boolean
+	fillHeight?: boolean
+	fillHeightScroll?: boolean
 }
 
 interface IFieldSetContext extends Required<Omit<IFieldSetProps, 'children' | 'className'>> {
@@ -32,7 +35,9 @@ const initialFieldSetContext: IFieldSetContext = {
 	groupings: EFieldSetGroupings.Half,
 	uuid: RandomString(5),
 	condensed: false,
-	fluid: false
+	fluid: false,
+	fillHeight: false,
+	fillHeightScroll: false
 }
 
 export const FieldSetContext = createContext<IFieldSetContext>(initialFieldSetContext)
@@ -45,16 +50,21 @@ export const FieldSet = (props: IFieldSetProps) => {
 			groupings: props.groupings ?? initialFieldSetContext.groupings,
 			condensed: props.condensed ?? initialFieldSetContext.condensed,
 			fluid: props.fluid ?? initialFieldSetContext.fluid,
-			uuid: RandomString(5)
+			uuid: RandomString(5),
+			fillHeight: !!props.fillHeight,
+			fillHeightScroll: !!props.fillHeightScroll
 		}),
 		[props]
 	)
-
+	
 	return (
 		<fieldset
 			className={`${props.className ?? ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${
 				props.condensed ? 'form-condensed p-1' : 'p-3'
-			}`.trim()}
+			} ${ClassNames({
+				'fill-height': !!props.fillHeight,
+				'fill-height-scroll': !!props.fillHeightScroll
+			})}`.trim()}
 			hidden={props.hidden}>
 			<FieldSetContext.Provider value={contextProps}>{props.children}</FieldSetContext.Provider>
 		</fieldset>
