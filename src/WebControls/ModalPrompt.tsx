@@ -16,6 +16,7 @@ export interface IModalPromptResponse {
 export type TModalPromptResponse = null | IModalPromptResponse | IModalPromptResponse[]
 
 export interface IModalPromptProps {
+	size?: 'sm' | 'lg' | 'xl'
 	title?: ReactNode
 	messageBody?: ReactNode
 	variables?: TVariables
@@ -109,7 +110,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 	}
 	
 	return (
-		<Modal isOpen={isOpen} toggle={() => dismiss(true)}>
+		<Modal isOpen={isOpen} toggle={() => dismiss(true)} size={props.size}>
 			<ModalHeader
 				className={'alert-' + (props.color ?? 'primary')}>
 				{title}

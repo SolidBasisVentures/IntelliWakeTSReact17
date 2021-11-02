@@ -2049,7 +2049,7 @@ const ModalPrompt = (props) => {
             dismiss(false);
         }
     };
-    return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true) },
+    return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true), size: props.size },
         React__default['default'].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
         !!messageBody && React__default['default'].createElement(ModalBody, null, messageBody),
         React__default['default'].createElement(ModalFooter, null,

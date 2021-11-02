@@ -8,6 +8,7 @@ export interface IModalPromptResponse {
 }
 export declare type TModalPromptResponse = null | IModalPromptResponse | IModalPromptResponse[];
 export interface IModalPromptProps {
+    size?: 'sm' | 'lg' | 'xl';
     title?: ReactNode;
     messageBody?: ReactNode;
     variables?: TVariables;
