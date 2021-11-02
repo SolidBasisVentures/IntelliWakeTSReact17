@@ -16,6 +16,8 @@ export interface IFieldSetProps {
     hidden?: boolean;
     condensed?: boolean;
     fluid?: boolean;
+    fillHeight?: boolean;
+    fillHeightScroll?: boolean;
 }
 interface IFieldSetContext extends Required<Omit<IFieldSetProps, 'children' | 'className'>> {
     uuid: string;

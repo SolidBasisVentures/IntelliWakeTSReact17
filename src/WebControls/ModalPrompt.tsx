@@ -1,10 +1,10 @@
-import React, {ReactNode, useCallback, useMemo} from 'react'
+import React, {ReactNode, useCallback, useEffect, useMemo} from 'react'
 import {EvaluateString, TVariables} from '@solidbasisventures/intelliwaketsfoundation'
 import {Button} from '../Bootstrap/Button'
-import { Modal } from '../Bootstrap/Modal'
-import { ModalHeader } from '../Bootstrap/ModalHeader'
-import { ModalBody } from '../Bootstrap/ModalBody'
-import { ModalFooter } from '../Bootstrap/ModalFooter'
+import {Modal} from '../Bootstrap/Modal'
+import {ModalHeader} from '../Bootstrap/ModalHeader'
+import {ModalBody} from '../Bootstrap/ModalBody'
+import {ModalFooter} from '../Bootstrap/ModalFooter'
 
 export interface IModalPromptResponse {
 	label: ReactNode
@@ -31,6 +31,7 @@ export interface IModalPromptProps {
 	dismiss?: (nullValue: null, canceled: boolean) => void
 	hidden?: boolean
 	promptOnly?: boolean
+	autoFocusElement?: HTMLElement
 }
 
 /**
@@ -52,26 +53,26 @@ export interface IModalPromptProps {
 export const ModalPrompt = (props: IModalPromptProps) => {
 	const promptResponsesAsArray = useMemo(() => {
 		if (props.promptResponses === null || props.promptResponses === undefined) return [] as IModalPromptResponse[]
-
+		
 		if (props.promptResponses.constructor === Array) {
 			return props.promptResponses as IModalPromptResponse[]
 		} else {
 			return [props.promptResponses] as IModalPromptResponse[]
 		}
 	}, [props.promptResponses])
-
+	
 	const title = useMemo(() => {
 		if (typeof props.title !== 'string' || !props.variables) return props.title
-
+		
 		return EvaluateString(props.title, props.variables)
 	}, [props.title, props.variables])
-
+	
 	const messageBody = useMemo(() => {
 		if (typeof props.messageBody !== 'string' || !props.variables) return props.messageBody
-
+		
 		return EvaluateString(props.messageBody, props.variables)
 	}, [props.messageBody, props.variables])
-
+	
 	const isOpen = useMemo(
 		() =>
 			(!!props.promptOnly ||
@@ -80,7 +81,17 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 			!props.hidden,
 		[props.title, props.messageBody, props.promptResponses, props.okLabel, props.okAction, props.hidden]
 	)
-
+	
+	useEffect(() => {
+		if (isOpen && !!props.autoFocusElement) {
+			setTimeout(() => {
+				if (isOpen && !!props.autoFocusElement) {
+					props.autoFocusElement.focus()
+				}
+			}, 250)
+		}
+	}, [isOpen])
+	
 	const dismiss = useCallback(
 		(canceled: boolean) => {
 			if (!!props.dismiss) props.dismiss(null, canceled)
@@ -88,14 +99,14 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 		},
 		[props.dismiss, props.cancelAction]
 	)
-
+	
 	const okAction = () => {
 		!!props.okAction && props.okAction()
 		dismiss(false)
 	}
-
+	
 	return (
-		<Modal isOpen={isOpen} toggle={() => dismiss(true)} >
+		<Modal isOpen={isOpen} toggle={() => dismiss(true)}>
 			<ModalHeader
 				className={'alert-' + (props.color ?? 'primary')}>
 				{title}
@@ -103,7 +114,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 			{!!messageBody && <ModalBody>{messageBody}</ModalBody>}
 			<ModalFooter>
 				<Button
-					type="button"
+					type='button'
 					onClick={() => dismiss(true)}
 					outline={props.cancelOutline}
 					color={
@@ -113,7 +124,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 							: 'link')
 					}>
 					{props.cancelLabel ??
-						(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')}
+					(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')}
 				</Button>
 				{promptResponsesAsArray.map((promptResponse, idx) => (
 					<Button
@@ -124,7 +135,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 						}}
 						outline={promptResponse.outline}
 						color={promptResponse.color ?? props.color ?? 'primary'}
-						className="ml-1">
+						className='ml-1'>
 						{promptResponse.label}
 					</Button>
 				))}
@@ -132,9 +143,9 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 					<Button
 						onClick={okAction}
 						color={props.color ?? 'primary'}
-						className="ml-1"
+						className='ml-1'
 						// onKeyPress={okKeyPress}
-						autoFocus
+						autoFocus={!props.autoFocusElement}
 						tabIndex={0}>
 						{props.okLabel}
 					</Button>

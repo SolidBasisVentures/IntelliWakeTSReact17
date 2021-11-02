@@ -6,5 +6,7 @@ export interface IIWColProps extends React.HTMLProps<HTMLDivElement> {
     md?: IWColumnProps;
     lg?: IWColumnProps;
     xl?: IWColumnProps;
+    fillHeight?: boolean;
+    fillHeightScroll?: boolean;
 }
 export declare const Col: (props: IIWColProps) => JSX.Element;

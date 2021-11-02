@@ -2028,6 +2028,15 @@ const ModalPrompt = (props) => {
         (props.promptResponses !== null && props.promptResponses !== undefined) ||
         (!!props.okLabel && !!props.okAction)) &&
         !props.hidden, [props.title, props.messageBody, props.promptResponses, props.okLabel, props.okAction, props.hidden]);
+    React.useEffect(() => {
+        if (isOpen && !!props.autoFocusElement) {
+            setTimeout(() => {
+                if (isOpen && !!props.autoFocusElement) {
+                    props.autoFocusElement.focus();
+                }
+            }, 250);
+        }
+    }, [isOpen]);
     const dismiss = React.useCallback((canceled) => {
         if (!!props.dismiss)
             props.dismiss(null, canceled);
@@ -2042,7 +2051,7 @@ const ModalPrompt = (props) => {
         React__default['default'].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
         !!messageBody && React__default['default'].createElement(ModalBody, null, messageBody),
         React__default['default'].createElement(ModalFooter, null,
-            React__default['default'].createElement(Button, { type: "button", onClick: () => dismiss(true), outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+            React__default['default'].createElement(Button, { type: 'button', onClick: () => dismiss(true), outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
                     ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary'
                     : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
             promptResponsesAsArray.map((promptResponse, idx) => {
@@ -2050,11 +2059,11 @@ const ModalPrompt = (props) => {
                 return (React__default['default'].createElement(Button, { key: idx, onClick: () => {
                         promptResponse.action();
                         dismiss(false);
-                    }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', className: "ml-1" }, promptResponse.label));
+                    }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', className: 'ml-1' }, promptResponse.label));
             }),
-            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(Button, { onClick: okAction, color: (_e = props.color) !== null && _e !== void 0 ? _e : 'primary', className: "ml-1", 
+            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(Button, { onClick: okAction, color: (_e = props.color) !== null && _e !== void 0 ? _e : 'primary', className: 'ml-1', 
                 // onKeyPress={okKeyPress}
-                autoFocus: true, tabIndex: 0 }, props.okLabel)))));
+                autoFocus: !props.autoFocusElement, tabIndex: 0 }, props.okLabel)))));
 };
 
 const Tab = (props) => {
