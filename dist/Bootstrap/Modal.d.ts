@@ -10,6 +10,7 @@ export interface IWModalProps {
     body?: ReactNode;
     dialogStyle?: CSSProperties;
     dialogClassName?: string;
+    contentStyle?: CSSProperties;
     bodyStyle?: CSSProperties;
     bodyClassName?: string;
     bodyContainerFormSubmit?: boolean | string;

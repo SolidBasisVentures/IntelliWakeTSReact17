@@ -1782,7 +1782,7 @@ const Modal = (props) => {
             React__default['default'].createElement("div", { className: ('modal-dialog' +
                     (!props.size ? ' ' : ` modal-${props.size} `) +
                     ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: "document", style: props.dialogStyle },
-                React__default['default'].createElement("div", { className: "modal-content", onClick: (e) => e.stopPropagation() }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                React__default['default'].createElement("div", { className: "modal-content", onClick: (e) => e.stopPropagation(), style: props.contentStyle }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
                     !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default['default'].createElement("h5", { className: "modal-title" }, props.title),
                         !props.noCancel && (React__default['default'].createElement("button", { className: "btn-close", onClick: toggle })))),

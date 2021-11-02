@@ -15,6 +15,7 @@ export interface IWModalProps {
 	body?: ReactNode
 	dialogStyle?: CSSProperties
 	dialogClassName?: string
+	contentStyle?: CSSProperties
 	bodyStyle?: CSSProperties
 	bodyClassName?: string
 	bodyContainerFormSubmit?: boolean | string
@@ -117,7 +118,7 @@ export const Modal = (props: IWModalProps) => {
 					}
 					role="document"
 					style={props.dialogStyle}>
-					<div className="modal-content" onClick={(e) => e.stopPropagation()}>
+					<div className="modal-content" onClick={(e) => e.stopPropagation()} style={props.contentStyle}>
 						{props.title !== undefined ? (
 							<>
 								{!!props.title && (
