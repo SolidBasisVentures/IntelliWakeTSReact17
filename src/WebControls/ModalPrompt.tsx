@@ -22,6 +22,7 @@ export interface IModalPromptProps {
 	color?: string
 	okLabel?: ReactNode
 	okAction?: () => void
+	okDisabled?: boolean
 	okKeys?: string[] | string
 	promptResponses?: TModalPromptResponse
 	cancelLabel?: ReactNode
@@ -141,6 +142,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 				))}
 				{!!props.okLabel && !!props.okAction && (
 					<Button
+						disabled={props.okDisabled}
 						onClick={okAction}
 						color={props.color ?? 'primary'}
 						className='ml-1'
