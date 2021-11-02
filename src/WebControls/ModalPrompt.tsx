@@ -31,7 +31,7 @@ export interface IModalPromptProps {
 	dismiss?: (nullValue: null, canceled: boolean) => void
 	hidden?: boolean
 	promptOnly?: boolean
-	autoFocusElement?: HTMLElement
+	autoFocusElement?: HTMLElement | HTMLInputElement | HTMLButtonElement | null
 }
 
 /**
