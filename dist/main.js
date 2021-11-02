@@ -2044,8 +2044,10 @@ const ModalPrompt = (props) => {
             props.cancelAction();
     }, [props.dismiss, props.cancelAction]);
     const okAction = () => {
-        !!props.okAction && props.okAction();
-        dismiss(false);
+        if (!props.okDisabled) {
+            !!props.okAction && props.okAction();
+            dismiss(false);
+        }
     };
     return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true) },
         React__default['default'].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),

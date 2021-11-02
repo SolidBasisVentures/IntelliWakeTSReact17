@@ -102,8 +102,10 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 	)
 	
 	const okAction = () => {
-		!!props.okAction && props.okAction()
-		dismiss(false)
+		if (!props.okDisabled) {
+			!!props.okAction && props.okAction()
+			dismiss(false)
+		}
 	}
 	
 	return (
