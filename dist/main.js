@@ -1770,7 +1770,7 @@ const Modal = (props) => {
         }
     }, [props.isOpen, props.autoFocusElement]);
     return (React__default['default'].createElement(Portal, null,
-        React__default['default'].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: "dialog", style: {
+        React__default['default'].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: 'dialog', style: {
                 display: props.isOpen ? 'block' : 'none',
                 pointerEvents: props.isOpen ? undefined : 'none'
             }, onClick: (e) => {
@@ -1781,11 +1781,11 @@ const Modal = (props) => {
             }, onKeyDown: keyDown },
             React__default['default'].createElement("div", { className: ('modal-dialog' +
                     (!props.size ? ' ' : ` modal-${props.size} `) +
-                    ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: "document", style: props.dialogStyle },
-                React__default['default'].createElement("div", { className: "modal-content", onClick: (e) => e.stopPropagation(), style: props.contentStyle }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                    ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: 'document', style: props.dialogStyle },
+                React__default['default'].createElement("div", { className: 'modal-content', onClick: (e) => e.stopPropagation(), style: props.contentStyle }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
                     !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
-                        React__default['default'].createElement("h5", { className: "modal-title" }, props.title),
-                        !props.noCancel && (React__default['default'].createElement("button", { className: "btn-close", onClick: toggle })))),
+                        React__default['default'].createElement("h5", { className: 'modal-title' }, props.title),
+                        !props.noCancel && (React__default['default'].createElement("button", { className: 'btn-close', onClick: toggle })))),
                     React__default['default'].createElement("div", { className: 'modal-body ' + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
                             e.preventDefault();
                             if (!props.okDisabled) {
@@ -1798,18 +1798,24 @@ const Modal = (props) => {
                         } },
                         props.body,
                         props.children,
-                        React__default['default'].createElement(Button, { className: "d-none", type: "submit" }))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
+                        React__default['default'].createElement(Button, { className: 'd-none', type: 'submit' }))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
                         props.body,
                         props.children))),
-                    (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: "modal-footer" },
-                        React__default['default'].createElement("div", { className: "me-auto" },
-                            (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: " btn btn-link  ", type: "button", onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
-                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton) => (React__default['default'].createElement(Button, Object.assign({}, leftButton)))),
+                    (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: 'modal-footer' },
+                        React__default['default'].createElement("div", { className: 'me-auto' },
+                            (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: 'btn btn-link me-1 ', type: 'button', onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
+                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton) => {
+                                var _a;
+                                return (React__default['default'].createElement(Button, Object.assign({}, leftButton, { className: ((_a = leftButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'me-1' })));
+                            }),
                             props.footerLeft),
-                        React__default['default'].createElement("div", { className: "text-end" },
+                        React__default['default'].createElement("div", { className: 'text-end' },
                             props.footerRight,
-                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton) => (React__default['default'].createElement(Button, Object.assign({}, rightButton)))),
-                            !!props.okAction && (React__default['default'].createElement("button", { className: `ml-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: "button", disabled: props.okDisabled, onClick: (e) => {
+                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton) => {
+                                var _a;
+                                return (React__default['default'].createElement(Button, Object.assign({}, rightButton, { className: ((_a = rightButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'ms-1' })));
+                            }),
+                            !!props.okAction && (React__default['default'].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
                                     e.stopPropagation();
                                     okAction(e);
                                 }, ref: divRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
