@@ -2,7 +2,6 @@ import React, {forwardRef, ReactNode} from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWButtonLightProps {
-	title?: string
 	size?: 'sm' | 'lg'
 	block?: boolean
 	color?: string
@@ -13,6 +12,7 @@ export interface IWButtonLightProps {
 	className?: string
 	onClick?: React.MouseEventHandler<HTMLButtonElement>
 	children?: ReactNode
+	title?: string
 	to?: string
 	active?: boolean
 }

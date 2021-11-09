@@ -1,5 +1,8 @@
 import React, { ReactNode } from 'react';
 export interface IWButtonLightProps {
+    title?: string;
+    size?: 'sm' | 'lg';
+    block?: boolean;
     color?: string;
     outline?: boolean;
     hidden?: boolean;
@@ -8,15 +11,12 @@ export interface IWButtonLightProps {
     className?: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     children?: ReactNode;
+    to?: string;
+    active?: boolean;
 }
 export interface IIWButtonProps extends IWButtonLightProps, Omit<React.HTMLProps<HTMLButtonElement>, 'size' | 'ref'> {
     tag?: string | React.ReactType;
-    size?: 'sm' | 'lg';
-    block?: boolean;
     autoFocus?: boolean;
-    title?: string;
     classNameOverride?: string;
-    to?: string;
-    active?: boolean;
 }
 export declare const Button: React.ForwardRefExoticComponent<IIWButtonProps & React.RefAttributes<HTMLButtonElement>>;
