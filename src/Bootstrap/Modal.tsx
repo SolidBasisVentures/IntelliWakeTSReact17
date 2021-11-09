@@ -3,6 +3,7 @@ import {KEY_ENTER, KEY_ESCAPE} from '../Functions'
 import Portal from './Portal'
 import {Form} from './Form'
 import {Button, IWButtonLightProps} from './Button'
+import {NowISOString} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWModalProps {
 	isOpen?: boolean
@@ -165,15 +166,17 @@ export const Modal = (props: IWModalProps) => {
 													{props.cancelLabel ?? 'Cancel'}
 												</button>
 											)}
-											{(props.leftButtons ?? []).map((leftButton) => (
-												<Button {...leftButton} className={(leftButton.className ?? '') + ' ' + 'me-1'} />
+											{(props.leftButtons ?? []).map((leftButton, idx) => (
+												<Button key={idx + NowISOString()} {...leftButton}
+												        className={(leftButton.className ?? '') + ' ' + 'me-1'} />
 											))}
 											{props.footerLeft}
 										</div>
 										<div className='text-end'>
 											{props.footerRight}
-											{(props.rightButtons ?? []).map((rightButton) => (
-												<Button {...rightButton} className={(rightButton.className ?? '') + ' ' + 'ms-1'} />
+											{(props.rightButtons ?? []).map((rightButton, idx) => (
+												<Button key={idx + NowISOString()} {...rightButton}
+												        className={(rightButton.className ?? '') + ' ' + 'ms-1'} />
 											))}
 											{!!props.okAction && (
 												<button

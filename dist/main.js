@@ -1804,16 +1804,16 @@ const Modal = (props) => {
                     (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: 'modal-footer' },
                         React__default['default'].createElement("div", { className: 'me-auto' },
                             (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: 'btn btn-link me-1 ', type: 'button', onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
-                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton) => {
+                            ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton, idx) => {
                                 var _a;
-                                return (React__default['default'].createElement(Button, Object.assign({}, leftButton, { className: ((_a = leftButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'me-1' })));
+                                return (React__default['default'].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, leftButton, { className: ((_a = leftButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'me-1' })));
                             }),
                             props.footerLeft),
                         React__default['default'].createElement("div", { className: 'text-end' },
                             props.footerRight,
-                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton) => {
+                            ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton, idx) => {
                                 var _a;
-                                return (React__default['default'].createElement(Button, Object.assign({}, rightButton, { className: ((_a = rightButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'ms-1' })));
+                                return (React__default['default'].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, rightButton, { className: ((_a = rightButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'ms-1' })));
                             }),
                             !!props.okAction && (React__default['default'].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
                                     e.stopPropagation();
