@@ -5,6 +5,7 @@ interface IProps {
     suffix?: ReactNode | ReactNodeArray | string | boolean | null;
     className?: string;
     hidden?: boolean;
+    noBR?: boolean;
 }
 export declare const BRBefore: (props: IProps) => JSX.Element | null;
 export {};

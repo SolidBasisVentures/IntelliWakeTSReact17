@@ -1773,7 +1773,7 @@ const Modal = (props) => {
         React__default['default'].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: 'dialog', style: {
                 display: props.isOpen ? 'block' : 'none',
                 pointerEvents: props.isOpen ? undefined : 'none'
-            }, onClick: (e) => {
+            }, onMouseDown: e => {
                 if (props.isOpen) {
                     e.stopPropagation();
                     toggle(e);
@@ -2526,15 +2526,14 @@ const BRAfter = (props) => {
         props.text,
         props.suffix,
         " ",
-        React__default['default'].createElement("br", null)));
+        !props.noBR && React__default['default'].createElement("br", null)));
 };
 
 const BRBefore = (props) => {
     if (props.hidden || !props.text)
         return null;
     return (React__default['default'].createElement("span", { className: props.className },
-        ' ',
-        React__default['default'].createElement("br", null),
+        !props.noBR && React__default['default'].createElement("br", null),
         props.prefix,
         props.text,
         props.suffix));

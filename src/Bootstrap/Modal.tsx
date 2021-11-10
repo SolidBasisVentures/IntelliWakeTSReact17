@@ -103,7 +103,7 @@ export const Modal = (props: IWModalProps) => {
 					display: props.isOpen ? 'block' : 'none',
 					pointerEvents: props.isOpen ? undefined : 'none'
 				}}
-				onClick={(e) => {
+				onMouseDown={e => {
 					if (props.isOpen) {
 						e.stopPropagation()
 						
