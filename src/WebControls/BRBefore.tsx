@@ -6,6 +6,7 @@ interface IProps {
 	suffix?: ReactNode | ReactNodeArray | string | boolean | null
 	className?: string
 	hidden?: boolean
+	noBR?: boolean
 }
 
 export const BRBefore = (props: IProps) => {
@@ -13,8 +14,7 @@ export const BRBefore = (props: IProps) => {
 
 	return (
 		<span className={props.className}>
-			{' '}
-			<br />
+			{!props.noBR && <br />}
 			{props.prefix}
 			{props.text}
 			{props.suffix}

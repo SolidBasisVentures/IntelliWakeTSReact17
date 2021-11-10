@@ -6,16 +6,17 @@ interface IProps {
 	suffix?: ReactNode | ReactNodeArray | string | boolean | null
 	className?: string
 	hidden?: boolean
+	noBR?: boolean
 }
 
 export const BRAfter = (props: IProps) => {
 	if (props.hidden || !props.text) return null
-
+	
 	return (
 		<span className={props.className}>
 			{props.prefix}
 			{props.text}
-			{props.suffix} <br />
+			{props.suffix} {!props.noBR && <br />}
 		</span>
 	)
 }
