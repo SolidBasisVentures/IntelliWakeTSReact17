@@ -119,7 +119,10 @@ export const Modal = (props: IWModalProps) => {
 					}
 					role='document'
 					style={props.dialogStyle}>
-					<div className='modal-content' onClick={(e) => e.stopPropagation()} style={props.contentStyle}>
+					<div className='modal-content'
+					     onMouseDown={e => e.stopPropagation()}
+					     onClick={e => e.stopPropagation()}
+					     style={props.contentStyle}>
 						{props.title !== undefined ? (
 							<>
 								{!!props.title && (
