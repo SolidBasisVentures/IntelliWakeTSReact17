@@ -32,7 +32,7 @@ export const ListGroupItem = (props: IWListGroupItemProps) => {
 
 	return (
 		<TagToUse
-			type={!!props.onClick ? 'button' : undefined}
+			// type={!!props.onClick ? 'button' : undefined}
 			{...OmitProperty(
 				props,
 				'tag',
