@@ -542,6 +542,11 @@ table.table-sortable thead th {
   cursor: default;
 }
 
+.noHover:hover {
+  background: white !important;
+  cursor: default;
+}
+
 .inputSwitch:not(.plainText),
 .inputSwitch:not(.plainText) *,
 .inputCheckBox:not(.plainText),

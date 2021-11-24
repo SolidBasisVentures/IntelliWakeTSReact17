@@ -1675,7 +1675,9 @@ const ListGroupItem = (props) => {
     const TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.href)
         ? 'a'
         : 'li';
-    return (React__default['default'].createElement(TagToUse, Object.assign({ type: !!props.onClick ? 'button' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: `${ClassNames({
+    return (React__default['default'].createElement(TagToUse
+    // type={!!props.onClick ? 'button' : undefined}
+    , Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: `${ClassNames({
             active: !!props.active,
             disabled: !!props.disabled,
             'list-group-item-action': !!props.action || (!!props.onClick && props.action !== false)
@@ -2957,7 +2959,7 @@ function InputCheckBox(props) {
         setShowChecked(e.target.checked);
     };
     return (React__default['default'].createElement("label", { className: 'inputCheckbox form-control-plaintext ' + (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
-        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'me-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ''), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
+        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'me-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ' cursor-pointer'), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
             }, disabled: props.disabled, onClick: props.onClick }),
         React__default['default'].createElement("span", null, props.label)));
 }
