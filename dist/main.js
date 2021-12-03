@@ -1723,7 +1723,8 @@ class Portal extends React__default['default'].Component {
 
 const Modal = (props) => {
     var _a, _b, _c, _d, _e, _f, _g, _h;
-    const divRef = React.useRef();
+    const okButtonRef = React.useRef(null);
+    const contentRef = React.useRef(null);
     const toggle = React.useCallback((e) => {
         if (!!props.toggle && !props.noCancel) {
             props.toggle(e);
@@ -1766,8 +1767,17 @@ const Modal = (props) => {
             if (!!((_a = props.autoFocusElement) === null || _a === void 0 ? void 0 : _a.current)) {
                 props.autoFocusElement.current.focus();
             }
-            else if (divRef === null || divRef === void 0 ? void 0 : divRef.current) {
-                divRef.current.focus();
+            else {
+                if (!!contentRef.current) {
+                    let firstAutofocus = contentRef.current.querySelector('[autofocus]');
+                    if (!!firstAutofocus) {
+                        firstAutofocus.focus();
+                        return;
+                    }
+                }
+                if (okButtonRef === null || okButtonRef === void 0 ? void 0 : okButtonRef.current) {
+                    okButtonRef.current.focus();
+                }
             }
         }
     }, [props.isOpen, props.autoFocusElement]);
@@ -1784,7 +1794,7 @@ const Modal = (props) => {
             React__default['default'].createElement("div", { className: ('modal-dialog' +
                     (!props.size ? ' ' : ` modal-${props.size} `) +
                     ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: 'document', style: props.dialogStyle },
-                React__default['default'].createElement("div", { className: 'modal-content', onMouseDown: e => e.stopPropagation(), onClick: e => e.stopPropagation(), style: props.contentStyle }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                React__default['default'].createElement("div", { className: 'modal-content', onMouseDown: e => e.stopPropagation(), onClick: e => e.stopPropagation(), style: props.contentStyle, ref: contentRef }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
                     !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default['default'].createElement("h5", { className: 'modal-title' }, props.title),
                         !props.noCancel && (React__default['default'].createElement("button", { className: 'btn-close', onClick: toggle })))),
@@ -1820,7 +1830,7 @@ const Modal = (props) => {
                             !!props.okAction && (React__default['default'].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
                                     e.stopPropagation();
                                     okAction(e);
-                                }, ref: divRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
+                                }, ref: okButtonRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
         React__default['default'].createElement("div", { className: 'modal-backdrop fade' + (props.isOpen ? ' show' : ''), style: { pointerEvents: props.isOpen ? undefined : 'none' }, onClick: toggle })));
 };
 

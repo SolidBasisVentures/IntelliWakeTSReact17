@@ -355,13 +355,6 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.35"
 
-"@fortawesome/pro-solid-svg-icons@^5.13.0":
-  version "5.15.3"
-  resolved "https://npm.fontawesome.com/@fortawesome/pro-solid-svg-icons/-/5.15.3/pro-solid-svg-icons-5.15.3.tgz#f443689f17dfb932f51d0943d9af69c9044c8c59"
-  integrity sha512-7W0sJ3gkiMEdIbGOBaAXpND/ZGOccw+fzyJL/iG/nuX3zcDggLz7/41ORDnIArIjaWr+UmIOtHZcXSB7gcOAWg==
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.35"
-
 "@fortawesome/react-fontawesome@^0.1.10":
   version "0.1.14"
   resolved "https://npm.fontawesome.com/@fortawesome/react-fontawesome/-/0.1.14/react-fontawesome-0.1.14.tgz#bf28875c3935b69ce2dc620e1060b217a47f64ca"
@@ -604,10 +597,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@solidbasisventures/intelliwaketsfoundation@^5.0.35":
-  version "5.0.35"
-  resolved "https://registry.yarnpkg.com/@solidbasisventures/intelliwaketsfoundation/-/intelliwaketsfoundation-5.0.35.tgz#e956ec1e1991287d4d39c53e6e464b38746960a8"
-  integrity sha512-93rW1tfW1ST9K0KPhVaBSNt4lNZxRmiu3gXH9PS6x+dSCMgoFdtBxCIEcMp+VrZ0fty1dCTXpFAmME2vRqMi+g==
+"@solidbasisventures/intelliwaketsfoundation@^5.0.86":
+  version "5.0.86"
+  resolved "https://registry.yarnpkg.com/@solidbasisventures/intelliwaketsfoundation/-/intelliwaketsfoundation-5.0.86.tgz#8616494778bd4a7d7c882edacb0ba249dbdbed3c"
+  integrity sha512-SVvvRLcATkS4Z2e7uZUraX9T7oiEhpNfnBiEWYNEpkz79pMfZBhZx1qiuGudivTz+LhKwfREdwzijjOMLlE48w==
 
 "@tootallnate/once@1":
   version "1.1.2"

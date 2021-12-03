@@ -35,7 +35,8 @@ export interface IWModalProps {
 }
 
 export const Modal = (props: IWModalProps) => {
-	const divRef = useRef<any>()
+	const okButtonRef = useRef<HTMLButtonElement>(null)
+	const contentRef = useRef<HTMLDivElement>(null)
 	
 	const toggle = useCallback(
 		(e: any) => {
@@ -88,8 +89,17 @@ export const Modal = (props: IWModalProps) => {
 		if (props.isOpen) {
 			if (!!props.autoFocusElement?.current) {
 				props.autoFocusElement.current.focus()
-			} else if (divRef?.current) {
-				divRef.current.focus()
+			} else {
+				if (!!contentRef.current) {
+					let firstAutofocus = contentRef.current.querySelector('[autofocus]')
+					if (!!firstAutofocus) {
+						(firstAutofocus as any).focus()
+						return
+					}
+				}
+				if (okButtonRef?.current) {
+					okButtonRef.current.focus()
+				}
 			}
 		}
 	}, [props.isOpen, props.autoFocusElement])
@@ -122,7 +132,8 @@ export const Modal = (props: IWModalProps) => {
 					<div className='modal-content'
 					     onMouseDown={e => e.stopPropagation()}
 					     onClick={e => e.stopPropagation()}
-					     style={props.contentStyle}>
+					     style={props.contentStyle}
+					     ref={contentRef}>
 						{props.title !== undefined ? (
 							<>
 								{!!props.title && (
@@ -190,7 +201,7 @@ export const Modal = (props: IWModalProps) => {
 														e.stopPropagation()
 														okAction(e)
 													}}
-													ref={divRef}>
+													ref={okButtonRef}>
 													{props.okLabel ?? 'OK'}
 												</button>
 											)}
