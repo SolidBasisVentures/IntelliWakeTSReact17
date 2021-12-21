@@ -3304,7 +3304,10 @@ function InputGender(props) {
 function InputNumber(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const cleaveRef = React.useRef(null);
-    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name')), [props]);
+    const lastValue = React.useRef(props.value);
+    const updateTimeout = React.useRef(setTimeout(() => {
+    }, 100));
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft')), [props]);
     const handleKeyDown = (e) => {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
@@ -3323,8 +3326,16 @@ function InputNumber(props) {
         cleaveRef.current = cleave;
     };
     React.useEffect(() => {
-        if (!!cleaveRef.current)
-            cleaveRef.current.setRawValue(props.value);
+        clearTimeout(updateTimeout.current);
+        updateTimeout.current = setTimeout(() => {
+            if (!!cleaveRef.current && props.value !== lastValue.current) {
+                lastValue.current = props.value;
+                cleaveRef.current.setRawValue(props.value);
+            }
+        }, 250);
+        return () => {
+            clearTimeout(updateTimeout.current);
+        };
     }, [props.value]);
     let options = {
         numeral: true,
@@ -3343,6 +3354,7 @@ function InputNumber(props) {
                 return props.lowerBound;
             if (props.upperBound !== undefined && cleanNumber > props.upperBound)
                 return props.upperBound;
+            lastValue.current = cleanNumber;
             return cleanNumber;
         }, className: ClassNames({
             'inputNumber form-control': true,
@@ -3350,7 +3362,9 @@ function InputNumber(props) {
             integers: !hasDecimals
         }), plainTextControl: !!props.currency
             ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
-            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ? '' : ' text-end'} ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
+            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ?
+                '' :
+                ' text-end'} ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
         React__default['default'].createElement(Cleave__default['default'], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name }))));
 }
 

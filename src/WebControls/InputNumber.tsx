@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
 import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
-import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {CleaveOptions} from 'cleave.js/options'
-import {ClassNames} from '../Functions'
+import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
+import {ClassNames} from '../Functions'
 
 export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V> {
 	htmlRef?: (ref: any) => void
@@ -21,6 +21,9 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	const cleaveRef = useRef<any>(null)
+	const lastValue = useRef<V | undefined>(props.value)
+	const updateTimeout = useRef(setTimeout(() => {
+	}, 100))
 	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps(OmitProperty(props,
 		'decimalScale',
 		'integerScale',
@@ -30,9 +33,11 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		'currency',
 		'hideZero',
 		'invalid',
-		'decimalScaleDisplay', 'name')), [props])
+		'decimalScaleDisplay',
+		'name',
+		'plainTextLeft')), [props])
 	
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyDown = (e: React.KeyboardEvent<any>) => {
 		if (e.key === '-') {
 			if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
 				if (!props.allowNegative || (props.lowerBound !== undefined && props.lowerBound >= 0)) {
@@ -45,15 +50,25 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			e.preventDefault()
 		}
 		
-		if (!!props.onKeyDown) props.onKeyDown(e)
+		if (!!props.onKeyDown) props.onKeyDown(e as any)
 	}
 	
-	const onCreditCardInit = (cleave: HTMLElement) => {
+	const onCreditCardInit = (cleave: any) => {
 		cleaveRef.current = cleave
 	}
 	
 	useEffect(() => {
-		if (!!cleaveRef.current) cleaveRef.current.setRawValue(props.value as any)
+		clearTimeout(updateTimeout.current)
+		updateTimeout.current = setTimeout(() => {
+			if (!!cleaveRef.current && props.value !== lastValue.current) {
+				lastValue.current = props.value
+				cleaveRef.current.setRawValue(props.value as any)
+			}
+		}, 250)
+		
+		return () => {
+			clearTimeout(updateTimeout.current)
+		}
 	}, [props.value])
 	
 	let options: CleaveOptions = {
@@ -72,13 +87,13 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	
 	return (
 		<InputWrapper<T, V>
-			{...ReduceToInputAddProps(props)}
-			inputIsValid={(val) => !isNaN(CleanNumber(val, undefined, true))}
+			{...ReduceToInputAddProps(props)} inputIsValid={(val) => !isNaN(CleanNumber(val, undefined, true))}
 			valueOnInvalid={() => 0}
 			transformToValid={(val) => {
 				const cleanNumber = CleanNumber(val)
 				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return props.lowerBound
 				if (props.upperBound !== undefined && cleanNumber > props.upperBound) return props.upperBound
+				lastValue.current = cleanNumber as any
 				return cleanNumber
 			}}
 			className={ClassNames({
@@ -90,18 +105,21 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 			}
-			plainTextProps={{...props.plainTextProps, className: `form-control-plaintext${props.plainTextLeft ? '' : ' text-end'} ${props.plainTextProps?.className ?? ''}`.trim()}}
+			plainTextProps={{
+				...props.plainTextProps,
+				className: `form-control-plaintext${props.plainTextLeft ?
+					'' :
+					' text-end'} ${props.plainTextProps?.className ?? ''}`.trim()
+			}}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
-			<Cleave
-				options={options}
-				htmlRef={props.htmlRef}
-				inputMode={hasDecimals ? 'decimal' : 'numeric'}
-				onKeyDown={handleKeyDown}
-				{...inputProps}
-				onInit={onCreditCardInit}
-				name={props.name as any}
-			/>
+			<Cleave options={options}
+			        htmlRef={props.htmlRef}
+			        inputMode={hasDecimals ? 'decimal' : 'numeric'}
+			        onKeyDown={handleKeyDown}
+			        {...inputProps}
+			        onInit={onCreditCardInit}
+			        name={props.name as any} />
 		</InputWrapper>
 	)
 }
