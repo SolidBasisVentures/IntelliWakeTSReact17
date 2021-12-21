@@ -9,5 +9,6 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
     upperBound?: number;
     currency?: boolean;
     hideZero?: boolean;
+    plainTextLeft?: boolean;
 }
 export declare function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>): JSX.Element;

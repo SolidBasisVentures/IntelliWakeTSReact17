@@ -16,6 +16,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 	upperBound?: number
 	currency?: boolean
 	hideZero?: boolean
+	plainTextLeft?: boolean
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
@@ -80,7 +81,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
 			}
-			plainTextProps={{...props.plainTextProps, className: `form-control-plaintext text-end ${props.plainTextProps?.className ?? ''}`.trim()}}
+			plainTextProps={{...props.plainTextProps, className: `form-control-plaintext${props.plainTextLeft ? '' : ' text-end'} ${props.plainTextProps?.className ?? ''}`.trim()}}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
 			<Cleave
