@@ -90,6 +90,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				inputMode={hasDecimals ? 'decimal' : 'numeric'}
 				onKeyDown={handleKeyDown}
 				{...inputProps}
+				value={props.value as any}
 				name={props.name as any}
 			/>
 		</InputWrapper>
