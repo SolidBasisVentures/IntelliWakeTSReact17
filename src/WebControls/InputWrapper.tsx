@@ -127,9 +127,9 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 									props.changeValueLate(
 										lateState.current.value,
 										!lateState.current.name ? undefined : lateState.current.name,
-										lateState.current.shiftKey,
-										lateState.current.ctrlKey,
-										lateState.current.altKey
+										lateState.current?.shiftKey,
+										lateState.current?.ctrlKey,
+										lateState.current?.altKey
 									)
 									lateState.current = undefined
 								}
@@ -166,9 +166,9 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 									const newState: IState = {
 										value: customValue,
 										name: e.target.name as any,
-										shiftKey: (e.nativeEvent as any).shiftKey,
-										ctrlKey: (e.nativeEvent as any).ctrlKey,
-										altKey: (e.nativeEvent as any).altKey
+										shiftKey: (e.nativeEvent as any)?.shiftKey,
+										ctrlKey: (e.nativeEvent as any)?.ctrlKey,
+										altKey: (e.nativeEvent as any)?.altKey
 									}
 									
 									if (!!props.children.props.onChange) {
@@ -178,9 +178,9 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 										props.changeValue(
 											newState.value as V,
 											!newState.name ? undefined : newState.name,
-											newState.shiftKey,
-											newState.ctrlKey,
-											newState.altKey
+											newState?.shiftKey,
+											newState?.ctrlKey,
+											newState?.altKey
 										)
 									}
 									if (!!props.changeValueLate) {
@@ -197,9 +197,9 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 												props.changeValueLate(
 													lateState.current.value as V,
 													!lateState.current.name ? undefined : lateState.current.name,
-													lateState.current.shiftKey,
-													lateState.current.ctrlKey,
-													lateState.current.altKey
+													lateState.current?.shiftKey,
+													lateState.current?.ctrlKey,
+													lateState.current?.altKey
 												)
 												lateState.current = undefined
 											}

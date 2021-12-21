@@ -3145,17 +3145,18 @@ const InputWrapper = (props) => {
             if (props.children.props.onFocus)
                 props.children.props.onFocus(e);
         }, onBlur: (e) => {
+            var _a, _b, _c;
             clearTimeout(lateTrigger.current);
             if (!!props.changeValueLate &&
                 lateState.current !== undefined &&
                 lateState.current.value !== props.children.props.value) {
-                props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
+                props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, (_a = lateState.current) === null || _a === void 0 ? void 0 : _a.shiftKey, (_b = lateState.current) === null || _b === void 0 ? void 0 : _b.ctrlKey, (_c = lateState.current) === null || _c === void 0 ? void 0 : _c.altKey);
                 lateState.current = undefined;
             }
             if (props.children.props.onBlur)
                 props.children.props.onBlur(e);
         }, onChange: (e) => {
-            var _a;
+            var _a, _b, _c, _d;
             const eTargetValue = e.target.value;
             clearTimeout(lateTrigger.current);
             if (!props.plainText && !props.children.props.disabled) {
@@ -3177,29 +3178,30 @@ const InputWrapper = (props) => {
                 const newState = {
                     value: customValue,
                     name: e.target.name,
-                    shiftKey: e.nativeEvent.shiftKey,
-                    ctrlKey: e.nativeEvent.ctrlKey,
-                    altKey: e.nativeEvent.altKey
+                    shiftKey: (_a = e.nativeEvent) === null || _a === void 0 ? void 0 : _a.shiftKey,
+                    ctrlKey: (_b = e.nativeEvent) === null || _b === void 0 ? void 0 : _b.ctrlKey,
+                    altKey: (_c = e.nativeEvent) === null || _c === void 0 ? void 0 : _c.altKey
                 };
                 if (!!props.children.props.onChange) {
                     props.children.props.onChange(e);
                 }
                 if (!!props.changeValue) {
-                    props.changeValue(newState.value, !newState.name ? undefined : newState.name, newState.shiftKey, newState.ctrlKey, newState.altKey);
+                    props.changeValue(newState.value, !newState.name ? undefined : newState.name, newState === null || newState === void 0 ? void 0 : newState.shiftKey, newState === null || newState === void 0 ? void 0 : newState.ctrlKey, newState === null || newState === void 0 ? void 0 : newState.altKey);
                 }
                 if (!!props.changeValueLate) {
                     if (isValid) {
                         lateState.current = newState;
                     }
                     lateTrigger.current = setTimeout(() => {
+                        var _a, _b, _c;
                         if (!!props.changeValueLate &&
                             isMounted.current &&
                             lateState.current !== undefined &&
                             lateState.current.value !== props.children.props.value) {
-                            props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, lateState.current.shiftKey, lateState.current.ctrlKey, lateState.current.altKey);
+                            props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, (_a = lateState.current) === null || _a === void 0 ? void 0 : _a.shiftKey, (_b = lateState.current) === null || _b === void 0 ? void 0 : _b.ctrlKey, (_c = lateState.current) === null || _c === void 0 ? void 0 : _c.altKey);
                             lateState.current = undefined;
                         }
-                    }, (_a = props.lateDelayMS) !== null && _a !== void 0 ? _a : 500);
+                    }, (_d = props.lateDelayMS) !== null && _d !== void 0 ? _d : 500);
                     if (!props.children.props.onChange && !props.changeValue) { // && !props.changeValueLate
                         if (verbose) {
                             console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue);
@@ -3301,6 +3303,7 @@ function InputGender(props) {
 
 function InputNumber(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+    const cleaveRef = React.useRef(null);
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name')), [props]);
     const handleKeyDown = (e) => {
         if (e.key === '-') {
@@ -3316,6 +3319,13 @@ function InputNumber(props) {
         if (!!props.onKeyDown)
             props.onKeyDown(e);
     };
+    const onCreditCardInit = (cleave) => {
+        cleaveRef.current = cleave;
+    };
+    React.useEffect(() => {
+        if (!!cleaveRef.current)
+            cleaveRef.current.setRawValue(props.value);
+    }, [props.value]);
     let options = {
         numeral: true,
         numeralThousandsGroupStyle: 'thousand'
@@ -3341,7 +3351,7 @@ function InputNumber(props) {
         }), plainTextControl: !!props.currency
             ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
             : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ? '' : ' text-end'} ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
-        React__default['default'].createElement(Cleave__default['default'], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { value: props.value, name: props.name }))));
+        React__default['default'].createElement(Cleave__default['default'], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name }))));
 }
 
 function InputPassword(props) {

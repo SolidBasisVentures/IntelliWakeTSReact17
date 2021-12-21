@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
 import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
@@ -20,6 +20,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
+	const cleaveRef = useRef<any>(null)
 	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps(OmitProperty(props,
 		'decimalScale',
 		'integerScale',
@@ -46,6 +47,14 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		
 		if (!!props.onKeyDown) props.onKeyDown(e)
 	}
+	
+	const onCreditCardInit = (cleave: HTMLElement) => {
+		cleaveRef.current = cleave
+	}
+	
+	useEffect(() => {
+		if (!!cleaveRef.current) cleaveRef.current.setRawValue(props.value as any)
+	}, [props.value])
 	
 	let options: CleaveOptions = {
 		numeral: true,
@@ -90,7 +99,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				inputMode={hasDecimals ? 'decimal' : 'numeric'}
 				onKeyDown={handleKeyDown}
 				{...inputProps}
-				value={props.value as any}
+				onInit={onCreditCardInit}
 				name={props.name as any}
 			/>
 		</InputWrapper>
