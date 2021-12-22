@@ -14,6 +14,7 @@ export interface IDDAction {
     action?: () => void;
     color?: string;
     className?: string;
+    noClose?: boolean;
 }
 export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref' | 'size'> {
     disabled?: boolean;

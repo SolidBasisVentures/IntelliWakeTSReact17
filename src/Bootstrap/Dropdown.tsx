@@ -22,6 +22,7 @@ export interface IDDAction {
 	action?: () => void
 	color?: string
 	className?: string
+	noClose?: boolean
 }
 
 export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref' | 'size'> {
@@ -251,8 +252,11 @@ export const Dropdown = (props: IWDropdownProps) => {
 										disabled={!!ddAction.disabled || !ddAction.action}
 										divider={!!ddAction.divider}
 										header={!!ddAction.header}
-										onClick={() => (!!ddAction.action ? ddAction.action() : () => {
-										})}>
+										onClick={e => {
+											if (!!ddAction.noClose) e.stopPropagation()
+											
+											if (!!ddAction.action) ddAction.action()
+										}}>
 										{showFAProps && (
 											<FontAwesomeIcon
 												icon={faCog}
