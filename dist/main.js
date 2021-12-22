@@ -1291,10 +1291,16 @@ const Dropdown = (props) => {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const hasOpened = React.useRef(false);
     const [isOpen, setIsOpen] = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false);
-    const visibleDDActions = React.useMemo(() => !props.ddActions
-        ? []
-        : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter((ddAction) => !ddAction.hidden), [props.ddActions]);
-    const showFAProps = React.useMemo(() => !!visibleDDActions.find((ddAction) => !!ddAction.faProps), [visibleDDActions]);
+    const visibleHeaderGroups = React.useMemo(() => !props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter((ddAction) => !ddAction.hidden).reduce((result, ddAction) => {
+        var _a;
+        let nextHeaderGroup = (_a = result.find(hG => hG.headerGroup === ddAction.header)) !== null && _a !== void 0 ? _a : {
+            headerGroup: ddAction.headerGroup,
+            ddActions: []
+        };
+        nextHeaderGroup.ddActions = [...nextHeaderGroup.ddActions, ddAction];
+        return [...result.filter(res => res.headerGroup !== nextHeaderGroup.headerGroup), nextHeaderGroup];
+    }, []), [props.ddActions]);
+    const showFAProps = React.useMemo(() => visibleHeaderGroups.some((hg) => hg.ddActions.some(ddAction => !!ddAction.faProps)), [visibleHeaderGroups]);
     const TagToUse = ((_b = props.tag) !== null && _b !== void 0 ? _b : !!props.inNavbar) ? 'li' : 'div';
     const isControlled = props.isOpen !== undefined;
     const actualIsOpen = isControlled ? !!props.isOpen : isOpen;
@@ -1359,7 +1365,7 @@ const Dropdown = (props) => {
             style.maxWidth = props.maxWidthAction;
         return style;
     }, []);
-    if (!props.children && visibleDDActions.length === 0)
+    if (!props.children && visibleHeaderGroups.length === 0)
         return null;
     return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
         React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: (props.allowWrap ? '' : 'text-nowrap ') +
@@ -1391,13 +1397,15 @@ const Dropdown = (props) => {
                 }
             }, style: dropdownMenuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
-            visibleDDActions.map((ddAction, idx) => {
-                var _a;
-                return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: () => (!!ddAction.action ? ddAction.action() : () => {
-                    }) },
-                    showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
-                    ddAction.title));
-            }))))));
+            visibleHeaderGroups.map((headerGroup, hg_idx) => (React__default['default'].createElement(React.Fragment, { key: hg_idx },
+                !!headerGroup.headerGroup && React__default['default'].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
+                headerGroup.ddActions.map((ddAction, dd_idx) => {
+                    var _a;
+                    return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: hg_idx + '-' + dd_idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: () => (!!ddAction.action ? ddAction.action() : () => {
+                        }) },
+                        showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
+                        ddAction.title));
+                })))))))));
 };
 
 exports.EFieldSetGroupings = void 0;

@@ -1,4 +1,4 @@
-import React, {CSSProperties, ReactNode, useEffect, useMemo, useRef, useState} from 'react'
+import React, {CSSProperties, Fragment, ReactNode, useEffect, useMemo, useRef, useState} from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {Button} from './Button'
 import {ClassNames, KEY_ESCAPE} from '../Functions'
@@ -14,6 +14,7 @@ export interface IDDAction {
 	divider?: boolean
 	disabled?: boolean
 	header?: boolean
+	headerGroup?: ReactNode
 	faProps?: FontAwesomeIconProps
 	faPropHidden?: boolean
 	active?: boolean
@@ -51,17 +52,29 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 export const Dropdown = (props: IWDropdownProps) => {
 	const hasOpened = useRef(false)
 	const [isOpen, setIsOpen] = useState<boolean>(props.isOpen ?? false)
-	const visibleDDActions = useMemo(
+	
+	interface IHeaderGroup {
+		headerGroup: ReactNode | undefined
+		ddActions: IDDAction[]
+	}
+	
+	const visibleHeaderGroups = useMemo<IHeaderGroup[]>(
 		() =>
-			!props.ddActions
-				? []
-				: (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
-					(ddAction) => !ddAction.hidden
-				),
+			!props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
+				(ddAction) => !ddAction.hidden).reduce<IHeaderGroup[]>((result, ddAction) => {
+				let nextHeaderGroup = result.find(hG => hG.headerGroup === ddAction.header) ?? {
+					headerGroup: ddAction.headerGroup,
+					ddActions: []
+				}
+				
+				nextHeaderGroup.ddActions = [...nextHeaderGroup.ddActions, ddAction]
+				
+				return [...result.filter(res => res.headerGroup !== nextHeaderGroup.headerGroup), nextHeaderGroup]
+			}, [] as IHeaderGroup[]),
 		[props.ddActions]
 	)
 	
-	const showFAProps = useMemo(() => !!visibleDDActions.find((ddAction) => !!ddAction.faProps), [visibleDDActions])
+	const showFAProps = useMemo(() => visibleHeaderGroups.some((hg) => hg.ddActions.some(ddAction => !!ddAction.faProps)), [visibleHeaderGroups])
 	
 	const TagToUse = props.tag ?? !!props.inNavbar ? 'li' : ('div' as React.ReactType)
 	
@@ -141,7 +154,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 		return style
 	}, [])
 	
-	if (!props.children && visibleDDActions.length === 0) return null
+	if (!props.children && visibleHeaderGroups.length === 0) return null
 	
 	return (
 		<TagToUse
@@ -177,7 +190,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				size={props.size}
 				outline={props.outline}
 				className={(props.allowWrap ? '' : 'text-nowrap ') +
-				(!!props.nav || !!props.inNavbar
+					(!!props.nav || !!props.inNavbar
 						? undefined
 						: `${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim())
 				}
@@ -227,26 +240,31 @@ export const Dropdown = (props: IWDropdownProps) => {
 				{hasOpened.current && (
 					<>
 						{props.children}
-						{visibleDDActions.map((ddAction, idx) => (
-							<DropdownItem
-								className={(ddAction.className ?? '') + (!!ddAction.color ? ` text-${ddAction.color}` : '')}
-								key={idx}
-								active={ddAction.active}
-								disabled={!!ddAction.disabled || !ddAction.action}
-								divider={!!ddAction.divider}
-								header={!!ddAction.header}
-								onClick={() => (!!ddAction.action ? ddAction.action() : () => {
-								})}>
-								{showFAProps && (
-									<FontAwesomeIcon
-										icon={faCog}
-										{...ddAction.faProps}
-										className={!ddAction.faProps || ddAction.faPropHidden ? 'invisible' : ''}
-										fixedWidth
-									/>
-								)}
-								{ddAction.title}
-							</DropdownItem>
+						{visibleHeaderGroups.map((headerGroup, hg_idx) => (
+							<Fragment key={hg_idx}>
+								{!!headerGroup.headerGroup && <DropdownItem header>{headerGroup.headerGroup}</DropdownItem>}
+								{headerGroup.ddActions.map((ddAction, dd_idx) => (
+									<DropdownItem
+										className={(ddAction.className ?? '') + (!!ddAction.color ? ` text-${ddAction.color}` : '')}
+										key={hg_idx + '-' + dd_idx}
+										active={ddAction.active}
+										disabled={!!ddAction.disabled || !ddAction.action}
+										divider={!!ddAction.divider}
+										header={!!ddAction.header}
+										onClick={() => (!!ddAction.action ? ddAction.action() : () => {
+										})}>
+										{showFAProps && (
+											<FontAwesomeIcon
+												icon={faCog}
+												{...ddAction.faProps}
+												className={!ddAction.faProps || ddAction.faPropHidden ? 'invisible' : ''}
+												fixedWidth
+											/>
+										)}
+										{ddAction.title}
+									</DropdownItem>
+								))}
+							</Fragment>
 						))}
 					</>
 				)}
