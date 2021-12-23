@@ -63,7 +63,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 		() =>
 			!props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
 				(ddAction) => !ddAction.hidden).reduce<IHeaderGroup[]>((result, ddAction) => {
-				let nextHeaderGroup = result.find(hG => hG.headerGroup === ddAction.header) ?? {
+				let nextHeaderGroup = result.find(hG => hG.headerGroup === ddAction.headerGroup) ?? {
 					headerGroup: ddAction.headerGroup,
 					ddActions: []
 				}

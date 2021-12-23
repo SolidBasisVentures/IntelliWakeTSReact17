@@ -1293,7 +1293,7 @@ const Dropdown = (props) => {
     const [isOpen, setIsOpen] = React.useState((_a = props.isOpen) !== null && _a !== void 0 ? _a : false);
     const visibleHeaderGroups = React.useMemo(() => !props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter((ddAction) => !ddAction.hidden).reduce((result, ddAction) => {
         var _a;
-        let nextHeaderGroup = (_a = result.find(hG => hG.headerGroup === ddAction.header)) !== null && _a !== void 0 ? _a : {
+        let nextHeaderGroup = (_a = result.find(hG => hG.headerGroup === ddAction.headerGroup)) !== null && _a !== void 0 ? _a : {
             headerGroup: ddAction.headerGroup,
             ddActions: []
         };
