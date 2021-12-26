@@ -242,12 +242,12 @@ export const Dropdown = (props: IWDropdownProps) => {
 					<>
 						{props.children}
 						{visibleHeaderGroups.map((headerGroup, hg_idx) => (
-							<Fragment key={hg_idx}>
+							<Fragment key={`${hg_idx}-${headerGroup.headerGroup ?? 'NULL'}`}>
 								{!!headerGroup.headerGroup && <DropdownItem header>{headerGroup.headerGroup}</DropdownItem>}
 								{headerGroup.ddActions.map((ddAction, dd_idx) => (
 									<DropdownItem
 										className={(ddAction.className ?? '') + (!!ddAction.color ? ` text-${ddAction.color}` : '')}
-										key={hg_idx + '-' + dd_idx}
+										key={`${hg_idx}-${headerGroup.headerGroup ?? 'NULL'}-${dd_idx}-${ddAction.title}`}
 										active={ddAction.active}
 										disabled={!!ddAction.disabled || !ddAction.action}
 										divider={!!ddAction.divider}

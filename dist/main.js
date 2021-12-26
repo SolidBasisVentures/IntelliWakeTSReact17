@@ -1397,19 +1397,22 @@ const Dropdown = (props) => {
                 }
             }, style: dropdownMenuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
             props.children,
-            visibleHeaderGroups.map((headerGroup, hg_idx) => (React__default['default'].createElement(React.Fragment, { key: hg_idx },
-                !!headerGroup.headerGroup && React__default['default'].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
-                headerGroup.ddActions.map((ddAction, dd_idx) => {
-                    var _a;
-                    return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: hg_idx + '-' + dd_idx, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: e => {
-                            if (!!ddAction.noClose)
-                                e.stopPropagation();
-                            if (!!ddAction.action)
-                                ddAction.action();
-                        } },
-                        showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
-                        ddAction.title));
-                })))))))));
+            visibleHeaderGroups.map((headerGroup, hg_idx) => {
+                var _a;
+                return (React__default['default'].createElement(React.Fragment, { key: `${hg_idx}-${(_a = headerGroup.headerGroup) !== null && _a !== void 0 ? _a : 'NULL'}` },
+                    !!headerGroup.headerGroup && React__default['default'].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
+                    headerGroup.ddActions.map((ddAction, dd_idx) => {
+                        var _a, _b;
+                        return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: `${hg_idx}-${(_b = headerGroup.headerGroup) !== null && _b !== void 0 ? _b : 'NULL'}-${dd_idx}-${ddAction.title}`, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: e => {
+                                if (!!ddAction.noClose)
+                                    e.stopPropagation();
+                                if (!!ddAction.action)
+                                    ddAction.action();
+                            } },
+                            showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
+                            ddAction.title));
+                    })));
+            }))))));
 };
 
 exports.EFieldSetGroupings = void 0;

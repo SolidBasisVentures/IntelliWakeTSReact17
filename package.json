@@ -1,6 +1,6 @@
 {
   "name": "@solidbasisventures/intelliwaketsreact17",
-  "version": "4.0.124",
+  "version": "4.0.125",
   "description": "NPM package for IntelliWake React 17 Components",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -24,15 +24,13 @@
     "type": "git",
     "url": "https://github.com/SolidBasisVentures/IntelliWakeTSReact17.git"
   },
-  "peerDependencies": {
-    "@fortawesome/pro-solid-svg-icons": "^5.13.0"
-  },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/pro-duotone-svg-icons": "^5.13.0",
     "@fortawesome/pro-light-svg-icons": "^5.13.0",
     "@fortawesome/pro-regular-svg-icons": "^5.13.0",
+    "@fortawesome/pro-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.10",
     "@popperjs/core": "^2.4.0",
     "@solidbasisventures/intelliwaketsfoundation": "^5.0.102",
