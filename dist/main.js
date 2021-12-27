@@ -1584,9 +1584,9 @@ const FieldSetRow = (props) => {
                     items.input2ColProps[breakAt] = secondFieldSize;
                     items.input3ColProps[breakAt] = thirdFieldSize;
                 }
-                if (typeof props.inputThird === 'string') {
-                    items.input3ColProps.className = 'form-control-plaintext'; //form-text
-                }
+                // if (typeof props.inputThird === 'string') {
+                // 	items.input3ColProps.className = 'form-control-plaintext' //form-text
+                // }
             }
             else {
                 if (breakAt === 'xs') {
@@ -1598,7 +1598,7 @@ const FieldSetRow = (props) => {
                 }
             }
             if (typeof props.inputSecond === 'string') {
-                items.input2ColProps.className = 'form-control-plaintext strong'; //form-text
+                // items.input2ColProps.className = 'form-control-plaintext strong' //form-text
                 if (breakAt === 'xs') {
                     items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-end';
                 }
@@ -1612,20 +1612,22 @@ const FieldSetRow = (props) => {
     // noinspection SuspiciousTypeOfGuard
     const element = !!props.input && typeof props.input === 'object'
         ? React__default['default'].cloneElement(React__default['default'].createElement(React__default['default'].Fragment, null, props.input), { id: (_a = props.input.props.id) !== null && _a !== void 0 ? _a : settings.uuid })
-        : React__default['default'].cloneElement(React__default['default'].createElement("span", { className: "form-control-plaintext" }, (_b = props.input) !== null && _b !== void 0 ? _b : ''), { id: settings.uuid });
+        : React__default['default'].cloneElement(React__default['default'].createElement("span", { className: 'form-control-plaintext' }, (_b = props.input) !== null && _b !== void 0 ? _b : ''), { id: settings.uuid });
     // noinspection SuspiciousTypeOfGuard
     return (React__default['default'].createElement(Row, { className: `${fieldSetContext.condensed ? '' : 'mb-3'} fieldSetRow ${(_c = props.className) !== null && _c !== void 0 ? _c : ''}`.trim(), hidden: props.hidden },
         !!props.label && !!settings.labelColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.labelColProps),
-            React__default['default'].createElement("label", { className: "col-form-label", htmlFor: element.props.id }, props.label))),
+            React__default['default'].createElement("label", { className: 'col-form-label', htmlFor: element.props.id }, props.label))),
         React__default['default'].createElement(Col, Object.assign({}, settings.inputColProps),
             element,
             props.inputFeedback),
-        !!props.inputSecond && !!settings.input2ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input2ColProps),
+        !!props.inputSecond && !!settings.input2ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input2ColProps), typeof props.inputSecond === 'string' ?
+            React__default['default'].createElement("label", { className: 'col-form-label' }, props.inputSecond) : React__default['default'].createElement(React__default['default'].Fragment, null,
             props.inputSecond,
-            props.inputSecondFeedback)),
-        !!props.inputThird && !!settings.input3ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input3ColProps),
+            props.inputSecondFeedback))),
+        !!props.inputThird && !!settings.input3ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input3ColProps), typeof props.inputThird === 'string' ?
+            React__default['default'].createElement("label", { className: 'col-form-label' }, props.inputThird) : React__default['default'].createElement(React__default['default'].Fragment, null,
             props.inputThird,
-            props.inputThirdFeedback))));
+            props.inputThirdFeedback)))));
 };
 
 const Form = (props) => {

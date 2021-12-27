@@ -201,7 +201,7 @@ export const FieldSetRow = (props: IProps) => {
 			{!!props.inputSecond && !!settings.input2ColProps && (
 				<Col {...settings.input2ColProps}>
 					{typeof props.inputSecond === 'string' ?
-						<span className='form-control-plaintext'>{props.inputSecond}</span> : <>
+						<label className='col-form-label'>{props.inputSecond}</label> : <>
 							{props.inputSecond}
 							{props.inputSecondFeedback}
 						</>}
@@ -210,7 +210,7 @@ export const FieldSetRow = (props: IProps) => {
 			{!!props.inputThird && !!settings.input3ColProps && (
 				<Col {...settings.input3ColProps}>
 					{typeof props.inputThird === 'string' ?
-						<span className='form-control-plaintext'>{props.inputThird}</span> : <>
+						<label className='col-form-label'>{props.inputThird}</label> : <>
 							{props.inputThird}
 							{props.inputThirdFeedback}
 						</>}
