@@ -1621,11 +1621,11 @@ const FieldSetRow = (props) => {
             element,
             props.inputFeedback),
         !!props.inputSecond && !!settings.input2ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input2ColProps), typeof props.inputSecond === 'string' ?
-            React__default['default'].createElement("label", { className: 'col-form-label' }, props.inputSecond) : React__default['default'].createElement(React__default['default'].Fragment, null,
+            React__default['default'].createElement("label", { className: 'col-form-label strong' }, props.inputSecond) : React__default['default'].createElement(React__default['default'].Fragment, null,
             props.inputSecond,
             props.inputSecondFeedback))),
         !!props.inputThird && !!settings.input3ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input3ColProps), typeof props.inputThird === 'string' ?
-            React__default['default'].createElement("label", { className: 'col-form-label' }, props.inputThird) : React__default['default'].createElement(React__default['default'].Fragment, null,
+            React__default['default'].createElement("label", { className: 'col-form-label strong' }, props.inputThird) : React__default['default'].createElement(React__default['default'].Fragment, null,
             props.inputThird,
             props.inputThirdFeedback)))));
 };
