@@ -24,7 +24,7 @@ interface IProps {
 
 export const FieldSetRow = (props: IProps) => {
 	const fieldSetContext = useContext(FieldSetContext)
-
+	
 	interface ISettings {
 		uuid: string
 		labelColProps?: IIWColProps
@@ -32,87 +32,87 @@ export const FieldSetRow = (props: IProps) => {
 		input2ColProps?: IIWColProps
 		input3ColProps?: IIWColProps
 	}
-
+	
 	const settings = useMemo<ISettings>(() => {
 		const items: ISettings = {
 			uuid: `Input${fieldSetContext.uuid}${RandomString(5)}`,
 			inputColProps: {}
 		}
-
+		
 		const breakAt = fieldSetContext.groupings === EFieldSetGroupings.LabelOver ? 'xs' : fieldSetContext.breakAt
-
+		
 		const firstLabelSize =
 			fieldSetContext.groupings === EFieldSetGroupings.LabelOver
 				? 12
 				: fieldSetContext.groupings === EFieldSetGroupings.TwoThirds
-				? 8
-				: fieldSetContext.groupings === EFieldSetGroupings.Half
-				? 6
-				: fieldSetContext.groupings === EFieldSetGroupings.Thirds
-				? 4
-				: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
-				? 3
-				: 2
-
+					? 8
+					: fieldSetContext.groupings === EFieldSetGroupings.Half
+						? 6
+						: fieldSetContext.groupings === EFieldSetGroupings.Thirds
+							? 4
+							: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
+								? 3
+								: 2
+		
 		const firstFieldSize =
 			fieldSetContext.groupings === EFieldSetGroupings.LabelOver
 				? 12
 				: !props.inputThird
-				? !props.inputSecond
-					? props.inputWidth === undefined
-						? 12 - firstLabelSize
-						: fieldSetContext.groupings === EFieldSetGroupings.Half
-						? 6
-						: fieldSetContext.groupings === EFieldSetGroupings.Thirds
-						? props.inputWidth === EFieldRowInputWidth.Medium
+					? !props.inputSecond
+						? props.inputWidth === undefined
+							? 12 - firstLabelSize
+							: fieldSetContext.groupings === EFieldSetGroupings.Half
+								? 6
+								: fieldSetContext.groupings === EFieldSetGroupings.Thirds
+									? props.inputWidth === EFieldRowInputWidth.Medium
 										? 6
 										: 4
-						: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
-						? props.inputWidth === EFieldRowInputWidth.Medium
-							? 6
-							: 3
-						: props.inputWidth === EFieldRowInputWidth.Medium
-						? 6
-						: props.inputWidth === EFieldRowInputWidth.Short
-						? 4
-						: 10
+									: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
+										? props.inputWidth === EFieldRowInputWidth.Medium
+											? 6
+											: 3
+										: props.inputWidth === EFieldRowInputWidth.Medium
+											? 6
+											: props.inputWidth === EFieldRowInputWidth.Short
+												? 4
+												: 10
+						: fieldSetContext.groupings === EFieldSetGroupings.Half
+							? 3
+							: fieldSetContext.groupings === EFieldSetGroupings.Thirds
+								? 4
+								: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
+									? props.inputWidth === EFieldRowInputWidth.Medium
+										? 6
+										: 3
+									: props.inputWidth === EFieldRowInputWidth.Medium
+										? 6
+										: 2
 					: fieldSetContext.groupings === EFieldSetGroupings.Half
-					? 3
-					: fieldSetContext.groupings === EFieldSetGroupings.Thirds
-					? 4
-					: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
-					? props.inputWidth === EFieldRowInputWidth.Medium
-						? 6
-						: 3
-					: props.inputWidth === EFieldRowInputWidth.Medium
-					? 6
-					: 2
-				: fieldSetContext.groupings === EFieldSetGroupings.Half
-				? 2
-				: fieldSetContext.groupings === EFieldSetGroupings.Thirds
-				? props.inputWidth === EFieldRowInputWidth.Short
-					? 2
-					: 3
-				: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
-				? 3
-				: props.inputWidth === EFieldRowInputWidth.Short
-				? 2
-				: 4
-
+						? 2
+						: fieldSetContext.groupings === EFieldSetGroupings.Thirds
+							? props.inputWidth === EFieldRowInputWidth.Short
+								? 2
+								: 3
+							: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
+								? 3
+								: props.inputWidth === EFieldRowInputWidth.Short
+									? 2
+									: 4
+		
 		const secondFieldSize =
 			fieldSetContext.groupings === EFieldSetGroupings.LabelOver
 				? 12
 				: !props.inputThird
-				? 12 - firstLabelSize - firstFieldSize
-				: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
-				? 3
-				: 2
-
+					? 12 - firstLabelSize - firstFieldSize
+					: fieldSetContext.groupings === EFieldSetGroupings.QuartersEven
+						? 3
+						: 2
+		
 		const thirdFieldSize =
 			fieldSetContext.groupings === EFieldSetGroupings.LabelOver
 				? 12
 				: 12 - firstLabelSize - firstFieldSize - secondFieldSize
-
+		
 		if (!!props.label) {
 			items.labelColProps = {}
 			items.labelColProps.className = 'strong'
@@ -135,12 +135,12 @@ export const FieldSetRow = (props: IProps) => {
 				items.inputColProps[breakAt] = {offset: firstLabelSize, size: firstFieldSize}
 			}
 		}
-
+		
 		if (!!props.inputSecond) {
 			items.input2ColProps = {}
 			if (!!props.inputThird) {
 				items.input3ColProps = {}
-
+				
 				if (breakAt === 'xs') {
 					items.input2ColProps.xs = secondFieldSize
 					items.input3ColProps.xs = thirdFieldSize
@@ -150,10 +150,10 @@ export const FieldSetRow = (props: IProps) => {
 					items.input2ColProps[breakAt] = secondFieldSize
 					items.input3ColProps[breakAt] = thirdFieldSize
 				}
-
-				if (typeof props.inputThird === 'string') {
-					items.input3ColProps.className = 'form-control-plaintext' //form-text
-				}
+				
+				// if (typeof props.inputThird === 'string') {
+				// 	items.input3ColProps.className = 'form-control-plaintext' //form-text
+				// }
 			} else {
 				if (breakAt === 'xs') {
 					items.input2ColProps.xs = secondFieldSize
@@ -162,9 +162,9 @@ export const FieldSetRow = (props: IProps) => {
 					items.input2ColProps[breakAt] = secondFieldSize
 				}
 			}
-
+			
 			if (typeof props.inputSecond === 'string') {
-				items.input2ColProps.className = 'form-control-plaintext strong' //form-text
+				// items.input2ColProps.className = 'form-control-plaintext strong' //form-text
 				if (breakAt === 'xs') {
 					items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-end'
 				} else {
@@ -172,16 +172,16 @@ export const FieldSetRow = (props: IProps) => {
 				}
 			}
 		}
-
+		
 		return items
 	}, [props, fieldSetContext])
-
+	
 	// noinspection SuspiciousTypeOfGuard
 	const element =
 		!!props.input && typeof props.input === 'object'
 			? React.cloneElement(<>{props.input}</>, {id: props.input.props.id ?? settings.uuid})
-			: React.cloneElement(<span className="form-control-plaintext">{props.input ?? ''}</span>, {id: settings.uuid})
-
+			: React.cloneElement(<span className='form-control-plaintext'>{props.input ?? ''}</span>, {id: settings.uuid})
+	
 	// noinspection SuspiciousTypeOfGuard
 	return (
 		<Row
@@ -189,7 +189,7 @@ export const FieldSetRow = (props: IProps) => {
 			hidden={props.hidden}>
 			{!!props.label && !!settings.labelColProps && (
 				<Col {...settings.labelColProps}>
-					<label className="col-form-label" htmlFor={element.props.id}>
+					<label className='col-form-label' htmlFor={element.props.id}>
 						{props.label}
 					</label>
 				</Col>
@@ -200,14 +200,20 @@ export const FieldSetRow = (props: IProps) => {
 			</Col>
 			{!!props.inputSecond && !!settings.input2ColProps && (
 				<Col {...settings.input2ColProps}>
-					{props.inputSecond}
-					{props.inputSecondFeedback}
+					{typeof props.inputSecond === 'string' ?
+						<span className='form-control-plaintext'>{props.inputSecond}</span> : <>
+							{props.inputSecond}
+							{props.inputSecondFeedback}
+						</>}
 				</Col>
 			)}
 			{!!props.inputThird && !!settings.input3ColProps && (
 				<Col {...settings.input3ColProps}>
-					{props.inputThird}
-					{props.inputThirdFeedback}
+					{typeof props.inputThird === 'string' ?
+						<span className='form-control-plaintext'>{props.inputThird}</span> : <>
+							{props.inputThird}
+							{props.inputThirdFeedback}
+						</>}
 				</Col>
 			)}
 		</Row>
