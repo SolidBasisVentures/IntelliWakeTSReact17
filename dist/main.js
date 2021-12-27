@@ -1585,7 +1585,7 @@ const FieldSetRow = (props) => {
                     items.input3ColProps[breakAt] = thirdFieldSize;
                 }
                 if (typeof props.inputThird === 'string') {
-                    items.input3ColProps.className = 'form-text';
+                    items.input3ColProps.className = 'form-text form-control-plaintext';
                 }
             }
             else {
@@ -1598,7 +1598,7 @@ const FieldSetRow = (props) => {
                 }
             }
             if (typeof props.inputSecond === 'string') {
-                items.input2ColProps.className = 'form-text strong';
+                items.input2ColProps.className = 'form-text form-control-plaintext strong';
                 if (breakAt === 'xs') {
                     items.input2ColProps.className += secondFieldSize === 12 ? '' : ' text-end';
                 }
