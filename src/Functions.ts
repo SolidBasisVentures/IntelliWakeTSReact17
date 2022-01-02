@@ -26,7 +26,7 @@ export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 
 	if (!!target) {
 		const returnValue = target['customValue'] === undefined ? target.value : target.customValue
-		if (target.classList.contains('isNumber')) {
+		if (!!target.classList && target.classList.contains('isNumber')) {
 			return CleanNumber(returnValue)
 		}
 		return returnValue

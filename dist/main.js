@@ -561,7 +561,7 @@ const ElementCustomValue = (e) => {
     const target = e.target;
     if (!!target) {
         const returnValue = target['customValue'] === undefined ? target.value : target.customValue;
-        if (target.classList.contains('isNumber')) {
+        if (!!target.classList && target.classList.contains('isNumber')) {
             return intelliwaketsfoundation.CleanNumber(returnValue);
         }
         return returnValue;
