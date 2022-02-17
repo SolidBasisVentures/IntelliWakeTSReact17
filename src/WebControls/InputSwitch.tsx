@@ -26,6 +26,7 @@ export interface IInputSwitchProps<T = unknown> {
 	noFormControlPlainText?: boolean
 	style?: CSSProperties
 	autoReduceWidth?: boolean
+	ignoreNoWrap?: boolean
 }
 
 export function InputSwitch<T>(props: IInputSwitchProps<T>) {
@@ -47,26 +48,26 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	return (
 		<label
 			style={style}
-			className={'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
+			className={'inputSwitch ' + (props.ignoreNoWrap ? 'text-nowrap ' : '') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
 			hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
 			{(!props.plainText || !props.plainTextLabelOnly) &&
-			<Switch
-				onChange={(checked, e) => {
-					if (!props.plainText) {
-						handleInputChange(checked, e)
-					}
-				}}
-				name={props.name as string}
-				className={'react-switch ' + (props.noPadding ? '' : 'me-2 ') + (props.switchClassName ?? '')}
-				checked={props.checked}
-				disabled={props.plainText}
-				onColor={props.onColor}
-				offColor={props.offColor}
-				checkedIcon={props.checkedIcon ?? false}
-				uncheckedIcon={props.uncheckedIcon ?? false}
-				height={height}
-				width={width}
-			/>}
+				<Switch
+					onChange={(checked, e) => {
+						if (!props.plainText) {
+							handleInputChange(checked, e)
+						}
+					}}
+					name={props.name as string}
+					className={'react-switch ' + (props.noPadding ? '' : 'me-2 ') + (props.switchClassName ?? '')}
+					checked={props.checked}
+					disabled={props.plainText}
+					onColor={props.onColor}
+					offColor={props.offColor}
+					checkedIcon={props.checkedIcon ?? false}
+					uncheckedIcon={props.uncheckedIcon ?? false}
+					height={height}
+					width={width}
+				/>}
 			{props.label}
 		</label>
 	
