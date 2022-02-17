@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { TChangeValueFunction } from './IWInputProps';
 export interface IInputSwitchProps<T = unknown> {
     name?: (T extends object ? keyof T : string) | undefined;
@@ -19,5 +20,7 @@ export interface IInputSwitchProps<T = unknown> {
     size?: 'sm' | 'lg';
     noPadding?: boolean;
     noFormControlPlainText?: boolean;
+    style?: CSSProperties;
+    autoReduceWidth?: boolean;
 }
 export declare function InputSwitch<T>(props: IInputSwitchProps<T>): JSX.Element;

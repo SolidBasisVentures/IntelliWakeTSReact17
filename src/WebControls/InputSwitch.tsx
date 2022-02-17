@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {CSSProperties} from 'react'
 import {TChangeValueFunction} from './IWInputProps'
 import Switch from 'react-switch'
 
@@ -24,6 +24,8 @@ export interface IInputSwitchProps<T = unknown> {
 	size?: 'sm' | 'lg'
 	noPadding?: boolean
 	noFormControlPlainText?: boolean
+	style?: CSSProperties
+	autoReduceWidth?: boolean
 }
 
 export function InputSwitch<T>(props: IInputSwitchProps<T>) {
@@ -40,8 +42,11 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	const height = props.height ?? props.size === 'sm' ? 12 : props.size === 'lg' ? 18 : 14
 	const width = props.width ?? props.size === 'sm' ? 22 : props.size === 'lg' ? 30 : 26
 	
+	const style = !props.autoReduceWidth ? props.style : {...(props.style ?? {}), width: '1px'}
+	
 	return (
 		<label
+			style={style}
 			className={'inputSwitch ' + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
 			hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
 			{(!props.plainText || !props.plainTextLabelOnly) &&
