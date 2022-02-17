@@ -48,7 +48,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	return (
 		<label
 			style={style}
-			className={'inputSwitch ' + (props.ignoreNoWrap ? 'text-nowrap ' : '') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
+			className={'inputSwitch ' + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
 			hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
 			{(!props.plainText || !props.plainTextLabelOnly) &&
 				<Switch
