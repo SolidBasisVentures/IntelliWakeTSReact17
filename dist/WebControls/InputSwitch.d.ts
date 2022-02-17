@@ -21,7 +21,7 @@ export interface IInputSwitchProps<T = unknown> {
     noPadding?: boolean;
     noFormControlPlainText?: boolean;
     style?: CSSProperties;
-    autoReduceWidth?: boolean;
+    noReduceWidth?: boolean;
     ignoreNoWrap?: boolean;
 }
 export declare function InputSwitch<T>(props: IInputSwitchProps<T>): JSX.Element;

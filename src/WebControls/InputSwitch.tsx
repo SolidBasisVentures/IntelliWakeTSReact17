@@ -25,7 +25,7 @@ export interface IInputSwitchProps<T = unknown> {
 	noPadding?: boolean
 	noFormControlPlainText?: boolean
 	style?: CSSProperties
-	autoReduceWidth?: boolean
+	noReduceWidth?: boolean
 	ignoreNoWrap?: boolean
 }
 
@@ -43,7 +43,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	const height = props.height ?? props.size === 'sm' ? 12 : props.size === 'lg' ? 18 : 14
 	const width = props.width ?? props.size === 'sm' ? 22 : props.size === 'lg' ? 30 : 26
 	
-	const style = !props.autoReduceWidth ? props.style : {...(props.style ?? {}), width: '1px'}
+	const style = !!props.noReduceWidth ? props.style : {...(props.style ?? {}), width: '1px'}
 	
 	return (
 		<label
