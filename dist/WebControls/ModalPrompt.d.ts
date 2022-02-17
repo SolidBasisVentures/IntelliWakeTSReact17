@@ -5,6 +5,7 @@ export interface IModalPromptResponse {
     action: () => void;
     color?: string;
     outline?: boolean;
+    disabled?: boolean;
 }
 export declare type TModalPromptResponse = null | IModalPromptResponse | IModalPromptResponse[];
 export interface IModalPromptProps {

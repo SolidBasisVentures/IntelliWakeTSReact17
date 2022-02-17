@@ -11,6 +11,7 @@ export interface IModalPromptResponse {
 	action: () => void
 	color?: string
 	outline?: boolean
+	disabled?: boolean
 }
 
 export type TModalPromptResponse = null | IModalPromptResponse | IModalPromptResponse[]
@@ -128,17 +129,20 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 							: 'link')
 					}>
 					{props.cancelLabel ??
-					(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')}
+						(promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')}
 				</Button>
 				{promptResponsesAsArray.map((promptResponse, idx) => (
 					<Button
 						key={idx}
 						onClick={() => {
-							promptResponse.action()
-							dismiss(false)
+							if (!promptResponse.disabled) {
+								promptResponse.action()
+								dismiss(false)
+							}
 						}}
 						outline={promptResponse.outline}
 						color={promptResponse.color ?? props.color ?? 'primary'}
+						disabled={promptResponse.disabled}
 						className='ml-1'>
 						{promptResponse.label}
 					</Button>

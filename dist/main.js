@@ -2094,9 +2094,11 @@ const ModalPrompt = (props) => {
             promptResponsesAsArray.map((promptResponse, idx) => {
                 var _a, _b;
                 return (React__default['default'].createElement(Button, { key: idx, onClick: () => {
-                        promptResponse.action();
-                        dismiss(false);
-                    }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', className: 'ml-1' }, promptResponse.label));
+                        if (!promptResponse.disabled) {
+                            promptResponse.action();
+                            dismiss(false);
+                        }
+                    }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', disabled: promptResponse.disabled, className: 'ml-1' }, promptResponse.label));
             }),
             !!props.okLabel && !!props.okAction && (React__default['default'].createElement(Button, { disabled: props.okDisabled, onClick: okAction, color: (_e = props.color) !== null && _e !== void 0 ? _e : 'primary', className: 'ml-1', 
                 // onKeyPress={okKeyPress}
