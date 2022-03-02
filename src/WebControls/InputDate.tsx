@@ -1,12 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {OmitProperty,
+import {
+	DateObject, OmitProperty,
 	RandomString
 } from '@solidbasisventures/intelliwaketsfoundation'
 import {MomentDateString, MomentDisplayDayDate, MomentDisplayDayDateTime, MomentTimeString} from '../Moment'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	showTime?: boolean
+	validIfYearGreaterThan?: number
 }
 
 const originalValue = ' '
@@ -34,22 +36,24 @@ export function InputDate<T>(props: IProps<T>) {
 		
 		setOverrideValue(e.target.value)
 		
-		const customValue = (nextDateValue.current + ' ' + (MomentTimeString(props.value as string) ?? '')).trim()
-		
-		if (!!props.onChange) {
-			;(e.target as any).customValue = customValue
+		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 1900)) {
+			const customValue = (nextDateValue.current + ' ' + (MomentTimeString(props.value as string) ?? '')).trim()
 			
-			props.onChange(e)
-		}
-		
-		if (!!props.changeValue) {
-			props.changeValue(
-				customValue,
-				e.target.name as any,
-				(e.nativeEvent as any).shiftKey,
-				(e.nativeEvent as any).ctrlKey,
-				(e.nativeEvent as any).altKey
-			)
+			if (!!props.onChange) {
+				;(e.target as any).customValue = customValue
+				
+				props.onChange(e)
+			}
+			
+			if (!!props.changeValue) {
+				props.changeValue(
+					customValue,
+					e.target.name as any,
+					(e.nativeEvent as any).shiftKey,
+					(e.nativeEvent as any).ctrlKey,
+					(e.nativeEvent as any).altKey
+				)
+			}
 		}
 	}
 	

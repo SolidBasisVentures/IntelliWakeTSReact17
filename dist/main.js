@@ -3069,16 +3069,18 @@ function InputDate(props) {
         }
     }, [props.value]);
     const handleInputChange = (e) => {
-        var _a, _b;
+        var _a, _b, _c, _d, _e;
         nextDateValue.current = (_a = MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (nextDateValue.current + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim();
-        if (!!props.onChange) {
-            e.target.customValue = customValue;
-            props.onChange(e);
-        }
-        if (!!props.changeValue) {
-            props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+        if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 1900)) {
+            const customValue = (nextDateValue.current + ' ' + ((_e = MomentTimeString(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
+            if (!!props.onChange) {
+                e.target.customValue = customValue;
+                props.onChange(e);
+            }
+            if (!!props.changeValue) {
+                props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+            }
         }
     };
     return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
