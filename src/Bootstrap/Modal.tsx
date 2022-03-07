@@ -32,6 +32,7 @@ export interface IWModalProps {
 	leftButtons?: IWButtonLightProps[]
 	rightButtons?: IWButtonLightProps[]
 	children?: any
+	noOverFlowScroll?: boolean
 }
 
 export const Modal = (props: IWModalProps) => {
@@ -144,7 +145,7 @@ export const Modal = (props: IWModalProps) => {
 										)}
 									</div>
 								)}
-								<div className={'modal-body ' + (props.bodyClassName ?? '')} style={props.bodyStyle}>
+								<div className={`modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll' : ''} ` + (props.bodyClassName ?? '') } style={props.bodyStyle}>
 									{!!props.bodyContainerFormSubmit ? (
 										<Form
 											className={`container ${
