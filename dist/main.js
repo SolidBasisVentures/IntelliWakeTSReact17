@@ -1815,7 +1815,7 @@ const Modal = (props) => {
                     !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default['default'].createElement("h5", { className: 'modal-title' }, props.title),
                         !props.noCancel && (React__default['default'].createElement("button", { className: 'btn-close', onClick: toggle })))),
-                    React__default['default'].createElement("div", { className: `modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll' : ''} ` + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
+                    React__default['default'].createElement("div", { className: `modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll container container-fluid overflow-hidden fill-height' : ''} ` + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
                             e.preventDefault();
                             if (!props.okDisabled) {
                                 okAction(e);
