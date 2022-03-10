@@ -3536,13 +3536,13 @@ const InputSearch = React.forwardRef((props, ref) => {
         onFocus: handleOnFocus,
         autoComplete: props.autoCompleteOn ? 'on' : `AC_${intelliwaketsfoundation.RandomString(12)}`
     };
-    return /* !!props.iconPrefix || */ !!props.reactPrefix ? (React__default["default"].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
-        ( /* !!props.iconPrefix || */!!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { onClick: () => {
+    return !!props.iconPrefix || !!props.reactPrefix ? (React__default["default"].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
+        (!!props.iconPrefix || !!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { onClick: () => {
                 var _a;
                 const innerRef = ref;
                 if (!!((_a = innerRef === null || innerRef === void 0 ? void 0 : innerRef.current) === null || _a === void 0 ? void 0 : _a.focus))
                     innerRef.current.focus();
-            } }, props.reactPrefix)),
+            } }, props.iconPrefix !== undefined ? (typeof props.iconPrefix === 'boolean' ? (React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faSearch })) : (React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, props.iconPrefix)))) : (props.reactPrefix))),
         React__default["default"].createElement("input", Object.assign({}, inputProps)))) : (React__default["default"].createElement("input", Object.assign({}, inputProps)));
 });
 
