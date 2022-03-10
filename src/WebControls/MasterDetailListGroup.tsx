@@ -65,7 +65,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 				.filter((listGroupItem) => !listGroupItem.hidden)
 				.map((listGroupItem, idx) => ({
 					...listGroupItem,
-					key: (listGroupItem.linkKey ?? listGroupItem.panelTitle ?? listGroupItem.linkNode ?? idx).toString() + (listGroupItem.id ?? '') + idx,
+					key: `${listGroupItem.linkKey ?? listGroupItem.panelTitle ?? listGroupItem.linkNode ?? idx}-${listGroupItem.id ?? ''}-${idx}`,
 					panelURLCalc:
 						listGroupItem.panelURL ??
 						ToPascalCase(listGroupItem.linkKey ?? listGroupItem.panelTitle ?? (listGroupItem.linkNode ?? idx).toString()),
