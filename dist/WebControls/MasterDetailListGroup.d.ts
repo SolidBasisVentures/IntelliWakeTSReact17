@@ -7,6 +7,7 @@ export interface IMasterDetailListGroupMDLink {
     faProps?: FontAwesomeIconProps;
     color?: string;
     linkNode: ReactNode;
+    linkKey?: string;
     linkClick?: React.MouseEventHandler<any>;
     /** undefined = don't show, null = show with spinner, number (0, 1, etc.) = show */
     counter?: number | null;

@@ -215,8 +215,8 @@ export const Dropdown = (props: IWDropdownProps) => {
 				// ref={buttonRef}
 			>
 				{!!props.maxWidth ?
-					<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} />
-					: (props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />)
+					<EllipsesTruncate text={props.buttonLabel ?? '&#x2699;'} />
+					: (props.buttonLabel ?? '&#x2699;')
 				}
 			</Button>
 			<div

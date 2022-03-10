@@ -23,7 +23,7 @@ export const KEY_STRING_ESCAPE = 'Escape'
 
 export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 	const target: any = e.target
-
+	
 	if (!!target) {
 		const returnValue = target['customValue'] === undefined ? target.value : target.customValue
 		if (!!target.classList && target.classList.contains('isNumber')) {
@@ -31,7 +31,7 @@ export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 		}
 		return returnValue
 	}
-
+	
 	return null
 }
 
@@ -43,20 +43,20 @@ export const ClassNames = (classes: TClassNames): string => {
 
 export const HasPathComponent = (search: string): boolean => {
 	let searchCalc = search.toLowerCase()
-
+	
 	if (!searchCalc.startsWith('/')) {
 		searchCalc = '/' + searchCalc
 	}
-
+	
 	if (!searchCalc.endsWith('/')) {
 		searchCalc += '/'
 	}
-
+	
 	let pathName = window.location.pathname.toLowerCase()
 	if (!pathName.endsWith('/')) {
 		pathName += '/'
 	}
-
+	
 	return pathName.indexOf(searchCalc) >= 0
 }
 
@@ -64,13 +64,13 @@ export const GetPathComponentAfter = (search: string | undefined | null): string
 	if (!search) return undefined
 	
 	let searchCalc = search.toLowerCase()
-
+	
 	if (!searchCalc.endsWith('/')) {
 		searchCalc += '/'
 	}
-
+	
 	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
-
+	
 	if (startPos >= 0) {
 		const after = window.location.pathname.substr(startPos + searchCalc.length)
 		const slashPos = after.toLowerCase().indexOf('/')
@@ -87,13 +87,13 @@ export const GetPathComponentAt = (search: string | undefined | null, toEnd = tr
 	if (!search) return undefined
 	
 	let searchCalc = search.toLowerCase()
-
+	
 	if (!searchCalc.startsWith('/')) {
 		searchCalc = '/' + searchCalc
 	}
-
+	
 	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
-
+	
 	if (startPos >= 0) {
 		let result = window.location.pathname.substr(startPos + 1)
 		
@@ -114,23 +114,23 @@ export const GetPathThrough = (search: string | undefined | null): string | unde
 	if (!search) return undefined
 	
 	let searchCalc = search.toLowerCase()
-
+	
 	const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/')
-
+	
 	if (startPosSlash >= 0) {
 		return window.location.pathname.substr(0, startPosSlash + searchCalc.length)
 	}
-
+	
 	const startPosNoSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc)
-
+	
 	if (startPosNoSlash >= 0) {
 		const possibleComplete = window.location.pathname.substr(0, startPosNoSlash + searchCalc.length)
-
+		
 		if (possibleComplete.length === window.location.pathname.length) {
 			return possibleComplete
 		}
 	}
-
+	
 	return undefined
 }
 
@@ -138,10 +138,10 @@ export const CaptureGPS = (): Promise<GeolocationPosition | null> => {
 	return new Promise(async (resolve) => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
-				function (position) {
+				function(position) {
 					resolve(position)
 				},
-				function () {
+				function() {
 					resolve(null)
 				}
 			)
@@ -151,29 +151,12 @@ export const CaptureGPS = (): Promise<GeolocationPosition | null> => {
 	})
 }
 
-export const DownloadBase64Data = (fileName: string, base64: string, type: string) => {
-	if (!!window.navigator.msSaveBlob) {
-		// IE
-		const byteCharacters = atob(base64.replace(/^[^,]+,/, '').replace(/\r\n/g, ''))
-
-		let byteNumbers = new Array(byteCharacters.length)
-
-		for (let i = 0; i < byteCharacters.length; i++) {
-			byteNumbers[i] = byteCharacters.charCodeAt(i)
-		}
-
-		const byteArray = new Uint8Array(byteNumbers)
-
-		const blob = new Blob([byteArray], {type: type})
-
-		window.navigator.msSaveOrOpenBlob(blob, fileName)
-	} else {
-		const link = document.createElement('a')
-		link.href = base64
-		link.setAttribute('download', fileName)
-		document.body.appendChild(link)
-		link.click()
-	}
+export const DownloadBase64Data = (fileName: string, base64: string) => {
+	const link = document.createElement('a')
+	link.href = base64
+	link.setAttribute('download', fileName)
+	document.body.appendChild(link)
+	link.click()
 }
 
 export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
@@ -183,7 +166,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 		if (sel) {
 			// unselect any element in the page
 			sel.removeAllRanges()
-
+			
 			const elsNoCopy = ref.current.getElementsByClassName('noCopy')
 			for (let el of elsNoCopy) {
 				el.classList.add('noCopyActive')
@@ -222,7 +205,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				hrs[i].setAttribute('copyuserdisplay', hrs[i].style.display)
 				hrs[i].style.display = 'none'
 			}
-
+			
 			if (tryFormatted) {
 				try {
 					range.selectNode(ref.current as any)
@@ -235,11 +218,11 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				range.selectNodeContents(ref.current as any)
 				sel.addRange(range)
 			}
-
+			
 			document.execCommand('copy')
-
+			
 			sel.removeAllRanges()
-
+			
 			// for (let i = 0; i < ths.length; i++) {
 			// 	ths[i].style.userSelect = ths[i].getAttribute('copyuserselect')
 			// 	ths[i].removeAttribute('copyuserselect')
@@ -272,7 +255,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				hrs[i].style.display = hrs[i].getAttribute('display')
 				hrs[i].removeAttribute('copyuserdisplay')
 			}
-
+			
 			return true
 		}
 	}
@@ -286,11 +269,11 @@ export const TableIDToExcel = (tableID: string, fileName?: string, appendDateTim
 	// const dataType = 'application/vnd.ms-excel'
 	const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 	const tableSelect = document.getElementById(tableID) as any
-
+	
 	let tableHTML = tableSelect.outerHTML //.replace(/ /g, '%20')
-
+	
 	tableHTML = ReplaceAll('<br>', ' ', tableHTML)
-
+	
 	let a = document.createElement('a')
 	const blob = new Blob([tableHTML], {type: dataType})
 	a.href = URL.createObjectURL(blob)
@@ -341,11 +324,11 @@ export const SizeAtMax = (size: TBootStrapExtendedSizes): number => {
 
 export const useCombinedRefs = <T>(...refs: (LegacyRef<T> | null)[]): MutableRefObject<T | undefined> | null => {
 	const targetRef = React.useRef<T>()
-
+	
 	React.useEffect(() => {
 		refs.forEach((ref: any) => {
 			if (!ref) return
-
+			
 			if (typeof ref === 'function') {
 				ref(targetRef.current)
 			} else {
@@ -353,6 +336,6 @@ export const useCombinedRefs = <T>(...refs: (LegacyRef<T> | null)[]): MutableRef
 			}
 		})
 	}, [refs])
-
+	
 	return targetRef
 }

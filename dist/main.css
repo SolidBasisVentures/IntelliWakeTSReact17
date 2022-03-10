@@ -127,10 +127,10 @@
       top: 0 !important;
     }
     table.table-sticky.table-sm > tbody > .stickyTRL2 > td, table.table-sticky.table-sm > tbody > .stickyTRL2 > th {
-      top: calc(1.8rem) !important;
+      top: 1.8rem !important;
     }
     table.table-sticky.table-sm > tbody > .stickyTRL3 > td, table.table-sticky.table-sm > tbody > .stickyTRL3 > th {
-      top: calc(3.6rem) !important;
+      top: 3.6rem !important;
     }
   }
 }
@@ -283,10 +283,10 @@
       top: 0 !important;
     }
     table.table-sticky-legacy.table-sm > tbody > .stickyTRL2 > td, table.table-sticky-legacy.table-sm > tbody > .stickyTRL2 > th {
-      top: calc(1.8rem) !important;
+      top: 1.8rem !important;
     }
     table.table-sticky-legacy.table-sm > tbody > .stickyTRL3 > td, table.table-sticky-legacy.table-sm > tbody > .stickyTRL3 > th {
-      top: calc(3.6rem) !important;
+      top: 3.6rem !important;
     }
   }
 }

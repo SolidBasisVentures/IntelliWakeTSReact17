@@ -1,7 +1,5 @@
 import React, {forwardRef, InputHTMLAttributes, ReactNode, useEffect, useRef, useState} from 'react'
 import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
-import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
-import {faSearch} from '@fortawesome/pro-regular-svg-icons'
 import {InputGroup} from '../Bootstrap/InputGroup'
 import {InputGroupText} from '../Bootstrap/InputGroupText'
 import {useCombinedRefs} from '../Functions'
@@ -16,7 +14,7 @@ export interface IPropsInputSearch {
 	placeholder?: string
 	id?: string
 	bordered?: boolean
-	iconPrefix?: boolean | FontAwesomeIconProps
+	// iconPrefix?: boolean | FontAwesomeIconProps
 	reactPrefix?: ReactNode
 	inputGroupClass?: string
 	size?: 'lg' | 'sm'
@@ -125,23 +123,23 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 		autoComplete: props.autoCompleteOn ? 'on' : `AC_${RandomString(12)}`
 	}
 
-	return !!props.iconPrefix || !!props.reactPrefix ? (
+	return /* !!props.iconPrefix || */ !!props.reactPrefix ? (
 		<InputGroup className={`searchGroup ${props.inputGroupClass ?? ''} ${props.bordered ? '' : 'transparent'}`}>
-			{(!!props.iconPrefix || !!props.reactPrefix) && (
+			{(/* !!props.iconPrefix || */ !!props.reactPrefix) && (
 				<InputGroupText
 					onClick={() => {
 						const innerRef = ref as any
 						if (!!innerRef?.current?.focus) innerRef.current.focus()
 					}}>
-					{props.iconPrefix !== undefined ? (
-						typeof props.iconPrefix === 'boolean' ? (
-							<FontAwesomeIcon icon={faSearch} />
-						) : (
-							<FontAwesomeIcon {...props.iconPrefix} />
-						)
-					) : (
-						props.reactPrefix
-					)}
+					{/*{props.iconPrefix !== undefined ? (*/}
+					{/*	typeof props.iconPrefix === 'boolean' ? (*/}
+					{/*		<FontAwesomeIcon icon={faSearch} />*/}
+					{/*	) : (*/}
+					{/*		<FontAwesomeIcon {...props.iconPrefix} />*/}
+					{/*	)*/}
+					{/*) : (*/}
+					{props.reactPrefix}
+					{/*)}*/}
 				</InputGroupText>
 			)}
 			<input {...inputProps} />

@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 export interface IPropsInputSearch {
     initialValue?: string;
     triggerSearchText: (value: string) => void;
@@ -10,7 +9,6 @@ export interface IPropsInputSearch {
     placeholder?: string;
     id?: string;
     bordered?: boolean;
-    iconPrefix?: boolean | FontAwesomeIconProps;
     reactPrefix?: ReactNode;
     inputGroupClass?: string;
     size?: 'lg' | 'sm';

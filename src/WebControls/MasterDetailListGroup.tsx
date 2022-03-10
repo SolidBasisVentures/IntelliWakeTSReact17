@@ -15,6 +15,7 @@ export interface IMasterDetailListGroupMDLink {
 	faProps?: FontAwesomeIconProps
 	color?: string
 	linkNode: ReactNode
+	linkKey?: string
 	linkClick?: React.MouseEventHandler<any>
 	/** undefined = don't show, null = show with spinner, number (0, 1, etc.) = show */
 	counter?: number | null
@@ -64,10 +65,10 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 				.filter((listGroupItem) => !listGroupItem.hidden)
 				.map((listGroupItem, idx) => ({
 					...listGroupItem,
-					key: (listGroupItem.panelTitle ?? listGroupItem.linkNode ?? idx).toString() + (listGroupItem.id ?? '') + idx,
+					key: (listGroupItem.linkKey ?? listGroupItem.panelTitle ?? listGroupItem.linkNode ?? idx).toString() + (listGroupItem.id ?? '') + idx,
 					panelURLCalc:
 						listGroupItem.panelURL ??
-						ToPascalCase(listGroupItem.panelTitle ?? (listGroupItem.linkNode ?? idx).toString()),
+						ToPascalCase(listGroupItem.linkKey ?? listGroupItem.panelTitle ?? (listGroupItem.linkNode ?? idx).toString()),
 					collapsed: !!listGroupItem.section && (props.collapsedSections ?? []).includes(listGroupItem.section)
 				})),
 		[props.listGroupItems, props.collapsedSections]
@@ -202,7 +203,7 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 						<MDDetail
 							key={listGroupItem.key}
 							panel={listGroupItem.panelURLCalc}
-							titleText={listGroupItem.panelTitle ?? listGroupItem.linkNode}>
+							titleText={listGroupItem.linkKey ?? listGroupItem.panelTitle ?? listGroupItem.linkNode}>
 							{listGroupItem.mdDetail}
 						</MDDetail>
 					)

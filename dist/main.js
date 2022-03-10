@@ -659,25 +659,12 @@ const CaptureGPS = () => {
         }
     }));
 };
-const DownloadBase64Data = (fileName, base64, type) => {
-    if (!!window.navigator.msSaveBlob) {
-        // IE
-        const byteCharacters = atob(base64.replace(/^[^,]+,/, '').replace(/\r\n/g, ''));
-        let byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: type });
-        window.navigator.msSaveOrOpenBlob(blob, fileName);
-    }
-    else {
-        const link = document.createElement('a');
-        link.href = base64;
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-    }
+const DownloadBase64Data = (fileName, base64) => {
+    const link = document.createElement('a');
+    link.href = base64;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
 };
 const CopyRefToClipboard = (ref, tryFormatted = true) => {
     if (ref && ref.current && document.createRange && window.getSelection) {
@@ -823,8 +810,8 @@ const SizeAtMax = (size) => {
     }
 };
 const useCombinedRefs = (...refs) => {
-    const targetRef = React__default['default'].useRef();
-    React__default['default'].useEffect(() => {
+    const targetRef = React__default["default"].useRef();
+    React__default["default"].useEffect(() => {
         refs.forEach((ref) => {
             if (!ref)
                 return;
@@ -1028,7 +1015,7 @@ const Alert = (props) => {
             isMounted.current = false;
         };
     }, [props.isOpen]);
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className'), { className: classes.trim(), onClick: () => {
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className'), { className: classes.trim(), onClick: () => {
             if (!!props.toggle)
                 props.toggle();
         } }));
@@ -1045,7 +1032,7 @@ const Badge = (props) => {
                 badge: true,
                 'rounded-pill': !props.notPill
             });
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'notPill', 'className'), { className: classes.trim() }));
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'color', 'notPill', 'className'), { className: classes.trim() }));
 };
 
 const Spinner = (props) => {
@@ -1055,21 +1042,21 @@ const Spinner = (props) => {
     // 	style.animation = 'fa-spin 0.75s infinite linear'
     // }
     const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}`.trim();
-    return React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird }, props, { className: className }));
+    return React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird }, props, { className: className }));
 };
 
 // noinspection SuspiciousTypeOfGuard
 const BadgeItem = (props) => {
     var _a;
     const showProps = intelliwaketsfoundation.OmitProperty(props, 'badge', 'alwaysShowValue');
-    return props.badge === null ? (React__default['default'].createElement(Badge, Object.assign({}, showProps, { color: "light", className: 'text-gray ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }),
-        React__default['default'].createElement(Spinner, null))) : (props.alwaysShowValue && props.badge !== undefined) || !!props.badge ? (React__default['default'].createElement(Badge, Object.assign({}, showProps), typeof props.badge === 'number' ? intelliwaketsfoundation.ToDigits(props.badge, 0) : props.badge)) : null;
+    return props.badge === null ? (React__default["default"].createElement(Badge, Object.assign({}, showProps, { color: "light", className: 'text-gray ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }),
+        React__default["default"].createElement(Spinner, null))) : (props.alwaysShowValue && props.badge !== undefined) || !!props.badge ? (React__default["default"].createElement(Badge, Object.assign({}, showProps), typeof props.badge === 'number' ? intelliwaketsfoundation.ToDigits(props.badge, 0) : props.badge)) : null;
 };
 
 const Button = React.forwardRef((props, ref) => {
     var _a, _b, _c, _d, _e;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'button';
-    return (React__default['default'].createElement(TagToUse, Object.assign({ className: (_b = props.classNameOverride) !== null && _b !== void 0 ? _b : ((_c = props.className) !== null && _c !== void 0 ? _c : '') +
+    return (React__default["default"].createElement(TagToUse, Object.assign({ className: (_b = props.classNameOverride) !== null && _b !== void 0 ? _b : ((_c = props.className) !== null && _c !== void 0 ? _c : '') +
             ` btn ` +
             (props.color === 'inline'
                 ? 'btn btn-link btn-link-inline '
@@ -1093,7 +1080,7 @@ const ButtonGroup = (props) => {
     classes +=
         ' btn-group' +
             (!!props.vertical ? '-vertical' : '');
-    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'vertical', 'className'), { className: classes.trim() }));
+    return React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'vertical', 'className'), { className: classes.trim() }));
 };
 
 const ButtonToolbar = (props) => {
@@ -1104,7 +1091,7 @@ const ButtonToolbar = (props) => {
             ClassNames({
                 'btn-toolbar': true
             });
-    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
+    return React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: classes.trim() }));
 };
 
 const BreadCrumb = (props) => {
@@ -1115,8 +1102,8 @@ const BreadCrumb = (props) => {
     let classesLI = (_b = props.classNameLI) !== null && _b !== void 0 ? _b : '';
     classesLI +=
         ' breadcrumb';
-    return React__default['default'].createElement("nav", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
-        React__default['default'].createElement("ol", { className: classesLI.trim(), children: props.children }));
+    return React__default["default"].createElement("nav", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'classNameLI', 'className', 'children'), { className: classes.trim() }),
+        React__default["default"].createElement("ol", { className: classesLI.trim(), children: props.children }));
 };
 
 const BreadCrumbItem = (props) => {
@@ -1125,13 +1112,13 @@ const BreadCrumbItem = (props) => {
     classes +=
         ' breadcrumb-item'
             + (props.active ? ' active' : '');
-    return React__default['default'].createElement("li", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className', 'active'), { className: classes.trim() }));
+    return React__default["default"].createElement("li", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className', 'active'), { className: classes.trim() }));
 };
 
 const Card = React.forwardRef((props, ref) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'fillHeight', 'fillHeightScroll'), { className: `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} card ${ClassNames({
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'fillHeight', 'fillHeightScroll'), { className: `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} card ${ClassNames({
             'fill-height': !!props.fillHeight,
             'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim(), ref: ref }));
@@ -1140,13 +1127,13 @@ const Card = React.forwardRef((props, ref) => {
 const CardBody = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-body ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-body ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardColumns = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'fillHeight', 'fillHeightScroll'), { className: `card-columns ${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${ClassNames({
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'fillHeight', 'fillHeightScroll'), { className: `card-columns ${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${ClassNames({
             'fill-height': !!props.fillHeight,
             'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim() })));
@@ -1155,7 +1142,7 @@ const CardColumns = (props) => {
 const CardDeck = (props) => {
     var _a, _b, _c, _d, _e;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'breakAt', 'smallRows', 'largeRows', 'fillHeight', 'fillHeightScroll'), { className: `card-deck ${!props.breakAt ? `row-cols-${(_b = props.smallRows) !== null && _b !== void 0 ? _b : 'auto'}` : `row-cols-${props.breakAt}-${(_c = props.largeRows) !== null && _c !== void 0 ? _c : 'auto'} row-cols-${(_d = props.smallRows) !== null && _d !== void 0 ? _d : 'auto'}`} row ${(_e = props.className) !== null && _e !== void 0 ? _e : ''} ${ClassNames({
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'breakAt', 'smallRows', 'largeRows', 'fillHeight', 'fillHeightScroll'), { className: `card-deck ${!props.breakAt ? `row-cols-${(_b = props.smallRows) !== null && _b !== void 0 ? _b : 'auto'}` : `row-cols-${props.breakAt}-${(_c = props.largeRows) !== null && _c !== void 0 ? _c : 'auto'} row-cols-${(_d = props.smallRows) !== null && _d !== void 0 ? _d : 'auto'}`} row ${(_e = props.className) !== null && _e !== void 0 ? _e : ''} ${ClassNames({
             'fill-height': !!props.fillHeight,
             'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim() })));
@@ -1164,31 +1151,31 @@ const CardDeck = (props) => {
 const CardFooter = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-footer ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-footer ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardGroup = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardHeader = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'color'), { className: `card-header ${!!props.color ? 'alert-' + props.color : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'color'), { className: `card-header ${!!props.color ? 'alert-' + props.color : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardText = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardTitle = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-title ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `card-title ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const ApplyColumnProp = (size, columnProps) => {
@@ -1232,7 +1219,7 @@ const Col = (props) => {
     classes += ApplyColumnProp('md', props.md);
     classes += ApplyColumnProp('lg', props.lg);
     classes += ApplyColumnProp('xl', props.xl);
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${classes.trim()} ${ClassNames({
+    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${classes.trim()} ${ClassNames({
             'fill-height': !!props.fillHeight,
             'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim() }), props.children));
@@ -1241,7 +1228,7 @@ const Col = (props) => {
 const Collapse = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'isOpen', 'tag', 'navbar', 'className'), { className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') +
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'isOpen', 'tag', 'navbar', 'className'), { className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') +
             ' collapse' +
             (!!props.navbar ? ' navbar-collapse' : '') +
             (!!props.isOpen ? ' show' : '') })));
@@ -1249,7 +1236,7 @@ const Collapse = (props) => {
 
 const Container = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'fluid', 'className', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             container: !props.fluid,
             'container-fluid': !!props.fluid,
             'fill-height': !!props.fillHeight,
@@ -1261,9 +1248,9 @@ const EllipsesTruncate = (props) => {
     var _a;
     if (props.hidden || !props.text)
         return null;
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
         props.prefix,
-        React__default['default'].createElement("div", { className: 'w-auto py-0 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), title: !!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text, style: { maxWidth: '100%' } }, props.text),
+        React__default["default"].createElement("div", { className: 'w-auto py-0 ' + (!!props.noTruncate ? '' : 'ellipses-truncate ') + (!!props.print ? 'ellipses-truncate-print ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), title: !!props.noTruncate || typeof props.text !== 'string' ? undefined : props.text, style: { maxWidth: '100%' } }, props.text),
         props.suffix));
 };
 
@@ -1280,11 +1267,11 @@ const DropdownItem = (props) => {
                 'active': !!props.active,
                 disabled: !!props.disabled
             });
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading', 'noTruncate'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), !!props.loading ? (React__default['default'].createElement("i", { className: 'text-muted' },
-        React__default['default'].createElement(Spinner, { fixedWidth: true }),
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'divider', 'header', 'active', 'className', 'size', 'type', 'children', 'loading', 'noTruncate'), { className: classes, style: { cursor: !props.disabled && (!!props.href || !!props.onClick) ? 'pointer' : undefined } }), !!props.loading ? (React__default["default"].createElement("i", { className: 'text-muted' },
+        React__default["default"].createElement(Spinner, { fixedWidth: true }),
         " Loading...")) : !!props.noTruncate ?
         props.children :
-        React__default['default'].createElement(EllipsesTruncate, { text: props.children })));
+        React__default["default"].createElement(EllipsesTruncate, { text: props.children })));
 };
 
 const Dropdown = (props) => {
@@ -1367,8 +1354,8 @@ const Dropdown = (props) => {
     }, []);
     if (!props.children && visibleHeaderGroups.length === 0)
         return null;
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
-        React__default['default'].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: (props.allowWrap ? '' : 'text-nowrap ') +
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
+        React__default["default"].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: (props.allowWrap ? '' : 'text-nowrap ') +
                 (!!props.nav || !!props.inNavbar
                     ? undefined
                     : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()), classNameOverride: !!props.nav || !!props.inNavbar
@@ -1382,9 +1369,9 @@ const Dropdown = (props) => {
                     setIsOpen((prevState) => !prevState);
                 }
             }, style: buttonStyle }, !!props.maxWidth ?
-            React__default['default'].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }) })
-            : ((_h = props.buttonLabel) !== null && _h !== void 0 ? _h : React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }))),
-        React__default['default'].createElement("div", { tabIndex: -1, className: `${ClassNames({
+            React__default["default"].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : '&#x2699;' })
+            : ((_h = props.buttonLabel) !== null && _h !== void 0 ? _h : '&#x2699;')),
+        React__default["default"].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
                 'dropdown-menu-end': !!props.right
             })} dropdown-menu ${(_j = props.menuClassName) !== null && _j !== void 0 ? _j : ''}`.trim(), onClick: (e) => {
@@ -1395,21 +1382,21 @@ const Dropdown = (props) => {
                 if (!isControlled) {
                     setIsOpen((prevState) => !prevState);
                 }
-            }, style: dropdownMenuStyle }, hasOpened.current && (React__default['default'].createElement(React__default['default'].Fragment, null,
+            }, style: dropdownMenuStyle }, hasOpened.current && (React__default["default"].createElement(React__default["default"].Fragment, null,
             props.children,
             visibleHeaderGroups.map((headerGroup, hg_idx) => {
                 var _a;
-                return (React__default['default'].createElement(React.Fragment, { key: `${hg_idx}-${(_a = headerGroup.headerGroup) !== null && _a !== void 0 ? _a : 'NULL'}` },
-                    !!headerGroup.headerGroup && React__default['default'].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
+                return (React__default["default"].createElement(React.Fragment, { key: `${hg_idx}-${(_a = headerGroup.headerGroup) !== null && _a !== void 0 ? _a : 'NULL'}` },
+                    !!headerGroup.headerGroup && React__default["default"].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
                     headerGroup.ddActions.map((ddAction, dd_idx) => {
                         var _a, _b;
-                        return (React__default['default'].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: `${hg_idx}-${(_b = headerGroup.headerGroup) !== null && _b !== void 0 ? _b : 'NULL'}-${dd_idx}-${ddAction.title}`, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: e => {
+                        return (React__default["default"].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: `${hg_idx}-${(_b = headerGroup.headerGroup) !== null && _b !== void 0 ? _b : 'NULL'}-${dd_idx}-${ddAction.title}`, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: e => {
                                 if (!!ddAction.noClose)
                                     e.stopPropagation();
                                 if (!!ddAction.action)
                                     ddAction.action();
                             } },
-                            showFAProps && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
+                            showFAProps && (React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: proRegularSvgIcons.faCog }, ddAction.faProps, { className: !ddAction.faProps || ddAction.faPropHidden ? 'invisible' : '', fixedWidth: true }))),
                             ddAction.title));
                     })));
             }))))));
@@ -1450,16 +1437,16 @@ const FieldSet = (props) => {
             fillHeightScroll: !!props.fillHeightScroll
         });
     }, [props]);
-    return (React__default['default'].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'} ${ClassNames({
+    return (React__default["default"].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'} ${ClassNames({
             'fill-height': !!props.fillHeight,
             'fill-height-scroll': !!props.fillHeightScroll
         })}`.trim(), hidden: props.hidden },
-        React__default['default'].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
+        React__default["default"].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
 };
 
 const Row = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'noGutters', 'className', 'children', 'fillHeight', 'fillHeightScroll'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             row: true,
             'no-gutters': !!props.noGutters,
             'fill-height': !!props.fillHeight,
@@ -1611,28 +1598,28 @@ const FieldSetRow = (props) => {
     }, [props, fieldSetContext]);
     // noinspection SuspiciousTypeOfGuard
     const element = !!props.input && typeof props.input === 'object'
-        ? React__default['default'].cloneElement(React__default['default'].createElement(React__default['default'].Fragment, null, props.input), { id: (_a = props.input.props.id) !== null && _a !== void 0 ? _a : settings.uuid })
-        : React__default['default'].cloneElement(React__default['default'].createElement("span", { className: 'form-control-plaintext' }, (_b = props.input) !== null && _b !== void 0 ? _b : ''), { id: settings.uuid });
+        ? React__default["default"].cloneElement(React__default["default"].createElement(React__default["default"].Fragment, null, props.input), { id: (_a = props.input.props.id) !== null && _a !== void 0 ? _a : settings.uuid })
+        : React__default["default"].cloneElement(React__default["default"].createElement("span", { className: 'form-control-plaintext' }, (_b = props.input) !== null && _b !== void 0 ? _b : ''), { id: settings.uuid });
     // noinspection SuspiciousTypeOfGuard
-    return (React__default['default'].createElement(Row, { className: `${fieldSetContext.condensed ? '' : 'mb-3'} fieldSetRow ${(_c = props.className) !== null && _c !== void 0 ? _c : ''}`.trim(), hidden: props.hidden },
-        !!props.label && !!settings.labelColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.labelColProps),
-            React__default['default'].createElement("label", { className: 'col-form-label', htmlFor: element.props.id }, props.label))),
-        React__default['default'].createElement(Col, Object.assign({}, settings.inputColProps),
+    return (React__default["default"].createElement(Row, { className: `${fieldSetContext.condensed ? '' : 'mb-3'} fieldSetRow ${(_c = props.className) !== null && _c !== void 0 ? _c : ''}`.trim(), hidden: props.hidden },
+        !!props.label && !!settings.labelColProps && (React__default["default"].createElement(Col, Object.assign({}, settings.labelColProps),
+            React__default["default"].createElement("label", { className: 'col-form-label', htmlFor: element.props.id }, props.label))),
+        React__default["default"].createElement(Col, Object.assign({}, settings.inputColProps),
             element,
             props.inputFeedback),
-        !!props.inputSecond && !!settings.input2ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input2ColProps), typeof props.inputSecond === 'string' ?
-            React__default['default'].createElement("label", { className: 'col-form-label strong' }, props.inputSecond) : React__default['default'].createElement(React__default['default'].Fragment, null,
+        !!props.inputSecond && !!settings.input2ColProps && (React__default["default"].createElement(Col, Object.assign({}, settings.input2ColProps), typeof props.inputSecond === 'string' ?
+            React__default["default"].createElement("label", { className: 'col-form-label strong' }, props.inputSecond) : React__default["default"].createElement(React__default["default"].Fragment, null,
             props.inputSecond,
             props.inputSecondFeedback))),
-        !!props.inputThird && !!settings.input3ColProps && (React__default['default'].createElement(Col, Object.assign({}, settings.input3ColProps), typeof props.inputThird === 'string' ?
-            React__default['default'].createElement("label", { className: 'col-form-label strong' }, props.inputThird) : React__default['default'].createElement(React__default['default'].Fragment, null,
+        !!props.inputThird && !!settings.input3ColProps && (React__default["default"].createElement(Col, Object.assign({}, settings.input3ColProps), typeof props.inputThird === 'string' ?
+            React__default["default"].createElement("label", { className: 'col-form-label strong' }, props.inputThird) : React__default["default"].createElement(React__default["default"].Fragment, null,
             props.inputThird,
             props.inputThirdFeedback)))));
 };
 
 const Form = (props) => {
     var _a;
-    return (React__default['default'].createElement("form", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'innerRef', 'inline', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+    return (React__default["default"].createElement("form", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'innerRef', 'inline', 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             form: true,
             'form-inline': !!props.inline
         })}`.trim(), ref: props.innerRef }), props.children));
@@ -1641,7 +1628,7 @@ const Form = (props) => {
 const FormFeedback = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'label';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'valid', 'tag'), { className: `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${ClassNames({
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'valid', 'tag'), { className: `${(_b = props.className) !== null && _b !== void 0 ? _b : ''} ${ClassNames({
             'invalid-feedback': true,
             'd-none': !!props.valid
         })}`.trim() })));
@@ -1649,7 +1636,7 @@ const FormFeedback = (props) => {
 
 const FormGroup = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
+    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'children'), { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${ClassNames({
             'form-group': true
         })}`.trim() }), props.children));
 };
@@ -1657,13 +1644,13 @@ const FormGroup = (props) => {
 const InputGroup = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const InputGroupText = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'span';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `input-group-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const Label = (props) => {
@@ -1678,13 +1665,13 @@ const Label = (props) => {
     classes += ApplyColumnProp('md', props.md);
     classes += ApplyColumnProp('lg', props.lg);
     classes += ApplyColumnProp('xl', props.xl);
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'className'), { className: classes.trim() }));
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'xs', 'sm', 'md', 'lg', 'xl', 'className'), { className: classes.trim() }));
 };
 
 const ListGroup = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'ul';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'flush'), { className: `${ClassNames({ 'list-group-flush': !!props.flush })} list-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'flush'), { className: `${ClassNames({ 'list-group-flush': !!props.flush })} list-group ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const ListGroupItem = (props) => {
@@ -1692,7 +1679,7 @@ const ListGroupItem = (props) => {
     const TagToUse = ((_a = props.tag) !== null && _a !== void 0 ? _a : !!props.href)
         ? 'a'
         : 'li';
-    return (React__default['default'].createElement(TagToUse
+    return (React__default["default"].createElement(TagToUse
     // type={!!props.onClick ? 'button' : undefined}
     , Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'active', 'disabled', 'color', 'badgeColor', 'action', 'children', 'badgeClass'), { className: `${ClassNames({
             active: !!props.active,
@@ -1701,22 +1688,22 @@ const ListGroupItem = (props) => {
             // 'd-flex justify-content-between align-items-center': props.badge === null || !!props.badge
         })} list-group-item${!!props.color ? ` list-group-item-${props.color}` : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim(), disabled: !!props.onClick && props.disabled ? true : undefined }),
         props.children,
-        React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-end ' + ((_c = props.badgeClass) !== null && _c !== void 0 ? _c : ''), style: { marginTop: '0.2rem' } })));
+        React__default["default"].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-end ' + ((_c = props.badgeClass) !== null && _c !== void 0 ? _c : ''), style: { marginTop: '0.2rem' } })));
 };
 
 const ListGroupItemHeading = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'h5';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `list-group-item-heading ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `list-group-item-heading ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const ListGroupItemText = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'p';
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `list-group-item-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: `list-group-item-text ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
-class Portal extends React__default['default'].Component {
+class Portal extends React__default["default"].Component {
     constructor(props) {
         super(props);
         this.el = document.createElement('div');
@@ -1734,7 +1721,7 @@ class Portal extends React__default['default'].Component {
         document.body.removeChild(this.el);
     }
     render() {
-        return ReactDOM__default['default'].createPortal(this.props.children, this.el);
+        return ReactDOM__default["default"].createPortal(this.props.children, this.el);
     }
 }
 
@@ -1798,8 +1785,8 @@ const Modal = (props) => {
             }
         }
     }, [props.isOpen, props.autoFocusElement]);
-    return (React__default['default'].createElement(Portal, null,
-        React__default['default'].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: 'dialog', style: {
+    return (React__default["default"].createElement(Portal, null,
+        React__default["default"].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: 'dialog', style: {
                 display: props.isOpen ? 'block' : 'none',
                 pointerEvents: props.isOpen ? undefined : 'none'
             }, onMouseDown: e => {
@@ -1808,14 +1795,14 @@ const Modal = (props) => {
                     toggle(e);
                 }
             }, onKeyDown: keyDown },
-            React__default['default'].createElement("div", { className: ('modal-dialog' +
+            React__default["default"].createElement("div", { className: ('modal-dialog' +
                     (!props.size ? ' ' : ` modal-${props.size} `) +
                     ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: 'document', style: props.dialogStyle },
-                React__default['default'].createElement("div", { className: 'modal-content', onMouseDown: e => e.stopPropagation(), onClick: e => e.stopPropagation(), style: props.contentStyle, ref: contentRef }, props.title !== undefined ? (React__default['default'].createElement(React__default['default'].Fragment, null,
-                    !!props.title && (React__default['default'].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
-                        React__default['default'].createElement("h5", { className: 'modal-title' }, props.title),
-                        !props.noCancel && (React__default['default'].createElement("button", { className: 'btn-close', onClick: toggle })))),
-                    React__default['default'].createElement("div", { className: `modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll container container-fluid overflow-hidden fill-height' : ''} ` + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default['default'].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
+                React__default["default"].createElement("div", { className: 'modal-content', onMouseDown: e => e.stopPropagation(), onClick: e => e.stopPropagation(), style: props.contentStyle, ref: contentRef }, props.title !== undefined ? (React__default["default"].createElement(React__default["default"].Fragment, null,
+                    !!props.title && (React__default["default"].createElement("div", { className: `alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
+                        React__default["default"].createElement("h5", { className: 'modal-title' }, props.title),
+                        !props.noCancel && (React__default["default"].createElement("button", { className: 'btn-close', onClick: toggle })))),
+                    React__default["default"].createElement("div", { className: `modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll container container-fluid overflow-hidden fill-height' : ''} ` + ((_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default["default"].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
                             e.preventDefault();
                             if (!props.okDisabled) {
                                 okAction(e);
@@ -1827,43 +1814,43 @@ const Modal = (props) => {
                         } },
                         props.body,
                         props.children,
-                        React__default['default'].createElement(Button, { className: 'd-none', type: 'submit' }))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
+                        React__default["default"].createElement(Button, { className: 'd-none', type: 'submit' }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
                         props.body,
                         props.children))),
-                    (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default['default'].createElement("div", { className: 'modal-footer' },
-                        React__default['default'].createElement("div", { className: 'me-auto' },
-                            (!props.noCancel || !props.noCancelButton) && (React__default['default'].createElement("button", { className: 'btn btn-link me-1 ', type: 'button', onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
+                    (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default["default"].createElement("div", { className: 'modal-footer' },
+                        React__default["default"].createElement("div", { className: 'me-auto' },
+                            (!props.noCancel || !props.noCancelButton) && (React__default["default"].createElement("button", { className: 'btn btn-link me-1 ', type: 'button', onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
                             ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton, idx) => {
                                 var _a;
-                                return (React__default['default'].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, leftButton, { className: ((_a = leftButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'me-1' })));
+                                return (React__default["default"].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, leftButton, { className: ((_a = leftButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'me-1' })));
                             }),
                             props.footerLeft),
-                        React__default['default'].createElement("div", { className: 'text-end' },
+                        React__default["default"].createElement("div", { className: 'text-end' },
                             props.footerRight,
                             ((_f = props.rightButtons) !== null && _f !== void 0 ? _f : []).map((rightButton, idx) => {
                                 var _a;
-                                return (React__default['default'].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, rightButton, { className: ((_a = rightButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'ms-1' })));
+                                return (React__default["default"].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, rightButton, { className: ((_a = rightButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'ms-1' })));
                             }),
-                            !!props.okAction && (React__default['default'].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
+                            !!props.okAction && (React__default["default"].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
                                     e.stopPropagation();
                                     okAction(e);
                                 }, ref: okButtonRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
-        React__default['default'].createElement("div", { className: 'modal-backdrop fade' + (props.isOpen ? ' show' : ''), style: { pointerEvents: props.isOpen ? undefined : 'none' }, onClick: toggle })));
+        React__default["default"].createElement("div", { className: 'modal-backdrop fade' + (props.isOpen ? ' show' : ''), style: { pointerEvents: props.isOpen ? undefined : 'none' }, onClick: toggle })));
 };
 
 const ModalHeader = (props) => {
     var _a;
-    return (React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header ' + (!!props.color ? `alert-${props.color} ` : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
+    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header ' + (!!props.color ? `alert-${props.color} ` : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
 };
 
 const ModalBody = (props) => {
     var _a;
-    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-body ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
+    return React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-body ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
 };
 
 const ModalFooter = (props) => {
     var _a;
-    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-footer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
+    return React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-footer ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') }));
 };
 
 const Nav = (props) => {
@@ -1882,7 +1869,7 @@ const Nav = (props) => {
                 'flex-column': !!props.vertical,
                 'justify-content-center': !!props.horizontal
             });
-    return (React__default['default'].createElement(TagToUse, Object.assign({ role: !!props.tabs ? 'tablist' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tabs', 'pills', 'vertical', 'horizontal', 'justified', 'fill', 'navbar', 'card', 'tag', 'className'), { className: classes.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({ role: !!props.tabs ? 'tablist' : undefined }, intelliwaketsfoundation.OmitProperty(props, 'tabs', 'pills', 'vertical', 'horizontal', 'justified', 'fill', 'navbar', 'card', 'tag', 'className'), { className: classes.trim() })));
 };
 
 const Navbar = (props) => {
@@ -1899,31 +1886,31 @@ const Navbar = (props) => {
                 'fixed-top': !!props.fixed,
                 'sticky-top': !!props.sticky
             });
-    return (React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'light', 'dark', 'fixed', 'sticky', 'color', 'tag', 'expand', 'className'), { className: classes.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'light', 'dark', 'fixed', 'sticky', 'color', 'tag', 'expand', 'className'), { className: classes.trim() })));
 };
 
 const NavItem = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'li';
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-item ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-item ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
 };
 
 const NavLink = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-link ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className'), { className: 'nav-link ' + ((_b = props.className) !== null && _b !== void 0 ? _b : '') }));
 };
 
 const NavbarBrand = (props) => {
     var _a;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'a';
-    return React__default['default'].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag')));
+    return React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag')));
 };
 
 const NavbarToggler = (props) => {
     var _a;
-    return (React__default['default'].createElement("button", Object.assign({}, props, { type: "button", "aria-label": "Toggle navigation", className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' navbar-toggler' }),
-        React__default['default'].createElement("span", { className: "navbar-toggler-icon" })));
+    return (React__default["default"].createElement("button", Object.assign({}, props, { type: "button", "aria-label": "Toggle navigation", className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' navbar-toggler' }),
+        React__default["default"].createElement("span", { className: "navbar-toggler-icon" })));
 };
 
 const Progress = (props) => {
@@ -1943,9 +1930,9 @@ const Progress = (props) => {
             children: bar.children
         };
     };
-    return React__default['default'].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'nowAmount', 'minAmount', 'maxAmount', 'striped', 'color', 'otherBars', 'height', 'style', 'className', 'children'), { className: classes.trim(), style: Object.assign({ height: props.height }, ((_b = props.style) !== null && _b !== void 0 ? _b : {})) }),
-        React__default['default'].createElement("div", Object.assign({}, progressBarProps(props))),
-        ((_c = props.otherBars) !== null && _c !== void 0 ? _c : []).map((otherBar, idx) => React__default['default'].createElement("div", Object.assign({ key: otherBar.nowAmount + '-' + idx }, progressBarProps(otherBar)))));
+    return React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'nowAmount', 'minAmount', 'maxAmount', 'striped', 'color', 'otherBars', 'height', 'style', 'className', 'children'), { className: classes.trim(), style: Object.assign({ height: props.height }, ((_b = props.style) !== null && _b !== void 0 ? _b : {})) }),
+        React__default["default"].createElement("div", Object.assign({}, progressBarProps(props))),
+        ((_c = props.otherBars) !== null && _c !== void 0 ? _c : []).map((otherBar, idx) => React__default["default"].createElement("div", Object.assign({ key: otherBar.nowAmount + '-' + idx }, progressBarProps(otherBar)))));
 };
 
 const setStorage = (key, newValue, remember, defaultValue) => {
@@ -2084,23 +2071,23 @@ const ModalPrompt = (props) => {
             dismiss(false);
         }
     };
-    return (React__default['default'].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true), size: props.size },
-        React__default['default'].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
-        !!messageBody && React__default['default'].createElement(ModalBody, null, messageBody),
-        React__default['default'].createElement(ModalFooter, null,
-            React__default['default'].createElement(Button, { type: 'button', onClick: () => dismiss(true), outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
+    return (React__default["default"].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true), size: props.size },
+        React__default["default"].createElement(ModalHeader, { className: 'alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
+        !!messageBody && React__default["default"].createElement(ModalBody, null, messageBody),
+        React__default["default"].createElement(ModalFooter, null,
+            React__default["default"].createElement(Button, { type: 'button', onClick: () => dismiss(true), outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)
                     ? (_c = props.color) !== null && _c !== void 0 ? _c : 'primary'
                     : 'link') }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction) ? 'OK' : 'Cancel')),
             promptResponsesAsArray.map((promptResponse, idx) => {
                 var _a, _b;
-                return (React__default['default'].createElement(Button, { key: idx, onClick: () => {
+                return (React__default["default"].createElement(Button, { key: idx, onClick: () => {
                         if (!promptResponse.disabled) {
                             promptResponse.action();
                             dismiss(false);
                         }
                     }, outline: promptResponse.outline, color: (_b = (_a = promptResponse.color) !== null && _a !== void 0 ? _a : props.color) !== null && _b !== void 0 ? _b : 'primary', disabled: promptResponse.disabled, className: 'ml-1' }, promptResponse.label));
             }),
-            !!props.okLabel && !!props.okAction && (React__default['default'].createElement(Button, { disabled: props.okDisabled, onClick: okAction, color: (_e = props.color) !== null && _e !== void 0 ? _e : 'primary', className: 'ml-1', 
+            !!props.okLabel && !!props.okAction && (React__default["default"].createElement(Button, { disabled: props.okDisabled, onClick: okAction, color: (_e = props.color) !== null && _e !== void 0 ? _e : 'primary', className: 'ml-1', 
                 // onKeyPress={okKeyPress}
                 autoFocus: !props.autoFocusElement, tabIndex: 0 }, props.okLabel)))));
 };
@@ -2158,12 +2145,12 @@ const Tab = (props) => {
         return null;
     // "px-4 mt-3 mx-0 gray-tabs"
     // p-2 background-gray overflow-hidden
-    return (React__default['default'].createElement("div", { className: `${props.className} tabControlParent ${ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })}`.trim() },
-        React__default['default'].createElement(ModalPrompt, Object.assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
-        React__default['default'].createElement("ul", { className: `nav nav-${(_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs'}${props.padTabs ? ' px-4' : ''} ${(_h = props.navClassName) !== null && _h !== void 0 ? _h : ''}`.trim() }, showTabs.map((tab) => {
+    return (React__default["default"].createElement("div", { className: `${props.className} tabControlParent ${ClassNames({ 'fill-height': !!((_f = props.fillHeight) !== null && _f !== void 0 ? _f : true) })}`.trim() },
+        React__default["default"].createElement(ModalPrompt, Object.assign({}, modalPromptProps, { dismiss: setModalPromptProps })),
+        React__default["default"].createElement("ul", { className: `nav nav-${(_g = props.tabType) !== null && _g !== void 0 ? _g : 'tabs'}${props.padTabs ? ' px-4' : ''} ${(_h = props.navClassName) !== null && _h !== void 0 ? _h : ''}`.trim() }, showTabs.map((tab) => {
             var _a, _b;
-            return (React__default['default'].createElement("li", { key: tab.title, className: `nav-item ${(_a = props.navItemClassName) !== null && _a !== void 0 ? _a : ''}`.trim() },
-                React__default['default'].createElement(Button, { color: "link", className: ClassNames({
+            return (React__default["default"].createElement("li", { key: tab.title, className: `nav-item ${(_a = props.navItemClassName) !== null && _a !== void 0 ? _a : ''}`.trim() },
+                React__default["default"].createElement(Button, { color: "link", className: ClassNames({
                         'nav-link': true,
                         active: actualOpenTab === tab.title
                     }), disabled: !!tab.disabled, onClick: () => {
@@ -2171,10 +2158,10 @@ const Tab = (props) => {
                             changeOpenTab(tab.title);
                         }
                     }, "aria-label": (_b = tab.ariaLabelTab) !== null && _b !== void 0 ? _b : `Tab: ${tab.title}` },
-                    !!tab.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
-                    React__default['default'].createElement("span", { className: props.navItemSpanClassName }, tab.title))));
+                    !!tab.faProps && React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, tab.faProps, { fixedWidth: !!tab.title, className: !!tab.title ? "fa-fw-desktop" : '' })),
+                    React__default["default"].createElement("span", { className: props.navItemSpanClassName }, tab.title))));
         })),
-        React__default['default'].createElement("div", { className: ClassNames({
+        React__default["default"].createElement("div", { className: ClassNames({
                 'tab-content': true,
                 'fill-height': !!((_j = props.fillHeight) !== null && _j !== void 0 ? _j : true),
                 'border-start': !props.noPaneBorder,
@@ -2190,7 +2177,7 @@ const Tab = (props) => {
                     loadedTabs.current.some((loadedTab) => tab.title === loadedTab))))
             .map((tab) => {
             var _a, _b, _c, _d, _e, _f;
-            return (React__default['default'].createElement("div", { key: tab.title, className: ((_a = props.classNamePanes) !== null && _a !== void 0 ? _a : '') +
+            return (React__default["default"].createElement("div", { key: tab.title, className: ((_a = props.classNamePanes) !== null && _a !== void 0 ? _a : '') +
                     ' ' +
                     (tab.title === actualOpenTab ? (_b = props.classNamePaneActive) !== null && _b !== void 0 ? _b : '' : '') +
                     ' ' +
@@ -2207,7 +2194,7 @@ const Tab = (props) => {
 
 const Table = React.forwardRef((props, ref) => {
     var _a;
-    return (React__default['default'].createElement("table", Object.assign({ className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
+    return (React__default["default"].createElement("table", Object.assign({ className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
             ' ' +
             ClassNames({
                 table: true,
@@ -2223,7 +2210,7 @@ const Table = React.forwardRef((props, ref) => {
                 'table-sticky': !!props.sticky,
                 'table-sticky-legacy': !!props.legacySticky
             }), ref: ref }, intelliwaketsfoundation.OmitProperty(props, 'bordered', 'borderless', 'striped', 'hover', 'size', 'responsive', 'dark', 'caption', 'textSmall', 'sticky', 'legacySticky', 'sortable', 'className')),
-        !!props.caption && React__default['default'].createElement("caption", null, props.caption),
+        !!props.caption && React__default["default"].createElement("caption", null, props.caption),
         props.children));
 });
 
@@ -2234,7 +2221,7 @@ function checkDeps(deps, name) {
     }
 }
 function useDeepCompareMemoize(value) {
-    const ref = React__default['default'].useRef([]);
+    const ref = React__default["default"].useRef([]);
     if (!intelliwaketsfoundation.DeepEqual(value, ref.current)) {
         ref.current = Object.assign({}, value);
     }
@@ -2253,7 +2240,7 @@ function useDeepCompareCallback(callback, dependencies) {
     if (process.env.NODE_ENV !== 'production') {
         checkDeps(dependencies, 'useDeepCompareCallback');
     }
-    return React__default['default'].useCallback(callback, useDeepCompareMemoize(dependencies));
+    return React__default["default"].useCallback(callback, useDeepCompareMemoize(dependencies));
 }
 
 /**
@@ -2272,7 +2259,7 @@ function useDeepCompareEffect(effect, dependencies) {
     if (process.env.NODE_ENV !== 'production') {
         checkDeps(dependencies, 'useDeepCompareEffect');
     }
-    React__default['default'].useEffect(effect, useDeepCompareMemoize(dependencies));
+    React__default["default"].useEffect(effect, useDeepCompareMemoize(dependencies));
 }
 
 /**
@@ -2287,7 +2274,7 @@ function useDeepCompareMemo(factory, dependencies) {
     if (process.env.NODE_ENV !== 'production') {
         checkDeps(dependencies, 'useDeepCompareMemo');
     }
-    return React__default['default'].useMemo(factory, useDeepCompareMemoize(dependencies));
+    return React__default["default"].useMemo(factory, useDeepCompareMemoize(dependencies));
 }
 
 const initialActivityOverlayState = {
@@ -2325,8 +2312,8 @@ const ActivityOverlay = (props) => {
         }
     }
     if (props.activityOverlayState.nestedCount > 0) {
-        return (React__default['default'].createElement("div", { className: "System_ActivityOverlay ActivityOverlay", onClick: resetActivityOverlay, color: "primary" },
-            React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '3x' })));
+        return (React__default["default"].createElement("div", { className: "System_ActivityOverlay ActivityOverlay", onClick: resetActivityOverlay, color: "primary" },
+            React__default["default"].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '3x' })));
     }
     return null;
 };
@@ -2336,8 +2323,8 @@ const ActivityOverlay = (props) => {
  */
 const ActivityOverlayControl = (props) => {
     var _a;
-    return props.show ? (React__default['default'].createElement("div", { className: "System_ActivityOverlay_Control ActivityOverlay" },
-        React__default['default'].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '2x' }))) : null;
+    return props.show ? (React__default["default"].createElement("div", { className: "System_ActivityOverlay_Control ActivityOverlay" },
+        React__default["default"].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '2x' }))) : null;
 };
 
 const initialSortProperties = {
@@ -2426,7 +2413,7 @@ const FormatValue = (value, column) => {
     if (column.dayjsTSFormat) {
         if (value) {
             if (!isNaN(parseInt(value))) {
-                value = moment__default['default'](value).format(column.dayjsTSFormat);
+                value = moment__default["default"](value).format(column.dayjsTSFormat);
             }
         }
         else {
@@ -2505,12 +2492,12 @@ const ColumnHeaderClick = (column, arrayStructure, sorter, setSorter) => {
     }
 };
 const WriteHeadTR = (arrayStructure, validColumns, hideCosts, sorter, setSorter) => {
-    return (React__default['default'].createElement("tr", { className: "table-secondary" }, validColumns.map((column, idx) => !hideCosts || !column.isACost ? (React__default['default'].createElement("th", { key: idx, className: ColumnHeadClassNames(column, arrayStructure), onClick: () => {
+    return (React__default["default"].createElement("tr", { className: "table-secondary" }, validColumns.map((column, idx) => !hideCosts || !column.isACost ? (React__default["default"].createElement("th", { key: idx, className: ColumnHeadClassNames(column, arrayStructure), onClick: () => {
             ColumnHeaderClick(column, arrayStructure, sorter, setSorter);
         } }, column.title)) : null)));
 };
 const WriteBodyTR = (rowData, idx, arrayStructure, validColumns, hideCosts, sumsInFooter) => {
-    return (React__default['default'].createElement("tr", { key: idx, onClick: () => {
+    return (React__default["default"].createElement("tr", { key: idx, onClick: () => {
             if (!!arrayStructure.rowClick)
                 arrayStructure.rowClick(rowData);
         } }, validColumns.map((column, idx) => { var _a; return WriteBodyTD((_a = rowData[column.fieldName]) !== null && _a !== void 0 ? _a : undefined, column, hideCosts, rowData, sumsInFooter, idx); })));
@@ -2519,14 +2506,14 @@ const WriteBodyTD = (columnValue, column, hideCosts, rowData, sumsInFooter, idx)
     if (!hideCosts || !column.isACost) {
         const computedValue = ComputeValue(columnValue, column, rowData, sumsInFooter);
         const formattedValue = ScreenFormatValue(computedValue, column);
-        return (React__default['default'].createElement("td", { key: idx, className: ColumnBodyClassNames(column) }, formattedValue));
+        return (React__default["default"].createElement("td", { key: idx, className: ColumnBodyClassNames(column) }, formattedValue));
     }
     else {
         return null;
     }
 };
 const WriteFootTR = (validColumns, sums, hideCosts) => {
-    return (React__default['default'].createElement("tr", { className: "border-top" }, validColumns.map((column, idx) => !hideCosts || !column.isACost ? (React__default['default'].createElement("th", { key: idx, className: ColumnClassNames(column, {
+    return (React__default["default"].createElement("tr", { className: "border-top" }, validColumns.map((column, idx) => !hideCosts || !column.isACost ? (React__default["default"].createElement("th", { key: idx, className: ColumnClassNames(column, {
             'border-0': true
         }) }, sums[column.fieldName] === undefined ? null : ScreenFormatValue(sums[column.fieldName], column))) : null)));
 };
@@ -2540,31 +2527,31 @@ const ArrayTable = (props) => {
     if (props.minWidth) {
         styleSettings.minWidth = props.minWidth;
     }
-    return (React__default['default'].createElement(Table, { size: "sm", bordered: props.bordered, className: ClassNames({
+    return (React__default["default"].createElement(Table, { size: "sm", bordered: props.bordered, className: ClassNames({
             'table-scrollable': !!props.scrollable,
             [(_b = 'table-col-min-' + props.arrayStructure.minColSize) !== null && _b !== void 0 ? _b : '']: !!props.arrayStructure.minColSize
         }), style: styleSettings, hover: !!props.arrayStructure.rowClick },
-        React__default['default'].createElement("thead", null, WriteHeadTR(props.arrayStructure, validColumns, !!props.hideCosts, sorter, setSorter)),
-        React__default['default'].createElement("tbody", null, SortObjects((_c = props.arrayData) !== null && _c !== void 0 ? _c : [], sorter).map((row, idx) => WriteBodyTR(row, idx, props.arrayStructure, validColumns, !!props.hideCosts, sumsInFooter))),
-        Object.keys(sumsInFooter).length > 0 ? (React__default['default'].createElement("tfoot", null, WriteFootTR(validColumns, sumsInFooter, !!props.hideCosts))) : null));
+        React__default["default"].createElement("thead", null, WriteHeadTR(props.arrayStructure, validColumns, !!props.hideCosts, sorter, setSorter)),
+        React__default["default"].createElement("tbody", null, SortObjects((_c = props.arrayData) !== null && _c !== void 0 ? _c : [], sorter).map((row, idx) => WriteBodyTR(row, idx, props.arrayStructure, validColumns, !!props.hideCosts, sumsInFooter))),
+        Object.keys(sumsInFooter).length > 0 ? (React__default["default"].createElement("tfoot", null, WriteFootTR(validColumns, sumsInFooter, !!props.hideCosts))) : null));
 };
 
 const BRAfter = (props) => {
     if (props.hidden || !props.text)
         return null;
-    return (React__default['default'].createElement("span", { className: props.className },
+    return (React__default["default"].createElement("span", { className: props.className },
         props.prefix,
         props.text,
         props.suffix,
         " ",
-        !props.noBR && React__default['default'].createElement("br", null)));
+        !props.noBR && React__default["default"].createElement("br", null)));
 };
 
 const BRBefore = (props) => {
     if (props.hidden || !props.text)
         return null;
-    return (React__default['default'].createElement("span", { className: props.className },
-        !props.noBR && React__default['default'].createElement("br", null),
+    return (React__default["default"].createElement("span", { className: props.className },
+        !props.noBR && React__default["default"].createElement("br", null),
         props.prefix,
         props.text,
         props.suffix));
@@ -2578,8 +2565,8 @@ const CreateCustomDateRange = (dateStart, dateEnd) => {
         end: DateRangeDateMomentToString(dateEnd)
     };
 };
-const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default['default']().format('YYYY-MM-DD'); };
-const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = moment__default['default'](date)) !== null && _a !== void 0 ? _a : moment__default['default']() : date; };
+const DateRangeDateMomentToString = (date) => { var _a; return typeof date === 'string' ? date : (_a = MomentDateString(date.startOf('day'))) !== null && _a !== void 0 ? _a : moment__default["default"]().format('YYYY-MM-DD'); };
+const DateRangeDateStringToMoment = (date) => { var _a; return typeof date === 'string' ? (_a = moment__default["default"](date)) !== null && _a !== void 0 ? _a : moment__default["default"]() : date; };
 const DateRangeToMoment = (dateRange) => ({
     name: dateRange.name,
     start: DateRangeDateStringToMoment(dateRange.start),
@@ -2592,8 +2579,8 @@ const DateRangeToString = (dateRange) => ({
 });
 const initialDateRange = {
     name: customRangeName,
-    start: moment__default['default'](),
-    end: moment__default['default']()
+    start: moment__default["default"](),
+    end: moment__default["default"]()
 };
 const initialDateRangeString = DateRangeToString(initialDateRange);
 const DateRangeCalendar = (props) => {
@@ -2619,31 +2606,31 @@ const DateRangeCalendar = (props) => {
             props.nextMonth();
         }
     };
-    return (React__default['default'].createElement("table", null,
-        React__default['default'].createElement("thead", null,
-            React__default['default'].createElement("tr", null,
+    return (React__default["default"].createElement("table", null,
+        React__default["default"].createElement("thead", null,
+            React__default["default"].createElement("tr", null,
                 props.prevMonth !== undefined
                     ?
-                        React__default['default'].createElement("th", { className: "prev available", onClick: prev },
-                            React__default['default'].createElement("span", null, " "))
+                        React__default["default"].createElement("th", { className: "prev available", onClick: prev },
+                            React__default["default"].createElement("span", null, " "))
                     :
-                        React__default['default'].createElement("th", null),
-                React__default['default'].createElement("th", { colSpan: 5, className: "month" }, firstDay.format('MMM YYYY')),
+                        React__default["default"].createElement("th", null),
+                React__default["default"].createElement("th", { colSpan: 5, className: "month" }, firstDay.format('MMM YYYY')),
                 props.nextMonth !== undefined
                     ?
-                        React__default['default'].createElement("th", { className: "next available", onClick: next },
-                            React__default['default'].createElement("span", null, " "))
+                        React__default["default"].createElement("th", { className: "next available", onClick: next },
+                            React__default["default"].createElement("span", null, " "))
                     :
-                        React__default['default'].createElement("th", null)),
-            React__default['default'].createElement("tr", null,
-                React__default['default'].createElement("th", null, "Su"),
-                React__default['default'].createElement("th", null, "Mo"),
-                React__default['default'].createElement("th", null, "Tu"),
-                React__default['default'].createElement("th", null, "We"),
-                React__default['default'].createElement("th", null, "Th"),
-                React__default['default'].createElement("th", null, "Fr"),
-                React__default['default'].createElement("th", null, "Sa"))),
-        React__default['default'].createElement("tbody", null, moments.map((week, idx) => React__default['default'].createElement("tr", { key: idx }, week.map((day) => React__default['default'].createElement("td", { className: (day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
+                        React__default["default"].createElement("th", null)),
+            React__default["default"].createElement("tr", null,
+                React__default["default"].createElement("th", null, "Su"),
+                React__default["default"].createElement("th", null, "Mo"),
+                React__default["default"].createElement("th", null, "Tu"),
+                React__default["default"].createElement("th", null, "We"),
+                React__default["default"].createElement("th", null, "Th"),
+                React__default["default"].createElement("th", null, "Fr"),
+                React__default["default"].createElement("th", null, "Sa"))),
+        React__default["default"].createElement("tbody", null, moments.map((week, idx) => React__default["default"].createElement("tr", { key: idx }, week.map((day) => React__default["default"].createElement("td", { className: (day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
                 ((day.isBefore(firstDay, 'day') || day.isAfter(lastDay, 'day')) && !day.isBetween(props.startSelected, props.endSelected, 'day', '[]') ? 'off ends ' : '') +
                 (day.isSame(props.startSelected, 'day') ? 'active start-date ' : '') +
                 (day.isBetween(props.startSelected, props.endSelected, 'day') ? 'in-range ' : '') +
@@ -2693,7 +2680,7 @@ const DateRange = (props) => {
     };
     const currentRange = getCurrentRange();
     const rangeDescription = (range) => {
-        return (range.name === customRangeName ? (moment__default['default'](range.start).format('L') + ' - ' + moment__default['default'](range.end).format('L')) : range.name);
+        return (range.name === customRangeName ? (moment__default["default"](range.start).format('L') + ' - ' + moment__default["default"](range.end).format('L')) : range.name);
     };
     const setOpen = (e) => {
         if (!nodeBody.current.contains(e.target)) {
@@ -2760,148 +2747,148 @@ const DateRange = (props) => {
             setState(Object.assign(Object.assign({}, state), { selectedRange: DateRangeToMoment(props.defaultRange) }));
         }
     }, [props.defaultRange]);
-    return (React__default['default'].createElement("div", { className: 'DateRangeDD ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : ''), onClick: setOpen, ref: nodeParent, color: props.color },
+    return (React__default["default"].createElement("div", { className: 'DateRangeDD ' + ((_a = props.className) !== null && _a !== void 0 ? _a : '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : ''), onClick: setOpen, ref: nodeParent, color: props.color },
         props.faIcon !== null &&
-            React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: props.faIcon ? props.faIcon : proRegularSvgIcons.faCalendarAlt, fixedWidth: true }),
+            React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: props.faIcon ? props.faIcon : proRegularSvgIcons.faCalendarAlt, fixedWidth: true }),
         " ",
         rangeDescription(state.selectedRange),
-        React__default['default'].createElement("div", { className: ClassNames({ DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen }), ref: nodeBody },
-            React__default['default'].createElement("div", { className: 'ranges' + (state.prevPreset ? ' d-none' : '') },
-                React__default['default'].createElement("ul", null,
-                    props.presetRanges.map((preset, idx) => React__default['default'].createElement("li", { key: idx, onClick: () => handlePresetClick(preset), className: (preset.name === currentRange.name ? 'active' : '') }, preset.name)),
-                    React__default['default'].createElement("li", { onClick: handleCustomClick },
+        React__default["default"].createElement("div", { className: ClassNames({ DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen }), ref: nodeBody },
+            React__default["default"].createElement("div", { className: 'ranges' + (state.prevPreset ? ' d-none' : '') },
+                React__default["default"].createElement("ul", null,
+                    props.presetRanges.map((preset, idx) => React__default["default"].createElement("li", { key: idx, onClick: () => handlePresetClick(preset), className: (preset.name === currentRange.name ? 'active' : '') }, preset.name)),
+                    React__default["default"].createElement("li", { onClick: handleCustomClick },
                         customRangeName,
-                        React__default['default'].createElement("span", { className: "float-end" }, ">")))),
-            React__default['default'].createElement("div", { className: 'drp-headers' + (!state.prevPreset ? ' d-none' : ''), onClick: handleUnCustomClick },
-                React__default['default'].createElement("span", null, "< Presets")),
-            React__default['default'].createElement("div", { className: 'drp-calendar left' + (!state.prevPreset ? ' d-none' : '') },
-                React__default['default'].createElement("div", { className: "calendar-table" },
-                    React__default['default'].createElement(DateRangeCalendar, { month: state.monthToShow, startSelected: state.customRange.start, endSelected: state.customRange.end, prevMonth: prevMonth, nextMonth: nextMonth, dateClick: handleDateClick }))),
-            React__default['default'].createElement("div", { className: 'drp-buttons' + (!state.prevPreset ? ' d-none' : '') },
-                React__default['default'].createElement("span", { className: "drp-selected" }, rangeDescription(state.customRange)),
-                React__default['default'].createElement("button", { className: "btn btn-sm btn-primary", type: "button", onClick: handleCustomApplyClick }, "Apply")))));
+                        React__default["default"].createElement("span", { className: "float-end" }, ">")))),
+            React__default["default"].createElement("div", { className: 'drp-headers' + (!state.prevPreset ? ' d-none' : ''), onClick: handleUnCustomClick },
+                React__default["default"].createElement("span", null, "< Presets")),
+            React__default["default"].createElement("div", { className: 'drp-calendar left' + (!state.prevPreset ? ' d-none' : '') },
+                React__default["default"].createElement("div", { className: "calendar-table" },
+                    React__default["default"].createElement(DateRangeCalendar, { month: state.monthToShow, startSelected: state.customRange.start, endSelected: state.customRange.end, prevMonth: prevMonth, nextMonth: nextMonth, dateClick: handleDateClick }))),
+            React__default["default"].createElement("div", { className: 'drp-buttons' + (!state.prevPreset ? ' d-none' : '') },
+                React__default["default"].createElement("span", { className: "drp-selected" }, rangeDescription(state.customRange)),
+                React__default["default"].createElement("button", { className: "btn btn-sm btn-primary", type: "button", onClick: handleCustomApplyClick }, "Apply")))));
 };
 const defaultRanges = [
     {
-        name: 'This Week #' + moment__default['default']().format('w'),
-        start: moment__default['default']().startOf('week'),
-        end: moment__default['default']().endOf('week')
+        name: 'This Week #' + moment__default["default"]().format('w'),
+        start: moment__default["default"]().startOf('week'),
+        end: moment__default["default"]().endOf('week')
     },
     {
-        name: 'Last Week #' + moment__default['default']().subtract(1, 'week').format('w'),
-        start: moment__default['default']().subtract(1, 'week').startOf('week'),
-        end: moment__default['default']().subtract(1, 'week').endOf('week')
+        name: 'Last Week #' + moment__default["default"]().subtract(1, 'week').format('w'),
+        start: moment__default["default"]().subtract(1, 'week').startOf('week'),
+        end: moment__default["default"]().subtract(1, 'week').endOf('week')
     },
     {
         name: 'Previous 4 Weeks',
-        start: moment__default['default']().subtract(4, 'week').startOf('week'),
-        end: moment__default['default']().subtract(1, 'week').endOf('week')
+        start: moment__default["default"]().subtract(4, 'week').startOf('week'),
+        end: moment__default["default"]().subtract(1, 'week').endOf('week')
     },
     {
         name: 'This Month',
-        start: moment__default['default']().startOf('month'),
-        end: moment__default['default']().endOf('month')
+        start: moment__default["default"]().startOf('month'),
+        end: moment__default["default"]().endOf('month')
     },
     {
         name: 'Last Month',
-        start: moment__default['default']().subtract(1, 'month').startOf('month'),
-        end: moment__default['default']().subtract(1, 'month').endOf('month')
+        start: moment__default["default"]().subtract(1, 'month').startOf('month'),
+        end: moment__default["default"]().subtract(1, 'month').endOf('month')
     },
     {
         name: 'Last 7 Days',
-        start: moment__default['default']().subtract(6, 'days').startOf('day'),
-        end: moment__default['default']().endOf('day')
+        start: moment__default["default"]().subtract(6, 'days').startOf('day'),
+        end: moment__default["default"]().endOf('day')
     },
     {
         name: 'Last 30 Days',
-        start: moment__default['default']().subtract(29, 'days').startOf('day'),
-        end: moment__default['default']().endOf('day')
+        start: moment__default["default"]().subtract(29, 'days').startOf('day'),
+        end: moment__default["default"]().endOf('day')
     }
 ];
 const defaultRangeStrings = defaultRanges.map(range => DateRangeToString(range));
 const defaultRangesReport = [
     {
         name: 'This Week',
-        start: moment__default['default']().startOf('week'),
-        end: moment__default['default']().endOf('week')
+        start: moment__default["default"]().startOf('week'),
+        end: moment__default["default"]().endOf('week')
     },
     {
         name: 'Last Week',
-        start: moment__default['default']().subtract(1, 'week').startOf('week'),
-        end: moment__default['default']().subtract(1, 'week').endOf('week')
+        start: moment__default["default"]().subtract(1, 'week').startOf('week'),
+        end: moment__default["default"]().subtract(1, 'week').endOf('week')
     },
     {
         name: 'This Month',
-        start: moment__default['default']().startOf('month'),
-        end: moment__default['default']().endOf('month')
+        start: moment__default["default"]().startOf('month'),
+        end: moment__default["default"]().endOf('month')
     },
     {
         name: 'Last Month',
-        start: moment__default['default']().subtract(1, 'month').startOf('month'),
-        end: moment__default['default']().subtract(1, 'month').endOf('month')
+        start: moment__default["default"]().subtract(1, 'month').startOf('month'),
+        end: moment__default["default"]().subtract(1, 'month').endOf('month')
     },
     {
         name: 'Year-to-Date',
-        start: moment__default['default']().startOf('year'),
-        end: moment__default['default']().endOf('year')
+        start: moment__default["default"]().startOf('year'),
+        end: moment__default["default"]().endOf('year')
     },
     {
         name: 'Last Year',
-        start: moment__default['default']().subtract(1, 'year').startOf('year'),
-        end: moment__default['default']().subtract(1, 'year').endOf('year')
+        start: moment__default["default"]().subtract(1, 'year').startOf('year'),
+        end: moment__default["default"]().subtract(1, 'year').endOf('year')
     }
 ];
 const defaultRangeStringsReport = defaultRangesReport.map(range => DateRangeToString(range));
 const defaultRangesReportQuarterly = [
     {
         name: 'This Month',
-        start: moment__default['default']().startOf('month'),
-        end: moment__default['default']().endOf('month')
+        start: moment__default["default"]().startOf('month'),
+        end: moment__default["default"]().endOf('month')
     },
     {
         name: 'Last Month',
-        start: moment__default['default']().subtract(1, 'month').startOf('month'),
-        end: moment__default['default']().subtract(1, 'month').endOf('month')
+        start: moment__default["default"]().subtract(1, 'month').startOf('month'),
+        end: moment__default["default"]().subtract(1, 'month').endOf('month')
     },
     {
         name: 'This Quarter',
-        start: moment__default['default']().startOf('quarter'),
-        end: moment__default['default']().endOf('quarter')
+        start: moment__default["default"]().startOf('quarter'),
+        end: moment__default["default"]().endOf('quarter')
     },
     {
         name: 'Last Quarter',
-        start: moment__default['default']().subtract(1, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(1, 'quarter').endOf('quarter')
+        start: moment__default["default"]().subtract(1, 'quarter').startOf('quarter'),
+        end: moment__default["default"]().subtract(1, 'quarter').endOf('quarter')
     },
     {
         name: '2 Quarters ago',
-        start: moment__default['default']().subtract(2, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(2, 'quarter').endOf('quarter')
+        start: moment__default["default"]().subtract(2, 'quarter').startOf('quarter'),
+        end: moment__default["default"]().subtract(2, 'quarter').endOf('quarter')
     },
     {
         name: '3 Quarters ago',
-        start: moment__default['default']().subtract(3, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(3, 'quarter').endOf('quarter')
+        start: moment__default["default"]().subtract(3, 'quarter').startOf('quarter'),
+        end: moment__default["default"]().subtract(3, 'quarter').endOf('quarter')
     },
     {
         name: '4 Quarters ago',
-        start: moment__default['default']().subtract(4, 'quarter').startOf('quarter'),
-        end: moment__default['default']().subtract(4, 'quarter').endOf('quarter')
+        start: moment__default["default"]().subtract(4, 'quarter').startOf('quarter'),
+        end: moment__default["default"]().subtract(4, 'quarter').endOf('quarter')
     },
     {
         name: 'Year to Date',
-        start: moment__default['default']().startOf('year'),
-        end: moment__default['default']()
+        start: moment__default["default"]().startOf('year'),
+        end: moment__default["default"]()
     },
     {
         name: 'This Year',
-        start: moment__default['default']().startOf('year'),
-        end: moment__default['default']().endOf('year')
+        start: moment__default["default"]().startOf('year'),
+        end: moment__default["default"]().endOf('year')
     },
     {
         name: 'Last Year',
-        start: moment__default['default']().subtract(1, 'year').startOf('year'),
-        end: moment__default['default']().subtract(1, 'year').endOf('year')
+        start: moment__default["default"]().subtract(1, 'year').startOf('year'),
+        end: moment__default["default"]().subtract(1, 'year').endOf('year')
     }
 ];
 const defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(range => DateRangeToString(range));
@@ -2912,8 +2899,8 @@ const defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(rang
  */
 const defaultRange = {
     name: 'This Month',
-    start: moment__default['default']().startOf('month'),
-    end: moment__default['default']().endOf('month')
+    start: moment__default["default"]().startOf('month'),
+    end: moment__default["default"]().endOf('month')
 };
 /**
  * Default to last month
@@ -2922,8 +2909,8 @@ const defaultRange = {
  */
 const defaultRangeLastMonth = {
     name: 'Last Month',
-    start: moment__default['default']().subtract(1, 'month').startOf('month'),
-    end: moment__default['default']().subtract(1, 'month').endOf('month')
+    start: moment__default["default"]().subtract(1, 'month').startOf('month'),
+    end: moment__default["default"]().subtract(1, 'month').endOf('month')
 };
 /**
  * Default to this week
@@ -2932,8 +2919,8 @@ const defaultRangeLastMonth = {
  */
 const defaultRangeWeek = {
     name: 'This Week',
-    start: moment__default['default']().startOf('week'),
-    end: moment__default['default']().endOf('week')
+    start: moment__default["default"]().startOf('week'),
+    end: moment__default["default"]().endOf('week')
 };
 /**
  * Default to last 4 weeks
@@ -2942,8 +2929,8 @@ const defaultRangeWeek = {
  */
 const defaultRangeLast4Weeks = {
     name: 'Last 4 Weeks',
-    start: moment__default['default']().subtract(3, 'week').startOf('week'),
-    end: moment__default['default']().endOf('week')
+    start: moment__default["default"]().subtract(3, 'week').startOf('week'),
+    end: moment__default["default"]().endOf('week')
 };
 /**
  * Default to this year
@@ -2952,8 +2939,8 @@ const defaultRangeLast4Weeks = {
  */
 const defaultRangeYear = {
     name: 'Year-to-Date',
-    start: moment__default['default']().startOf('year'),
-    end: moment__default['default']().endOf('year')
+    start: moment__default["default"]().startOf('year'),
+    end: moment__default["default"]().endOf('year')
 };
 const defaultRangeString = DateRangeToString(defaultRange);
 // DateRange.defaultProps = {
@@ -2964,7 +2951,7 @@ const defaultRangeString = DateRangeToString(defaultRange);
 
 const HTMLFromText = (props) => {
     return !!props.text ?
-        React__default['default'].createElement("span", Object.assign({ dangerouslySetInnerHTML: {
+        React__default["default"].createElement("span", Object.assign({ dangerouslySetInnerHTML: {
                 __html: intelliwaketsfoundation.TextToHTML(props.text)
             } }, intelliwaketsfoundation.OmitProperty(props, 'text')))
         : null;
@@ -2987,10 +2974,10 @@ function InputCheckBox(props) {
         }
         setShowChecked(e.target.checked);
     };
-    return (React__default['default'].createElement("label", { className: 'inputCheckbox form-control-plaintext ' + (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
-        React__default['default'].createElement("input", { type: 'checkbox', name: props.name, className: 'me-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ' cursor-pointer'), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
+    return (React__default["default"].createElement("label", { className: 'inputCheckbox form-control-plaintext ' + (!props.plainText ? 'cursor-pointer ' : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') },
+        React__default["default"].createElement("input", { type: 'checkbox', name: props.name, className: 'me-1 ' + ((_b = props.switchClassName) !== null && _b !== void 0 ? _b : '') + (props.plainText ? ' plainText' : ' cursor-pointer'), hidden: props.hidden, checked: showChecked, onChange: !props.plainText ? handleInputChange : () => {
             }, disabled: props.disabled, onClick: props.onClick }),
-        React__default['default'].createElement("span", null, props.label)));
+        React__default["default"].createElement("span", null, props.label)));
 }
 
 const ReduceInputProps = (props, classNameAdd) => {
@@ -3042,12 +3029,12 @@ function InputColor(props) {
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
-            React__default['default'].createElement("input", Object.assign({ type: "color", className: (_a = 'inputText ' + props.className) !== null && _a !== void 0 ? _a : '' }, inputProps, { disabled: true })),
-            props.value))) : (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
-        React__default['default'].createElement("input", Object.assign({ type: "color", className: (_b = 'inputText ' + props.className) !== null && _b !== void 0 ? _b : '' }, inputProps, { disabled: true })),
-        props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) })))));
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default["default"].createElement(reactRouterDom.Link, { to: props.plainTextURL },
+        React__default["default"].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
+            React__default["default"].createElement("input", Object.assign({ type: "color", className: (_a = 'inputText ' + props.className) !== null && _a !== void 0 ? _a : '' }, inputProps, { disabled: true })),
+            props.value))) : (React__default["default"].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
+        React__default["default"].createElement("input", Object.assign({ type: "color", className: (_b = 'inputText ' + props.className) !== null && _b !== void 0 ? _b : '' }, inputProps, { disabled: true })),
+        props.value))) : (React__default["default"].createElement("input", Object.assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) })))));
 }
 
 const originalValue$1 = ' ';
@@ -3083,27 +3070,27 @@ function InputDate(props) {
             }
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
         ? MomentDisplayDayDateTime(props.value)
-        : MomentDisplayDayDate(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+        : MomentDisplayDayDate(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 function ViewEmail(props) {
     var _a, _b;
-    return React__default['default'].createElement(React__default['default'].Fragment, null, !!props.email ? React__default['default'].createElement("a", { href: 'mailto:' + props.email }, (_a = props.label) !== null && _a !== void 0 ? _a : props.email) : (_b = props.label) !== null && _b !== void 0 ? _b : null);
+    return React__default["default"].createElement(React__default["default"].Fragment, null, !!props.email ? React__default["default"].createElement("a", { href: 'mailto:' + props.email }, (_a = props.label) !== null && _a !== void 0 ? _a : props.email) : (_b = props.label) !== null && _b !== void 0 ? _b : null);
 }
 
 const InputGroupWrapper = (props) => {
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.prepend || !!props.append ? (React__default['default'].createElement(InputGroup, null,
-        !!props.prepend && (React__default['default'].createElement(InputGroupText, null, props.prepend)),
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.prepend || !!props.append ? (React__default["default"].createElement(InputGroup, null,
+        !!props.prepend && (React__default["default"].createElement(InputGroupText, null, props.prepend)),
         props.children,
-        !!props.append && (React__default['default'].createElement(InputGroupText, null, props.append)))) : (React__default['default'].createElement(React__default['default'].Fragment, null, props.children))));
+        !!props.append && (React__default["default"].createElement(InputGroupText, null, props.append)))) : (React__default["default"].createElement(React__default["default"].Fragment, null, props.children))));
 };
 
 const AppendPrependWrapper = (props) => {
     if (!props.children)
         return null;
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
         !!props.prepend && props.prepend,
         !!props.prepend && ' ',
         props.children,
@@ -3149,13 +3136,13 @@ const InputWrapper = (props) => {
         }
     }, [props.children.props.value]);
     // noinspection PointlessBooleanExpressionJS
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' }, props.plainTextProps),
-            React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' hoverAction cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default["default"].createElement(reactRouterDom.Link, { to: props.plainTextURL },
+        React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext ' }, props.plainTextProps),
+            React__default["default"].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)))) : (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' hoverAction cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
             if (!!props.plainOnClick)
                 props.plainOnClick();
         } }),
-        React__default['default'].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default['default'].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default['default'].cloneElement(props.children, ReduceInputProps(Object.assign(Object.assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
+        React__default["default"].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value)))) : (React__default["default"].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default["default"].cloneElement(props.children, ReduceInputProps(Object.assign(Object.assign({}, props.children.props), { className: (((_c = props.children.props.className) !== null && _c !== void 0 ? _c : '') +
             ' ' +
             ((_d = props.className) !== null && _d !== void 0 ? _d : '') +
             (props.invalid ? ' is-invalid' : '') +
@@ -3252,16 +3239,16 @@ function InputEmail(props) {
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.value && (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
-        React__default['default'].createElement(ViewEmail, { email: props.value, label: props.plainTextLabel })))) : (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputEmail form-control" }),
-        React__default['default'].createElement("input", Object.assign({ type: "email", inputMode: "email" }, inputProps))))));
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (!!props.value && (React__default["default"].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps),
+        React__default["default"].createElement(ViewEmail, { email: props.value, label: props.plainTextLabel })))) : (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputEmail form-control" }),
+        React__default["default"].createElement("input", Object.assign({ type: "email", inputMode: "email" }, inputProps))))));
 }
 
 function InputSelect(props) {
     var _a;
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull')), [props]);
     const wrapperProps = React.useMemo(() => ReduceToInputAddProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')), [props]);
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, wrapperProps, { className: 'inputSelect form-control' + (props.plainText ? ' disabledLink' : ''), transformToValid: (val, e) => {
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, wrapperProps, { className: 'inputSelect form-control' + (props.plainText ? ' disabledLink' : ''), transformToValid: (val, e) => {
             if (!!props.multiple) {
                 if (!!props.isNumeric) {
                     return Array.from(e.target.children)
@@ -3302,7 +3289,7 @@ function InputSelect(props) {
             }
             return val;
         } }),
-        React__default['default'].createElement("select", Object.assign({}, inputProps, { value: (_a = inputProps.value) !== null && _a !== void 0 ? _a : '', style: Object.assign(Object.assign({}, props.style), { pointerEvents: !!props.plainText ? 'none' : undefined }), tabIndex: !!props.plainText ? -1 : undefined }), props.children)));
+        React__default["default"].createElement("select", Object.assign({}, inputProps, { value: (_a = inputProps.value) !== null && _a !== void 0 ? _a : '', style: Object.assign(Object.assign({}, props.style), { pointerEvents: !!props.plainText ? 'none' : undefined }), tabIndex: !!props.plainText ? -1 : undefined }), props.children)));
 }
 
 function InputGender(props) {
@@ -3315,11 +3302,11 @@ function InputGender(props) {
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputGender" }),
-        React__default['default'].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true }),
-            React__default['default'].createElement("option", null),
-            React__default['default'].createElement("option", { value: "Male" }, "Male"),
-            React__default['default'].createElement("option", { value: "Female" }, "Female"))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputGender" }),
+        React__default["default"].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true }),
+            React__default["default"].createElement("option", null),
+            React__default["default"].createElement("option", { value: "Male" }, "Male"),
+            React__default["default"].createElement("option", { value: "Female" }, "Female"))));
 }
 
 function InputNumber(props) {
@@ -3369,7 +3356,7 @@ function InputNumber(props) {
         options.numeralDecimalScale = props.decimalScale === undefined ? 2 : (_e = props.decimalScale) !== null && _e !== void 0 ? _e : undefined;
     }
     const hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)), valueOnInvalid: () => 0, transformToValid: (val) => {
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)), valueOnInvalid: () => 0, transformToValid: (val) => {
             const cleanNumber = intelliwaketsfoundation.CleanNumber(val);
             if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
                 return props.lowerBound;
@@ -3386,19 +3373,19 @@ function InputNumber(props) {
             : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ?
                 '' :
                 ' text-end'} ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
-        React__default['default'].createElement(Cleave__default['default'], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name }))));
+        React__default["default"].createElement(Cleave__default["default"], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name }))));
 }
 
 function InputPassword(props) {
     var _a;
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputPassword form-control" }),
-        React__default['default'].createElement("input", Object.assign({ type: "password" }, ReduceInputProps(props), { placeholder: (_a = props.placeholder) !== null && _a !== void 0 ? _a : '******' }))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputPassword form-control" }),
+        React__default["default"].createElement("input", Object.assign({ type: "password" }, ReduceInputProps(props), { placeholder: (_a = props.placeholder) !== null && _a !== void 0 ? _a : '******' }))));
 }
 
 function InputRadio(props) {
     var _a;
-    return !!props.plainText ? (props.checked ? (props.label) : null) : (React__default['default'].createElement("label", { className: "cursor-pointer" },
-        React__default['default'].createElement("input", { type: "radio", value: props.value, checked: props.checked, className: 'inputRadio ' + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), name: props.name, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange), onClick: props.onClick }),
+    return !!props.plainText ? (props.checked ? (props.label) : null) : (React__default["default"].createElement("label", { className: "cursor-pointer" },
+        React__default["default"].createElement("input", { type: "radio", value: props.value, checked: props.checked, className: 'inputRadio ' + ((_a = props.className) !== null && _a !== void 0 ? _a : ''), name: props.name, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange), onClick: props.onClick }),
         ' ',
         props.label));
 }
@@ -3435,11 +3422,11 @@ const InputRatingStars = (props) => {
     }, [editable, localValue, mouseEventValue]);
     const iconSize = React.useMemo(() => { var _a; return (_a = props.size) !== null && _a !== void 0 ? _a : 'lg'; }, [props.size]);
     const buttonSize = React.useMemo(() => { var _a; return ((_a = props.buttonSize) !== null && _a !== void 0 ? _a : ['xs', 'sm', '1x'].includes(iconSize)) ? 'sm' : 'lg'; }, [iconSize, props.buttonSize]);
-    return (React__default['default'].createElement(ButtonGroup, { className: "inputRatingStars", onMouseLeave: () => {
+    return (React__default["default"].createElement(ButtonGroup, { className: "inputRatingStars", onMouseLeave: () => {
             if (isMouseDown.current && localValue !== props.value) {
                 setLocalValue(props.value);
             }
-        } }, starValues.map(starValue => (React__default['default'].createElement(Button, { color: 'link', className: 'py-0', key: starValue, onMouseDown: e => {
+        } }, starValues.map(starValue => (React__default["default"].createElement(Button, { color: 'link', className: 'py-0', key: starValue, onMouseDown: e => {
             if (editable) {
                 isMouseDown.current = true;
                 mouseEvent(e, starValue);
@@ -3455,7 +3442,7 @@ const InputRatingStars = (props) => {
                     props.changeValue(newValue, props.name);
             }
         }, tabIndex: -1 },
-        React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: !!localValue && starValue <= localValue ? proSolidSvgIcons.faStar : proRegularSvgIcons.faStar, style: { color: !!localValue && starValue <= localValue ? 'gold' : 'gray' }, size: iconSize }))))));
+        React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: !!localValue && starValue <= localValue ? proSolidSvgIcons.faStar : proRegularSvgIcons.faStar, style: { color: !!localValue && starValue <= localValue ? 'gold' : 'gray' }, size: iconSize }))))));
 };
 
 /**
@@ -3466,7 +3453,7 @@ const InputSearch = React.forwardRef((props, ref) => {
     const triggeredText = React.useRef((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
     const searchTimeout = React.useRef(setTimeout(() => { }, 100));
     const [currentText, setCurrentText] = React.useState('');
-    const innerRef = React__default['default'].useRef(null);
+    const innerRef = React__default["default"].useRef(null);
     const combinedRef = useCombinedRefs(ref, innerRef);
     const handleInputChange = (e) => {
         var _a;
@@ -3549,14 +3536,14 @@ const InputSearch = React.forwardRef((props, ref) => {
         onFocus: handleOnFocus,
         autoComplete: props.autoCompleteOn ? 'on' : `AC_${intelliwaketsfoundation.RandomString(12)}`
     };
-    return !!props.iconPrefix || !!props.reactPrefix ? (React__default['default'].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
-        (!!props.iconPrefix || !!props.reactPrefix) && (React__default['default'].createElement(InputGroupText, { onClick: () => {
+    return /* !!props.iconPrefix || */ !!props.reactPrefix ? (React__default["default"].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
+        ( /* !!props.iconPrefix || */!!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { onClick: () => {
                 var _a;
                 const innerRef = ref;
                 if (!!((_a = innerRef === null || innerRef === void 0 ? void 0 : innerRef.current) === null || _a === void 0 ? void 0 : _a.focus))
                     innerRef.current.focus();
-            } }, props.iconPrefix !== undefined ? (typeof props.iconPrefix === 'boolean' ? (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faSearch })) : (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({}, props.iconPrefix)))) : (props.reactPrefix))),
-        React__default['default'].createElement("input", Object.assign({}, inputProps)))) : (React__default['default'].createElement("input", Object.assign({}, inputProps)));
+            } }, props.reactPrefix)),
+        React__default["default"].createElement("input", Object.assign({}, inputProps)))) : (React__default["default"].createElement("input", Object.assign({}, inputProps)));
 });
 
 const OptionsActive = [
@@ -3592,7 +3579,7 @@ const InputSelectStep = (props) => {
             props.changeValue(newValue, props.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement("div", { className: classNames, onClick: click, onKeyPress: click, tabIndex: 0 }, (_d = (_c = props.options[currentOptionIDX]) === null || _c === void 0 ? void 0 : _c.description) !== null && _d !== void 0 ? _d : ''));
+    return (React__default["default"].createElement("div", { className: classNames, onClick: click, onKeyPress: click, tabIndex: 0 }, (_d = (_c = props.options[currentOptionIDX]) === null || _c === void 0 ? void 0 : _c.description) !== null && _d !== void 0 ? _d : ''));
 };
 
 function InputSSN(props) {
@@ -3604,13 +3591,13 @@ function InputSSN(props) {
         }
         return subset;
     }, [props]);
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputSSN form-control", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
-        React__default['default'].createElement("input", Object.assign({ type: "text" }, inputProps, { pattern: "\\d{3}-?\\d{2}-?\\d{4}" }))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputSSN form-control", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
+        React__default["default"].createElement("input", Object.assign({ type: "text" }, inputProps, { pattern: "\\d{3}-?\\d{2}-?\\d{4}" }))));
 }
 
 function InputState(props) {
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputText inputState", transformToValid: (val) => val.toUpperCase() }),
-        React__default['default'].createElement("input", Object.assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputText inputState", transformToValid: (val) => val.toUpperCase() }),
+        React__default["default"].createElement("input", Object.assign({ type: "text" }, ReduceInputProps(props, 'form-control')))));
 }
 
 function InputSwitch(props) {
@@ -3626,9 +3613,9 @@ function InputSwitch(props) {
     const height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
     const width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
     const style = !!props.noReduceWidth ? props.style : Object.assign(Object.assign({}, ((_c = props.style) !== null && _c !== void 0 ? _c : {})), { width: '1px' });
-    return (React__default['default'].createElement("label", { style: style, className: 'inputSwitch ' + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + ((_d = props.className) !== null && _d !== void 0 ? _d : ''), hidden: props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly) },
+    return (React__default["default"].createElement("label", { style: style, className: 'inputSwitch ' + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + ((_d = props.className) !== null && _d !== void 0 ? _d : ''), hidden: props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly) },
         (!props.plainText || !props.plainTextLabelOnly) &&
-            React__default['default'].createElement(Switch__default['default'], { onChange: (checked, e) => {
+            React__default["default"].createElement(Switch__default["default"], { onChange: (checked, e) => {
                     if (!props.plainText) {
                         handleInputChange(checked, e);
                     }
@@ -3645,13 +3632,13 @@ function InputTel(props) {
             return proRegularSvgIcons.faPhone;
         return props.showFAIcon;
     }, [props.showFAIcon]);
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputTel", append: !!faIconToShow && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: faIconToShow }), plainTextControl: intelliwaketsfoundation.FormatPhoneNumber(props.value) }),
-        React__default['default'].createElement("input", Object.assign({ type: "tel", inputMode: "tel" }, inputProps))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputTel", append: !!faIconToShow && React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: faIconToShow }), plainTextControl: intelliwaketsfoundation.FormatPhoneNumber(props.value) }),
+        React__default["default"].createElement("input", Object.assign({ type: "tel", inputMode: "tel" }, inputProps))));
 }
 
 const InputText = (props) => {
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
-        React__default['default'].createElement("input", Object.assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputText" }),
+        React__default["default"].createElement("input", Object.assign({ type: "text" }, ReduceInputProps(props, 'form-control'), { required: props.required, ref: props.innerRef }))));
 };
 
 function InputTextArea(props) {
@@ -3669,12 +3656,12 @@ function InputTextArea(props) {
             e.stopPropagation();
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: 'inputTextArea form-control', plainTextControl: React__default['default'].createElement("div", Object.assign({ className: 'form-control-plaintext ' + (!!props.plainTextScroll ? 'vertical-scroll horizontal-scroll ' : '') + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: props.plainTextScroll ? {
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
+        React__default["default"].createElement(InputWrapper, Object.assign({ doNotSelectOnFocus: true }, ReduceToInputAddProps(props), { className: 'inputTextArea form-control', plainTextControl: React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext ' + (!!props.plainTextScroll ? 'vertical-scroll horizontal-scroll ' : '') + (!!props.bordered ? ' border' : '') }, props.plainTextProps, { dangerouslySetInnerHTML: { __html: intelliwaketsfoundation.ReplaceLinks(intelliwaketsfoundation.CleanScripts('' + props.value)) }, style: props.plainTextScroll ? {
                     maxHeight: !!props.rows ? props.rows + 'em' : '5em',
                     overflowY: 'scroll'
                 } : undefined })) }),
-            React__default['default'].createElement("textarea", Object.assign({}, inputProps, { ref: props.innerRef, onKeyDown: keyDown })))));
+            React__default["default"].createElement("textarea", Object.assign({}, inputProps, { ref: props.innerRef, onKeyDown: keyDown })))));
 }
 
 const originalValue = ' ';
@@ -3707,7 +3694,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), MomentDisplayTime(props.value))) : (React__default['default'].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), MomentDisplayTime(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: "time", className: "inputTime form-control" }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {
@@ -3728,21 +3715,21 @@ function InputTimeZone(props) {
         return tzItems;
     }, []);
     const valueTZ = React.useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.value)), [props.value]);
-    return (React__default['default'].createElement(React__default['default'].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default['default'].createElement(reactRouterDom.Link, { to: props.plainTextURL },
-        React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default["default"].createElement(reactRouterDom.Link, { to: props.plainTextURL },
+        React__default["default"].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default["default"].createElement(React__default["default"].Fragment, null,
             valueTZ,
             ":",
-            React__default['default'].createElement("span", { className: "text-muted" },
+            React__default["default"].createElement("span", { className: "text-muted" },
                 " ",
-                props.value))) : (React__default['default'].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default['default'].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default['default'].createElement(React__default['default'].Fragment, null,
+                props.value))) : (React__default["default"].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default["default"].createElement("div", Object.assign({ className: "form-control-plaintext" }, props.plainTextProps), !!props.value ? (React__default["default"].createElement(React__default["default"].Fragment, null,
         valueTZ,
         ":",
-        React__default['default'].createElement("span", { className: "text-muted" },
+        React__default["default"].createElement("span", { className: "text-muted" },
             " ",
-            props.value))) : (React__default['default'].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) }),
-            React__default['default'].createElement("option", null),
-            timeZonesList.map((tzItem) => (React__default['default'].createElement("option", { key: tzItem.olson, value: tzItem.olson },
+            props.value))) : (React__default["default"].createElement("span", { className: "text-danger" }, "No Timezone set"))))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
+        React__default["default"].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) }),
+            React__default["default"].createElement("option", null),
+            timeZonesList.map((tzItem) => (React__default["default"].createElement("option", { key: tzItem.olson, value: tzItem.olson },
                 tzItem.zone,
                 ": ",
                 tzItem.olson))))))));
@@ -3755,17 +3742,17 @@ function InputUrl(props) {
         }
         return '' + props.value;
     }, [props.value]);
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputUrl form-control", plainTextControl: React__default['default'].createElement("a", { href: href, target: "_blank", rel: "noopener noreferrer", className: "d-block w-100" },
-                React__default['default'].createElement(EllipsesTruncate, { text: props.value })) }),
-            React__default['default'].createElement("input", Object.assign({ type: "url", pattern: "https://.*", inputMode: "url", className: "inputText" }, ReduceInputProps(props))))));
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
+        React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputUrl form-control", plainTextControl: React__default["default"].createElement("a", { href: href, target: "_blank", rel: "noopener noreferrer", className: "d-block w-100" },
+                React__default["default"].createElement(EllipsesTruncate, { text: props.value })) }),
+            React__default["default"].createElement("input", Object.assign({ type: "url", pattern: "https://.*", inputMode: "url", className: "inputText" }, ReduceInputProps(props))))));
 }
 
 function InputZip(props) {
     var _a;
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'withNine')), [props]);
-    return (React__default['default'].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputZip form-control", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
-        React__default['default'].createElement("input", Object.assign({ type: "text" }, inputProps))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputZip form-control", plainTextControl: intelliwaketsfoundation.FormatZip(((_a = props.value) !== null && _a !== void 0 ? _a : '').toString()) }),
+        React__default["default"].createElement("input", Object.assign({ type: "text" }, inputProps))));
 }
 
 /**
@@ -3910,7 +3897,7 @@ const IWServerData = (props) => {
                     if (!!props.verboseConsole) {
                         console.log(`API Request for ${(_d = props.urlPrefix) !== null && _d !== void 0 ? _d : ''}/${props.item}/${verb}`, request, config);
                     }
-                    axios__default['default']
+                    axios__default["default"]
                         .post(`${(_e = props.urlPrefix) !== null && _e !== void 0 ? _e : ''}/${props.item}/${verb}`, request, config)
                         .then((response) => {
                         var _a, _b, _c, _d;
@@ -4040,17 +4027,17 @@ const IWServerData = (props) => {
         props.superVerboseConsole,
         props.noCredentials
     ]);
-    return props.children === undefined ? null : (React__default['default'].createElement(React__default['default'].Fragment, null,
+    return props.children === undefined ? null : (React__default["default"].createElement(React__default["default"].Fragment, null,
         props.children,
         showInProgressControl &&
             !props.noActivityOverlay &&
             !props.globalActivityOverlay &&
             props.loadingReactNodes !== null &&
-            ((_l = props.loadingReactNodes) !== null && _l !== void 0 ? _l : React__default['default'].createElement(ActivityOverlayControl, { show: true }))));
+            ((_l = props.loadingReactNodes) !== null && _l !== void 0 ? _l : React__default["default"].createElement(ActivityOverlayControl, { show: true }))));
 };
 
 function StyleControl(props) {
-    return !props.css ? React__default['default'].createElement(React__default['default'].Fragment, null) : React__default['default'].createElement("style", { dangerouslySetInnerHTML: { __html: props.css } });
+    return !props.css ? React__default["default"].createElement(React__default["default"].Fragment, null) : React__default["default"].createElement("style", { dangerouslySetInnerHTML: { __html: props.css } });
 }
 
 const initialMenuBackItem = {
@@ -4067,7 +4054,7 @@ const initialMDContext = {
     isOpen: false,
     setMenuBackItemState: () => { }
 };
-const MDContext = React__default['default'].createContext(initialMDContext);
+const MDContext = React__default["default"].createContext(initialMDContext);
 const MasterDetail = (props) => {
     var _a, _b, _c;
     const lastRedirectTS = React.useRef(null);
@@ -4093,22 +4080,22 @@ const MasterDetail = (props) => {
         !GetPathComponentAfter(basePath) &&
         previousDashboardLastURL &&
         previousDashboardLastURL !== window.location.pathname) {
-        const currentTS = moment__default['default']().valueOf();
+        const currentTS = moment__default["default"]().valueOf();
         if (!lastRedirectTS.current || (currentTS - lastRedirectTS.current) > 2000) {
             lastRedirectTS.current = currentTS;
-            return React__default['default'].createElement(reactRouterDom.Redirect, { to: previousDashboardLastURL });
+            return React__default["default"].createElement(reactRouterDom.Redirect, { to: previousDashboardLastURL });
         }
         else {
             window.sessionStorage.removeItem(basePath + '-LastURL');
-            return React__default['default'].createElement(reactRouterDom.Redirect, { to: basePath });
+            return React__default["default"].createElement(reactRouterDom.Redirect, { to: basePath });
         }
     }
     else {
         if (props.rememberLast) {
             window.sessionStorage.setItem(basePath + '-LastURL', window.location.pathname);
         }
-        return (React__default['default'].createElement(MDContext.Provider, { value: mdContext },
-            React__default['default'].createElement("div", { className: ((_c = props.className) !== null && _c !== void 0 ? _c : '') + ' masterDetail masterDetail-' + props.breakAt }, props.children)));
+        return (React__default["default"].createElement(MDContext.Provider, { value: mdContext },
+            React__default["default"].createElement("div", { className: ((_c = props.className) !== null && _c !== void 0 ? _c : '') + ' masterDetail masterDetail-' + props.breakAt }, props.children)));
     }
 };
 const MDMaster = (props) => {
@@ -4118,9 +4105,9 @@ const MDMaster = (props) => {
     if (props.width) {
         css = `@media (min-width: ${SizeAtMin(mdContext.breakAt)}px) { #${id} {width: ${props.width}; min-width: ${props.width};}}`;
     }
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(StyleControl, { css: css }),
-        React__default['default'].createElement("div", { className: (!!props.includePrint ? '' : 'd-print-none ') +
+    return (React__default["default"].createElement(React__default["default"].Fragment, null,
+        React__default["default"].createElement(StyleControl, { css: css }),
+        React__default["default"].createElement("div", { className: (!!props.includePrint ? '' : 'd-print-none ') +
                 props.className +
                 ' masterDetailMaster' +
                 (mdContext.isOpen ? ' isOpen' : ''), id: id }, props.children)));
@@ -4171,7 +4158,7 @@ const MDLink = (props) => {
     }, [props.children]);
     switch (props.tag) {
         case 'li':
-            return (React__default['default'].createElement("li", Object.assign({}, displayProps, { onClick: () => {
+            return (React__default["default"].createElement("li", Object.assign({}, displayProps, { onClick: () => {
                     if (!!props.onClick) {
                         if (props.onClick() === true)
                             selectItem();
@@ -4181,13 +4168,13 @@ const MDLink = (props) => {
                     }
                 }, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }),
                 props.children,
-                React__default['default'].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-end ' + ((_a = props.badgeClass) !== null && _a !== void 0 ? _a : ''), style: { marginTop: '0.2rem' } })));
+                React__default["default"].createElement(BadgeItem, { badge: props.badge, color: props.badgeColor, className: 'float-end ' + ((_a = props.badgeClass) !== null && _a !== void 0 ? _a : ''), style: { marginTop: '0.2rem' } })));
         case 'tr':
-            return (React__default['default'].createElement("tr", Object.assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default["default"].createElement("tr", Object.assign({}, displayProps, { onClick: (_b = props.onClick) !== null && _b !== void 0 ? _b : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         case 'div':
-            return (React__default['default'].createElement("div", Object.assign({}, displayProps, { onClick: (_c = props.onClick) !== null && _c !== void 0 ? _c : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default["default"].createElement("div", Object.assign({}, displayProps, { onClick: (_c = props.onClick) !== null && _c !== void 0 ? _c : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
         default:
-            return (React__default['default'].createElement("span", Object.assign({}, displayProps, { onClick: (_d = props.onClick) !== null && _d !== void 0 ? _d : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
+            return (React__default["default"].createElement("span", Object.assign({}, displayProps, { onClick: (_d = props.onClick) !== null && _d !== void 0 ? _d : selectItem, onDoubleClick: props.onDoubleClick, style: props.style, title: props.title, ref: !props.noAutoScroll && linkActive ? selectedRow : null }), props.children));
     }
 };
 const MDDetail = (props) => {
@@ -4241,7 +4228,7 @@ const MDDetail = (props) => {
         mdContext.breakAt
     ]);
     if (activated) {
-        return (React__default['default'].createElement("div", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
+        return (React__default["default"].createElement("div", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') +
                 ' masterDetailDetail' +
                 (window.location.pathname === mdContext.baseFullPath ? ' hideWhenSmall' : ''), hidden: props.hidden }, props.children));
     }
@@ -4255,14 +4242,14 @@ const MasterDetailListGroup = (props) => {
     const listGroupItems = React.useMemo(() => props.listGroupItems
         .filter((listGroupItem) => !listGroupItem.hidden)
         .map((listGroupItem, idx) => {
-        var _a, _b, _c, _d, _e, _f, _g;
-        return (Object.assign(Object.assign({}, listGroupItem), { key: ((_b = (_a = listGroupItem.panelTitle) !== null && _a !== void 0 ? _a : listGroupItem.linkNode) !== null && _b !== void 0 ? _b : idx).toString() + ((_c = listGroupItem.id) !== null && _c !== void 0 ? _c : '') + idx, panelURLCalc: (_d = listGroupItem.panelURL) !== null && _d !== void 0 ? _d : intelliwaketsfoundation.ToPascalCase((_e = listGroupItem.panelTitle) !== null && _e !== void 0 ? _e : ((_f = listGroupItem.linkNode) !== null && _f !== void 0 ? _f : idx).toString()), collapsed: !!listGroupItem.section && ((_g = props.collapsedSections) !== null && _g !== void 0 ? _g : []).includes(listGroupItem.section) }));
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        return (Object.assign(Object.assign({}, listGroupItem), { key: ((_c = (_b = (_a = listGroupItem.linkKey) !== null && _a !== void 0 ? _a : listGroupItem.panelTitle) !== null && _b !== void 0 ? _b : listGroupItem.linkNode) !== null && _c !== void 0 ? _c : idx).toString() + ((_d = listGroupItem.id) !== null && _d !== void 0 ? _d : '') + idx, panelURLCalc: (_e = listGroupItem.panelURL) !== null && _e !== void 0 ? _e : intelliwaketsfoundation.ToPascalCase((_g = (_f = listGroupItem.linkKey) !== null && _f !== void 0 ? _f : listGroupItem.panelTitle) !== null && _g !== void 0 ? _g : ((_h = listGroupItem.linkNode) !== null && _h !== void 0 ? _h : idx).toString()), collapsed: !!listGroupItem.section && ((_j = props.collapsedSections) !== null && _j !== void 0 ? _j : []).includes(listGroupItem.section) }));
     }), [props.listGroupItems, props.collapsedSections]);
     let prevListGroupItem = null;
-    return (React__default['default'].createElement(MasterDetail, { setMenuBackItemState: props.setMenuBackItemState, mdPath: props.mdPath, breakAt: props.breakAt, backText: props.backText, rememberLast: props.rememberLast, className: props.className },
-        React__default['default'].createElement(MDMaster, { width: props.mdMasterWidth, className: props.mdMasterClassName },
+    return (React__default["default"].createElement(MasterDetail, { setMenuBackItemState: props.setMenuBackItemState, mdPath: props.mdPath, breakAt: props.breakAt, backText: props.backText, rememberLast: props.rememberLast, className: props.className },
+        React__default["default"].createElement(MDMaster, { width: props.mdMasterWidth, className: props.mdMasterClassName },
             props.mdMasterTopNode,
-            React__default['default'].createElement(ListGroup, { flush: true, className: `fill-height-scroll ${props.noTextLargeSmaller ? '' : `text-large-${props.breakAt}-smaller`}` },
+            React__default["default"].createElement(ListGroup, { flush: true, className: `fill-height-scroll ${props.noTextLargeSmaller ? '' : `text-large-${props.breakAt}-smaller`}` },
                 listGroupItems.map((listGroupItem, idx) => {
                     var _a, _b, _c, _d, _e, _f;
                     let prefix = null;
@@ -4270,13 +4257,13 @@ const MasterDetailListGroup = (props) => {
                         if (!prevListGroupItem || prevListGroupItem.section !== listGroupItem.section) {
                             switch (props.sectionBreak) {
                                 case 'HR':
-                                    prefix = idx > 0 ? React__default['default'].createElement("hr", null) : null;
+                                    prefix = idx > 0 ? React__default["default"].createElement("hr", null) : null;
                                     break;
                                 case 'Gap':
                                     prefix = idx > 0 ? '' : null;
                                     break;
                                 default:
-                                    prefix = (React__default['default'].createElement(ListGroupItemHeading, { onClick: () => {
+                                    prefix = (React__default["default"].createElement(ListGroupItemHeading, { onClick: () => {
                                             if (!!props.setCollapsedSections && !!listGroupItem.section) {
                                                 props.setCollapsedSections((prevState) => {
                                                     if (!listGroupItem.section)
@@ -4298,43 +4285,43 @@ const MasterDetailListGroup = (props) => {
                         console.warn(`MasterDetail ${props.mdPath} Item ${listGroupItem.panelTitle}:${(_b = listGroupItem.id) !== null && _b !== void 0 ? _b : ''} has a sectionNode, but no section`);
                     }
                     prevListGroupItem = listGroupItem;
-                    return (React__default['default'].createElement(React__default['default'].Fragment, { key: listGroupItem.key },
+                    return (React__default["default"].createElement(React__default["default"].Fragment, { key: listGroupItem.key },
                         prefix,
                         listGroupItem.plainText ?
-                            React__default['default'].createElement(ListGroupItem, { hidden: listGroupItem.collapsed, onClick: (_c = listGroupItem.linkClick) !== null && _c !== void 0 ? _c : undefined, className: ClassNames({
+                            React__default["default"].createElement(ListGroupItem, { hidden: listGroupItem.collapsed, onClick: (_c = listGroupItem.linkClick) !== null && _c !== void 0 ? _c : undefined, className: ClassNames({
                                     'list-group-item': true,
                                     'list-group-item-action': !listGroupItem.plainText && (!!listGroupItem.mdDetail || !!listGroupItem.linkClick),
                                     'mt-4': prefix === ''
                                 }) +
                                     ' ' +
                                     ((_d = listGroupItem.className) !== null && _d !== void 0 ? _d : '') },
-                                !!listGroupItem.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
+                                !!listGroupItem.faProps && React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
                                 listGroupItem.linkNode,
-                                React__default['default'].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
-                                listGroupItem.counter !== undefined && (React__default['default'].createElement(Badge, { color: listGroupItem.counterColor, className: "float-end small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default['default'].createElement(Spinner, { size: "xs" }))))
+                                React__default["default"].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
+                                listGroupItem.counter !== undefined && (React__default["default"].createElement(Badge, { color: listGroupItem.counterColor, className: "float-end small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default["default"].createElement(Spinner, { size: "xs" }))))
                             :
-                                React__default['default'].createElement(MDLink, { hidden: listGroupItem.collapsed, tag: "li", id: listGroupItem.id, panel: !listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined, onClick: (_e = listGroupItem.linkClick) !== null && _e !== void 0 ? _e : undefined, className: ClassNames({
+                                React__default["default"].createElement(MDLink, { hidden: listGroupItem.collapsed, tag: "li", id: listGroupItem.id, panel: !listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined, onClick: (_e = listGroupItem.linkClick) !== null && _e !== void 0 ? _e : undefined, className: ClassNames({
                                         'list-group-item': true,
                                         'list-group-item-action': !listGroupItem.plainText && (!!listGroupItem.mdDetail || !!listGroupItem.linkClick),
                                         'mt-4': prefix === ''
                                     }) +
                                         ' ' +
                                         ((_f = listGroupItem.className) !== null && _f !== void 0 ? _f : '') },
-                                    !!listGroupItem.faProps && React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
+                                    !!listGroupItem.faProps && React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
                                     listGroupItem.linkNode,
-                                    React__default['default'].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
-                                    listGroupItem.counter !== undefined && (React__default['default'].createElement(Badge, { color: listGroupItem.counterColor, className: "float-end small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default['default'].createElement(Spinner, { size: "xs" }))))));
+                                    React__default["default"].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor }),
+                                    listGroupItem.counter !== undefined && (React__default["default"].createElement(Badge, { color: listGroupItem.counterColor, className: "float-end small text-white border-round ml-2" }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) : React__default["default"].createElement(Spinner, { size: "xs" }))))));
                 }),
                 props.mdMasterBottomNode),
             props.mdMasterBottomOutsideNode),
         listGroupItems.map((listGroupItem) => {
-            var _a;
+            var _a, _b;
             return !listGroupItem.collapsed &&
-                !!listGroupItem.mdDetail && (React__default['default'].createElement(MDDetail, { key: listGroupItem.key, panel: listGroupItem.panelURLCalc, titleText: (_a = listGroupItem.panelTitle) !== null && _a !== void 0 ? _a : listGroupItem.linkNode }, listGroupItem.mdDetail));
+                !!listGroupItem.mdDetail && (React__default["default"].createElement(MDDetail, { key: listGroupItem.key, panel: listGroupItem.panelURLCalc, titleText: (_b = (_a = listGroupItem.linkKey) !== null && _a !== void 0 ? _a : listGroupItem.panelTitle) !== null && _b !== void 0 ? _b : listGroupItem.linkNode }, listGroupItem.mdDetail));
         }),
         ((_a = props.mdDetails) !== null && _a !== void 0 ? _a : []).map((mdDetail, idx) => {
             var _a, _b;
-            return (React__default['default'].createElement(MDDetail, { key: ((_a = mdDetail.panelURL) !== null && _a !== void 0 ? _a : mdDetail.panelTitle).toString() + idx, panel: (_b = mdDetail.panelURL) !== null && _b !== void 0 ? _b : intelliwaketsfoundation.ToPascalCase(mdDetail.panelTitle), titleText: mdDetail.panelTitle }, mdDetail.mdDetail));
+            return (React__default["default"].createElement(MDDetail, { key: ((_a = mdDetail.panelURL) !== null && _a !== void 0 ? _a : mdDetail.panelTitle).toString() + idx, panel: (_b = mdDetail.panelURL) !== null && _b !== void 0 ? _b : intelliwaketsfoundation.ToPascalCase(mdDetail.panelTitle), titleText: mdDetail.panelTitle }, mdDetail.mdDetail));
         })));
 };
 
@@ -4358,18 +4345,18 @@ const MessageBox = (props) => {
             dismissTimeout.current = setTimeout(dismissMessageBox, 3000);
         }
     }, [propsMessageBoxState.message, propsMessageBoxState.noDismiss, dismissMessageBox]);
-    return (React__default['default'].createElement(Alert, { className: 'System_MessageBox', color: (_b = propsMessageBoxState.color) !== null && _b !== void 0 ? _b : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
+    return (React__default["default"].createElement(Alert, { className: 'System_MessageBox', color: (_b = propsMessageBoxState.color) !== null && _b !== void 0 ? _b : 'primary', isOpen: !!propsMessageBoxState.message, toggle: props.dismissMessageBox },
         propsMessageBoxState.message,
         !!propsMessageBoxState.messageBody ?
-            React__default['default'].createElement("small", null,
-                React__default['default'].createElement("hr", null),
-                React__default['default'].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))
+            React__default["default"].createElement("small", null,
+                React__default["default"].createElement("hr", null),
+                React__default["default"].createElement("span", { dangerouslySetInnerHTML: { __html: messageBoxHTML } }))
             : null));
 };
 
 function NumberFormat(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
-    return (React__default['default'].createElement("span", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' ' + (((_b = props.value) !== null && _b !== void 0 ? _b : 0) < 0 ? (_c = props.classNameAddOnNegative) !== null && _c !== void 0 ? _c : 'text-danger' : '') }, props.percent
+    return (React__default["default"].createElement("span", { className: ((_a = props.className) !== null && _a !== void 0 ? _a : '') + ' ' + (((_b = props.value) !== null && _b !== void 0 ? _b : 0) < 0 ? (_c = props.classNameAddOnNegative) !== null && _c !== void 0 ? _c : 'text-danger' : '') }, props.percent
         ? props.blank
             ? intelliwaketsfoundation.ToPercentBlank((_d = props.value) !== null && _d !== void 0 ? _d : 0, (_e = props.decimals) !== null && _e !== void 0 ? _e : 0)
             : props.dash
@@ -4408,10 +4395,10 @@ const SelectDD = (props) => {
         var _a;
         setSelectedItem((_a = props.items.find((item) => props.selectedID === undefined || item.id === props.selectedID)) !== null && _a !== void 0 ? _a : undefined);
     }, [props.selectedID, props.items]);
-    return (React__default['default'].createElement(Dropdown, { size: props.size, className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : ''), color: (_c = props.color) !== null && _c !== void 0 ? _c : (!!props.inline ? 'primary-outline' : 'primary'), noCaret: !props.caret, buttonClassName: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : ''), buttonFAProps: props.faIcon, buttonLabel: (_d = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _d !== void 0 ? _d : 'No Selection' }, (props !== null && props !== void 0 ? props : {}).items.map((item) => {
+    return (React__default["default"].createElement(Dropdown, { size: props.size, className: ((_b = props.className) !== null && _b !== void 0 ? _b : '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : ''), color: (_c = props.color) !== null && _c !== void 0 ? _c : (!!props.inline ? 'primary-outline' : 'primary'), noCaret: !props.caret, buttonClassName: (!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : ''), buttonFAProps: props.faIcon, buttonLabel: (_d = (selectedItem !== null && selectedItem !== void 0 ? selectedItem : {}).name) !== null && _d !== void 0 ? _d : 'No Selection' }, (props !== null && props !== void 0 ? props : {}).items.map((item) => {
         var _a, _b;
-        return (React__default['default'].createElement(DropdownItem, { key: ((_a = item.id) !== null && _a !== void 0 ? _a : -1).toString(), onClick: () => handleSelect(item) },
-            item.faIcon && (React__default['default'].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames({ [(_b = 'text-' + item.faIconColor) !== null && _b !== void 0 ? _b : '']: !!item.faIconColor }) })),
+        return (React__default["default"].createElement(DropdownItem, { key: ((_a = item.id) !== null && _a !== void 0 ? _a : -1).toString(), onClick: () => handleSelect(item) },
+            item.faIcon && (React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: item.faIcon, fixedWidth: true, className: ClassNames({ [(_b = 'text-' + item.faIconColor) !== null && _b !== void 0 ? _b : '']: !!item.faIconColor }) })),
             item.name));
     })));
 };
@@ -4437,9 +4424,9 @@ const TextStatus = (props) => {
         }
     }, [textStatus.message, textStatus.noDismiss, dismissTextStatus]);
     return !!textStatus.message ?
-        React__default['default'].createElement("span", { className: (!!textStatus.className ? textStatus.className : '') + (!!textStatus.color ? ` text-${textStatus.color}` : '') }, textStatus.message)
+        React__default["default"].createElement("span", { className: (!!textStatus.className ? textStatus.className : '') + (!!textStatus.color ? ` text-${textStatus.color}` : '') }, textStatus.message)
         : !!props.children ?
-            React__default['default'].createElement(React__default['default'].Fragment, null, props.children)
+            React__default["default"].createElement(React__default["default"].Fragment, null, props.children)
             :
                 null;
 };

@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
 import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {CleaveOptions} from 'cleave.js/options'
-import {IIWInputProps, ILegacyInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
+import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 import {ClassNames} from '../Functions'
 
@@ -24,7 +24,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	const lastValue = useRef<V | undefined>(props.value)
 	const updateTimeout = useRef(setTimeout(() => {
 	}, 100))
-	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps(OmitProperty(props,
+	const inputProps = useMemo<any>(() => ReduceInputProps(OmitProperty(props,
 		'decimalScale',
 		'integerScale',
 		'allowNegative',

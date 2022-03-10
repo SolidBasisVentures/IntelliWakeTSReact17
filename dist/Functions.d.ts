@@ -26,7 +26,7 @@ export declare const GetPathComponentAfter: (search: string | undefined | null) 
 export declare const GetPathComponentAt: (search: string | undefined | null, toEnd?: boolean) => string | undefined;
 export declare const GetPathThrough: (search: string | undefined | null) => string | undefined;
 export declare const CaptureGPS: () => Promise<GeolocationPosition | null>;
-export declare const DownloadBase64Data: (fileName: string, base64: string, type: string) => void;
+export declare const DownloadBase64Data: (fileName: string, base64: string) => void;
 export declare const CopyRefToClipboard: (ref: any, tryFormatted?: boolean) => boolean;
 export declare const TableIDToExcel: (tableID: string, fileName?: string | undefined, appendDateTime?: boolean) => void;
 export declare type TBootStrapSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
