@@ -1369,8 +1369,8 @@ const Dropdown = (props) => {
                     setIsOpen((prevState) => !prevState);
                 }
             }, style: buttonStyle }, !!props.maxWidth ?
-            React__default["default"].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : '&#x2699;' })
-            : ((_h = props.buttonLabel) !== null && _h !== void 0 ? _h : '&#x2699;')),
+            React__default["default"].createElement(EllipsesTruncate, { text: (_g = props.buttonLabel) !== null && _g !== void 0 ? _g : React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }) })
+            : ((_h = props.buttonLabel) !== null && _h !== void 0 ? _h : React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, { icon: proRegularSvgIcons.faCog }))),
         React__default["default"].createElement("div", { tabIndex: -1, className: `${ClassNames({
                 show: actualIsOpen,
                 'dropdown-menu-end': !!props.right
