@@ -12,6 +12,8 @@ export const KEY_TAB = 9
 export const KEY_BACKSPACE = 8
 export const KEY_ESCAPE = 27
 
+export type TKeyboardKey = 'Enter' | 'ArrowDown' | 'ArrowUp' | 'ArrowLeft' | 'ArrowRight' | 'Tab' | 'Backspace' | 'Escape'
+
 export const KEY_STRING_ENTER = 'Enter'
 export const KEY_STRING_DOWN_ARROW = 'ArrowDown'
 export const KEY_STRING_UP_ARROW = 'ArrowUp'

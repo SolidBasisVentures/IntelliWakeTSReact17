@@ -8,6 +8,7 @@ export declare const KEY_ENTER = 13;
 export declare const KEY_TAB = 9;
 export declare const KEY_BACKSPACE = 8;
 export declare const KEY_ESCAPE = 27;
+export declare type TKeyboardKey = 'Enter' | 'ArrowDown' | 'ArrowUp' | 'ArrowLeft' | 'ArrowRight' | 'Tab' | 'Backspace' | 'Escape';
 export declare const KEY_STRING_ENTER = "Enter";
 export declare const KEY_STRING_DOWN_ARROW = "ArrowDown";
 export declare const KEY_STRING_UP_ARROW = "ArrowUp";
