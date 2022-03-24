@@ -792,6 +792,10 @@ table.table-sortable thead th {
   cursor: pointer !important;
 }
 
+.inputSwitch:not(.inputSwitchFullWidth) {
+  display: inline-block;
+}
+
 .inputSwitch .react-switch {
   margin-bottom: -2px;
 }

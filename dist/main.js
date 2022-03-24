@@ -3601,7 +3601,7 @@ function InputState(props) {
 }
 
 function InputSwitch(props) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f;
     const handleInputChange = (checked, e) => {
         // if (!!props.onChange) {
         // 	props.onChange(e)
@@ -3612,14 +3612,13 @@ function InputSwitch(props) {
     };
     const height = ((_a = props.height) !== null && _a !== void 0 ? _a : props.size === 'sm') ? 12 : props.size === 'lg' ? 18 : 14;
     const width = ((_b = props.width) !== null && _b !== void 0 ? _b : props.size === 'sm') ? 22 : props.size === 'lg' ? 30 : 26;
-    const style = !!props.noReduceWidth ? props.style : Object.assign(Object.assign({}, ((_c = props.style) !== null && _c !== void 0 ? _c : {})), { width: '1px' });
-    return (React__default["default"].createElement("label", { style: style, className: 'inputSwitch ' + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + ((_d = props.className) !== null && _d !== void 0 ? _d : ''), hidden: props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly) },
+    return (React__default["default"].createElement("label", { style: props.style, className: 'inputSwitch ' + (props.noReduceWidth ? '' : 'inputSwitchFullWidth ') + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + ((_c = props.className) !== null && _c !== void 0 ? _c : ''), hidden: props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly) },
         (!props.plainText || !props.plainTextLabelOnly) &&
             React__default["default"].createElement(Switch__default["default"], { onChange: (checked, e) => {
                     if (!props.plainText) {
                         handleInputChange(checked, e);
                     }
-                }, name: props.name, className: 'react-switch ' + (props.noPadding ? '' : 'me-2 ') + ((_e = props.switchClassName) !== null && _e !== void 0 ? _e : ''), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_f = props.checkedIcon) !== null && _f !== void 0 ? _f : false, uncheckedIcon: (_g = props.uncheckedIcon) !== null && _g !== void 0 ? _g : false, height: height, width: width }),
+                }, name: props.name, className: 'react-switch ' + (props.noPadding ? '' : 'me-2 ') + ((_d = props.switchClassName) !== null && _d !== void 0 ? _d : ''), checked: props.checked, disabled: props.plainText, onColor: props.onColor, offColor: props.offColor, checkedIcon: (_e = props.checkedIcon) !== null && _e !== void 0 ? _e : false, uncheckedIcon: (_f = props.uncheckedIcon) !== null && _f !== void 0 ? _f : false, height: height, width: width }),
         props.label));
 }
 
