@@ -43,12 +43,7 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 	const height = props.height ?? props.size === 'sm' ? 12 : props.size === 'lg' ? 18 : 14
 	const width = props.width ?? props.size === 'sm' ? 22 : props.size === 'lg' ? 30 : 26
 	
-	const style = !!props.noReduceWidth ?
-		props.style : 'width' in (props.style ?? {}) ?
-			props.style : {
-				...(props.style ?? {}),
-				width: 'auto'
-			}
+	const style = !!props.noReduceWidth ? props.style : {...(props.style ?? {}), width: '1px'}
 	
 	return (
 		<label
