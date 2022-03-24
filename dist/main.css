@@ -794,6 +794,7 @@ table.table-sortable thead th {
 
 .inputSwitch:not(.inputSwitchFullWidth) {
   display: inline-block;
+  width: auto !important;
 }
 
 .inputSwitch .react-switch {
