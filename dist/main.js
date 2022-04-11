@@ -3071,12 +3071,18 @@ function InputDate(props) {
         }
     };
     const handleBlur = (e) => {
-        var _a, _b;
+        var _a, _b, _c;
         if (props.value && props.changeValue) {
             const dateObj = intelliwaketsfoundation.DateObject(props.value);
-            if (dateObj && dateObj.getUTCFullYear() < 100) {
-                dateObj.setUTCFullYear(dateObj.getUTCFullYear() + 2000);
-                props.changeValue((((_a = MomentDateString(dateObj)) !== null && _a !== void 0 ? _a : '') + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+            const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
+            if (dateObj && enteredYear < 100) {
+                const currentYear = new Date().getUTCFullYear();
+                const currentCentury = Math.floor(currentYear / 100) * 100;
+                let newYear = dateObj.getUTCFullYear() + currentCentury;
+                if (newYear > currentYear + 20)
+                    newYear -= 100;
+                dateObj.setUTCFullYear(newYear);
+                props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
             }
         }
     };
