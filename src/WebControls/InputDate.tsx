@@ -1,9 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {
-	DateObject, OmitProperty,
-	RandomString
-} from '@solidbasisventures/intelliwaketsfoundation'
+import {DateObject, OmitProperty, RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 import {MomentDateString, MomentDisplayDayDate, MomentDisplayDayDateTime, MomentTimeString} from '../Moment'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
@@ -57,6 +54,22 @@ export function InputDate<T>(props: IProps<T>) {
 		}
 	}
 	
+	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+		if (props.value && props.changeValue) {
+			const dateObj = DateObject(props.value)
+			if (dateObj && dateObj.getUTCFullYear() < 100) {
+				dateObj.setUTCFullYear(dateObj.getUTCFullYear() + 2000)
+				props.changeValue(
+					((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim(),
+					e.target.name as any,
+					(e.nativeEvent as any).shiftKey,
+					(e.nativeEvent as any).ctrlKey,
+					(e.nativeEvent as any).altKey
+				)
+			}
+		}
+	}
+	
 	return (
 		<>
 			{!!props.plainText ? (
@@ -70,9 +83,10 @@ export function InputDate<T>(props: IProps<T>) {
 					type='date'
 					className='inputDate form-control'
 					{...inputProps}
-					placeholder='yyyy-mm-dd'
+					// placeholder='yyyy-mm-dd'
 					value={overrideValue ?? ''}
 					onChange={handleInputChange}
+					onBlur={handleBlur}
 					autoComplete={props.autoCompleteOn ? 'on' : `AC_${props.name ?? ''}_${RandomString(5)}`}
 				/>
 			)}

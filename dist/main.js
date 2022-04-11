@@ -3070,9 +3070,21 @@ function InputDate(props) {
             }
         }
     };
+    const handleBlur = (e) => {
+        var _a, _b;
+        if (props.value && props.changeValue) {
+            const dateObj = intelliwaketsfoundation.DateObject(props.value);
+            if (dateObj && dateObj.getUTCFullYear() < 100) {
+                dateObj.setUTCFullYear(dateObj.getUTCFullYear() + 2000);
+                props.changeValue((((_a = MomentDateString(dateObj)) !== null && _a !== void 0 ? _a : '') + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+            }
+        }
+    };
     return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
         ? MomentDisplayDayDateTime(props.value)
-        : MomentDisplayDayDate(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { placeholder: 'yyyy-mm-dd', value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+        : MomentDisplayDayDate(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { 
+        // placeholder='yyyy-mm-dd'
+        value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, onBlur: handleBlur, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
 
 function ViewEmail(props) {
