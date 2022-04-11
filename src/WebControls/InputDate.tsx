@@ -15,7 +15,7 @@ export function InputDate<T>(props: IProps<T>) {
 	const nextDateValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
 	
-	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange'))
+	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'onBlur'))
 		, [props])
 	
 	useEffect(() => {
@@ -55,6 +55,7 @@ export function InputDate<T>(props: IProps<T>) {
 	}
 	
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+		console.log('Blurred', props.value)
 		if (props.value && props.changeValue) {
 			const dateObj = DateObject(props.value)
 			const enteredYear = dateObj?.getUTCFullYear() ?? 0
@@ -73,6 +74,8 @@ export function InputDate<T>(props: IProps<T>) {
 				)
 			}
 		}
+		
+		if (props.onBlur) props.onBlur(e)
 	}
 	
 	return (

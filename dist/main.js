@@ -3043,7 +3043,7 @@ function InputDate(props) {
     const lastDateValue = React.useRef(originalValue$1);
     const nextDateValue = React.useRef(originalValue$1);
     const [overrideValue, setOverrideValue] = React.useState(originalValue$1);
-    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange')), [props]);
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'onBlur')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
         if (![lastDateValue.current, nextDateValue.current].includes((_a = MomentDateString(props.value)) !== null && _a !== void 0 ? _a : '')) {
@@ -3072,6 +3072,7 @@ function InputDate(props) {
     };
     const handleBlur = (e) => {
         var _a, _b, _c;
+        console.log('Blurred', props.value);
         if (props.value && props.changeValue) {
             const dateObj = intelliwaketsfoundation.DateObject(props.value);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
@@ -3085,6 +3086,8 @@ function InputDate(props) {
                 props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
             }
         }
+        if (props.onBlur)
+            props.onBlur(e);
     };
     return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
         ? MomentDisplayDayDateTime(props.value)
