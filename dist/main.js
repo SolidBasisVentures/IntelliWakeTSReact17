@@ -3073,11 +3073,9 @@ function InputDate(props) {
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
         var _a, _b, _c;
-        console.log('Should blur', !!nextDateValue.current, !!props.changeValue);
         if (nextDateValue.current && props.changeValue) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
-            console.log('Blur year', dateObj, enteredYear);
             if (dateObj && enteredYear < 100) {
                 const currentYear = new Date().getUTCFullYear();
                 const currentCentury = Math.floor(currentYear / 100) * 100;
