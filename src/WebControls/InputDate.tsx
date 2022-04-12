@@ -33,7 +33,7 @@ export function InputDate<T>(props: IProps<T>) {
 		
 		setOverrideValue(e.target.value)
 		
-		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 0)) {
+		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 99)) {
 			const customValue = (nextDateValue.current + ' ' + (MomentTimeString(props.value as string) ?? '')).trim()
 			
 			if (!!props.onChange) {
@@ -55,8 +55,10 @@ export function InputDate<T>(props: IProps<T>) {
 	}
 	
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-		if (props.value && props.changeValue) {
-			const dateObj = DateObject(props.value)
+		nextDateValue.current = MomentDateString(e.target.value) ?? ''
+		
+		if (nextDateValue.current && props.changeValue) {
+			const dateObj = DateObject(nextDateValue.current)
 			const enteredYear = dateObj?.getUTCFullYear() ?? 0
 			if (dateObj && enteredYear < 100) {
 				const currentYear = new Date().getUTCFullYear()
