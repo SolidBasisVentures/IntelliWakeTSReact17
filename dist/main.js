@@ -3059,7 +3059,7 @@ function InputDate(props) {
         var _a, _b, _c, _d, _e;
         nextDateValue.current = (_a = MomentDateString(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 0)) {
+        if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_e = MomentTimeString(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
             if (!!props.onChange) {
                 e.target.customValue = customValue;
@@ -3071,9 +3071,11 @@ function InputDate(props) {
         }
     };
     const handleBlur = (e) => {
+        // nextDateValue.current = MomentDateString(e.target.value) ?? ''
         var _a, _b, _c;
-        if (props.value && props.changeValue) {
-            const dateObj = intelliwaketsfoundation.DateObject(props.value);
+        console.log('Blur', e.target.value, nextDateValue.current);
+        if (nextDateValue.current && props.changeValue) {
+            const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
             if (dateObj && enteredYear < 100) {
                 const currentYear = new Date().getUTCFullYear();

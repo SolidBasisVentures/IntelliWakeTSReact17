@@ -55,7 +55,9 @@ export function InputDate<T>(props: IProps<T>) {
 	}
 	
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-		nextDateValue.current = MomentDateString(e.target.value) ?? ''
+		// nextDateValue.current = MomentDateString(e.target.value) ?? ''
+		
+		console.log('Blur', e.target.value, nextDateValue.current)
 		
 		if (nextDateValue.current && props.changeValue) {
 			const dateObj = DateObject(nextDateValue.current)
