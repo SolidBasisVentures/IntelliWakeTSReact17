@@ -674,6 +674,20 @@ img.img-inline {
   font-size: inherit !important;
 }
 
+.img-xxxs {
+  height: auto;
+  object-fit: contain;
+  max-width: 0.5em;
+  max-height: 0.5em;
+}
+
+.img-xxs {
+  height: auto;
+  object-fit: contain;
+  max-width: 1em;
+  max-height: 1em;
+}
+
 .img-xs {
   height: auto;
   object-fit: contain;
