@@ -52,7 +52,7 @@ export const Modal = (props: IWModalProps) => {
 		(e: any) => {
 			if (!!props.okAction) {
 				const okResult = props.okAction()
-				if (okResult === undefined || okResult !== false) {
+				if (okResult === undefined || okResult) {
 					if (!!props.toggle) {
 						props.toggle(e)
 					}
@@ -93,6 +93,9 @@ export const Modal = (props: IWModalProps) => {
 			} else {
 				if (!!contentRef.current) {
 					let firstAutofocus = contentRef.current.querySelector('[autofocus]')
+					if (!firstAutofocus) {
+						firstAutofocus = contentRef.current.querySelector('.inputAutoFocus')
+					}
 					if (!!firstAutofocus) {
 						(firstAutofocus as any).focus()
 						return

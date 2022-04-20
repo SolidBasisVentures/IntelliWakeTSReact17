@@ -100,6 +100,10 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 			subset.className = `${subset.className ?? ''} ${ClassNames(classNameAdd)}`.trim()
 		}
 	}
+	
+	if (props.autoFocus) {
+		subset.className = `${subset.className ?? ''} inputAutoFocus`.trim()
+	}
 
 	return subset
 }

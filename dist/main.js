@@ -1737,7 +1737,7 @@ const Modal = (props) => {
     const okAction = React.useCallback((e) => {
         if (!!props.okAction) {
             const okResult = props.okAction();
-            if (okResult === undefined || okResult !== false) {
+            if (okResult === undefined || okResult) {
                 if (!!props.toggle) {
                     props.toggle(e);
                 }
@@ -1774,6 +1774,9 @@ const Modal = (props) => {
             else {
                 if (!!contentRef.current) {
                     let firstAutofocus = contentRef.current.querySelector('[autofocus]');
+                    if (!firstAutofocus) {
+                        firstAutofocus = contentRef.current.querySelector('.inputAutoFocus');
+                    }
                     if (!!firstAutofocus) {
                         firstAutofocus.focus();
                         return;
@@ -2981,7 +2984,7 @@ function InputCheckBox(props) {
 }
 
 const ReduceInputProps = (props, classNameAdd) => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef', 'consoleVerbose');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
@@ -2993,6 +2996,9 @@ const ReduceInputProps = (props, classNameAdd) => {
         else {
             subset.className = `${(_c = subset.className) !== null && _c !== void 0 ? _c : ''} ${ClassNames(classNameAdd)}`.trim();
         }
+    }
+    if (props.autoFocus) {
+        subset.className = `${(_d = subset.className) !== null && _d !== void 0 ? _d : ''} inputAutoFocus`.trim();
     }
     return subset;
 };
