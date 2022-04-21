@@ -2326,7 +2326,7 @@ const ActivityOverlay = (props) => {
  */
 const ActivityOverlayControl = (props) => {
     var _a;
-    return props.show ? (React__default["default"].createElement("div", { className: "System_ActivityOverlay_Control ActivityOverlay" },
+    return props.show ? (React__default["default"].createElement("div", { className: 'System_ActivityOverlay_Control ActivityOverlay' },
         React__default["default"].createElement(Spinner, { size: (_a = props.size) !== null && _a !== void 0 ? _a : '2x' }))) : null;
 };
 
