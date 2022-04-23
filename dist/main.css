@@ -1932,6 +1932,9 @@ p {
   padding-right: 1px;
 }
 
+.dropdown-toggle {
+  box-shadow: none;
+}
 .dropdown-toggle > .ellipses-truncate {
   margin-top: -5px !important;
   margin-bottom: -5px !important;
