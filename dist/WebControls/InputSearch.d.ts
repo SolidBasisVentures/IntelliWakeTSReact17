@@ -19,6 +19,7 @@ export interface IPropsInputSearch {
     onFocus?: (e: React.FocusEvent) => void;
     noSelectOnFocus?: boolean;
     autoCompleteOn?: boolean;
+    list?: string;
 }
 /**
  * A search input with an option to have a trigger delay or not.

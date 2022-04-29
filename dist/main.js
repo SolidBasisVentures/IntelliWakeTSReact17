@@ -3478,7 +3478,8 @@ const InputRatingStars = (props) => {
 const InputSearch = React.forwardRef((props, ref) => {
     var _a, _b, _c;
     const triggeredText = React.useRef((_a = props.initialValue) !== null && _a !== void 0 ? _a : '');
-    const searchTimeout = React.useRef(setTimeout(() => { }, 100));
+    const searchTimeout = React.useRef(setTimeout(() => {
+    }, 100));
     const [currentText, setCurrentText] = React.useState('');
     const innerRef = React__default["default"].useRef(null);
     const combinedRef = useCombinedRefs(ref, innerRef);
@@ -3564,7 +3565,7 @@ const InputSearch = React.forwardRef((props, ref) => {
         autoComplete: props.autoCompleteOn ? 'on' : `AC_${intelliwaketsfoundation.RandomString(12)}`
     };
     return !!props.iconPrefix || !!props.reactPrefix ? (React__default["default"].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
-        (!!props.iconPrefix || !!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { onClick: () => {
+        (!!props.iconPrefix || !!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { list: props.list, onClick: () => {
                 var _a;
                 const innerRef = ref;
                 if (!!((_a = innerRef === null || innerRef === void 0 ? void 0 : innerRef.current) === null || _a === void 0 ? void 0 : _a.focus))
