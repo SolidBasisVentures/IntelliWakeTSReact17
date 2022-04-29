@@ -12,6 +12,8 @@ export interface IPropsInputSearch {
     bordered?: boolean;
     iconPrefix?: boolean | FontAwesomeIconProps;
     reactPrefix?: ReactNode;
+    iconSuffix?: boolean | FontAwesomeIconProps;
+    reactSuffix?: ReactNode;
     inputGroupClass?: string;
     size?: 'lg' | 'sm';
     autoFocus?: boolean;

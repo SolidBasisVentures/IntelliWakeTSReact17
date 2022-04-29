@@ -18,6 +18,8 @@ export interface IPropsInputSearch {
 	bordered?: boolean
 	iconPrefix?: boolean | FontAwesomeIconProps
 	reactPrefix?: ReactNode
+	iconSuffix?: boolean | FontAwesomeIconProps
+	reactSuffix?: ReactNode
 	inputGroupClass?: string
 	size?: 'lg' | 'sm'
 	autoFocus?: boolean
@@ -128,7 +130,7 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 		autoComplete: props.autoCompleteOn ? 'on' : `AC_${RandomString(12)}`
 	}
 	
-	return !!props.iconPrefix || !!props.reactPrefix ? (
+	return !!props.iconPrefix || !!props.reactPrefix || props.iconSuffix || props.reactSuffix ? (
 		<InputGroup className={`searchGroup ${props.inputGroupClass ?? ''} ${props.bordered ? '' : 'transparent'}`}>
 			{(!!props.iconPrefix || !!props.reactPrefix) && (
 				<InputGroupText
@@ -148,6 +150,23 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 				</InputGroupText>
 			)}
 			<input {...inputProps} />
+			{(!!props.iconSuffix || !!props.reactSuffix) && (
+				<InputGroupText
+					onClick={() => {
+						const innerRef = ref as any
+						if (!!innerRef?.current?.focus) innerRef.current.focus()
+					}}>
+					{props.iconSuffix !== undefined ? (
+						typeof props.iconSuffix === 'boolean' ? (
+							<FontAwesomeIcon icon={faSearch} />
+						) : (
+							<FontAwesomeIcon {...props.iconSuffix} />
+						)
+					) : (
+						props.reactSuffix
+					)}
+				</InputGroupText>
+			)}
 		</InputGroup>
 	) : (
 		<input {...inputProps} />
