@@ -3556,6 +3556,7 @@ const InputSearch = React.forwardRef((props, ref) => {
         //
         // 	inputRef.current = ref
         // },
+        list: props.list,
         style: props.style,
         placeholder: props.placeholder,
         onKeyDown: handleKeyDown,
@@ -3565,7 +3566,7 @@ const InputSearch = React.forwardRef((props, ref) => {
         autoComplete: props.autoCompleteOn ? 'on' : `AC_${intelliwaketsfoundation.RandomString(12)}`
     };
     return !!props.iconPrefix || !!props.reactPrefix ? (React__default["default"].createElement(InputGroup, { className: `searchGroup ${(_c = props.inputGroupClass) !== null && _c !== void 0 ? _c : ''} ${props.bordered ? '' : 'transparent'}` },
-        (!!props.iconPrefix || !!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { list: props.list, onClick: () => {
+        (!!props.iconPrefix || !!props.reactPrefix) && (React__default["default"].createElement(InputGroupText, { onClick: () => {
                 var _a;
                 const innerRef = ref;
                 if (!!((_a = innerRef === null || innerRef === void 0 ? void 0 : innerRef.current) === null || _a === void 0 ? void 0 : _a.focus))

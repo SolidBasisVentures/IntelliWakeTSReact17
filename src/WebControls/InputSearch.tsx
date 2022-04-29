@@ -118,6 +118,7 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 		//
 		// 	inputRef.current = ref
 		// },
+		list: props.list,
 		style: props.style,
 		placeholder: props.placeholder,
 		onKeyDown: handleKeyDown,
@@ -131,7 +132,6 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 		<InputGroup className={`searchGroup ${props.inputGroupClass ?? ''} ${props.bordered ? '' : 'transparent'}`}>
 			{(!!props.iconPrefix || !!props.reactPrefix) && (
 				<InputGroupText
-					list={props.list}
 					onClick={() => {
 						const innerRef = ref as any
 						if (!!innerRef?.current?.focus) innerRef.current.focus()
