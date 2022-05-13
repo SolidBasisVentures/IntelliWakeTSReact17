@@ -190,6 +190,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 				block={props.block}
 				size={props.size}
 				outline={props.outline}
+				disabled={props.disabled}
 				className={(props.allowWrap ? '' : 'text-nowrap ') +
 					(!!props.nav || !!props.inNavbar
 						? undefined

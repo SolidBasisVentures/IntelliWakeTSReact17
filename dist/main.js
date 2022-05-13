@@ -1355,7 +1355,7 @@ const Dropdown = (props) => {
     if (!props.children && visibleHeaderGroups.length === 0)
         return null;
     return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
-        React__default["default"].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, className: (props.allowWrap ? '' : 'text-nowrap ') +
+        React__default["default"].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, disabled: props.disabled, className: (props.allowWrap ? '' : 'text-nowrap ') +
                 (!!props.nav || !!props.inNavbar
                     ? undefined
                     : `${(_e = props.buttonClassName) !== null && _e !== void 0 ? _e : ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()), classNameOverride: !!props.nav || !!props.inNavbar
