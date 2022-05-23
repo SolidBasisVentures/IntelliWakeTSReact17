@@ -148,7 +148,7 @@ export const Modal = (props: IWModalProps) => {
 										)}
 									</div>
 								)}
-								<div className={`modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ''} ${props.bodyClassName ?? ''}`.trim() } style={props.bodyStyle}>
+								<div className={`modal-body m-4 p-0${!!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ''} ${props.bodyClassName ?? ''}`.trim() } style={props.bodyStyle}>
 									{!!props.bodyContainerFormSubmit ? (
 										<Form
 											className={`container ${
