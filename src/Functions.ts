@@ -12,7 +12,15 @@ export const KEY_TAB = 9
 export const KEY_BACKSPACE = 8
 export const KEY_ESCAPE = 27
 
-export type TKeyboardKey = 'Enter' | 'ArrowDown' | 'ArrowUp' | 'ArrowLeft' | 'ArrowRight' | 'Tab' | 'Backspace' | 'Escape'
+export type TKeyboardKey =
+	'Enter'
+	| 'ArrowDown'
+	| 'ArrowUp'
+	| 'ArrowLeft'
+	| 'ArrowRight'
+	| 'Tab'
+	| 'Backspace'
+	| 'Escape'
 
 export const KEY_STRING_ENTER = 'Enter'
 export const KEY_STRING_DOWN_ARROW = 'ArrowDown'
@@ -61,6 +69,40 @@ export const HasPathComponent = (search: string): boolean => {
 	
 	return pathName.indexOf(searchCalc) >= 0
 }
+
+/**
+ * Gets both "active" (before the ~) and "inactive" components of the current path name as string arrays
+ * @constructor
+ */
+export const GetPathComponentsActiveInactive = (): {active: string[], inactive: string[]} => {
+	let tildeFound = false
+	return window.location.pathname.split('/').reduce<{active: string[], inactive: string[]}>((results, component) => {
+		if (component === '~') {
+			tildeFound = true
+			return results
+		}
+		
+		if (!component) return results
+		
+		if (tildeFound) {
+			return {
+				active: results.active,
+				inactive: [...results.inactive, component]
+			}
+		} else {
+			return {
+				active: [...results.active, component],
+				inactive: results.inactive
+			}
+		}
+	}, {active: [], inactive: []})
+}
+
+/**
+ * Gets "active" components (before the ~) of the current path name as a string array
+ * @constructor
+ */
+export const GetPathComponentsActive = (): string[] => GetPathComponentsActiveInactive().active
 
 export const GetPathComponentAfter = (search: string | undefined | null): string | undefined => {
 	if (!search) return undefined
