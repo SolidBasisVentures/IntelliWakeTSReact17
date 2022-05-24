@@ -23,6 +23,29 @@ export declare type TClassNames = {
 };
 export declare const ClassNames: (classes: TClassNames) => string;
 export declare const HasPathComponent: (search: string) => boolean;
+/**
+ * Gets both "active" (before the ~) and "inactive" components of the current path name as string arrays
+ *
+ * @constructor
+ */
+export declare const GetPathComponentsActiveInactive: () => {
+    active: string[];
+    inactive: string[];
+};
+/**
+ * Gets "active" components (before the ~) of the current path name as a string array
+ *
+ * @constructor
+ */
+export declare const GetPathComponentsActive: () => string[];
+/**
+ * Searches the last component of the active (before the tilde) path (or multiple components if includeReverseIndexes > 1) to see if a lower case match of the search is included
+ *
+ * @param search
+ * @param includeReverseIndexes
+ * @constructor
+ */
+export declare const ActivePathComponentEndsWith: (search: string | undefined | null, includeReverseIndexes?: number) => boolean;
 export declare const GetPathComponentAfter: (search: string | undefined | null) => string | undefined;
 export declare const GetPathComponentAt: (search: string | undefined | null, toEnd?: boolean) => string | undefined;
 export declare const GetPathThrough: (search: string | undefined | null) => string | undefined;

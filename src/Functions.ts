@@ -72,6 +72,7 @@ export const HasPathComponent = (search: string): boolean => {
 
 /**
  * Gets both "active" (before the ~) and "inactive" components of the current path name as string arrays
+ *
  * @constructor
  */
 export const GetPathComponentsActiveInactive = (): {active: string[], inactive: string[]} => {
@@ -100,9 +101,25 @@ export const GetPathComponentsActiveInactive = (): {active: string[], inactive: 
 
 /**
  * Gets "active" components (before the ~) of the current path name as a string array
+ *
  * @constructor
  */
 export const GetPathComponentsActive = (): string[] => GetPathComponentsActiveInactive().active
+
+/**
+ * Searches the last component of the active (before the tilde) path (or multiple components if includeReverseIndexes > 1) to see if a lower case match of the search is included
+ *
+ * @param search
+ * @param includeReverseIndexes
+ * @constructor
+ */
+export const ActivePathComponentEndsWith = (search: string | undefined | null, includeReverseIndexes = 1): boolean => {
+	if (!search) return false
+	
+	const actives = GetPathComponentsActive()
+	
+	return actives.some((active, idx) => idx >= (active.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase())
+}
 
 export const GetPathComponentAfter = (search: string | undefined | null): string | undefined => {
 	if (!search) return undefined

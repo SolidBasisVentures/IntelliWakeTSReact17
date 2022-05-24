@@ -586,6 +586,53 @@ const HasPathComponent = (search) => {
     }
     return pathName.indexOf(searchCalc) >= 0;
 };
+/**
+ * Gets both "active" (before the ~) and "inactive" components of the current path name as string arrays
+ *
+ * @constructor
+ */
+const GetPathComponentsActiveInactive = () => {
+    let tildeFound = false;
+    return window.location.pathname.split('/').reduce((results, component) => {
+        if (component === '~') {
+            tildeFound = true;
+            return results;
+        }
+        if (!component)
+            return results;
+        if (tildeFound) {
+            return {
+                active: results.active,
+                inactive: [...results.inactive, component]
+            };
+        }
+        else {
+            return {
+                active: [...results.active, component],
+                inactive: results.inactive
+            };
+        }
+    }, { active: [], inactive: [] });
+};
+/**
+ * Gets "active" components (before the ~) of the current path name as a string array
+ *
+ * @constructor
+ */
+const GetPathComponentsActive = () => GetPathComponentsActiveInactive().active;
+/**
+ * Searches the last component of the active (before the tilde) path (or multiple components if includeReverseIndexes > 1) to see if a lower case match of the search is included
+ *
+ * @param search
+ * @param includeReverseIndexes
+ * @constructor
+ */
+const ActivePathComponentEndsWith = (search, includeReverseIndexes = 1) => {
+    if (!search)
+        return false;
+    const actives = GetPathComponentsActive();
+    return actives.some((active, idx) => idx >= (active.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase());
+};
 const GetPathComponentAfter = (search) => {
     if (!search)
         return undefined;
@@ -4465,6 +4512,7 @@ const TextStatus = (props) => {
                 null;
 };
 
+exports.ActivePathComponentEndsWith = ActivePathComponentEndsWith;
 exports.ActivityOverlay = ActivityOverlay;
 exports.ActivityOverlayControl = ActivityOverlayControl;
 exports.AddActivityOverlay = AddActivityOverlay;
@@ -4532,6 +4580,8 @@ exports.FormatValue = FormatValue;
 exports.GetOrientation = GetOrientation;
 exports.GetPathComponentAfter = GetPathComponentAfter;
 exports.GetPathComponentAt = GetPathComponentAt;
+exports.GetPathComponentsActive = GetPathComponentsActive;
+exports.GetPathComponentsActiveInactive = GetPathComponentsActiveInactive;
 exports.GetPathThrough = GetPathThrough;
 exports.HTMLFromText = HTMLFromText;
 exports.HandleChangeValue = HandleChangeValue;
