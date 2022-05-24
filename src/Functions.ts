@@ -118,7 +118,7 @@ export const ActivePathComponentEndsWith = (search: string | undefined | null, i
 	
 	const actives = GetPathComponentsActive()
 	
-	return actives.some((active, idx) => idx >= (active.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase())
+	return actives.some((active, idx) => idx >= (actives.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase())
 }
 
 export const GetPathComponentAfter = (search: string | undefined | null): string | undefined => {

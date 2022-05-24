@@ -631,7 +631,7 @@ const ActivePathComponentEndsWith = (search, includeReverseIndexes = 1) => {
     if (!search)
         return false;
     const actives = GetPathComponentsActive();
-    return actives.some((active, idx) => idx >= (active.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase());
+    return actives.some((active, idx) => idx >= (actives.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase());
 };
 const GetPathComponentAfter = (search) => {
     if (!search)
