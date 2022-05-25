@@ -18,6 +18,7 @@ export interface IIWInputAddProps<T = any, V = any> {
 	changeValue?: TChangeValueFunction<T, V>
 	changeValueLate?: TChangeValueFunction<T, V>
 	autoCompleteOn?: boolean
+	autoComplete?: string
 	prepend?: ReactNode
 	append?: ReactNode
 	invalid?: boolean
@@ -116,6 +117,7 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 		changeValue: props.changeValue,
 		changeValueLate: props.changeValueLate,
 		autoCompleteOn: props.autoCompleteOn,
+		autoComplete: props.autoComplete,
 		prepend: props.prepend,
 		append: props.append,
 		invalid: props.invalid,
