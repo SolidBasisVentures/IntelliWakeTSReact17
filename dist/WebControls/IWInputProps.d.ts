@@ -9,6 +9,7 @@ export interface IIWInputAddProps<T = any, V = any> {
     changeValue?: TChangeValueFunction<T, V>;
     changeValueLate?: TChangeValueFunction<T, V>;
     autoCompleteOn?: boolean;
+    autoComplete?: string;
     prepend?: ReactNode;
     append?: ReactNode;
     invalid?: boolean;

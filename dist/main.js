@@ -3057,6 +3057,7 @@ const ReduceToInputAddProps = (props) => {
         changeValue: props.changeValue,
         changeValueLate: props.changeValueLate,
         autoCompleteOn: props.autoCompleteOn,
+        autoComplete: props.autoComplete,
         prepend: props.prepend,
         append: props.append,
         invalid: props.invalid,
@@ -3173,7 +3174,7 @@ const AppendPrependWrapper = (props) => {
 };
 
 const InputWrapper = (props) => {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     const isMounted = React.useRef(false);
     const lateTrigger = React.useRef(setTimeout(() => {
     }, 100));
@@ -3302,7 +3303,7 @@ const InputWrapper = (props) => {
                     setInternalState(!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue);
                 }
             }
-        }, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_e = props.children.props.name) !== null && _e !== void 0 ? _e : ''}_${intelliwaketsfoundation.RandomString(5)}`, value: internalState })))))));
+        }, autoComplete: (_e = props.autoComplete) !== null && _e !== void 0 ? _e : (props.autoCompleteOn ? 'on' : `AC_${(_f = props.children.props.name) !== null && _f !== void 0 ? _f : ''}_${intelliwaketsfoundation.RandomString(5)}`), value: internalState })))))));
 };
 
 function InputEmail(props) {
