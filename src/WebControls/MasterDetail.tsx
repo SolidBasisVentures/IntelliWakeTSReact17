@@ -1,4 +1,4 @@
-import React, {Dispatch, ReactNode, SetStateAction, useContext, useEffect, useMemo, useRef} from 'react'
+import React, {ReactNode, useContext, useEffect, useMemo, useRef} from 'react'
 import {Redirect, useHistory} from 'react-router-dom'
 // AddMenuBackItem, CleanMenuBackItem,
 // import {useDispatch} from "react-redux";
@@ -8,6 +8,7 @@ import {StyleControl} from './StyleControl'
 import {TBadgeValues} from '../Bootstrap/ListGroupItem'
 import {BadgeItem} from '../Bootstrap/BadgeItem'
 import moment from 'moment-timezone'
+import {SetterOrUpdater} from 'recoil'
 
 export interface MenuBackItem {
 	menuBackActive: boolean
@@ -32,7 +33,7 @@ interface IMDContext {
 	isOpen: boolean
 	backText?: ReactNode
 	parentMDContext?: IMDContext | undefined // undefined = no parent, null = is the parent
-	setMenuBackItemState: Dispatch<SetStateAction<MenuBackItem[]>>
+	setMenuBackItemState: SetterOrUpdater<MenuBackItem[]>
 }
 
 const initialMDContext: IMDContext = {
@@ -40,7 +41,8 @@ const initialMDContext: IMDContext = {
 	mdPath: '',
 	baseFullPath: '',
 	isOpen: false,
-	setMenuBackItemState: () => {}
+	setMenuBackItemState: () => {
+	}
 }
 
 const MDContext = React.createContext(initialMDContext)
@@ -52,13 +54,13 @@ export interface IMasterDetailProps {
 	breakAt: TBootStrapExtendedSizes
 	rememberLast?: boolean
 	className?: string
-	setMenuBackItemState: Dispatch<SetStateAction<MenuBackItem[]>>
+	setMenuBackItemState: SetterOrUpdater<MenuBackItem[]>
 }
 
 export const MasterDetail = (props: IMasterDetailProps) => {
 	const lastRedirectTS = useRef<number | null>(null)
 	const mdContextParent_RAW = useContext(MDContext)
-
+	
 	const mdContextParent = mdContextParent_RAW.baseFullPath ? mdContextParent_RAW : undefined
 	// const basePath = mdContextParent_RAW.baseFullPath ?
 	//     mdContextParent_RAW.baseFullPath + props.mdPath
@@ -66,7 +68,7 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 	//     window.location.pathname.substr(0, window.location.pathname.indexOf(props.mdPath)) + props.mdPath;
 	const basePath = GetPathThrough(props.mdPath) ?? window.location.pathname + '/' + props.mdPath
 	const isOpen = window.location.pathname.length > basePath.length && GetPathComponentAfter(basePath) !== '~'
-
+	
 	const mdContext: IMDContext = {
 		breakAt: props.breakAt,
 		mdPath: props.mdPath,
@@ -76,7 +78,7 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 		parentMDContext: mdContextParent,
 		setMenuBackItemState: props.setMenuBackItemState
 	}
-
+	
 	const previousDashboardLastURL = window.sessionStorage.getItem(basePath + '-LastURL')
 	if (
 		props.rememberLast &&
@@ -97,7 +99,7 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 		if (props.rememberLast) {
 			window.sessionStorage.setItem(basePath + '-LastURL', window.location.pathname)
 		}
-
+		
 		return (
 			<MDContext.Provider value={mdContext}>
 				<div className={(props.className ?? '') + ' masterDetail masterDetail-' + props.breakAt}>{props.children}</div>
@@ -115,17 +117,17 @@ interface IPropsMaster {
 
 export const MDMaster = (props: IPropsMaster) => {
 	const mdContext = useContext(MDContext)
-
+	
 	const id = useMemo(() => `mdm-id-${RandomString(5)}`.toLowerCase(), [])
-
+	
 	let css: string | null = null
-
+	
 	if (props.width) {
 		css = `@media (min-width: ${SizeAtMin(mdContext.breakAt)}px) { #${id} {width: ${props.width}; min-width: ${
 			props.width
 		};}}`
 	}
-
+	
 	return (
 		<>
 			<StyleControl css={css} />
@@ -168,7 +170,7 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	const history = useHistory()
 	const mdContext = useContext(MDContext)
 	const selectedRow = useRef(null as any | null)
-
+	
 	const panelURLAddOn =
 		mdContext.baseFullPath +
 		(props.panel ? '/' + panelClean(props.panel) : '') +
@@ -179,14 +181,14 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 			props.panel &&
 			(window.location.pathname.startsWith(panelURLAddOn + '/') || window.location.pathname === panelURLAddOn)) ||
 		(!props.panel && window.location.pathname === panelURLAddOn)
-
+	
 	let displayProps = {...props}
 	let classNames: string[] = ['cursor-pointer']
 	if (displayProps.className) classNames.push(displayProps.className)
 	if (linkActive) classNames.push('active')
 	if (linkActive && props.activeClassName) classNames.push(props.activeClassName)
 	// if (!!props.badge || props.badge === null) classNames.push('d-flex justify-content-between align-items-center')
-
+	
 	displayProps.className = classNames.join(' ')
 	delete displayProps.postPath
 	delete displayProps.id
@@ -195,22 +197,22 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	delete displayProps.badgeColor
 	delete displayProps.badgeClass
 	delete displayProps.color
-
+	
 	const selectItem = () => {
 		if (!props.blockActivate) {
 			window.sessionStorage.removeItem(mdContext.baseFullPath + '-LastURL')
 			history.push(linkActive ? mdContext.baseFullPath : panelURLAddOn)
 		}
 	}
-
+	
 	useEffect(() => {
 		if (!!selectedRow.current) {
 			selectedRow.current?.scrollIntoView({block: 'nearest'})
-
+			
 			selectedRow.current = null
 		}
 	}, [props.children])
-
+	
 	switch (props.tag) {
 		case 'li':
 			return (
@@ -288,15 +290,15 @@ interface IPropsDetail {
 export const MDDetail = (props: IPropsDetail) => {
 	// const dispatch = useDispatch();
 	const mdContext = useContext(MDContext)
-
+	
 	const checkPath = mdContext.baseFullPath + '/' + panelClean(props.panel)
-
+	
 	const activated =
 		(props.panel &&
 			!props.hidden &&
 			props.panel === true || (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
 		(!props.panel && window.location.pathname === mdContext.baseFullPath)
-
+	
 	useEffect(() => {
 		if (activated) {
 			if (props.panel) {
@@ -305,7 +307,7 @@ export const MDDetail = (props: IPropsDetail) => {
 				}
 				mdContext.setMenuBackItemState((prevState) => {
 					const location = window.location.pathname
-
+					
 					const newMenuBackItem: MenuBackItem = {
 						menuBackActive: activated,
 						menuBackButtonTitle: props.backText ?? mdContext.backText ?? 'Back',
@@ -313,20 +315,20 @@ export const MDDetail = (props: IPropsDetail) => {
 						menuPageTitle: props.titleText,
 						menuDisplaySize: mdContext.breakAt
 					}
-
+					
 					return [...prevState, newMenuBackItem].filter((item) => {
 						return item.menuBackButtonURL.length < location.length
 					})
 				})
-
+				
 				// AddMenuBackItem(menuBackItem)(dispatch)
 			}
 		}
-
+		
 		return () => {
 			mdContext.setMenuBackItemState((prevState) => {
 				const location = window.location.pathname
-
+				
 				return [...prevState].filter((item) => {
 					return item.menuBackButtonURL.length < location.length
 				})
@@ -342,7 +344,7 @@ export const MDDetail = (props: IPropsDetail) => {
 		mdContext.baseFullPath,
 		mdContext.breakAt
 	])
-
+	
 	if (activated) {
 		return (
 			<div
