@@ -3130,14 +3130,19 @@ function InputDate(props) {
         if (nextDateValue.current && props.changeValue) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
-            if (dateObj && enteredYear < 100) {
-                const currentYear = new Date().getUTCFullYear();
-                const currentCentury = Math.floor(currentYear / 100) * 100;
-                let newYear = dateObj.getUTCFullYear() + currentCentury;
-                if (newYear > currentYear + 20)
-                    newYear -= 100;
-                dateObj.setUTCFullYear(newYear);
-                props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+            if (dateObj) {
+                if (enteredYear < 100) {
+                    const currentYear = new Date().getUTCFullYear();
+                    const currentCentury = Math.floor(currentYear / 100) * 100;
+                    let newYear = dateObj.getUTCFullYear() + currentCentury;
+                    if (newYear > currentYear + 20)
+                        newYear -= 100;
+                    dateObj.setUTCFullYear(newYear);
+                    props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                }
+            }
+            else {
+                props.changeValue(null, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
             }
         }
         if (props.onBlur)
@@ -4134,7 +4139,8 @@ const initialMDContext = {
     mdPath: '',
     baseFullPath: '',
     isOpen: false,
-    setMenuBackItemState: () => { }
+    setMenuBackItemState: () => {
+    }
 };
 const MDContext = React__default["default"].createContext(initialMDContext);
 const MasterDetail = (props) => {

@@ -60,14 +60,24 @@ export function InputDate<T>(props: IProps<T>) {
 		if (nextDateValue.current && props.changeValue) {
 			const dateObj = DateObject(nextDateValue.current)
 			const enteredYear = dateObj?.getUTCFullYear() ?? 0
-			if (dateObj && enteredYear < 100) {
-				const currentYear = new Date().getUTCFullYear()
-				const currentCentury = Math.floor(currentYear / 100) * 100
-				let newYear = dateObj.getUTCFullYear() + currentCentury
-				if (newYear > currentYear + 20) newYear -= 100
-				dateObj.setUTCFullYear(newYear)
+			if (dateObj) {
+				if (enteredYear < 100) {
+					const currentYear = new Date().getUTCFullYear()
+					const currentCentury = Math.floor(currentYear / 100) * 100
+					let newYear = dateObj.getUTCFullYear() + currentCentury
+					if (newYear > currentYear + 20) newYear -= 100
+					dateObj.setUTCFullYear(newYear)
+					props.changeValue(
+						((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim(),
+						e.target.name as any,
+						(e.nativeEvent as any).shiftKey,
+						(e.nativeEvent as any).ctrlKey,
+						(e.nativeEvent as any).altKey
+					)
+				}
+			} else {
 				props.changeValue(
-					((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim(),
+					null,
 					e.target.name as any,
 					(e.nativeEvent as any).shiftKey,
 					(e.nativeEvent as any).ctrlKey,

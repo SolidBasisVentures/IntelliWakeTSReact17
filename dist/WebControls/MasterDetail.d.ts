@@ -1,6 +1,7 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 import { TBootStrapExtendedSizes } from '../Functions';
 import { TBadgeValues } from '../Bootstrap/ListGroupItem';
+import { SetterOrUpdater } from 'recoil';
 export interface MenuBackItem {
     menuBackActive: boolean;
     menuBackButtonTitle: ReactNode;
@@ -16,7 +17,7 @@ export interface IMasterDetailProps {
     breakAt: TBootStrapExtendedSizes;
     rememberLast?: boolean;
     className?: string;
-    setMenuBackItemState: Dispatch<SetStateAction<MenuBackItem[]>>;
+    setMenuBackItemState: SetterOrUpdater<MenuBackItem[]>;
 }
 export declare const MasterDetail: (props: IMasterDetailProps) => JSX.Element;
 interface IPropsMaster {
