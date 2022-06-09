@@ -3127,7 +3127,7 @@ function InputDate(props) {
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
         var _a, _b, _c;
-        if (nextDateValue.current && props.changeValue) {
+        if (props.changeValue && (nextDateValue.current || nextDateValue.current !== props.value)) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
             if (dateObj) {
