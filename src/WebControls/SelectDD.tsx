@@ -27,6 +27,7 @@ export interface IPropsSelectDD {
 	classNameBtn?: string
 	inline?: boolean
 	likeSelect?: boolean
+	right?: boolean
 }
 
 export const SelectDD = (props: IPropsSelectDD) => {
@@ -61,6 +62,7 @@ export const SelectDD = (props: IPropsSelectDD) => {
 			className={
 				(props.className ?? '') + (!!props.likeSelect ? ' input-dd' : '') + (!!props.inline ? ' d-inline-block' : '')
 			}
+			right={props.right}
 			color={props.color ?? (!!props.inline ? 'primary-outline' : 'primary')}
 			noCaret={!props.caret}
 			buttonClassName={(!!props.classNameBtn ? props.classNameBtn : '') + ' ' + (!!props.inline ? ' btn-link-inline' : '')}
