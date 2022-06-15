@@ -21,5 +21,6 @@ export interface IPropsSelectDD {
     classNameBtn?: string;
     inline?: boolean;
     likeSelect?: boolean;
+    right?: boolean;
 }
 export declare const SelectDD: (props: IPropsSelectDD) => JSX.Element;

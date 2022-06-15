@@ -17,6 +17,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 	currency?: boolean
 	hideZero?: boolean
 	plainTextLeft?: boolean
+	nullable?: boolean
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
@@ -35,7 +36,8 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		'invalid',
 		'decimalScaleDisplay',
 		'name',
-		'plainTextLeft')), [props])
+		'plainTextLeft',
+		'nullable')), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<any>) => {
 		if (e.key === '-') {
@@ -90,6 +92,9 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			{...ReduceToInputAddProps(props)} inputIsValid={(val) => !isNaN(CleanNumber(val, undefined, true))}
 			valueOnInvalid={() => 0}
 			transformToValid={(val) => {
+				if (props.nullable && val === '') {
+					return null
+				}
 				const cleanNumber = CleanNumber(val)
 				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return props.lowerBound
 				if (props.upperBound !== undefined && cleanNumber > props.upperBound) return props.upperBound

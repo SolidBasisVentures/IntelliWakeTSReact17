@@ -3395,7 +3395,7 @@ function InputNumber(props) {
     const lastValue = React.useRef(props.value);
     const updateTimeout = React.useRef(setTimeout(() => {
     }, 100));
-    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft')), [props]);
+    const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable')), [props]);
     const handleKeyDown = (e) => {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
@@ -3437,6 +3437,9 @@ function InputNumber(props) {
     }
     const hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
     return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)), valueOnInvalid: () => 0, transformToValid: (val) => {
+            if (props.nullable && val === '') {
+                return null;
+            }
             const cleanNumber = intelliwaketsfoundation.CleanNumber(val);
             if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
                 return props.lowerBound;
