@@ -3032,7 +3032,7 @@ function InputCheckBox(props) {
 
 const ReduceInputProps = (props, classNameAdd) => {
     var _a, _b, _c, _d;
-    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef', 'consoleVerbose');
+    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'setChanges', 'setChangesLate', 'autoCompleteOn', 'append', 'prepend', 'invalid', 'innerRef', 'consoleVerbose');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = `${(_a = subset.className) !== null && _a !== void 0 ? _a : ''} ${classNameAdd}`.trim();
@@ -3056,6 +3056,8 @@ const ReduceToInputAddProps = (props) => {
         plainTextProps: props.plainTextProps,
         changeValue: props.changeValue,
         changeValueLate: props.changeValueLate,
+        setChanges: props.setChanges,
+        setChangesLate: props.setChangesLate,
         autoCompleteOn: props.autoCompleteOn,
         autoComplete: props.autoComplete,
         prepend: props.prepend,
@@ -3064,9 +3066,12 @@ const ReduceToInputAddProps = (props) => {
         consoleVerbose: props.consoleVerbose
     };
 };
-const HandleChangeValue = (e, changeValue, onChange) => {
+const HandleChangeValue = (e, changeValue, onChange, setChanges) => {
     if (!!changeValue) {
         changeValue(ElementCustomValue(e), e.target.name);
+    }
+    if (!!setChanges) {
+        setChanges(prevState => (Object.assign(Object.assign({}, prevState), { [e.target.name]: ElementCustomValue(e) })));
     }
     if (!!onChange) {
         onChange(e);
@@ -3241,10 +3246,19 @@ const InputWrapper = (props) => {
                 props.changeValueLate(lateState.current.value, !lateState.current.name ? undefined : lateState.current.name, (_a = lateState.current) === null || _a === void 0 ? void 0 : _a.shiftKey, (_b = lateState.current) === null || _b === void 0 ? void 0 : _b.ctrlKey, (_c = lateState.current) === null || _c === void 0 ? void 0 : _c.altKey);
                 lateState.current = undefined;
             }
+            else if (!!props.setChangesLate &&
+                lateState.current !== undefined &&
+                lateState.current.value !== props.children.props.value) {
+                props.setChangesLate(prevState => {
+                    var _a;
+                    return (Object.assign(Object.assign({}, prevState), { [props.children.props.name]: (_a = lateState.current) === null || _a === void 0 ? void 0 : _a.value }));
+                });
+                lateState.current = undefined;
+            }
             if (props.children.props.onBlur)
                 props.children.props.onBlur(e);
         }, onChange: (e) => {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e;
             const eTargetValue = e.target.value;
             clearTimeout(lateTrigger.current);
             if (!props.plainText && !props.children.props.disabled) {
@@ -3276,6 +3290,9 @@ const InputWrapper = (props) => {
                 if (!!props.changeValue) {
                     props.changeValue(newState.value, !newState.name ? undefined : newState.name, newState === null || newState === void 0 ? void 0 : newState.shiftKey, newState === null || newState === void 0 ? void 0 : newState.ctrlKey, newState === null || newState === void 0 ? void 0 : newState.altKey);
                 }
+                if (!!props.setChanges && !!props.children.props.name) {
+                    props.setChanges(prevState => (Object.assign(Object.assign({}, prevState), { [props.children.props.name]: newState.value })));
+                }
                 if (!!props.changeValueLate) {
                     if (isValid) {
                         lateState.current = newState;
@@ -3290,6 +3307,28 @@ const InputWrapper = (props) => {
                             lateState.current = undefined;
                         }
                     }, (_d = props.lateDelayMS) !== null && _d !== void 0 ? _d : 500);
+                    if (!props.children.props.onChange && !props.changeValue) { // && !props.changeValueLate
+                        if (verbose) {
+                            console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue);
+                            if (!!props.internalStateValue)
+                                console.log('oC Val ISV', props.internalStateValue(eTargetValue, e));
+                        }
+                        setInternalState(!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue);
+                    }
+                }
+                else if (!!props.setChangesLate) {
+                    if (isValid) {
+                        lateState.current = newState;
+                    }
+                    lateTrigger.current = setTimeout(() => {
+                        if (!!props.setChangesLate &&
+                            isMounted.current &&
+                            lateState.current !== undefined &&
+                            lateState.current.value !== props.children.props.value) {
+                            props.setChangesLate(prevState => (Object.assign(Object.assign({}, prevState), { [props.children.props.name]: newState.value })));
+                            lateState.current = undefined;
+                        }
+                    }, (_e = props.lateDelayMS) !== null && _e !== void 0 ? _e : 500);
                     if (!props.children.props.onChange && !props.changeValue) { // && !props.changeValueLate
                         if (verbose) {
                             console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue);

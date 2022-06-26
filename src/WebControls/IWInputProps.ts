@@ -86,6 +86,8 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 		'plainTextProps',
 		'changeValue',
 		'changeValueLate',
+		'setChanges',
+		'setChangesLate',
 		'autoCompleteOn',
 		'append',
 		'prepend',
@@ -93,7 +95,7 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 		'innerRef',
 		'consoleVerbose'
 	)
-
+	
 	if (!!classNameAdd) {
 		if (typeof classNameAdd === 'string') {
 			subset.className = `${subset.className ?? ''} ${classNameAdd}`.trim()
@@ -107,7 +109,7 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 	if (props.autoFocus) {
 		subset.className = `${subset.className ?? ''} inputAutoFocus`.trim()
 	}
-
+	
 	return subset
 }
 
@@ -118,6 +120,8 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 		plainTextProps: props.plainTextProps,
 		changeValue: props.changeValue,
 		changeValueLate: props.changeValueLate,
+		setChanges: props.setChanges,
+		setChangesLate: props.setChangesLate,
 		autoCompleteOn: props.autoCompleteOn,
 		autoComplete: props.autoComplete,
 		prepend: props.prepend,
@@ -130,12 +134,17 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 export const HandleChangeValue = <T = any, V = any, H = any>(
 	e: React.ChangeEvent<H>,
 	changeValue?: TChangeValueFunction<T, V>,
-	onChange?: (e: React.ChangeEvent<H>) => void
+	onChange?: (e: React.ChangeEvent<H>) => void,
+	setChanges?: Dispatch<SetStateAction<T>>
 ) => {
 	if (!!changeValue) {
 		changeValue(ElementCustomValue(e) as V, (e.target as any).name as any)
 	}
-
+	
+	if (!!setChanges) {
+		setChanges(prevState => ({...prevState, [(e.target as any).name as any]: ElementCustomValue(e) as V}))
+	}
+	
 	if (!!onChange) {
 		onChange(e)
 	}

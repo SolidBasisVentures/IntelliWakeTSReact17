@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
 import { TClassNames } from '../Functions';
 export declare type TChangeValueFunction<T = any, V = any> = (value: V, name?: (T extends object ? keyof T : string) | undefined, shiftKey?: boolean, ctrlKey?: boolean, altKey?: boolean) => void;
 export interface IIWInputAddProps<T = any, V = any> {
@@ -8,6 +8,8 @@ export interface IIWInputAddProps<T = any, V = any> {
     plainOnClick?: () => void;
     changeValue?: TChangeValueFunction<T, V>;
     changeValueLate?: TChangeValueFunction<T, V>;
+    setChanges?: Dispatch<SetStateAction<T>>;
+    setChangesLate?: Dispatch<SetStateAction<T>>;
     autoCompleteOn?: boolean;
     autoComplete?: string;
     prepend?: ReactNode;
@@ -28,4 +30,4 @@ export interface IIWInputProps<T = any, V = any, H = THTMLChangeElements> extend
 }
 export declare const ReduceInputProps: <T = any, V = any, H = THTMLChangeElements>(props: any, classNameAdd?: string | TClassNames | string[] | undefined) => ILegacyInputProps;
 export declare const ReduceToInputAddProps: <T = any, V = any>(props: any) => IIWInputAddProps<T, V>;
-export declare const HandleChangeValue: <T = any, V = any, H = any>(e: React.ChangeEvent<H>, changeValue?: TChangeValueFunction<T, V> | undefined, onChange?: ((e: React.ChangeEvent<H>) => void) | undefined) => void;
+export declare const HandleChangeValue: <T = any, V = any, H = any>(e: React.ChangeEvent<H>, changeValue?: TChangeValueFunction<T, V> | undefined, onChange?: ((e: React.ChangeEvent<H>) => void) | undefined, setChanges?: React.Dispatch<React.SetStateAction<T>> | undefined) => void;
