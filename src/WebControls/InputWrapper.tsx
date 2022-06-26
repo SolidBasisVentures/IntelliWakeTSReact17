@@ -132,6 +132,16 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 										lateState.current?.altKey
 									)
 									lateState.current = undefined
+								} else if (
+									!!props.setChangesLate &&
+									lateState.current !== undefined &&
+									lateState.current.value !== props.children.props.value
+								) {
+									props.setChangesLate(prevState => ({
+										...prevState,
+										[props.children.props.name as any]: lateState.current?.value as V
+									}))
+									lateState.current = undefined
 								}
 								if (props.children.props.onBlur) props.children.props.onBlur(e as any)
 							},
@@ -183,6 +193,12 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 											newState?.altKey
 										)
 									}
+									if (!!props.setChanges && !!props.children.props.name) {
+										props.setChanges(prevState => ({
+											...prevState,
+											[props.children.props.name as any]: newState.value as V
+										}))
+									}
 									if (!!props.changeValueLate) {
 										if (isValid) {
 											lateState.current = newState
@@ -201,6 +217,34 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 													lateState.current?.ctrlKey,
 													lateState.current?.altKey
 												)
+												lateState.current = undefined
+											}
+										}, props.lateDelayMS ?? 500)
+										if (!props.children.props.onChange && !props.changeValue) { // && !props.changeValueLate
+											if (verbose) {
+												console.log('oC Val ISV?', !!props.internalStateValue, eTargetValue)
+												if (!!props.internalStateValue)
+													console.log('oC Val ISV', props.internalStateValue(eTargetValue, e))
+											}
+											setInternalState(
+												!!props.internalStateValue ? props.internalStateValue(eTargetValue, e) : eTargetValue
+											)
+										}
+									} else if (!!props.setChangesLate) {
+										if (isValid) {
+											lateState.current = newState
+										}
+										lateTrigger.current = setTimeout(() => {
+											if (
+												!!props.setChangesLate &&
+												isMounted.current &&
+												lateState.current !== undefined &&
+												lateState.current.value !== props.children.props.value
+											) {
+												props.setChangesLate(prevState => ({
+													...prevState,
+													[props.children.props.name as any]: newState.value as V
+												}))
 												lateState.current = undefined
 											}
 										}, props.lateDelayMS ?? 500)

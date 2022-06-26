@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {Dispatch, ReactNode, SetStateAction} from 'react'
 import {ClassNames, ElementCustomValue, TClassNames} from '../Functions'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
@@ -17,6 +17,8 @@ export interface IIWInputAddProps<T = any, V = any> {
 	plainOnClick?: () => void
 	changeValue?: TChangeValueFunction<T, V>
 	changeValueLate?: TChangeValueFunction<T, V>
+	setChanges?: Dispatch<SetStateAction<T>>
+	setChangesLate?: Dispatch<SetStateAction<T>>
 	autoCompleteOn?: boolean
 	autoComplete?: string
 	prepend?: ReactNode
