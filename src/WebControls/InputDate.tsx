@@ -51,13 +51,20 @@ export function InputDate<T>(props: IProps<T>) {
 					(e.nativeEvent as any).altKey
 				)
 			}
+			
+			if (!!props.setChanges) {
+				props.setChanges(prevState => ({
+					...prevState,
+					[e.target.name as any]: customValue
+				}))
+			}
 		}
 	}
 	
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 		// nextDateValue.current = MomentDateString(e.target.value) ?? ''
 		
-		if (props.changeValue && (nextDateValue.current || nextDateValue.current !== props.value)) {
+		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
 			const dateObj = DateObject(nextDateValue.current)
 			const enteredYear = dateObj?.getUTCFullYear() ?? 0
 			if (dateObj) {
@@ -67,22 +74,38 @@ export function InputDate<T>(props: IProps<T>) {
 					let newYear = dateObj.getUTCFullYear() + currentCentury
 					if (newYear > currentYear + 20) newYear -= 100
 					dateObj.setUTCFullYear(newYear)
+					if (props.changeValue) {
+						props.changeValue(
+							((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim(),
+							e.target.name as any,
+							(e.nativeEvent as any).shiftKey,
+							(e.nativeEvent as any).ctrlKey,
+							(e.nativeEvent as any).altKey
+						)
+					}
+					if (!!props.setChanges) {
+						props.setChanges(prevState => ({
+							...prevState,
+							[e.target.name as any]: ((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim()
+						}))
+					}
+				}
+			} else {
+				if (props.changeValue) {
 					props.changeValue(
-						((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim(),
+						null,
 						e.target.name as any,
 						(e.nativeEvent as any).shiftKey,
 						(e.nativeEvent as any).ctrlKey,
 						(e.nativeEvent as any).altKey
 					)
 				}
-			} else {
-				props.changeValue(
-					null,
-					e.target.name as any,
-					(e.nativeEvent as any).shiftKey,
-					(e.nativeEvent as any).ctrlKey,
-					(e.nativeEvent as any).altKey
-				)
+				if (!!props.setChanges) {
+					props.setChanges(prevState => ({
+						...prevState,
+						[e.target.name as any]: null
+					}))
+				}
 			}
 		}
 		
