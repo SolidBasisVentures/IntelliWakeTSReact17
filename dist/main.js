@@ -1484,10 +1484,11 @@ const FieldSet = (props) => {
             fillHeightScroll: !!props.fillHeightScroll
         });
     }, [props]);
-    return (React__default["default"].createElement("fieldset", { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'} ${ClassNames({
+    const fieldSetProps = React.useMemo(() => intelliwaketsfoundation.OmitProperty(props, 'breakAt', 'groupings', 'condensed', 'fluid', 'fillHeight', 'fillHeightScroll'), [props]);
+    return (React__default["default"].createElement("fieldset", Object.assign({}, fieldSetProps, { className: `${(_a = props.className) !== null && _a !== void 0 ? _a : ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${props.condensed ? 'form-condensed p-1' : 'p-3'} ${ClassNames({
             'fill-height': !!props.fillHeight,
             'fill-height-scroll': !!props.fillHeightScroll
-        })}`.trim(), hidden: props.hidden },
+        })}`.trim() }),
         React__default["default"].createElement(FieldSetContext.Provider, { value: contextProps }, props.children)));
 };
 

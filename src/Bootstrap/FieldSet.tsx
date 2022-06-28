@@ -1,5 +1,5 @@
-import React, {createContext, ReactNode, ReactNodeArray, useMemo} from 'react'
-import {RandomString} from '@solidbasisventures/intelliwaketsfoundation'
+import React, {createContext, useMemo} from 'react'
+import {OmitProperty, RandomString} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export enum EFieldSetGroupings {
@@ -13,11 +13,9 @@ export enum EFieldSetGroupings {
 
 export type TFieldSetBreakAt = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-export interface IFieldSetProps {
+export interface IFieldSetPropsAddOns {
 	breakAt?: TFieldSetBreakAt
 	groupings?: EFieldSetGroupings
-	children?: ReactNode | ReactNodeArray
-	className?: string
 	hidden?: boolean
 	condensed?: boolean
 	fluid?: boolean
@@ -25,7 +23,10 @@ export interface IFieldSetProps {
 	fillHeightScroll?: boolean
 }
 
-interface IFieldSetContext extends Required<Omit<IFieldSetProps, 'children' | 'className'>> {
+export interface IFieldSetProps extends React.HTMLProps<HTMLFieldSetElement>, IFieldSetPropsAddOns {
+}
+
+interface IFieldSetContext extends Required<IFieldSetPropsAddOns> {
 	uuid: string
 }
 
@@ -57,15 +58,17 @@ export const FieldSet = (props: IFieldSetProps) => {
 		[props]
 	)
 	
+	const fieldSetProps = useMemo<React.HTMLProps<HTMLFieldSetElement>>(() => OmitProperty(props, 'breakAt', 'groupings', 'condensed', 'fluid', 'fillHeight', 'fillHeightScroll'), [props])
+	
 	return (
 		<fieldset
+			{...fieldSetProps}
 			className={`${props.className ?? ''} ${props.fluid ? 'container-fluid' : 'container'} fieldSet ${
 				props.condensed ? 'form-condensed p-1' : 'p-3'
 			} ${ClassNames({
 				'fill-height': !!props.fillHeight,
 				'fill-height-scroll': !!props.fillHeightScroll
-			})}`.trim()}
-			hidden={props.hidden}>
+			})}`.trim()}>
 			<FieldSetContext.Provider value={contextProps}>{props.children}</FieldSetContext.Provider>
 		</fieldset>
 	)

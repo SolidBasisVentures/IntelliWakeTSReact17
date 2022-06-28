@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactNodeArray } from 'react';
+import React from 'react';
 export declare enum EFieldSetGroupings {
     Half = 0,
     Thirds = 1,
@@ -8,18 +8,18 @@ export declare enum EFieldSetGroupings {
     LabelOver = 5
 }
 export declare type TFieldSetBreakAt = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export interface IFieldSetProps {
+export interface IFieldSetPropsAddOns {
     breakAt?: TFieldSetBreakAt;
     groupings?: EFieldSetGroupings;
-    children?: ReactNode | ReactNodeArray;
-    className?: string;
     hidden?: boolean;
     condensed?: boolean;
     fluid?: boolean;
     fillHeight?: boolean;
     fillHeightScroll?: boolean;
 }
-interface IFieldSetContext extends Required<Omit<IFieldSetProps, 'children' | 'className'>> {
+export interface IFieldSetProps extends React.HTMLProps<HTMLFieldSetElement>, IFieldSetPropsAddOns {
+}
+interface IFieldSetContext extends Required<IFieldSetPropsAddOns> {
     uuid: string;
 }
 export declare const FieldSetContext: React.Context<IFieldSetContext>;
