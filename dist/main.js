@@ -1508,9 +1508,10 @@ exports.EFieldRowInputWidth = void 0;
     EFieldRowInputWidth[EFieldRowInputWidth["Short"] = 1] = "Short";
 })(exports.EFieldRowInputWidth || (exports.EFieldRowInputWidth = {}));
 const FieldSetRow = (props) => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
     const fieldSetContext = React.useContext(FieldSetContext);
     const settings = React.useMemo(() => {
+        var _a;
         const items = {
             uuid: `Input${fieldSetContext.uuid}${intelliwaketsfoundation.RandomString(5)}`,
             inputColProps: {}
@@ -1582,7 +1583,7 @@ const FieldSetRow = (props) => {
             : 12 - firstLabelSize - firstFieldSize - secondFieldSize;
         if (!!props.label) {
             items.labelColProps = {};
-            items.labelColProps.className = 'strong';
+            items.labelColProps.className = `strong ${(_a = props.labelClassName) !== null && _a !== void 0 ? _a : ''}`.trim();
             if (breakAt === 'xs') {
                 items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-end';
                 items.labelColProps.xs = firstLabelSize;
@@ -1656,11 +1657,11 @@ const FieldSetRow = (props) => {
             element,
             props.inputFeedback),
         !!props.inputSecond && !!settings.input2ColProps && (React__default["default"].createElement(Col, Object.assign({}, settings.input2ColProps), typeof props.inputSecond === 'string' ?
-            React__default["default"].createElement("label", { className: 'col-form-label strong' }, props.inputSecond) : React__default["default"].createElement(React__default["default"].Fragment, null,
+            React__default["default"].createElement("label", { className: `col-form-label strong ${(_d = props.labelClassName) !== null && _d !== void 0 ? _d : ''}`.trim() }, props.inputSecond) : React__default["default"].createElement(React__default["default"].Fragment, null,
             props.inputSecond,
             props.inputSecondFeedback))),
         !!props.inputThird && !!settings.input3ColProps && (React__default["default"].createElement(Col, Object.assign({}, settings.input3ColProps), typeof props.inputThird === 'string' ?
-            React__default["default"].createElement("label", { className: 'col-form-label strong' }, props.inputThird) : React__default["default"].createElement(React__default["default"].Fragment, null,
+            React__default["default"].createElement("label", { className: `col-form-label strong ${(_e = props.labelClassName) !== null && _e !== void 0 ? _e : ''}`.trim() }, props.inputThird) : React__default["default"].createElement(React__default["default"].Fragment, null,
             props.inputThird,
             props.inputThirdFeedback)))));
 };

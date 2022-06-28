@@ -5,6 +5,7 @@ export declare enum EFieldRowInputWidth {
 }
 interface IProps {
     label?: ReactNode;
+    labelClassName?: string;
     hidden?: boolean;
     className?: string;
     input: ReactElement | string | number | null | undefined;

@@ -11,6 +11,7 @@ export enum EFieldRowInputWidth {
 
 interface IProps {
 	label?: ReactNode
+	labelClassName?: string
 	hidden?: boolean
 	className?: string
 	input: ReactElement | string | number | null | undefined
@@ -115,7 +116,7 @@ export const FieldSetRow = (props: IProps) => {
 		
 		if (!!props.label) {
 			items.labelColProps = {}
-			items.labelColProps.className = 'strong'
+			items.labelColProps.className = `strong ${props.labelClassName ?? ''}`.trim()
 			if (breakAt === 'xs') {
 				items.labelColProps.className += firstLabelSize === 12 ? '' : ' text-end'
 				items.labelColProps.xs = firstLabelSize
@@ -201,7 +202,8 @@ export const FieldSetRow = (props: IProps) => {
 			{!!props.inputSecond && !!settings.input2ColProps && (
 				<Col {...settings.input2ColProps}>
 					{typeof props.inputSecond === 'string' ?
-						<label className='col-form-label strong'>{props.inputSecond}</label> : <>
+						<label
+							className={`col-form-label strong ${props.labelClassName ?? ''}`.trim()}>{props.inputSecond}</label> : <>
 							{props.inputSecond}
 							{props.inputSecondFeedback}
 						</>}
@@ -210,7 +212,8 @@ export const FieldSetRow = (props: IProps) => {
 			{!!props.inputThird && !!settings.input3ColProps && (
 				<Col {...settings.input3ColProps}>
 					{typeof props.inputThird === 'string' ?
-						<label className='col-form-label strong'>{props.inputThird}</label> : <>
+						<label
+							className={`col-form-label strong ${props.labelClassName ?? ''}`.trim()}>{props.inputThird}</label> : <>
 							{props.inputThird}
 							{props.inputThirdFeedback}
 						</>}
