@@ -190,7 +190,7 @@ export const FieldSetRow = (props: IProps) => {
 			hidden={props.hidden}>
 			{!!props.label && !!settings.labelColProps && (
 				<Col {...settings.labelColProps}>
-					<label className='col-form-label' htmlFor={element.props.id}>
+					<label className={`col-form-label ${props.labelClassName ?? ''}`.trim()} htmlFor={element.props.id}>
 						{props.label}
 					</label>
 				</Col>
