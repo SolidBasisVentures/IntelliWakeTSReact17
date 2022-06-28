@@ -3127,12 +3127,15 @@ function InputDate(props) {
             if (!!props.changeValue) {
                 props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
             }
+            if (!!props.setChanges) {
+                props.setChanges(prevState => (Object.assign(Object.assign({}, prevState), { [e.target.name]: customValue })));
+            }
         }
     };
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
         var _a, _b, _c;
-        if (props.changeValue && (nextDateValue.current || nextDateValue.current !== props.value)) {
+        if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
             if (dateObj) {
@@ -3143,11 +3146,24 @@ function InputDate(props) {
                     if (newYear > currentYear + 20)
                         newYear -= 100;
                     dateObj.setUTCFullYear(newYear);
-                    props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                    if (props.changeValue) {
+                        props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                    }
+                    if (!!props.setChanges) {
+                        props.setChanges(prevState => {
+                            var _a, _b;
+                            return (Object.assign(Object.assign({}, prevState), { [e.target.name]: (((_a = MomentDateString(dateObj)) !== null && _a !== void 0 ? _a : '') + ' ' + ((_b = MomentTimeString(props.value)) !== null && _b !== void 0 ? _b : '')).trim() }));
+                        });
+                    }
                 }
             }
             else {
-                props.changeValue(null, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                if (props.changeValue) {
+                    props.changeValue(null, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                }
+                if (!!props.setChanges) {
+                    props.setChanges(prevState => (Object.assign(Object.assign({}, prevState), { [e.target.name]: null })));
+                }
             }
         }
         if (props.onBlur)
