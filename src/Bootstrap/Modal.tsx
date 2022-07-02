@@ -1,4 +1,4 @@
-import React, {CSSProperties, ReactNode, useCallback, useEffect, useRef} from 'react'
+import React, {CSSProperties, ReactNode, useCallback, useEffect, useMemo, useRef} from 'react'
 import {KEY_ENTER, KEY_ESCAPE} from '../Functions'
 import Portal from './Portal'
 import {Form} from './Form'
@@ -108,6 +108,9 @@ export const Modal = (props: IWModalProps) => {
 		}
 	}, [props.isOpen, props.autoFocusElement])
 	
+	const showOK = useMemo(() => !!props.okAction && props.okLabel !== null && props.okLabel !== false && props.okLabel !== '',
+		[!!props.okAction, props.okLabel])
+	
 	return (
 		<Portal>
 			<div
@@ -148,7 +151,9 @@ export const Modal = (props: IWModalProps) => {
 										)}
 									</div>
 								)}
-								<div className={`modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ' m-4 p-0'} ${props.bodyClassName ?? ''}`.trim() } style={props.bodyStyle}>
+								<div
+									className={`modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ' m-4 p-0'} ${props.bodyClassName ?? ''}`.trim()}
+									style={props.bodyStyle}>
 									{!!props.bodyContainerFormSubmit ? (
 										<Form
 											className={`container ${
@@ -176,7 +181,7 @@ export const Modal = (props: IWModalProps) => {
 										</>
 									)}
 								</div>
-								{(!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (
+								{(showOK || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (
 									<div className='modal-footer'>
 										<div className='me-auto'>
 											{(!props.noCancel || !props.noCancelButton) && (
@@ -196,7 +201,7 @@ export const Modal = (props: IWModalProps) => {
 												<Button key={idx + NowISOString()} {...rightButton}
 												        className={(rightButton.className ?? '') + ' ' + 'ms-1'} />
 											))}
-											{!!props.okAction && (
+											{showOK && (
 												<button
 													className={`ms-1 btn btn-${props.color ?? 'primary'}`}
 													type='button'

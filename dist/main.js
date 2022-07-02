@@ -1837,6 +1837,7 @@ const Modal = (props) => {
             }
         }
     }, [props.isOpen, props.autoFocusElement]);
+    const showOK = React.useMemo(() => !!props.okAction && props.okLabel !== null && props.okLabel !== false && props.okLabel !== '', [!!props.okAction, props.okLabel]);
     return (React__default["default"].createElement(Portal, null,
         React__default["default"].createElement("div", { className: 'modal fade' + (props.isOpen ? ' show' : ''), role: 'dialog', style: {
                 display: props.isOpen ? 'block' : 'none',
@@ -1869,7 +1870,7 @@ const Modal = (props) => {
                         React__default["default"].createElement(Button, { className: 'd-none', type: 'submit' }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
                         props.body,
                         props.children))),
-                    (!!props.okAction || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default["default"].createElement("div", { className: 'modal-footer' },
+                    (showOK || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (React__default["default"].createElement("div", { className: 'modal-footer' },
                         React__default["default"].createElement("div", { className: 'me-auto' },
                             (!props.noCancel || !props.noCancelButton) && (React__default["default"].createElement("button", { className: 'btn btn-link me-1 ', type: 'button', onClick: toggle }, (_d = props.cancelLabel) !== null && _d !== void 0 ? _d : 'Cancel')),
                             ((_e = props.leftButtons) !== null && _e !== void 0 ? _e : []).map((leftButton, idx) => {
@@ -1883,7 +1884,7 @@ const Modal = (props) => {
                                 var _a;
                                 return (React__default["default"].createElement(Button, Object.assign({ key: idx + intelliwaketsfoundation.NowISOString() }, rightButton, { className: ((_a = rightButton.className) !== null && _a !== void 0 ? _a : '') + ' ' + 'ms-1' })));
                             }),
-                            !!props.okAction && (React__default["default"].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
+                            showOK && (React__default["default"].createElement("button", { className: `ms-1 btn btn-${(_g = props.color) !== null && _g !== void 0 ? _g : 'primary'}`, type: 'button', disabled: props.okDisabled, onClick: (e) => {
                                     e.stopPropagation();
                                     okAction(e);
                                 }, ref: okButtonRef }, (_h = props.okLabel) !== null && _h !== void 0 ? _h : 'OK'))))))) : (props.children)))),
