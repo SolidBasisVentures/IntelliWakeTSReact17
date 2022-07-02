@@ -274,7 +274,7 @@ table.table-sortable thead th {
 }
 
 // Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {
+@media screen and (min-width: 576px) {
   .small-sm-larger {
     font-size: 80%;
     font-weight: 400;
@@ -291,7 +291,7 @@ table.table-sortable thead th {
 }
 
 // Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .small-md-larger {
     font-size: 80%;
     font-weight: 400;
@@ -308,7 +308,7 @@ table.table-sortable thead th {
 }
 
 // Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
+@media screen and (min-width: 992px) {
   .small-lg-larger {
     font-size: 80%;
     font-weight: 400;
@@ -325,7 +325,7 @@ table.table-sortable thead th {
 }
 
 // Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
+@media screen and (min-width: 1200px) {
   .small-xl-larger {
     font-size: 80%;
     font-weight: 400;
@@ -341,7 +341,7 @@ table.table-sortable thead th {
   }
 }
 
-@media (min-width: 1300px) {
+@media screen and (min-width: 1300px) {
   .small-xxl-larger {
     font-size: 80%;
     font-weight: 400;
@@ -357,28 +357,28 @@ table.table-sortable thead th {
   }
 }
 
-@media (min-width: 1400px) {
+@media screen and (min-width: 1400px) {
   .d-xxxl-none-larger,
   .d-xxl-none-and-larger {
     display: none !important;
   }
 }
 
-@media (min-width: 1600px) {
+@media screen and (min-width: 1600px) {
   .d-xxxxl-none-larger,
   .d-xxxl-none-and-larger {
     display: none !important;
   }
 }
 
-@media (min-width: 1800px) {
+@media screen and (min-width: 1800px) {
   .d-xxxxl-none-and-larger {
     display: none !important;
   }
 }
 
 // Extra small devices (portrait phones, less than 576px)
-@media (max-width: 575.98px) {
+@media screen and (max-width: 575.98px) {
   .small-xs {
     font-size: 80%;
     font-weight: 400;
@@ -394,7 +394,7 @@ table.table-sortable thead th {
 }
 
 // Small devices (landscape phones, less than 768px)
-@media (max-width: 767.98px) {
+@media screen and (max-width: 767.98px) {
   .small-sm {
     font-size: 80%;
     font-weight: 400;
@@ -410,7 +410,7 @@ table.table-sortable thead th {
 }
 
 // Medium devices (tablets, less than 992px)
-@media (max-width: 991.98px) {
+@media screen and (max-width: 991.98px) {
   .small-md {
     font-size: 80%;
     font-weight: 400;
@@ -426,7 +426,7 @@ table.table-sortable thead th {
 }
 
 // Large devices (desktops, less than 1200px)
-@media (max-width: 1199.98px) {
+@media screen and (max-width: 1199.98px) {
   .small-lg {
     font-size: 80%;
     font-weight: 400;
@@ -441,7 +441,7 @@ table.table-sortable thead th {
   }
 }
 
-@media (max-width: 1299.98px) {
+@media screen and (max-width: 1299.98px) {
   .small-xl {
     font-size: 80%;
     font-weight: 400;
@@ -456,7 +456,7 @@ table.table-sortable thead th {
   }
 }
 
-@media (max-width: 1399.98px) {
+@media screen and (max-width: 1399.98px) {
   .small-xxl {
     font-size: 80%;
     font-weight: 400;
@@ -471,7 +471,7 @@ table.table-sortable thead th {
   }
 }
 
-@media (max-width: 1599.98px) {
+@media screen and (max-width: 1599.98px) {
   .small-xxxl {
     font-size: 80%;
     font-weight: 400;
@@ -486,7 +486,7 @@ table.table-sortable thead th {
   }
 }
 
-@media (max-width: 1799.98px) {
+@media screen and (max-width: 1799.98px) {
   .small-xxxxl {
     font-size: 80%;
     font-weight: 400;
