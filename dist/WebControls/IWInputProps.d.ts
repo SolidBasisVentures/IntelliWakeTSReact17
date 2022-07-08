@@ -6,6 +6,7 @@ export interface IIWInputAddProps<T = any, V = any> {
     plainTextURL?: string;
     plainTextProps?: any;
     plainOnClick?: () => void;
+    replaceEmpty?: ReactNode | boolean;
     changeValue?: TChangeValueFunction<T, V>;
     changeValueLate?: TChangeValueFunction<T, V>;
     setChanges?: Dispatch<SetStateAction<T>>;

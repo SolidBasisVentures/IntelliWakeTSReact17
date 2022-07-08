@@ -8,7 +8,6 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
     lowerBound?: number;
     upperBound?: number;
     currency?: boolean;
-    hideZero?: boolean;
     plainTextLeft?: boolean;
     nullable?: boolean;
 }

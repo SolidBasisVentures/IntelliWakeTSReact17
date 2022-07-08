@@ -15,7 +15,7 @@ export interface IIWInputAddProps<T = any, V = any> {
 	plainTextURL?: string
 	plainTextProps?: any
 	plainOnClick?: () => void
-	hideEmpty?: boolean
+	replaceEmpty?: ReactNode | boolean
 	changeValue?: TChangeValueFunction<T, V>
 	changeValueLate?: TChangeValueFunction<T, V>
 	setChanges?: Dispatch<SetStateAction<T>>
@@ -90,7 +90,7 @@ export const ReduceInputProps = <T = any, V = any, H = THTMLChangeElements>(
 		'setChanges',
 		'setChangesLate',
 		'autoCompleteOn',
-		'hideEmpty',
+		'replaceEmpty',
 		'append',
 		'prepend',
 		'invalid',
@@ -120,7 +120,7 @@ export const ReduceToInputAddProps = <T = any, V = any>(props: IIWInputProps<T, 
 		plainText: props.plainText,
 		plainTextURL: props.plainTextURL,
 		plainTextProps: props.plainTextProps,
-		hideEmpty: props.hideEmpty,
+		replaceEmpty: props.replaceEmpty,
 		changeValue: props.changeValue,
 		changeValueLate: props.changeValueLate,
 		setChanges: props.setChanges,

@@ -3035,7 +3035,7 @@ function InputCheckBox(props) {
 
 const ReduceInputProps = (props, classNameAdd) => {
     var _a, _b, _c, _d;
-    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'setChanges', 'setChangesLate', 'autoCompleteOn', 'hideEmpty', 'append', 'prepend', 'invalid', 'innerRef', 'consoleVerbose');
+    const subset = intelliwaketsfoundation.OmitProperty(props, 'plainText', 'plainTextURL', 'plainTextProps', 'changeValue', 'changeValueLate', 'setChanges', 'setChangesLate', 'autoCompleteOn', 'replaceEmpty', 'append', 'prepend', 'invalid', 'innerRef', 'consoleVerbose');
     if (!!classNameAdd) {
         if (typeof classNameAdd === 'string') {
             subset.className = `${(_a = subset.className) !== null && _a !== void 0 ? _a : ''} ${classNameAdd}`.trim();
@@ -3057,7 +3057,7 @@ const ReduceToInputAddProps = (props) => {
         plainText: props.plainText,
         plainTextURL: props.plainTextURL,
         plainTextProps: props.plainTextProps,
-        hideEmpty: props.hideEmpty,
+        replaceEmpty: props.replaceEmpty,
         changeValue: props.changeValue,
         changeValueLate: props.changeValueLate,
         setChanges: props.setChanges,
@@ -3243,11 +3243,11 @@ const InputWrapper = (props) => {
     // noinspection PointlessBooleanExpressionJS
     return (React__default["default"].createElement(React__default["default"].Fragment, null, props.plainText ? (!!props.plainTextURL ? (React__default["default"].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext ' }, props.plainTextProps),
-            React__default["default"].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (props.hideEmpty && !!((_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)) ? '' : ((_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value))))) : (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' hoverAction cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
+            React__default["default"].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (!!props.replaceEmpty && !!((_a = props.plainTextControl) !== null && _a !== void 0 ? _a : props.children.props.value)) ? (props.replaceEmpty === true ? React__default["default"].createElement(React__default["default"].Fragment, null, "\u00A0") : props.replaceEmpty) : ((_b = props.plainTextControl) !== null && _b !== void 0 ? _b : props.children.props.value))))) : (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' + (!!props.plainOnClick ? ' hoverAction cursor-pointer' : '') }, props.plainTextProps, { onClick: () => {
             if (!!props.plainOnClick)
                 props.plainOnClick();
         } }),
-        React__default["default"].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (props.hideEmpty && !!((_c = props.plainTextControl) !== null && _c !== void 0 ? _c : props.children.props.value)) ? '' : ((_d = props.plainTextControl) !== null && _d !== void 0 ? _d : props.children.props.value))))) : (React__default["default"].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default["default"].cloneElement(props.children, ReduceInputProps(Object.assign(Object.assign({}, props.children.props), { className: (((_e = props.children.props.className) !== null && _e !== void 0 ? _e : '') +
+        React__default["default"].createElement(AppendPrependWrapper, { append: props.append, prepend: props.prepend }, (!!props.replaceEmpty && !!((_c = props.plainTextControl) !== null && _c !== void 0 ? _c : props.children.props.value)) ? (props.replaceEmpty === true ? React__default["default"].createElement(React__default["default"].Fragment, null, "\u00A0") : props.replaceEmpty) : ((_d = props.plainTextControl) !== null && _d !== void 0 ? _d : props.children.props.value))))) : (React__default["default"].createElement(InputGroupWrapper, { append: props.append, prepend: props.prepend }, React__default["default"].cloneElement(props.children, ReduceInputProps(Object.assign(Object.assign({}, props.children.props), { className: (((_e = props.children.props.className) !== null && _e !== void 0 ? _e : '') +
             ' ' +
             ((_f = props.className) !== null && _f !== void 0 ? _f : '') +
             (props.invalid ? ' is-invalid' : '') +
@@ -3454,7 +3454,7 @@ function InputNumber(props) {
     const lastValue = React.useRef(props.value);
     const updateTimeout = React.useRef(setTimeout(() => {
     }, 100));
-    const inputProps = React.useMemo(() => (Object.assign(Object.assign({}, ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideEmpty', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable'))), { value: (props.hideEmpty && intelliwaketsfoundation.CleanNumber(props.value) === 0) ? '' : props.value })), [props]);
+    const inputProps = React.useMemo(() => (Object.assign(Object.assign({}, ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'replaceEmpty', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable'))), { value: (props.replaceEmpty && intelliwaketsfoundation.CleanNumber(props.value) === 0) ? '' : props.value })), [props]);
     const handleKeyDown = (e) => {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
