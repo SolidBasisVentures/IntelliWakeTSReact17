@@ -118,7 +118,8 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			}}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
-			<Cleave options={options}
+			<Cleave style={{color: props.hideZero && !props.value ? 'transparent' : undefined}}
+			        options={options}
 			        htmlRef={props.htmlRef}
 			        inputMode={hasDecimals ? 'decimal' : 'numeric'}
 			        onKeyDown={handleKeyDown}
