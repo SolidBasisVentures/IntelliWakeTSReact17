@@ -108,9 +108,11 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				numerics: hasDecimals,
 				integers: !hasDecimals
 			})}
-			plainTextControl={!!props.currency
-				? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
-				: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
+			plainTextControl={(!props.value && !!props.replaceEmpty) ?
+				(props.replaceEmpty === true ? <>&nbsp;</> : props.replaceEmpty) :
+				(!!props.currency
+					? ToCurrency(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale)
+					: ToDigits(props.value, props.decimalScaleDisplay ?? options.numeralDecimalScale))
 			}
 			plainTextProps={{
 				...props.plainTextProps,

@@ -3510,9 +3510,11 @@ function InputNumber(props) {
             'inputNumber form-control': true,
             numerics: hasDecimals,
             integers: !hasDecimals
-        }), plainTextControl: !!props.currency
-            ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
-            : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ?
+        }), plainTextControl: (!props.value && !!props.replaceEmpty) ?
+            (props.replaceEmpty === true ? React__default["default"].createElement(React__default["default"].Fragment, null, "\u00A0") : props.replaceEmpty) :
+            (!!props.currency
+                ? intelliwaketsfoundation.ToCurrency(props.value, (_g = props.decimalScaleDisplay) !== null && _g !== void 0 ? _g : options.numeralDecimalScale)
+                : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale)), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ?
                 '' :
                 ' text-end'} ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
         React__default["default"].createElement(Cleave__default["default"], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name }))));
