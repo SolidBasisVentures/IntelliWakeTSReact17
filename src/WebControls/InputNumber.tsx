@@ -1,12 +1,6 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
-import {
-	CleanNumber,
-	CleanNumberNull,
-	OmitProperty,
-	ToCurrency,
-	ToDigits
-} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {CleaveOptions} from 'cleave.js/options'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
@@ -45,7 +39,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			'name',
 			'plainTextLeft',
 			'nullable')),
-		value: (props.hideZero && CleanNumberNull(props.value) === null) ? '' : props.value
+		value: (props.hideZero && CleanNumber(props.value) === 0) ? '' : props.value
 	}), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<any>) => {

@@ -3453,7 +3453,7 @@ function InputNumber(props) {
     const lastValue = React.useRef(props.value);
     const updateTimeout = React.useRef(setTimeout(() => {
     }, 100));
-    const inputProps = React.useMemo(() => (Object.assign(Object.assign({}, ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable'))), { value: (props.hideZero && intelliwaketsfoundation.CleanNumberNull(props.value) === null) ? '' : props.value })), [props]);
+    const inputProps = React.useMemo(() => (Object.assign(Object.assign({}, ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable'))), { value: (props.hideZero && intelliwaketsfoundation.CleanNumber(props.value) === 0) ? '' : props.value })), [props]);
     const handleKeyDown = (e) => {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
