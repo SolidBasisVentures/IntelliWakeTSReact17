@@ -25,19 +25,22 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	const lastValue = useRef<V | undefined>(props.value)
 	const updateTimeout = useRef(setTimeout(() => {
 	}, 100))
-	const inputProps = useMemo<any>(() => ReduceInputProps(OmitProperty(props,
-		'decimalScale',
-		'integerScale',
-		'allowNegative',
-		'lowerBound',
-		'upperBound',
-		'currency',
-		'hideZero',
-		'invalid',
-		'decimalScaleDisplay',
-		'name',
-		'plainTextLeft',
-		'nullable')), [props])
+	const inputProps = useMemo<any>(() => ({
+		...ReduceInputProps(OmitProperty(props,
+			'decimalScale',
+			'integerScale',
+			'allowNegative',
+			'lowerBound',
+			'upperBound',
+			'currency',
+			'hideZero',
+			'invalid',
+			'decimalScaleDisplay',
+			'name',
+			'plainTextLeft',
+			'nullable')),
+		value: props.hideZero && !props.value ? '' : props.value
+	}), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<any>) => {
 		if (e.key === '-') {
@@ -60,13 +63,15 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	}
 	
 	useEffect(() => {
-		clearTimeout(updateTimeout.current)
-		updateTimeout.current = setTimeout(() => {
-			if (!!cleaveRef.current && props.value !== lastValue.current) {
-				lastValue.current = props.value
-				cleaveRef.current.setRawValue(props.value as any)
-			}
-		}, 250)
+		if (props.value !== lastValue.current) {
+			clearTimeout(updateTimeout.current)
+			updateTimeout.current = setTimeout(() => {
+				if (!!cleaveRef.current && props.value !== lastValue.current) {
+					lastValue.current = props.value
+					cleaveRef.current.setRawValue(props.value as any)
+				}
+			}, 250)
+		}
 		
 		return () => {
 			clearTimeout(updateTimeout.current)
@@ -118,8 +123,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			}}
 			invalid={props.invalid}
 			isEqual={(internal, props) => CleanNumber(internal) === CleanNumber(props)}>
-			<Cleave style={{color: props.hideZero && !props.value ? 'transparent' : undefined}}
-			        options={options}
+			<Cleave options={options}
 			        htmlRef={props.htmlRef}
 			        inputMode={hasDecimals ? 'decimal' : 'numeric'}
 			        onKeyDown={handleKeyDown}
