@@ -38,7 +38,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			'name',
 			'plainTextLeft',
 			'nullable')),
-		value: (props.replaceEmpty && CleanNumber(props.value) === 0) ? '' : props.value
+		value: (!!props.replaceEmpty && (CleanNumber(props.value) === 0)) ? '' : props.value
 	}), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<any>) => {
