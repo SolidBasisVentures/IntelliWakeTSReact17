@@ -1,6 +1,12 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
-import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
+import {
+	CleanNumber,
+	CleanNumberNull,
+	OmitProperty,
+	ToCurrency,
+	ToDigits
+} from '@solidbasisventures/intelliwaketsfoundation'
 import {CleaveOptions} from 'cleave.js/options'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
@@ -39,7 +45,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			'name',
 			'plainTextLeft',
 			'nullable')),
-		value: props.hideZero && !props.value ? '' : props.value
+		value: (props.hideZero && CleanNumberNull(props.value) === null) ? '' : props.value
 	}), [props])
 	
 	const handleKeyDown = (e: React.KeyboardEvent<any>) => {
@@ -63,15 +69,13 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	}
 	
 	useEffect(() => {
-		if (props.value !== lastValue.current) {
-			clearTimeout(updateTimeout.current)
-			updateTimeout.current = setTimeout(() => {
-				if (!!cleaveRef.current && props.value !== lastValue.current) {
-					lastValue.current = props.value
-					cleaveRef.current.setRawValue(props.value as any)
-				}
-			}, 250)
-		}
+		clearTimeout(updateTimeout.current)
+		updateTimeout.current = setTimeout(() => {
+			if (!!cleaveRef.current && props.value !== lastValue.current) {
+				lastValue.current = props.value
+				cleaveRef.current.setRawValue(props.value as any)
+			}
+		}, 250)
 		
 		return () => {
 			clearTimeout(updateTimeout.current)
