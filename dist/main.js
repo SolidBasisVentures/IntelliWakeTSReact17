@@ -3453,7 +3453,7 @@ function InputNumber(props) {
     const lastValue = React.useRef(props.value);
     const updateTimeout = React.useRef(setTimeout(() => {
     }, 100));
-    const inputProps = React.useMemo(() => (Object.assign(Object.assign({}, ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable'))), { value: props.hideZero && !props.value ? '' : props.value })), [props]);
+    const inputProps = React.useMemo(() => (Object.assign(Object.assign({}, ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'decimalScale', 'integerScale', 'allowNegative', 'lowerBound', 'upperBound', 'currency', 'hideZero', 'invalid', 'decimalScaleDisplay', 'name', 'plainTextLeft', 'nullable'))), { value: (props.hideZero && intelliwaketsfoundation.CleanNumberNull(props.value) === null) ? '' : props.value })), [props]);
     const handleKeyDown = (e) => {
         if (e.key === '-') {
             if (!(props.lowerBound !== undefined && props.lowerBound < 0)) {
@@ -3472,15 +3472,13 @@ function InputNumber(props) {
         cleaveRef.current = cleave;
     };
     React.useEffect(() => {
-        if (props.value !== lastValue.current) {
-            clearTimeout(updateTimeout.current);
-            updateTimeout.current = setTimeout(() => {
-                if (!!cleaveRef.current && props.value !== lastValue.current) {
-                    lastValue.current = props.value;
-                    cleaveRef.current.setRawValue(props.value);
-                }
-            }, 250);
-        }
+        clearTimeout(updateTimeout.current);
+        updateTimeout.current = setTimeout(() => {
+            if (!!cleaveRef.current && props.value !== lastValue.current) {
+                lastValue.current = props.value;
+                cleaveRef.current.setRawValue(props.value);
+            }
+        }, 250);
         return () => {
             clearTimeout(updateTimeout.current);
         };
