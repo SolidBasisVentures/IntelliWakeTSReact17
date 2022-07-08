@@ -83,7 +83,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 					<Link to={props.plainTextURL}>
 						<div className='form-control-plaintext ' {...props.plainTextProps}>
 							<AppendPrependWrapper append={props.append} prepend={props.prepend}>
-								{props.plainTextControl ?? props.children.props.value}
+								{(props.hideEmpty && !!(props.plainTextControl ?? props.children.props.value)) ? '' : (props.plainTextControl ?? props.children.props.value)}
 							</AppendPrependWrapper>
 						</div>
 					</Link>
@@ -95,7 +95,7 @@ export const InputWrapper = <T, V, H = THTMLChangeElements>(props: IProps<T, V, 
 							if (!!props.plainOnClick) props.plainOnClick()
 						}}>
 						<AppendPrependWrapper append={props.append} prepend={props.prepend}>
-							{props.plainTextControl ?? props.children.props.value}
+							{(props.hideEmpty && !!(props.plainTextControl ?? props.children.props.value)) ? '' : (props.plainTextControl ?? props.children.props.value)}
 						</AppendPrependWrapper>
 					</div>
 				)
