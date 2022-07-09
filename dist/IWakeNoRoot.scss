@@ -1844,7 +1844,11 @@ p {
 }
 
 .btn-xs {
-  padding: 0 0.5rem;
-  font-size: 0.875rem;
+  padding: 0 0.5rem !important;
+  font-size: 0.875rem !important;
   border-radius: 0.2rem;
+}
+
+.btn.strong {
+  font-weight: bold !important;
 }
