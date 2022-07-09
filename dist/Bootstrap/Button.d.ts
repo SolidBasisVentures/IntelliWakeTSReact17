@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 export interface IWButtonLightProps {
-    size?: 'sm' | 'lg';
+    size?: 'xs' | 'sm' | 'lg';
     block?: boolean;
     color?: string;
     outline?: boolean;

@@ -2,7 +2,7 @@ import React, {forwardRef, ReactNode} from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWButtonLightProps {
-	size?: 'sm' | 'lg'
+	size?: 'xs' | 'sm' | 'lg'
 	block?: boolean
 	color?: string
 	outline?: boolean
