@@ -112,6 +112,8 @@ export function InputDate<T>(props: IProps<T>) {
 		if (props.onBlur) props.onBlur(e)
 	}
 	
+	const className = useMemo(() => !inputProps.className ? 'inputDate form-control' : `${inputProps.className} inputDate form-control`, [inputProps.className])
+	
 	return (
 		<>
 			{!!props.plainText ? (
@@ -123,8 +125,8 @@ export function InputDate<T>(props: IProps<T>) {
 			) : (
 				<input
 					type='date'
-					className='inputDate form-control'
 					{...inputProps}
+					className={className}
 					// placeholder='yyyy-mm-dd'
 					value={overrideValue ?? ''}
 					onChange={handleInputChange}

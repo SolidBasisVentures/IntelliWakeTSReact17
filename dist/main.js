@@ -3173,9 +3173,10 @@ function InputDate(props) {
         if (props.onBlur)
             props.onBlur(e);
     };
+    const className = React.useMemo(() => !inputProps.className ? 'inputDate form-control' : `${inputProps.className} inputDate form-control`, [inputProps.className]);
     return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!MomentTimeString(props.value)
         ? MomentDisplayDayDateTime(props.value)
-        : MomentDisplayDayDate(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date', className: 'inputDate form-control' }, inputProps, { 
+        : MomentDisplayDayDate(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date' }, inputProps, { className: className, 
         // placeholder='yyyy-mm-dd'
         value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, onBlur: handleBlur, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
 }
