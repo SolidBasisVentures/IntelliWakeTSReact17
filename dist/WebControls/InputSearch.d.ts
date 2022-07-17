@@ -3,7 +3,7 @@ import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 export interface IPropsInputSearch {
     initialValue?: string;
     triggerSearchText: (value: string) => void;
-    triggerDelayAmount?: number;
+    triggerDelayAmount?: number | boolean;
     triggerOnEnter?: boolean;
     className?: string;
     style?: any;

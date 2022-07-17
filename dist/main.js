@@ -3609,7 +3609,7 @@ const InputSearch = React.forwardRef((props, ref) => {
             clearTimeout(searchTimeout.current);
             searchTimeout.current = setTimeout(() => {
                 triggerChange(value);
-            }, props.triggerDelayAmount);
+            }, (props.triggerDelayAmount === true) ? 500 : props.triggerDelayAmount);
         }
         else if (!props.triggerOnEnter) {
             props.triggerSearchText(value);

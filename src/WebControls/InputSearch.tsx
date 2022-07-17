@@ -9,7 +9,7 @@ import {useCombinedRefs} from '../Functions'
 export interface IPropsInputSearch {
 	initialValue?: string
 	triggerSearchText: (value: string) => void
-	triggerDelayAmount?: number
+	triggerDelayAmount?: number | boolean
 	triggerOnEnter?: boolean
 	className?: string
 	style?: any
@@ -49,7 +49,7 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 			clearTimeout(searchTimeout.current)
 			searchTimeout.current = setTimeout(() => {
 				triggerChange(value)
-			}, props.triggerDelayAmount)
+			}, (props.triggerDelayAmount === true) ? 500 : props.triggerDelayAmount)
 		} else if (!props.triggerOnEnter) {
 			props.triggerSearchText(value)
 		}
