@@ -3509,7 +3509,14 @@ function InputNumber(props) {
             if (props.upperBound !== undefined && cleanNumber > props.upperBound)
                 return false;
             return true;
-        }, valueOnInvalid: () => 0, transformToValid: (val) => {
+        }, valueOnInvalid: val => {
+            const cleanNumber = intelliwaketsfoundation.CleanNumber(val);
+            if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
+                return props.lowerBound;
+            if (props.upperBound !== undefined && cleanNumber > props.upperBound)
+                return props.upperBound;
+            return cleanNumber;
+        }, transformToValid: (val) => {
             if (props.nullable && val === '') {
                 return null;
             }

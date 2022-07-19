@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useRef} from 'react'
-import Cleave from 'cleave.js/react'
 import {
 	CleanNumber,
 	CleanNumberNull,
@@ -11,6 +10,7 @@ import {CleaveOptions} from 'cleave.js/options'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps, THTMLChangeElements} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 import {ClassNames} from '../Functions'
+import Cleave from 'cleave.js/react'
 
 export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V> {
 	htmlRef?: (ref: any) => void
@@ -110,7 +110,13 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			
 			return true
 		}}
-			valueOnInvalid={() => 0}
+			valueOnInvalid={val => {
+				const cleanNumber = CleanNumber(val)
+				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return props.lowerBound
+				if (props.upperBound !== undefined && cleanNumber > props.upperBound) return props.upperBound
+				
+				return cleanNumber
+			}}
 			transformToValid={(val) => {
 				if (props.nullable && val === '') {
 					return null
