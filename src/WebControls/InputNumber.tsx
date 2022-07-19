@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
 import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {CleaveOptions} from 'cleave.js/options'
-import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
+import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps, THTMLChangeElements} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 import {ClassNames} from '../Functions'
 
@@ -17,6 +17,7 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 	currency?: boolean
 	plainTextLeft?: boolean
 	nullable?: boolean
+	increment?: number | null
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
@@ -87,6 +88,10 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		options.numeralDecimalScale = props.decimalScale === undefined ? 2 : props.decimalScale ?? undefined
 	}
 	
+	const onBlur = (e: React.FocusEvent<THTMLChangeElements>) => {
+		if (props.onBlur) props.onBlur(e)
+	}
+	
 	const hasDecimals = (props.decimalScale ?? 0) > 0
 	
 	return (
@@ -97,9 +102,13 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 				if (props.nullable && val === '') {
 					return null
 				}
-				const cleanNumber = CleanNumber(val)
-				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return props.lowerBound
-				if (props.upperBound !== undefined && cleanNumber > props.upperBound) return props.upperBound
+				let cleanNumber = CleanNumber(val)
+				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) {
+					cleanNumber = props.lowerBound
+				}
+				if (props.upperBound !== undefined && cleanNumber > props.upperBound) {
+					cleanNumber = props.upperBound
+				}
 				lastValue.current = cleanNumber as any
 				return cleanNumber
 			}}
@@ -128,7 +137,8 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			        onKeyDown={handleKeyDown}
 			        {...inputProps}
 			        onInit={onCreditCardInit}
-			        name={props.name as any} />
+			        name={props.name as any}
+			        onBlur={onBlur} />
 		</InputWrapper>
 	)
 }
