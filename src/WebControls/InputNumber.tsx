@@ -1,6 +1,12 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import Cleave from 'cleave.js/react'
-import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
+import {
+	CleanNumber,
+	CleanNumberNull,
+	OmitProperty,
+	ToCurrency,
+	ToDigits
+} from '@solidbasisventures/intelliwaketsfoundation'
 import {CleaveOptions} from 'cleave.js/options'
 import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps, THTMLChangeElements} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
@@ -96,7 +102,14 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 	
 	return (
 		<InputWrapper<T, V>
-			{...ReduceToInputAddProps(props)} inputIsValid={(val) => !isNaN(CleanNumber(val, undefined, true))}
+			{...ReduceToInputAddProps(props)} inputIsValid={(val) => {
+			const cleanNumber = CleanNumberNull(val)
+			if (cleanNumber === null) return false
+			if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return false
+			if (props.upperBound !== undefined && cleanNumber > props.upperBound) return false
+			
+			return true
+		}}
 			valueOnInvalid={() => 0}
 			transformToValid={(val) => {
 				if (props.nullable && val === '') {

@@ -3500,7 +3500,16 @@ function InputNumber(props) {
             props.onBlur(e);
     };
     const hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
-    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)), valueOnInvalid: () => 0, transformToValid: (val) => {
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => {
+            const cleanNumber = intelliwaketsfoundation.CleanNumberNull(val);
+            if (cleanNumber === null)
+                return false;
+            if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
+                return false;
+            if (props.upperBound !== undefined && cleanNumber > props.upperBound)
+                return false;
+            return true;
+        }, valueOnInvalid: () => 0, transformToValid: (val) => {
             if (props.nullable && val === '') {
                 return null;
             }
