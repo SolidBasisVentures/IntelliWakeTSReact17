@@ -1,13 +1,7 @@
 import React, {useEffect, useMemo, useRef} from 'react'
-import {
-	CleanNumber,
-	CleanNumberNull,
-	OmitProperty,
-	ToCurrency,
-	ToDigits
-} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, OmitProperty, ToCurrency, ToDigits} from '@solidbasisventures/intelliwaketsfoundation'
 import {CleaveOptions} from 'cleave.js/options'
-import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps, THTMLChangeElements} from './IWInputProps'
+import {IIWInputProps, ReduceInputProps, ReduceToInputAddProps} from './IWInputProps'
 import {InputWrapper} from './InputWrapper'
 import {ClassNames} from '../Functions'
 import Cleave from 'cleave.js/react'
@@ -23,7 +17,6 @@ export interface IPropsInputNumber<T = any, V = any> extends IIWInputProps<T, V>
 	currency?: boolean
 	plainTextLeft?: boolean
 	nullable?: boolean
-	increment?: number | null
 }
 
 export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
@@ -94,40 +87,19 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 		options.numeralDecimalScale = props.decimalScale === undefined ? 2 : props.decimalScale ?? undefined
 	}
 	
-	const onBlur = (e: React.FocusEvent<THTMLChangeElements>) => {
-		if (props.onBlur) props.onBlur(e)
-	}
-	
 	const hasDecimals = (props.decimalScale ?? 0) > 0
 	
 	return (
 		<InputWrapper<T, V>
-			{...ReduceToInputAddProps(props)} inputIsValid={(val) => {
-			const cleanNumber = CleanNumberNull(val)
-			if (cleanNumber === null) return false
-			if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return false
-			if (props.upperBound !== undefined && cleanNumber > props.upperBound) return false
-			
-			return true
-		}}
-			valueOnInvalid={val => {
-				const cleanNumber = CleanNumber(val)
-				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return props.lowerBound
-				if (props.upperBound !== undefined && cleanNumber > props.upperBound) return props.upperBound
-				
-				return cleanNumber
-			}}
+			{...ReduceToInputAddProps(props)} inputIsValid={(val) => !isNaN(CleanNumber(val, undefined, true))}
+			valueOnInvalid={() => 0}
 			transformToValid={(val) => {
 				if (props.nullable && val === '') {
 					return null
 				}
-				let cleanNumber = CleanNumber(val)
-				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) {
-					cleanNumber = props.lowerBound
-				}
-				if (props.upperBound !== undefined && cleanNumber > props.upperBound) {
-					cleanNumber = props.upperBound
-				}
+				const cleanNumber = CleanNumber(val)
+				if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) return props.lowerBound
+				if (props.upperBound !== undefined && cleanNumber > props.upperBound) return props.upperBound
 				lastValue.current = cleanNumber as any
 				return cleanNumber
 			}}
@@ -156,8 +128,7 @@ export function InputNumber<T = any, V = any>(props: IPropsInputNumber<T, V>) {
 			        onKeyDown={handleKeyDown}
 			        {...inputProps}
 			        onInit={onCreditCardInit}
-			        name={props.name as any}
-			        onBlur={onBlur} />
+			        name={props.name as any} />
 		</InputWrapper>
 	)
 }

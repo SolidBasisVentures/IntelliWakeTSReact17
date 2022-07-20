@@ -3495,38 +3495,16 @@ function InputNumber(props) {
         options.prefix = '$ ';
         options.numeralDecimalScale = props.decimalScale === undefined ? 2 : (_e = props.decimalScale) !== null && _e !== void 0 ? _e : undefined;
     }
-    const onBlur = (e) => {
-        if (props.onBlur)
-            props.onBlur(e);
-    };
     const hasDecimals = ((_f = props.decimalScale) !== null && _f !== void 0 ? _f : 0) > 0;
-    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => {
-            const cleanNumber = intelliwaketsfoundation.CleanNumberNull(val);
-            if (cleanNumber === null)
-                return false;
-            if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
-                return false;
-            if (props.upperBound !== undefined && cleanNumber > props.upperBound)
-                return false;
-            return true;
-        }, valueOnInvalid: val => {
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { inputIsValid: (val) => !isNaN(intelliwaketsfoundation.CleanNumber(val, undefined, true)), valueOnInvalid: () => 0, transformToValid: (val) => {
+            if (props.nullable && val === '') {
+                return null;
+            }
             const cleanNumber = intelliwaketsfoundation.CleanNumber(val);
             if (props.lowerBound !== undefined && cleanNumber < props.lowerBound)
                 return props.lowerBound;
             if (props.upperBound !== undefined && cleanNumber > props.upperBound)
                 return props.upperBound;
-            return cleanNumber;
-        }, transformToValid: (val) => {
-            if (props.nullable && val === '') {
-                return null;
-            }
-            let cleanNumber = intelliwaketsfoundation.CleanNumber(val);
-            if (props.lowerBound !== undefined && cleanNumber < props.lowerBound) {
-                cleanNumber = props.lowerBound;
-            }
-            if (props.upperBound !== undefined && cleanNumber > props.upperBound) {
-                cleanNumber = props.upperBound;
-            }
             lastValue.current = cleanNumber;
             return cleanNumber;
         }, className: ClassNames({
@@ -3540,7 +3518,7 @@ function InputNumber(props) {
                 : intelliwaketsfoundation.ToDigits(props.value, (_h = props.decimalScaleDisplay) !== null && _h !== void 0 ? _h : options.numeralDecimalScale)), plainTextProps: Object.assign(Object.assign({}, props.plainTextProps), { className: `form-control-plaintext${props.plainTextLeft ?
                 '' :
                 ' text-end'} ${(_k = (_j = props.plainTextProps) === null || _j === void 0 ? void 0 : _j.className) !== null && _k !== void 0 ? _k : ''}`.trim() }), invalid: props.invalid, isEqual: (internal, props) => intelliwaketsfoundation.CleanNumber(internal) === intelliwaketsfoundation.CleanNumber(props) }),
-        React__default["default"].createElement(Cleave__default["default"], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name, onBlur: onBlur }))));
+        React__default["default"].createElement(Cleave__default["default"], Object.assign({ options: options, htmlRef: props.htmlRef, inputMode: hasDecimals ? 'decimal' : 'numeric', onKeyDown: handleKeyDown }, inputProps, { onInit: onCreditCardInit, name: props.name }))));
 }
 
 function InputPassword(props) {
