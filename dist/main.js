@@ -3106,6 +3106,8 @@ function InputDate(props) {
     const lastDateValue = React.useRef(originalValue$1);
     const nextDateValue = React.useRef(originalValue$1);
     const [overrideValue, setOverrideValue] = React.useState(originalValue$1);
+    const changeTimeout = React.useRef(setTimeout(() => {
+    }, 100));
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'onBlur')), [props]);
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
@@ -3131,6 +3133,18 @@ function InputDate(props) {
             if (!!props.changeValue) {
                 props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
             }
+            if (!!props.changeValueLate) {
+                clearTimeout(changeTimeout.current);
+                const name = e.target.name;
+                const shiftKey = e.nativeEvent.shiftKey;
+                const ctrlKey = e.nativeEvent.ctrlKey;
+                const altKey = e.nativeEvent.altKey;
+                changeTimeout.current = setTimeout(() => {
+                    if (!!props.changeValueLate) {
+                        props.changeValueLate(customValue, name, shiftKey, ctrlKey, altKey);
+                    }
+                }, 500);
+            }
             if (!!props.setChanges) {
                 props.setChanges(prevState => (Object.assign(Object.assign({}, prevState), { [e.target.name]: customValue })));
             }
@@ -3138,7 +3152,7 @@ function InputDate(props) {
     };
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e;
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
@@ -3153,6 +3167,10 @@ function InputDate(props) {
                     if (props.changeValue) {
                         props.changeValue((((_b = MomentDateString(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = MomentTimeString(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                     }
+                    if (props.changeValueLate) {
+                        clearTimeout(changeTimeout.current);
+                        props.changeValueLate((((_d = MomentDateString(dateObj)) !== null && _d !== void 0 ? _d : '') + ' ' + ((_e = MomentTimeString(props.value)) !== null && _e !== void 0 ? _e : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                    }
                     if (!!props.setChanges) {
                         props.setChanges(prevState => {
                             var _a, _b;
@@ -3164,6 +3182,10 @@ function InputDate(props) {
             else {
                 if (props.changeValue) {
                     props.changeValue(null, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                }
+                if (props.changeValueLate) {
+                    clearTimeout(changeTimeout.current);
+                    props.changeValueLate(null, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                 }
                 if (!!props.setChanges) {
                     props.setChanges(prevState => (Object.assign(Object.assign({}, prevState), { [e.target.name]: null })));
