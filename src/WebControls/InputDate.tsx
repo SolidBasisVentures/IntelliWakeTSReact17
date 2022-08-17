@@ -14,6 +14,8 @@ export function InputDate<T>(props: IProps<T>) {
 	const lastDateValue = useRef(originalValue)
 	const nextDateValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
+	const changeTimeout = useRef(setTimeout(() => {
+	}, 100))
 	
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'onBlur'))
 		, [props])
@@ -52,6 +54,26 @@ export function InputDate<T>(props: IProps<T>) {
 				)
 			}
 			
+			if (!!props.changeValueLate) {
+				clearTimeout(changeTimeout.current)
+				const name = e.target.name as any
+				const shiftKey = (e.nativeEvent as any).shiftKey
+				const ctrlKey = (e.nativeEvent as any).ctrlKey
+				const altKey = (e.nativeEvent as any).altKey
+				
+				changeTimeout.current = setTimeout(() => {
+					if (!!props.changeValueLate) {
+						props.changeValueLate(
+							customValue,
+							name,
+							shiftKey,
+							ctrlKey,
+							altKey
+						)
+					}
+				}, 500)
+			}
+			
 			if (!!props.setChanges) {
 				props.setChanges(prevState => ({
 					...prevState,
@@ -83,6 +105,16 @@ export function InputDate<T>(props: IProps<T>) {
 							(e.nativeEvent as any).altKey
 						)
 					}
+					if (props.changeValueLate) {
+						clearTimeout(changeTimeout.current)
+						props.changeValueLate(
+							((MomentDateString(dateObj) ?? '') + ' ' + (MomentTimeString(props.value as string) ?? '')).trim(),
+							e.target.name as any,
+							(e.nativeEvent as any).shiftKey,
+							(e.nativeEvent as any).ctrlKey,
+							(e.nativeEvent as any).altKey
+						)
+					}
 					if (!!props.setChanges) {
 						props.setChanges(prevState => ({
 							...prevState,
@@ -93,6 +125,16 @@ export function InputDate<T>(props: IProps<T>) {
 			} else {
 				if (props.changeValue) {
 					props.changeValue(
+						null,
+						e.target.name as any,
+						(e.nativeEvent as any).shiftKey,
+						(e.nativeEvent as any).ctrlKey,
+						(e.nativeEvent as any).altKey
+					)
+				}
+				if (props.changeValueLate) {
+					clearTimeout(changeTimeout.current)
+					props.changeValueLate(
 						null,
 						e.target.name as any,
 						(e.nativeEvent as any).shiftKey,
