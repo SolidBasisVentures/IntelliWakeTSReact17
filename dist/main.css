@@ -1980,6 +1980,11 @@ p {
   font-weight: bold !important;
 }
 
+.modal-header.alert {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 @media screen {
   html,
 body,
