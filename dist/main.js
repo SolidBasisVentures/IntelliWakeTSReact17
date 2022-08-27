@@ -1210,7 +1210,7 @@ const CardGroup = (props) => {
 const CardHeader = (props) => {
     var _a, _b;
     const TagToUse = (_a = props.tag) !== null && _a !== void 0 ? _a : 'div';
-    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'color'), { className: `card-header ${!!props.color ? 'alert alert-' + props.color : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'className', 'color'), { className: `card-header ${!!props.color ? 'alert rounded-0 alert-' + props.color : ''} ${(_b = props.className) !== null && _b !== void 0 ? _b : ''}`.trim() })));
 };
 
 const CardText = (props) => {
@@ -1852,7 +1852,7 @@ const Modal = (props) => {
                     (!props.size ? ' ' : ` modal-${props.size} `) +
                     ((_a = props.dialogClassName) !== null && _a !== void 0 ? _a : '')).trim(), role: 'document', style: props.dialogStyle },
                 React__default["default"].createElement("div", { className: 'modal-content', onMouseDown: e => e.stopPropagation(), onClick: e => e.stopPropagation(), style: props.contentStyle, ref: contentRef }, props.title !== undefined ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-                    !!props.title && (React__default["default"].createElement("div", { className: `alert alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
+                    !!props.title && (React__default["default"].createElement("div", { className: `alert rounded-0 alert-${(_b = props.color) !== null && _b !== void 0 ? _b : 'primary'} modal-header` },
                         React__default["default"].createElement("h5", { className: 'modal-title' }, props.title),
                         !props.noCancel && (React__default["default"].createElement("button", { className: 'btn-close', onClick: toggle })))),
                     React__default["default"].createElement("div", { className: `modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ' m-4 p-0'} ${(_c = props.bodyClassName) !== null && _c !== void 0 ? _c : ''}`.trim(), style: props.bodyStyle }, !!props.bodyContainerFormSubmit ? (React__default["default"].createElement(Form, { className: `container ${typeof props.bodyContainerFormSubmit === 'string' ? props.bodyContainerFormSubmit : ''}`.trim(), onSubmitCapture: (e) => {
@@ -1893,7 +1893,7 @@ const Modal = (props) => {
 
 const ModalHeader = (props) => {
     var _a;
-    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header alert ' + (!!props.color ? `alert-${props.color} ` : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
+    return (React__default["default"].createElement("div", Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'className'), { className: 'modal-header alert rounded-0 ' + (!!props.color ? `alert-${props.color} ` : '') + ((_a = props.className) !== null && _a !== void 0 ? _a : '') })));
 };
 
 const ModalBody = (props) => {
@@ -2125,7 +2125,7 @@ const ModalPrompt = (props) => {
         }
     };
     return (React__default["default"].createElement(Modal, { isOpen: isOpen, toggle: () => dismiss(true), size: props.size },
-        React__default["default"].createElement(ModalHeader, { className: 'alert alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
+        React__default["default"].createElement(ModalHeader, { className: 'alert rounded-0 alert-' + ((_a = props.color) !== null && _a !== void 0 ? _a : 'primary') }, title),
         !!messageBody && React__default["default"].createElement(ModalBody, null, messageBody),
         React__default["default"].createElement(ModalFooter, null,
             React__default["default"].createElement(Button, { type: 'button', onClick: () => dismiss(true), outline: props.cancelOutline, color: (_b = props.cancelColor) !== null && _b !== void 0 ? _b : (promptResponsesAsArray.length === 0 && (!props.okLabel || !props.okAction)

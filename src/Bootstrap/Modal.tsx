@@ -144,7 +144,7 @@ export const Modal = (props: IWModalProps) => {
 						{props.title !== undefined ? (
 							<>
 								{!!props.title && (
-									<div className={`alert alert-${props.color ?? 'primary'} modal-header`}>
+									<div className={`alert rounded-0 alert-${props.color ?? 'primary'} modal-header`}>
 										<h5 className='modal-title'>{props.title}</h5>
 										{!props.noCancel && (
 											<button className='btn-close' onClick={toggle} />

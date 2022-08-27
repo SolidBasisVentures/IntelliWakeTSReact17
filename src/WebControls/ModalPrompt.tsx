@@ -113,7 +113,7 @@ export const ModalPrompt = (props: IModalPromptProps) => {
 	return (
 		<Modal isOpen={isOpen} toggle={() => dismiss(true)} size={props.size}>
 			<ModalHeader
-				className={'alert alert-' + (props.color ?? 'primary')}>
+				className={'alert rounded-0 alert-' + (props.color ?? 'primary')}>
 				{title}
 			</ModalHeader>
 			{!!messageBody && <ModalBody>{messageBody}</ModalBody>}

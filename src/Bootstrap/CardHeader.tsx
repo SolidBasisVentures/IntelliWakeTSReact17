@@ -10,6 +10,6 @@ export const CardHeader = (props: IWCardHeaderProps) => {
 	const TagToUse = props.tag ?? ('div' as React.ReactType)
 
 	return (
-		<TagToUse {...OmitProperty(props, 'tag', 'className', 'color')} className={`card-header ${!!props.color ? 'alert alert-' + props.color : ''} ${props.className ?? ''}`.trim()} />
+		<TagToUse {...OmitProperty(props, 'tag', 'className', 'color')} className={`card-header ${!!props.color ? 'alert rounded-0 alert-' + props.color : ''} ${props.className ?? ''}`.trim()} />
 	)
 }

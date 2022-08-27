@@ -9,7 +9,7 @@ export const ModalHeader = (props: IWModalHeaderProps) => {
 	return (
 		<div
 			{...OmitProperty(props, 'className')}
-			className={'modal-header alert ' + (!!props.color ? `alert-${props.color} ` : '') + (props.className ?? '')}
+			className={'modal-header alert rounded-0 ' + (!!props.color ? `alert-${props.color} ` : '') + (props.className ?? '')}
 		/>
 	)
 }
