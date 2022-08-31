@@ -33,6 +33,7 @@ export interface IWModalProps {
 	rightButtons?: IWButtonLightProps[]
 	children?: any
 	noOverFlowScroll?: boolean
+	overFlowVisible?: boolean
 }
 
 export const Modal = (props: IWModalProps) => {
@@ -152,7 +153,7 @@ export const Modal = (props: IWModalProps) => {
 									</div>
 								)}
 								<div
-									className={`modal-body${!!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ' m-4 p-0'} ${props.bodyClassName ?? ''}`.trim()}
+									className={`modal-body${!!props.overFlowVisible ? ' no-overflow-scroll overflow-visible container container-fluid fill-height' : !!props.noOverFlowScroll ? ' no-overflow-scroll overflow-hidden container container-fluid fill-height' : ' m-4 p-0'} ${props.bodyClassName ?? ''}`.trim()}
 									style={props.bodyStyle}>
 									{!!props.bodyContainerFormSubmit ? (
 										<Form
