@@ -27,5 +27,6 @@ export interface IWModalProps {
     rightButtons?: IWButtonLightProps[];
     children?: any;
     noOverFlowScroll?: boolean;
+    overFlowVisible?: boolean;
 }
 export declare const Modal: (props: IWModalProps) => JSX.Element;
