@@ -182,7 +182,7 @@ export const Modal = (props: IWModalProps) => {
 										</>
 									)}
 								</div>
-								{(showOK || !props.noCancelButton || !!props.footerLeft || !!props.footerRight) && (
+								{(showOK || !props.noCancelButton || !!props.footerLeft || !!props.footerRight || !!props.rightButtons || !!props.leftButtons) && (
 									<div className='modal-footer'>
 										<div className='me-auto'>
 											{(!props.noCancel || !props.noCancelButton) && (
@@ -200,7 +200,7 @@ export const Modal = (props: IWModalProps) => {
 											{props.footerRight}
 											{(props.rightButtons ?? []).map((rightButton, idx) => (
 												<Button key={idx + NowISOString()} {...rightButton}
-												        className={(rightButton.className ?? '') + ' ' + 'ms-1'} />
+												        className={(rightButton.className ?? '') + ' ms-1'} />
 											))}
 											{showOK && (
 												<button
