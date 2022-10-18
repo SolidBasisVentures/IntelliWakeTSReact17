@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { TStorageType } from '../Hooks/useStorage';
-export interface IIWTab<T extends string> {
+export interface IIWTab<T extends string = string> {
     faProps?: FontAwesomeIconProps;
     title: T;
     hide?: boolean;
@@ -13,7 +13,7 @@ export interface IIWTab<T extends string> {
     ariaLabelPane?: string;
 }
 export declare type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded';
-export interface IWTabProps<T extends string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+export interface IWTabProps<T extends string = string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
     tabs: IIWTab<T>[];
     paneLoading?: TPaneLoading;
     rememberKey?: string;
@@ -33,4 +33,4 @@ export interface IWTabProps<T extends string> extends Omit<React.HTMLProps<HTMLD
     navItemSpanClassName?: string;
     padTabs?: boolean;
 }
-export declare const Tab: <T extends string>(props: IWTabProps<T>) => JSX.Element | null;
+export declare const Tab: <T extends string = string>(props: IWTabProps<T>) => JSX.Element | null;

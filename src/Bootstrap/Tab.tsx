@@ -5,7 +5,7 @@ import {Button} from './Button'
 import {IModalPromptProps, ModalPrompt} from '../WebControls/ModalPrompt'
 import {ClassNames} from '../Functions'
 
-export interface IIWTab<T extends string> {
+export interface IIWTab<T extends string = string> {
 	faProps?: FontAwesomeIconProps
 	title: T
 	hide?: boolean
@@ -19,7 +19,7 @@ export interface IIWTab<T extends string> {
 
 export type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded'
 
-export interface IWTabProps<T extends string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+export interface IWTabProps<T extends string = string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
 	tabs: IIWTab<T>[]
 	paneLoading?: TPaneLoading
 	rememberKey?: string
@@ -40,7 +40,7 @@ export interface IWTabProps<T extends string> extends Omit<React.HTMLProps<HTMLD
 	padTabs?: boolean
 }
 
-export const Tab = <T extends string,>(props: IWTabProps<T>) => {
+export const Tab = <T extends string = string,>(props: IWTabProps<T>) => {
 	const isChanging = useRef(false)
 	const loadedTabs = useRef<(string | undefined)[]>([])
 	const showTabs = props.tabs.filter((tab) => !tab.hide)
