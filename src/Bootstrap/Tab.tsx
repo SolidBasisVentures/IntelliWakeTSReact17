@@ -5,9 +5,9 @@ import {Button} from './Button'
 import {IModalPromptProps, ModalPrompt} from '../WebControls/ModalPrompt'
 import {ClassNames} from '../Functions'
 
-export interface IIWTab {
+export interface IIWTab<T extends string = string> {
 	faProps?: FontAwesomeIconProps
-	title: string
+	title: T
 	hide?: boolean
 	disabled?: boolean
 	pane: ReactNode
@@ -19,14 +19,14 @@ export interface IIWTab {
 
 export type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded'
 
-export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
-	tabs: IIWTab[]
+export interface IWTabProps<T extends string = string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+	tabs: IIWTab<T>[]
 	paneLoading?: TPaneLoading
 	rememberKey?: string
 	rememberType?: TStorageType
-	openTab?: string
-	setOpenTab?: (tab: string) => void
-	openTabChanged?: (tab: string) => void
+	openTab?: T
+	setOpenTab?: (tab: T) => void
+	openTabChanged?: (tab: T) => void
 	isDirty?: boolean
 	tabType?: 'tabs' | 'pills'
 	fillHeight?: boolean | 'noScroll'
@@ -40,7 +40,7 @@ export interface IWTabProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'>
 	padTabs?: boolean
 }
 
-export const Tab = (props: IWTabProps) => {
+export const Tab = <T extends string = string,>(props: IWTabProps<T>) => {
 	const isChanging = useRef(false)
 	const loadedTabs = useRef<(string | undefined)[]>([])
 	const showTabs = props.tabs.filter((tab) => !tab.hide)
@@ -61,7 +61,7 @@ export const Tab = (props: IWTabProps) => {
 	const openTabChanged = useCallback(props.openTabChanged ?? (() => {}), [props])
 
 	const changeOpenTab = useCallback(
-		(tabTitle: string) => {
+		(tabTitle: T) => {
 			if (actualOpenTab !== tabTitle) {
 				if (!props.isDirty) {
 					setActualOpenTab(tabTitle)
