@@ -2630,12 +2630,12 @@ const DateRangeToString = (dateRange) => ({
     start: DateRangeDateMomentToString(dateRange.start),
     end: DateRangeDateMomentToString(dateRange.end)
 });
-const initialDateRange = {
+const InitialDateRange = () => ({
     name: customRangeName,
     start: moment__default["default"](),
     end: moment__default["default"]()
-};
-const initialDateRangeString = DateRangeToString(initialDateRange);
+});
+const InitialDateRangeString = DateRangeToString(InitialDateRange());
 const DateRangeCalendar = (props) => {
     let moments = [];
     let firstDay = props.month.clone().startOf('month');
@@ -2664,14 +2664,14 @@ const DateRangeCalendar = (props) => {
             React__default["default"].createElement("tr", null,
                 props.prevMonth !== undefined
                     ?
-                        React__default["default"].createElement("th", { className: "prev available", onClick: prev },
+                        React__default["default"].createElement("th", { className: 'prev available', onClick: prev },
                             React__default["default"].createElement("span", null, " "))
                     :
                         React__default["default"].createElement("th", null),
-                React__default["default"].createElement("th", { colSpan: 5, className: "month" }, firstDay.format('MMM YYYY')),
+                React__default["default"].createElement("th", { colSpan: 5, className: 'month' }, firstDay.format('MMM YYYY')),
                 props.nextMonth !== undefined
                     ?
-                        React__default["default"].createElement("th", { className: "next available", onClick: next },
+                        React__default["default"].createElement("th", { className: 'next available', onClick: next },
                             React__default["default"].createElement("span", null, " "))
                     :
                         React__default["default"].createElement("th", null)),
@@ -2715,14 +2715,14 @@ const DateRange = (props) => {
         }
         if (props.presetRanges && props.presetRanges.length > 0)
             return DateRangeToMoment(props.presetRanges[0]);
-        return initialDateRange;
+        return InitialDateRange();
     };
     const [state, setState] = React.useState({
         isOpen: false,
         selectedRange: getStartRange(),
         selectedText: '',
         prevPreset: null,
-        customRange: initialDateRange,
+        customRange: InitialDateRange(),
         monthToShow: getStartRange().start,
         applyToFirst: true
     });
@@ -2811,17 +2811,17 @@ const DateRange = (props) => {
                     props.presetRanges.map((preset, idx) => React__default["default"].createElement("li", { key: idx, onClick: () => handlePresetClick(preset), className: (preset.name === currentRange.name ? 'active' : '') }, preset.name)),
                     React__default["default"].createElement("li", { onClick: handleCustomClick },
                         customRangeName,
-                        React__default["default"].createElement("span", { className: "float-end" }, ">")))),
+                        React__default["default"].createElement("span", { className: 'float-end' }, ">")))),
             React__default["default"].createElement("div", { className: 'drp-headers' + (!state.prevPreset ? ' d-none' : ''), onClick: handleUnCustomClick },
                 React__default["default"].createElement("span", null, "< Presets")),
             React__default["default"].createElement("div", { className: 'drp-calendar left' + (!state.prevPreset ? ' d-none' : '') },
-                React__default["default"].createElement("div", { className: "calendar-table" },
+                React__default["default"].createElement("div", { className: 'calendar-table' },
                     React__default["default"].createElement(DateRangeCalendar, { month: state.monthToShow, startSelected: state.customRange.start, endSelected: state.customRange.end, prevMonth: prevMonth, nextMonth: nextMonth, dateClick: handleDateClick }))),
             React__default["default"].createElement("div", { className: 'drp-buttons' + (!state.prevPreset ? ' d-none' : '') },
-                React__default["default"].createElement("span", { className: "drp-selected" }, rangeDescription(state.customRange)),
-                React__default["default"].createElement("button", { className: "btn btn-sm btn-primary", type: "button", onClick: handleCustomApplyClick }, "Apply")))));
+                React__default["default"].createElement("span", { className: 'drp-selected' }, rangeDescription(state.customRange)),
+                React__default["default"].createElement("button", { className: 'btn btn-sm btn-primary', type: 'button', onClick: handleCustomApplyClick }, "Apply")))));
 };
-const defaultRanges = [
+const DefaultRanges = () => [
     {
         name: 'This Week #' + moment__default["default"]().format('w'),
         start: moment__default["default"]().startOf('week'),
@@ -2858,8 +2858,8 @@ const defaultRanges = [
         end: moment__default["default"]().endOf('day')
     }
 ];
-const defaultRangeStrings = defaultRanges.map(range => DateRangeToString(range));
-const defaultRangesReport = [
+const DefaultRangeStrings = () => DefaultRanges().map(range => DateRangeToString(range));
+const DefaultRangesReport = () => [
     {
         name: 'This Week',
         start: moment__default["default"]().startOf('week'),
@@ -2891,8 +2891,8 @@ const defaultRangesReport = [
         end: moment__default["default"]().subtract(1, 'year').endOf('year')
     }
 ];
-const defaultRangeStringsReport = defaultRangesReport.map(range => DateRangeToString(range));
-const defaultRangesReportQuarterly = [
+const DefaultRangeStringsReport = () => DefaultRangesReport().map(range => DateRangeToString(range));
+const DefaultRangesReportQuarterly = () => [
     {
         name: 'This Month',
         start: moment__default["default"]().startOf('month'),
@@ -2944,58 +2944,58 @@ const defaultRangesReportQuarterly = [
         end: moment__default["default"]().subtract(1, 'year').endOf('year')
     }
 ];
-const defaultRangeStringsReportQuarterly = defaultRangesReportQuarterly.map(range => DateRangeToString(range));
+const DefaultRangeStringsReportQuarterly = () => DefaultRangesReportQuarterly().map(range => DateRangeToString(range));
 /**
  * Default to this month
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-const defaultRange = {
+const DefaultRange = () => ({
     name: 'This Month',
     start: moment__default["default"]().startOf('month'),
     end: moment__default["default"]().endOf('month')
-};
+});
 /**
  * Default to last month
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-const defaultRangeLastMonth = {
+const DefaultRangeLastMonth = () => ({
     name: 'Last Month',
     start: moment__default["default"]().subtract(1, 'month').startOf('month'),
     end: moment__default["default"]().subtract(1, 'month').endOf('month')
-};
+});
 /**
  * Default to this week
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it
  */
-const defaultRangeWeek = {
+const DefaultRangeWeek = () => ({
     name: 'This Week',
     start: moment__default["default"]().startOf('week'),
     end: moment__default["default"]().endOf('week')
-};
+});
 /**
  * Default to last 4 weeks
  *
  * Use DateRangeToString(defaultRangeLast4Weeks) to get a string of it
  */
-const defaultRangeLast4Weeks = {
+const DefaultRangeLast4Weeks = () => ({
     name: 'Last 4 Weeks',
     start: moment__default["default"]().subtract(3, 'week').startOf('week'),
     end: moment__default["default"]().endOf('week')
-};
+});
 /**
  * Default to this year
  *
  * Use DateRangeToString(defaultRangeYear) to get a string of it
  */
-const defaultRangeYear = {
+const DefaultRangeYear = () => ({
     name: 'Year-to-Date',
     start: moment__default["default"]().startOf('year'),
     end: moment__default["default"]().endOf('year')
-};
-const defaultRangeString = DateRangeToString(defaultRange);
+});
+const DefaultRangeString = () => DateRangeToString(DefaultRange());
 // DateRange.defaultProps = {
 // 	presetRanges: defaultRanges,
 // 	showCaret: true,
@@ -4654,6 +4654,18 @@ exports.DateRangeDateMomentToString = DateRangeDateMomentToString;
 exports.DateRangeDateStringToMoment = DateRangeDateStringToMoment;
 exports.DateRangeToMoment = DateRangeToMoment;
 exports.DateRangeToString = DateRangeToString;
+exports.DefaultRange = DefaultRange;
+exports.DefaultRangeLast4Weeks = DefaultRangeLast4Weeks;
+exports.DefaultRangeLastMonth = DefaultRangeLastMonth;
+exports.DefaultRangeString = DefaultRangeString;
+exports.DefaultRangeStrings = DefaultRangeStrings;
+exports.DefaultRangeStringsReport = DefaultRangeStringsReport;
+exports.DefaultRangeStringsReportQuarterly = DefaultRangeStringsReportQuarterly;
+exports.DefaultRangeWeek = DefaultRangeWeek;
+exports.DefaultRangeYear = DefaultRangeYear;
+exports.DefaultRanges = DefaultRanges;
+exports.DefaultRangesReport = DefaultRangesReport;
+exports.DefaultRangesReportQuarterly = DefaultRangesReportQuarterly;
 exports.DisplayTZItem = DisplayTZItem;
 exports.DownloadBase64Data = DownloadBase64Data;
 exports.Dropdown = Dropdown;
@@ -4682,6 +4694,8 @@ exports.HandleChangeValue = HandleChangeValue;
 exports.HasPathComponent = HasPathComponent;
 exports.IANAZoneAbbr = IANAZoneAbbr;
 exports.IWServerData = IWServerData;
+exports.InitialDateRange = InitialDateRange;
+exports.InitialDateRangeString = InitialDateRangeString;
 exports.InputCheckBox = InputCheckBox;
 exports.InputColor = InputColor;
 exports.InputDate = InputDate;
@@ -4817,22 +4831,8 @@ exports.arrayIDMapsForArrayWithID = arrayIDMapsForArrayWithID;
 exports.arrayMapWithMapIDIndex = arrayMapWithMapIDIndex;
 exports.checkDeps = checkDeps;
 exports.customRangeName = customRangeName;
-exports.defaultRange = defaultRange;
-exports.defaultRangeLast4Weeks = defaultRangeLast4Weeks;
-exports.defaultRangeLastMonth = defaultRangeLastMonth;
-exports.defaultRangeString = defaultRangeString;
-exports.defaultRangeStrings = defaultRangeStrings;
-exports.defaultRangeStringsReport = defaultRangeStringsReport;
-exports.defaultRangeStringsReportQuarterly = defaultRangeStringsReportQuarterly;
-exports.defaultRangeWeek = defaultRangeWeek;
-exports.defaultRangeYear = defaultRangeYear;
-exports.defaultRanges = defaultRanges;
-exports.defaultRangesReport = defaultRangesReport;
-exports.defaultRangesReportQuarterly = defaultRangesReportQuarterly;
 exports.getStorage = getStorage;
 exports.initialActivityOverlayState = initialActivityOverlayState;
-exports.initialDateRange = initialDateRange;
-exports.initialDateRangeString = initialDateRangeString;
 exports.initialMenuBackItem = initialMenuBackItem;
 exports.initialMessageBoxState = initialMessageBoxState;
 exports.initialSortProperties = initialSortProperties;

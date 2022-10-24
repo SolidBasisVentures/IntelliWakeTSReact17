@@ -15,8 +15,8 @@ export interface IDateRange {
     start: Moment;
     end: Moment;
 }
-export declare const initialDateRange: IDateRange;
-export declare const initialDateRangeString: IDateRangeString;
+export declare const InitialDateRange: () => IDateRange;
+export declare const InitialDateRangeString: IDateRangeString;
 interface IPropsCalendar {
     month: Moment;
     startSelected: Moment;
@@ -39,41 +39,41 @@ export interface IPropsDateRange {
     rightAlign?: boolean;
 }
 export declare const DateRange: (props: IPropsDateRange) => JSX.Element;
-export declare const defaultRanges: IDateRange[];
-export declare const defaultRangeStrings: IDateRangeString[];
-export declare const defaultRangesReport: IDateRange[];
-export declare const defaultRangeStringsReport: IDateRangeString[];
-export declare const defaultRangesReportQuarterly: IDateRange[];
-export declare const defaultRangeStringsReportQuarterly: IDateRangeString[];
+export declare const DefaultRanges: () => IDateRange[];
+export declare const DefaultRangeStrings: () => IDateRangeString[];
+export declare const DefaultRangesReport: () => IDateRange[];
+export declare const DefaultRangeStringsReport: () => IDateRangeString[];
+export declare const DefaultRangesReportQuarterly: () => IDateRange[];
+export declare const DefaultRangeStringsReportQuarterly: () => IDateRangeString[];
 /**
  * Default to this month
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-export declare const defaultRange: IDateRange;
+export declare const DefaultRange: () => IDateRange;
 /**
  * Default to last month
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-export declare const defaultRangeLastMonth: IDateRange;
+export declare const DefaultRangeLastMonth: () => IDateRange;
 /**
  * Default to this week
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it
  */
-export declare const defaultRangeWeek: IDateRange;
+export declare const DefaultRangeWeek: () => IDateRange;
 /**
  * Default to last 4 weeks
  *
  * Use DateRangeToString(defaultRangeLast4Weeks) to get a string of it
  */
-export declare const defaultRangeLast4Weeks: IDateRange;
+export declare const DefaultRangeLast4Weeks: () => IDateRange;
 /**
  * Default to this year
  *
  * Use DateRangeToString(defaultRangeYear) to get a string of it
  */
-export declare const defaultRangeYear: IDateRange;
-export declare const defaultRangeString: IDateRangeString;
+export declare const DefaultRangeYear: () => IDateRange;
+export declare const DefaultRangeString: () => IDateRangeString;
 export {};
