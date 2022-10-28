@@ -4468,8 +4468,8 @@ const MasterDetailListGroup = (props) => {
                                 !!listGroupItem.faProps &&
                                     React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
                                 listGroupItem.linkNode,
-                                React__default["default"].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor, className: 'float-end small text-white border-round ml-2' }),
-                                listGroupItem.counter !== undefined && (React__default["default"].createElement(Badge, { color: listGroupItem.counterColor, className: 'float-end small text-white border-round ml-2' }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) :
+                                React__default["default"].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor, className: 'float-end small text-white border-round ms-2' }),
+                                listGroupItem.counter !== undefined && (React__default["default"].createElement(Badge, { color: listGroupItem.counterColor, className: 'float-end small text-white border-round ms-2' }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) :
                                     React__default["default"].createElement(Spinner, { size: 'xs' }))))
                             :
                                 React__default["default"].createElement(MDLink, { hidden: listGroupItem.collapsed, tag: 'li', id: listGroupItem.id, panel: !listGroupItem.plainText ? listGroupItem.panelURLCalc : undefined, onClick: (_e = listGroupItem.linkClick) !== null && _e !== void 0 ? _e : undefined, className: ClassNames({
@@ -4482,8 +4482,8 @@ const MasterDetailListGroup = (props) => {
                                     !!listGroupItem.faProps &&
                                         React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ fixedWidth: true }, listGroupItem.faProps)),
                                     listGroupItem.linkNode,
-                                    React__default["default"].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor, className: 'float-end small text-white border-round ml-2' }),
-                                    listGroupItem.counter !== undefined && (React__default["default"].createElement(Badge, { color: listGroupItem.counterColor, className: 'float-end small text-white border-round ml-2' }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) :
+                                    React__default["default"].createElement(BadgeItem, { badge: listGroupItem.badge, color: listGroupItem.badgeColor, className: 'float-end small text-white border-round ms-2' }),
+                                    listGroupItem.counter !== undefined && (React__default["default"].createElement(Badge, { color: listGroupItem.counterColor, className: 'float-end small text-white border-round ms-2' }, listGroupItem.counter !== null ? intelliwaketsfoundation.ToDigits(listGroupItem.counter, 0) :
                                         React__default["default"].createElement(Spinner, { size: 'xs' }))))));
                 }),
                 props.mdMasterBottomNode),

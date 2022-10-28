@@ -156,11 +156,11 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 													{listGroupItem.linkNode}
 													<BadgeItem badge={listGroupItem.badge}
 													           color={listGroupItem.badgeColor}
-													           className='float-end small text-white border-round ml-2' />
+													           className='float-end small text-white border-round ms-2' />
 													{listGroupItem.counter !== undefined && (
 															<Badge
 																	color={listGroupItem.counterColor}
-																	className='float-end small text-white border-round ml-2'>
+																	className='float-end small text-white border-round ms-2'>
 																{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) :
 																		<Spinner size='xs' />}
 															</Badge>
@@ -187,11 +187,11 @@ export const MasterDetailListGroup = (props: IMasterDetailListGroupProps) => {
 													{listGroupItem.linkNode}
 													<BadgeItem badge={listGroupItem.badge}
 													           color={listGroupItem.badgeColor}
-													           className='float-end small text-white border-round ml-2' />
+													           className='float-end small text-white border-round ms-2' />
 													{listGroupItem.counter !== undefined && (
 															<Badge
 																	color={listGroupItem.counterColor}
-																	className='float-end small text-white border-round ml-2'>
+																	className='float-end small text-white border-round ms-2'>
 																{listGroupItem.counter !== null ? ToDigits(listGroupItem.counter, 0) :
 																		<Spinner size='xs' />}
 															</Badge>
