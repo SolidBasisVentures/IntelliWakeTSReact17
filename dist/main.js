@@ -1388,8 +1388,8 @@ const Dropdown = (props) => {
         return items;
     }, []);
     const dropdownMenuStyle = React.useMemo(() => {
-        var _a;
-        const style = (_a = props.menuStyle) !== null && _a !== void 0 ? _a : { maxHeight: '60vh' };
+        var _a, _b;
+        const style = (_a = props.menuStyle) !== null && _a !== void 0 ? _a : { maxHeight: (_b = props.maxHeight) !== null && _b !== void 0 ? _b : '80vh' };
         if (props.maxWidthAction)
             style.maxWidth = props.maxWidthAction;
         return style;

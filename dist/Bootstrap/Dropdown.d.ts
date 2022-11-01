@@ -36,6 +36,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
     noCaret?: boolean;
     menuStyle?: CSSProperties;
     maxWidth?: string;
+    maxHeight?: string;
     maxWidthAction?: string | false;
     allowWrap?: boolean;
     ddActions?: IDDAction[] | (() => IDDAction[]);

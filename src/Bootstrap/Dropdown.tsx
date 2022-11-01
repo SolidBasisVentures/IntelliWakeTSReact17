@@ -45,6 +45,7 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 	noCaret?: boolean
 	menuStyle?: CSSProperties
 	maxWidth?: string
+	maxHeight?: string
 	maxWidthAction?: string | false
 	allowWrap?: boolean
 	ddActions?: IDDAction[] | (() => IDDAction[])
@@ -53,12 +54,12 @@ export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 export const Dropdown = (props: IWDropdownProps) => {
 	const hasOpened = useRef(false)
 	const [isOpen, setIsOpen] = useState<boolean>(props.isOpen ?? false)
-	
+
 	interface IHeaderGroup {
 		headerGroup: ReactNode | undefined
 		ddActions: IDDAction[]
 	}
-	
+
 	const visibleHeaderGroups = useMemo<IHeaderGroup[]>(
 		() =>
 			!props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
@@ -67,50 +68,50 @@ export const Dropdown = (props: IWDropdownProps) => {
 					headerGroup: ddAction.headerGroup,
 					ddActions: []
 				}
-				
+
 				nextHeaderGroup.ddActions = [...nextHeaderGroup.ddActions, ddAction]
-				
+
 				return [...result.filter(res => res.headerGroup !== nextHeaderGroup.headerGroup), nextHeaderGroup]
 			}, [] as IHeaderGroup[]),
 		[props.ddActions]
 	)
-	
+
 	const showFAProps = useMemo(() => visibleHeaderGroups.some((hg) => hg.ddActions.some(ddAction => !!ddAction.faProps)), [visibleHeaderGroups])
-	
+
 	const TagToUse = props.tag ?? !!props.inNavbar ? 'li' : ('div' as React.ReactType)
-	
+
 	const isControlled = props.isOpen !== undefined
-	
+
 	const actualIsOpen = isControlled ? !!props.isOpen : isOpen
-	
+
 	const externalClick = (e: any) => {
 		if (actualIsOpen) {
 			e.stopPropagation()
-			
+
 			if (!!props.toggle) {
 				props.toggle(e)
 			}
-			
+
 			if (!isControlled) {
 				setIsOpen(false)
 			}
 		}
 	}
-	
+
 	const externalEsc = (e: any) => {
 		if (e.keyCode === KEY_ESCAPE && actualIsOpen) {
 			e.stopPropagation()
-			
+
 			if (!!props.toggle) {
 				props.toggle(e)
 			}
-			
+
 			if (!isControlled) {
 				setIsOpen(false)
 			}
 		}
 	}
-	
+
 	useEffect(() => {
 		window.addEventListener('click', externalClick)
 		window.addEventListener('keydown', externalEsc)
@@ -119,7 +120,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 			window.removeEventListener('keydown', externalEsc)
 		}
 	})
-	
+
 	let classes = props.className ?? ''
 	if (!!props.direction) classes += ` drop${props.direction}`
 	classes +=
@@ -131,32 +132,32 @@ export const Dropdown = (props: IWDropdownProps) => {
 			'navbar-nav': !!props.inNavbar,
 			'nav-item': !!props.nav
 		})
-	
+
 	if (actualIsOpen) hasOpened.current = true
-	
+
 	const buttonStyle = useMemo<React.CSSProperties>(() => {
 		let items: React.CSSProperties = {}
-		
+
 		if (!!props.nav || !!props.inNavbar) {
 			items.background = 'none'
 			items.border = 'none'
 		}
-		
+
 		if (!!props.maxWidth) items.maxWidth = props.maxWidth
-		
+
 		return items
 	}, [])
-	
+
 	const dropdownMenuStyle = useMemo<React.CSSProperties>(() => {
-		const style: React.CSSProperties = props.menuStyle ?? {maxHeight: '60vh'}
-		
+		const style: React.CSSProperties = props.menuStyle ?? {maxHeight: props.maxHeight ?? '80vh'}
+
 		if (props.maxWidthAction) style.maxWidth = props.maxWidthAction
-		
+
 		return style
 	}, [])
-	
+
 	if (!props.children && visibleHeaderGroups.length === 0) return null
-	
+
 	return (
 		<TagToUse
 			{...OmitProperty(
@@ -203,11 +204,11 @@ export const Dropdown = (props: IWDropdownProps) => {
 				}
 				onClick={(e: any) => {
 					// e.stopPropagation()
-					
+
 					if (!!props.toggle) {
 						props.toggle(e)
 					}
-					
+
 					if (!isControlled) {
 						setIsOpen((prevState) => !prevState)
 					}
@@ -228,11 +229,11 @@ export const Dropdown = (props: IWDropdownProps) => {
 				})} dropdown-menu ${props.menuClassName ?? ''}`.trim()}
 				onClick={(e: any) => {
 					e.stopPropagation()
-					
+
 					if (!!props.toggle) {
 						props.toggle(e)
 					}
-					
+
 					if (!isControlled) {
 						setIsOpen((prevState) => !prevState)
 					}
@@ -255,7 +256,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 										header={!!ddAction.header}
 										onClick={e => {
 											if (!!ddAction.noClose) e.stopPropagation()
-											
+
 											if (!!ddAction.action) ddAction.action()
 										}}>
 										{showFAProps && (
