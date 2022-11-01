@@ -1396,7 +1396,7 @@ const Dropdown = (props) => {
     }, []);
     if (!props.children && visibleHeaderGroups.length === 0)
         return null;
-    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxWidthAction'), { className: classes }),
+    return (React__default["default"].createElement(TagToUse, Object.assign({}, intelliwaketsfoundation.OmitProperty(props, 'tag', 'disabled', 'direction', 'ddActions', 'block', 'isOpen', 'nav', 'toggle', 'inNavbar', 'right', 'buttonLabel', 'buttonFAProps', 'buttonClassName', 'menuClassName', 'noCaret', 'size', 'color', 'outline', 'className', 'menuStyle', 'maxWidth', 'maxHeight', 'maxWidthAction'), { className: classes }),
         React__default["default"].createElement(Button, { color: (_d = props.color) !== null && _d !== void 0 ? _d : (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined), block: props.block, size: props.size, outline: props.outline, disabled: props.disabled, className: (props.allowWrap ? '' : 'text-nowrap ') +
                 (!!props.nav || !!props.inNavbar
                     ? undefined
@@ -1429,7 +1429,8 @@ const Dropdown = (props) => {
             visibleHeaderGroups.map((headerGroup, hg_idx) => {
                 var _a;
                 return (React__default["default"].createElement(React.Fragment, { key: `${hg_idx}-${(_a = headerGroup.headerGroup) !== null && _a !== void 0 ? _a : 'NULL'}` },
-                    !!headerGroup.headerGroup && React__default["default"].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
+                    !!headerGroup.headerGroup &&
+                        React__default["default"].createElement(DropdownItem, { header: true }, headerGroup.headerGroup),
                     headerGroup.ddActions.map((ddAction, dd_idx) => {
                         var _a, _b;
                         return (React__default["default"].createElement(DropdownItem, { className: ((_a = ddAction.className) !== null && _a !== void 0 ? _a : '') + (!!ddAction.color ? ` text-${ddAction.color}` : ''), key: `${hg_idx}-${(_b = headerGroup.headerGroup) !== null && _b !== void 0 ? _b : 'NULL'}-${dd_idx}-${ddAction.title}`, active: ddAction.active, disabled: !!ddAction.disabled || !ddAction.action, divider: !!ddAction.divider, header: !!ddAction.header, onClick: e => {

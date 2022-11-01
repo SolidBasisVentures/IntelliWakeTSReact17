@@ -1959,6 +1959,10 @@ p {
   left: auto;
 }
 
+.dropup, .dropdown {
+  overflow-y: hidden;
+}
+
 .dropup .dropdown-menu {
   top: auto;
   bottom: 100%;

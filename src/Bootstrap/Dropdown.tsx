@@ -61,19 +61,19 @@ export const Dropdown = (props: IWDropdownProps) => {
 	}
 
 	const visibleHeaderGroups = useMemo<IHeaderGroup[]>(
-		() =>
-			!props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
-				(ddAction) => !ddAction.hidden).reduce<IHeaderGroup[]>((result, ddAction) => {
-				let nextHeaderGroup = result.find(hG => hG.headerGroup === ddAction.headerGroup) ?? {
-					headerGroup: ddAction.headerGroup,
-					ddActions: []
-				}
+			() =>
+					!props.ddActions ? [] : (typeof props.ddActions === 'function' ? props.ddActions() : props.ddActions).filter(
+							(ddAction) => !ddAction.hidden).reduce<IHeaderGroup[]>((result, ddAction) => {
+						let nextHeaderGroup = result.find(hG => hG.headerGroup === ddAction.headerGroup) ?? {
+							headerGroup: ddAction.headerGroup,
+							ddActions: []
+						}
 
-				nextHeaderGroup.ddActions = [...nextHeaderGroup.ddActions, ddAction]
+						nextHeaderGroup.ddActions = [...nextHeaderGroup.ddActions, ddAction]
 
-				return [...result.filter(res => res.headerGroup !== nextHeaderGroup.headerGroup), nextHeaderGroup]
-			}, [] as IHeaderGroup[]),
-		[props.ddActions]
+						return [...result.filter(res => res.headerGroup !== nextHeaderGroup.headerGroup), nextHeaderGroup]
+					}, [] as IHeaderGroup[]),
+			[props.ddActions]
 	)
 
 	const showFAProps = useMemo(() => visibleHeaderGroups.some((hg) => hg.ddActions.some(ddAction => !!ddAction.faProps)), [visibleHeaderGroups])
@@ -124,14 +124,14 @@ export const Dropdown = (props: IWDropdownProps) => {
 	let classes = props.className ?? ''
 	if (!!props.direction) classes += ` drop${props.direction}`
 	classes +=
-		' ' +
-		ClassNames({
-			dropdown: true,
-			show: actualIsOpen,
-			'd-inline-block': !props.block && !props.hidden,
-			'navbar-nav': !!props.inNavbar,
-			'nav-item': !!props.nav
-		})
+			' ' +
+			ClassNames({
+				dropdown: true,
+				show: actualIsOpen,
+				'd-inline-block': !props.block && !props.hidden,
+				'navbar-nav': !!props.inNavbar,
+				'nav-item': !!props.nav
+			})
 
 	if (actualIsOpen) hasOpened.current = true
 
@@ -159,122 +159,124 @@ export const Dropdown = (props: IWDropdownProps) => {
 	if (!props.children && visibleHeaderGroups.length === 0) return null
 
 	return (
-		<TagToUse
-			{...OmitProperty(
-				props,
-				'tag',
-				'disabled',
-				'direction',
-				'ddActions',
-				'block',
-				'isOpen',
-				'nav',
-				'toggle',
-				'inNavbar',
-				'right',
-				'buttonLabel',
-				'buttonFAProps',
-				'buttonClassName',
-				'menuClassName',
-				'noCaret',
-				'size',
-				'color',
-				'outline',
-				'className',
-				'menuStyle',
-				'maxWidth',
-				'maxWidthAction'
-			)}
-			className={classes}>
-			<Button
-				color={props.color ?? (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined)}
-				block={props.block}
-				size={props.size}
-				outline={props.outline}
-				disabled={props.disabled}
-				className={(props.allowWrap ? '' : 'text-nowrap ') +
-					(!!props.nav || !!props.inNavbar
-						? undefined
-						: `${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim())
-				}
-				classNameOverride={
-					!!props.nav || !!props.inNavbar
-						? `text-start nav-link ${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()
-						: undefined
-				}
-				onClick={(e: any) => {
-					// e.stopPropagation()
+			<TagToUse
+					{...OmitProperty(
+							props,
+							'tag',
+							'disabled',
+							'direction',
+							'ddActions',
+							'block',
+							'isOpen',
+							'nav',
+							'toggle',
+							'inNavbar',
+							'right',
+							'buttonLabel',
+							'buttonFAProps',
+							'buttonClassName',
+							'menuClassName',
+							'noCaret',
+							'size',
+							'color',
+							'outline',
+							'className',
+							'menuStyle',
+							'maxWidth',
+							'maxHeight',
+							'maxWidthAction'
+					)}
+					className={classes}>
+				<Button
+						color={props.color ?? (!!props.ddActions && !props.nav && !props.inNavbar ? 'secondary' : undefined)}
+						block={props.block}
+						size={props.size}
+						outline={props.outline}
+						disabled={props.disabled}
+						className={(props.allowWrap ? '' : 'text-nowrap ') +
+								(!!props.nav || !!props.inNavbar
+										? undefined
+										: `${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim())
+						}
+						classNameOverride={
+							!!props.nav || !!props.inNavbar
+									? `text-start nav-link ${props.buttonClassName ?? ''} ${!!props.noCaret ? '' : 'dropdown-toggle'}`.trim()
+									: undefined
+						}
+						onClick={(e: any) => {
+							// e.stopPropagation()
 
-					if (!!props.toggle) {
-						props.toggle(e)
+							if (!!props.toggle) {
+								props.toggle(e)
+							}
+
+							if (!isControlled) {
+								setIsOpen((prevState) => !prevState)
+							}
+						}}
+						style={buttonStyle}
+						// ref={buttonRef}
+				>
+					{!!props.maxWidth ?
+							<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} />
+							: (props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />)
 					}
+				</Button>
+				<div
+						tabIndex={-1}
+						className={`${ClassNames({
+							show: actualIsOpen,
+							'dropdown-menu-end': !!props.right
+						})} dropdown-menu ${props.menuClassName ?? ''}`.trim()}
+						onClick={(e: any) => {
+							e.stopPropagation()
 
-					if (!isControlled) {
-						setIsOpen((prevState) => !prevState)
-					}
-				}}
-				style={buttonStyle}
-				// ref={buttonRef}
-			>
-				{!!props.maxWidth ?
-					<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} />
-					: (props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />)
-				}
-			</Button>
-			<div
-				tabIndex={-1}
-				className={`${ClassNames({
-					show: actualIsOpen,
-					'dropdown-menu-end': !!props.right
-				})} dropdown-menu ${props.menuClassName ?? ''}`.trim()}
-				onClick={(e: any) => {
-					e.stopPropagation()
+							if (!!props.toggle) {
+								props.toggle(e)
+							}
 
-					if (!!props.toggle) {
-						props.toggle(e)
-					}
+							if (!isControlled) {
+								setIsOpen((prevState) => !prevState)
+							}
+						}}
+						style={dropdownMenuStyle}
+				>
+					{hasOpened.current && (
+							<>
+								{props.children}
+								{visibleHeaderGroups.map((headerGroup, hg_idx) => (
+										<Fragment key={`${hg_idx}-${headerGroup.headerGroup ?? 'NULL'}`}>
+											{!!headerGroup.headerGroup &&
+													<DropdownItem header>{headerGroup.headerGroup}</DropdownItem>}
+											{headerGroup.ddActions.map((ddAction, dd_idx) => (
+													<DropdownItem
+															className={(ddAction.className ?? '') + (!!ddAction.color ? ` text-${ddAction.color}` : '')}
+															key={`${hg_idx}-${headerGroup.headerGroup ?? 'NULL'}-${dd_idx}-${ddAction.title}`}
+															active={ddAction.active}
+															disabled={!!ddAction.disabled || !ddAction.action}
+															divider={!!ddAction.divider}
+															header={!!ddAction.header}
+															onClick={e => {
+																if (!!ddAction.noClose) e.stopPropagation()
 
-					if (!isControlled) {
-						setIsOpen((prevState) => !prevState)
-					}
-				}}
-				style={dropdownMenuStyle}
-			>
-				{hasOpened.current && (
-					<>
-						{props.children}
-						{visibleHeaderGroups.map((headerGroup, hg_idx) => (
-							<Fragment key={`${hg_idx}-${headerGroup.headerGroup ?? 'NULL'}`}>
-								{!!headerGroup.headerGroup && <DropdownItem header>{headerGroup.headerGroup}</DropdownItem>}
-								{headerGroup.ddActions.map((ddAction, dd_idx) => (
-									<DropdownItem
-										className={(ddAction.className ?? '') + (!!ddAction.color ? ` text-${ddAction.color}` : '')}
-										key={`${hg_idx}-${headerGroup.headerGroup ?? 'NULL'}-${dd_idx}-${ddAction.title}`}
-										active={ddAction.active}
-										disabled={!!ddAction.disabled || !ddAction.action}
-										divider={!!ddAction.divider}
-										header={!!ddAction.header}
-										onClick={e => {
-											if (!!ddAction.noClose) e.stopPropagation()
-
-											if (!!ddAction.action) ddAction.action()
-										}}>
-										{showFAProps && (
-											<FontAwesomeIcon
-												icon={faCog}
-												{...ddAction.faProps}
-												className={!ddAction.faProps || ddAction.faPropHidden ? 'invisible' : ''}
-												fixedWidth
-											/>
-										)}
-										{ddAction.title}
-									</DropdownItem>
+																if (!!ddAction.action) ddAction.action()
+															}}>
+														{showFAProps && (
+																<FontAwesomeIcon
+																		icon={faCog}
+																		{...ddAction.faProps}
+																		className={!ddAction.faProps || ddAction.faPropHidden ? 'invisible' : ''}
+																		fixedWidth
+																/>
+														)}
+														{ddAction.title}
+													</DropdownItem>
+											))}
+										</Fragment>
 								))}
-							</Fragment>
-						))}
-					</>
-				)}
-			</div>
-		</TagToUse>
+							</>
+					)}
+				</div>
+			</TagToUse>
 	)
 }
