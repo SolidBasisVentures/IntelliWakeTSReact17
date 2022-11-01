@@ -346,7 +346,7 @@
   /* Internet Explorer/Edge */
   user-select: none;
   /* Non-prefixed version, currently
-                                   supported by Chrome, Opera and Firefox */
+  								 supported by Chrome, Opera and Firefox */
 }
 
 @media (max-width: 575.98px) {
@@ -1964,6 +1964,7 @@ p {
   bottom: 100%;
   margin-top: 0;
   margin-bottom: 0.125rem;
+  overflow-y: auto;
 }
 
 .card-deck {
