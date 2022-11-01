@@ -1959,8 +1959,8 @@ p {
   left: auto;
 }
 
-.dropup, .dropdown {
-  overflow-y: hidden;
+.dropdown .dropdown-menu {
+  overflow-y: auto;
 }
 
 .dropup .dropdown-menu {
