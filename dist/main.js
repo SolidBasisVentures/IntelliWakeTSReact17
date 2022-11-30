@@ -1083,7 +1083,7 @@ const Spinner = (props) => {
     // if (!props.spin && !props.pulse) {
     // 	style.animation = 'fa-spin 0.75s infinite linear'
     // }
-    const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}`.trim();
+    const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}${props.invisible ? ' invisible' : ''}`.trim();
     return React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird }, props, { className: className }));
 };
 
