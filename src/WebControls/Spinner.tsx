@@ -1,6 +1,7 @@
 import React from 'react'
 import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawesome'
 import {faSpinnerThird} from '@fortawesome/pro-solid-svg-icons/faSpinnerThird'
+import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IIWSpinnerProps extends Partial<FontAwesomeIconProps> {
 	invisible?: boolean
@@ -15,5 +16,5 @@ export const Spinner = (props: IIWSpinnerProps) => {
 
 	const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}${props.invisible ? ' invisible' : ''}`.trim()
 
-	return <FontAwesomeIcon icon={faSpinnerThird} {...props} className={className} />
+	return <FontAwesomeIcon icon={faSpinnerThird} {...OmitProperty(props, 'invisible')} className={className} />
 }

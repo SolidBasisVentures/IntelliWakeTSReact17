@@ -1084,7 +1084,7 @@ const Spinner = (props) => {
     // 	style.animation = 'fa-spin 0.75s infinite linear'
     // }
     const className = `liveSpinner${(!props.spin && !props.pulse) ? ' liveSpinnerSpin' : ''}${props.invisible ? ' invisible' : ''}`.trim();
-    return React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird }, props, { className: className }));
+    return React__default["default"].createElement(reactFontawesome.FontAwesomeIcon, Object.assign({ icon: faSpinnerThird.faSpinnerThird }, intelliwaketsfoundation.OmitProperty(props, 'invisible'), { className: className }));
 };
 
 // noinspection SuspiciousTypeOfGuard
