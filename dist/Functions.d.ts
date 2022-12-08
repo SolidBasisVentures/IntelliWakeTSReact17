@@ -21,7 +21,7 @@ export declare const ElementCustomValue: (e: React.ChangeEvent<any>) => any;
 export declare type TClassNames = {
     [key: string]: boolean;
 };
-export declare const ClassNames: (classes: TClassNames) => string;
+export declare const ClassNames: (classes: TClassNames, fixedClasses?: string) => string;
 export declare const HasPathComponent: (search: string) => boolean;
 /**
  * Gets both "active" (before the ~) and "inactive" components of the current path name as string arrays

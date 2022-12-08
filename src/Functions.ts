@@ -33,7 +33,7 @@ export const KEY_STRING_ESCAPE = 'Escape'
 
 export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 	const target: any = e.target
-	
+
 	if (!!target) {
 		const returnValue = target['customValue'] === undefined ? target.value : target.customValue
 		if (!!target.classList && target.classList.contains('isNumber')) {
@@ -41,32 +41,32 @@ export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 		}
 		return returnValue
 	}
-	
+
 	return null
 }
 
 export type TClassNames = {[key: string]: boolean}
 
-export const ClassNames = (classes: TClassNames): string => {
-	return (Object.keys(classes).filter((classitem) => classes[classitem]) ?? []).join(' ')
+export const ClassNames = (classes: TClassNames, fixedClasses = ''): string => {
+	return `${(Object.keys(classes).filter((classitem) => classes[classitem]) ?? []).join(' ')} ${fixedClasses}`.trim()
 }
 
 export const HasPathComponent = (search: string): boolean => {
 	let searchCalc = search.toLowerCase()
-	
+
 	if (!searchCalc.startsWith('/')) {
 		searchCalc = '/' + searchCalc
 	}
-	
+
 	if (!searchCalc.endsWith('/')) {
 		searchCalc += '/'
 	}
-	
+
 	let pathName = window.location.pathname.toLowerCase()
 	if (!pathName.endsWith('/')) {
 		pathName += '/'
 	}
-	
+
 	return pathName.indexOf(searchCalc) >= 0
 }
 
@@ -82,9 +82,9 @@ export const GetPathComponentsActiveInactive = (): {active: string[], inactive: 
 			tildeFound = true
 			return results
 		}
-		
+
 		if (!component) return results
-		
+
 		if (tildeFound) {
 			return {
 				active: results.active,
@@ -115,23 +115,23 @@ export const GetPathComponentsActive = (): string[] => GetPathComponentsActiveIn
  */
 export const ActivePathComponentEndsWith = (search: string | undefined | null, includeReverseIndexes = 1): boolean => {
 	if (!search) return false
-	
+
 	const actives = GetPathComponentsActive()
-	
+
 	return actives.some((active, idx) => idx >= (actives.length - includeReverseIndexes) && active.toLowerCase() === search.toLowerCase())
 }
 
 export const GetPathComponentAfter = (search: string | undefined | null): string | undefined => {
 	if (!search) return undefined
-	
+
 	let searchCalc = search.toLowerCase()
-	
+
 	if (!searchCalc.endsWith('/')) {
 		searchCalc += '/'
 	}
-	
+
 	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
-	
+
 	if (startPos >= 0) {
 		const after = window.location.pathname.substr(startPos + searchCalc.length)
 		const slashPos = after.toLowerCase().indexOf('/')
@@ -146,20 +146,20 @@ export const GetPathComponentAfter = (search: string | undefined | null): string
 
 export const GetPathComponentAt = (search: string | undefined | null, toEnd = true): string | undefined => {
 	if (!search) return undefined
-	
+
 	let searchCalc = search.toLowerCase()
-	
+
 	if (!searchCalc.startsWith('/')) {
 		searchCalc = '/' + searchCalc
 	}
-	
+
 	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
-	
+
 	if (startPos >= 0) {
 		let result = window.location.pathname.substr(startPos + 1)
-		
+
 		if (toEnd) return result
-		
+
 		const slashPos = result.indexOf('/')
 		if (slashPos >= 0) {
 			return result.substring(0, slashPos)
@@ -167,31 +167,31 @@ export const GetPathComponentAt = (search: string | undefined | null, toEnd = tr
 			return result
 		}
 	}
-	
+
 	return undefined
 }
 
 export const GetPathThrough = (search: string | undefined | null): string | undefined => {
 	if (!search) return undefined
-	
+
 	let searchCalc = search.toLowerCase()
-	
+
 	const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/')
-	
+
 	if (startPosSlash >= 0) {
 		return window.location.pathname.substr(0, startPosSlash + searchCalc.length)
 	}
-	
+
 	const startPosNoSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc)
-	
+
 	if (startPosNoSlash >= 0) {
 		const possibleComplete = window.location.pathname.substr(0, startPosNoSlash + searchCalc.length)
-		
+
 		if (possibleComplete.length === window.location.pathname.length) {
 			return possibleComplete
 		}
 	}
-	
+
 	return undefined
 }
 
@@ -227,17 +227,17 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 		if (sel) {
 			// unselect any element in the page
 			sel.removeAllRanges()
-			
+
 			const elsNoCopy = ref.current.getElementsByClassName('noCopy')
 			for (let el of elsNoCopy) {
 				el.classList.add('noCopyActive')
 			}
-			
+
 			const elsOnlyCopy = ref.current.getElementsByClassName('onlyCopy')
 			for (let el of elsOnlyCopy) {
 				el.classList.add('onlyCopyActive')
 			}
-			
+
 			// let ths = ref.current.getElementsByTagName('th') as any[]
 			// for (let i = 0; i < ths.length; i++) {
 			// 	ths[i].setAttribute('copyuserselect', ths[i].style.userSelect)
@@ -266,7 +266,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				hrs[i].setAttribute('copyuserdisplay', hrs[i].style.display)
 				hrs[i].style.display = 'none'
 			}
-			
+
 			if (tryFormatted) {
 				try {
 					range.selectNode(ref.current as any)
@@ -279,11 +279,11 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				range.selectNodeContents(ref.current as any)
 				sel.addRange(range)
 			}
-			
+
 			document.execCommand('copy')
-			
+
 			sel.removeAllRanges()
-			
+
 			// for (let i = 0; i < ths.length; i++) {
 			// 	ths[i].style.userSelect = ths[i].getAttribute('copyuserselect')
 			// 	ths[i].removeAttribute('copyuserselect')
@@ -303,11 +303,11 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 			for (let el of elsNoCopy) {
 				el.classList.remove('noCopyActive')
 			}
-			
+
 			for (let el of elsOnlyCopy) {
 				el.classList.remove('onlyCopyActive')
 			}
-			
+
 			for (let i = 0; i < brs.length; i++) {
 				brs[i].style.display = brs[i].getAttribute('display')
 				brs[i].removeAttribute('copyuserdisplay')
@@ -316,7 +316,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				hrs[i].style.display = hrs[i].getAttribute('display')
 				hrs[i].removeAttribute('copyuserdisplay')
 			}
-			
+
 			return true
 		}
 	}
@@ -330,11 +330,11 @@ export const TableIDToExcel = (tableID: string, fileName?: string, appendDateTim
 	// const dataType = 'application/vnd.ms-excel'
 	const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 	const tableSelect = document.getElementById(tableID) as any
-	
+
 	let tableHTML = tableSelect.outerHTML //.replace(/ /g, '%20')
-	
+
 	tableHTML = ReplaceAll('<br>', ' ', tableHTML)
-	
+
 	let a = document.createElement('a')
 	const blob = new Blob([tableHTML], {type: dataType})
 	a.href = URL.createObjectURL(blob)
@@ -385,11 +385,11 @@ export const SizeAtMax = (size: TBootStrapExtendedSizes): number => {
 
 export const useCombinedRefs = <T>(...refs: (LegacyRef<T> | null)[]): MutableRefObject<T | undefined> | null => {
 	const targetRef = React.useRef<T>()
-	
+
 	React.useEffect(() => {
 		refs.forEach((ref: any) => {
 			if (!ref) return
-			
+
 			if (typeof ref === 'function') {
 				ref(targetRef.current)
 			} else {
@@ -397,6 +397,6 @@ export const useCombinedRefs = <T>(...refs: (LegacyRef<T> | null)[]): MutableRef
 			}
 		})
 	}, [refs])
-	
+
 	return targetRef
 }

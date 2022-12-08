@@ -568,9 +568,9 @@ const ElementCustomValue = (e) => {
     }
     return null;
 };
-const ClassNames = (classes) => {
+const ClassNames = (classes, fixedClasses = '') => {
     var _a;
-    return ((_a = Object.keys(classes).filter((classitem) => classes[classitem])) !== null && _a !== void 0 ? _a : []).join(' ');
+    return `${((_a = Object.keys(classes).filter((classitem) => classes[classitem])) !== null && _a !== void 0 ? _a : []).join(' ')} ${fixedClasses}`.trim();
 };
 const HasPathComponent = (search) => {
     let searchCalc = search.toLowerCase();
