@@ -17,7 +17,7 @@ export function InputTel<T>(props: IProps<T>) {
 	const faIconToShow = useMemo((): null | IconProp => {
 		if (!props.showFAIcon) return null
 
-		if (props.showFAIcon === true) return faPhone
+		if (props.showFAIcon === true) return faPhone as IconProp
 
 		return props.showFAIcon as IconProp
 	}, [props.showFAIcon])

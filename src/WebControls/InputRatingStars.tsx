@@ -1,4 +1,4 @@
-import {SizeProp} from '@fortawesome/fontawesome-svg-core'
+import {IconProp, SizeProp} from '@fortawesome/fontawesome-svg-core'
 import {faStar as faStarOn} from '@fortawesome/pro-solid-svg-icons'
 import {faStar as faStarOff} from '@fortawesome/pro-regular-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -20,86 +20,86 @@ export const InputRatingStars = <T, >(props: IIWRatingStarsProps<T>) => {
 	const isMouseDown = useRef(false)
 	const starValues = useMemo(() => [1, 2, 3, 4, 5], [])
 	const [localValue, setLocalValue] = useState<number | null>(props.value)
-	
+
 	useEffect(() => setLocalValue(props.value), [props.value])
-	
+
 	const editable = !props.plainText && !!props.changeValue
-	
+
 	const globalMouseUp = useCallback(() => {
 		isMouseDown.current = false
 	}, [])
-	
+
 	useEffect(() => {
 		document.addEventListener('mouseup', globalMouseUp)
-		
+
 		return () => {
 			document.removeEventListener('mouseup', globalMouseUp)
 		}
 	}, [globalMouseUp])
-	
+
 	const mouseEventValue = useCallback(
-		(e: React.MouseEvent<HTMLButtonElement>, value: number): number | null => {
-			if (value === 1 && props.allowNull) {
-				const bounding = e.currentTarget.getBoundingClientRect()
-				if (e.clientX - bounding.x < bounding.width / 2) return null
-			}
-			
-			return value
-		},
-		[props.allowNull]
-	)
-	
-	const mouseEvent = useCallback(
-		(e: React.MouseEvent<HTMLButtonElement>, value: number) => {
-			if (isMouseDown.current && editable) {
-				const newValue = mouseEventValue(e, value)
-				if (localValue !== newValue) setLocalValue(newValue)
-			}
-		},
-		[editable, localValue, mouseEventValue]
-	)
-	
-	const iconSize = useMemo<SizeProp>(() => props.size ?? 'lg', [props.size])
-	
-	const buttonSize = useMemo<'sm' | 'lg'>(() => props.buttonSize ?? (['xs', 'sm', '1x'] as SizeProp[]).includes(iconSize) ? 'sm' : 'lg', [iconSize, props.buttonSize])
-	
-	return (
-		<ButtonGroup className="inputRatingStars"
-			onMouseLeave={() => {
-				if (isMouseDown.current && localValue !== props.value) {
-					setLocalValue(props.value)
+			(e: React.MouseEvent<HTMLButtonElement>, value: number): number | null => {
+				if (value === 1 && props.allowNull) {
+					const bounding = e.currentTarget.getBoundingClientRect()
+					if (e.clientX - bounding.x < bounding.width / 2) return null
 				}
-			}}>
-			{starValues.map(starValue => (
-				<Button
-					color='link'
-					className='py-0'
-					key={starValue}
-					onMouseDown={e => {
-						if (editable) {
-							isMouseDown.current = true
-							mouseEvent(e, starValue)
-						}
-					}}
-					size={buttonSize}
-					onMouseMove={e => {
-						if (editable) {
-							mouseEvent(e, starValue)
-						}
-					}}
-					onMouseUp={e => {
-						if (editable && props.changeValue) {
-							const newValue = mouseEventValue(e, starValue)
-							if (props.value !== newValue) props.changeValue(newValue, props.name)
-						}
-					}} tabIndex={-1}>
-					<FontAwesomeIcon
-						icon={!!localValue && starValue <= localValue ? faStarOn : faStarOff}
-						style={{color: !!localValue && starValue <= localValue ? 'gold' : 'gray'}}
-						size={iconSize}
-					/>
-				</Button>
-			))}
-		</ButtonGroup>
+
+				return value
+			},
+			[props.allowNull]
+	)
+
+	const mouseEvent = useCallback(
+			(e: React.MouseEvent<HTMLButtonElement>, value: number) => {
+				if (isMouseDown.current && editable) {
+					const newValue = mouseEventValue(e, value)
+					if (localValue !== newValue) setLocalValue(newValue)
+				}
+			},
+			[editable, localValue, mouseEventValue]
+	)
+
+	const iconSize = useMemo<SizeProp>(() => props.size ?? 'lg', [props.size])
+
+	const buttonSize = useMemo<'sm' | 'lg'>(() => props.buttonSize ?? (['xs', 'sm', '1x'] as SizeProp[]).includes(iconSize) ? 'sm' : 'lg', [iconSize, props.buttonSize])
+
+	return (
+			<ButtonGroup className='inputRatingStars'
+			             onMouseLeave={() => {
+				             if (isMouseDown.current && localValue !== props.value) {
+					             setLocalValue(props.value)
+				             }
+			             }}>
+				{starValues.map(starValue => (
+						<Button
+								color='link'
+								className='py-0'
+								key={starValue}
+								onMouseDown={e => {
+									if (editable) {
+										isMouseDown.current = true
+										mouseEvent(e, starValue)
+									}
+								}}
+								size={buttonSize}
+								onMouseMove={e => {
+									if (editable) {
+										mouseEvent(e, starValue)
+									}
+								}}
+								onMouseUp={e => {
+									if (editable && props.changeValue) {
+										const newValue = mouseEventValue(e, starValue)
+										if (props.value !== newValue) props.changeValue(newValue, props.name)
+									}
+								}} tabIndex={-1}>
+							<FontAwesomeIcon
+									icon={(!!localValue && starValue <= localValue ? faStarOn : faStarOff) as IconProp}
+									style={{color: !!localValue && starValue <= localValue ? 'gold' : 'gray'}}
+									size={iconSize}
+							/>
+						</Button>
+				))}
+			</ButtonGroup>
 	)
 }

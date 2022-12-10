@@ -5,6 +5,7 @@ import {faSearch} from '@fortawesome/pro-regular-svg-icons'
 import {InputGroup} from '../Bootstrap/InputGroup'
 import {InputGroupText} from '../Bootstrap/InputGroupText'
 import {useCombinedRefs} from '../Functions'
+import {IconProp} from '@fortawesome/fontawesome-svg-core'
 
 export interface IPropsInputSearch {
 	initialValue?: string
@@ -40,11 +41,11 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 	const [currentText, setCurrentText] = useState('')
 	const innerRef = React.useRef<HTMLInputElement>(null)
 	const combinedRef = useCombinedRefs<HTMLInputElement>(ref, innerRef)
-	
+
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value ?? ''
 		setCurrentText(value)
-		
+
 		if (!!props.triggerDelayAmount) {
 			clearTimeout(searchTimeout.current)
 			searchTimeout.current = setTimeout(() => {
@@ -54,41 +55,41 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 			props.triggerSearchText(value)
 		}
 	}
-	
+
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			clearTimeout(searchTimeout.current)
 			triggerChange(currentText, true)
 		}
-		
+
 		if (!!props.onKeyDown) {
 			props.onKeyDown(e)
 		}
 	}
-	
+
 	const handleOnBlur = () => {
 		clearTimeout(searchTimeout.current)
 		triggerChange()
 	}
-	
+
 	const triggerChange = (searchText?: string, force?: boolean) => {
 		const textToSearch = searchText ?? currentText
-		
+
 		if (!!force || textToSearch !== triggeredText.current) {
 			triggeredText.current = textToSearch
 			props.triggerSearchText(textToSearch)
 		}
 	}
-	
+
 	useEffect(() => {
 		setCurrentText(props.initialValue ?? '')
 	}, [props.initialValue])
-	
+
 	const handleOnFocus = (e: any) => {
 		if (!!props.onFocus) {
 			props.onFocus(e)
 		}
-		
+
 		if (!props.noSelectOnFocus) {
 			if (e.target?.select) {
 				e.target.select()
@@ -100,7 +101,7 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 			// }, 250)
 		}
 	}
-	
+
 	const inputProps: InputHTMLAttributes<HTMLInputElement> & {ref: any} = {
 		type: 'search',
 		inputMode: 'search',
@@ -129,46 +130,46 @@ export const InputSearch = forwardRef<HTMLInputElement, IPropsInputSearch>((prop
 		onFocus: handleOnFocus,
 		autoComplete: props.autoCompleteOn ? 'on' : `AC_${RandomString(12)}`
 	}
-	
+
 	return !!props.iconPrefix || !!props.reactPrefix || props.iconSuffix || props.reactSuffix ? (
-		<InputGroup className={`searchGroup ${props.inputGroupClass ?? ''} ${props.bordered ? '' : 'transparent'}`}>
-			{(!!props.iconPrefix || !!props.reactPrefix) && (
-				<InputGroupText
-					onClick={() => {
-						const innerRef = ref as any
-						if (!!innerRef?.current?.focus) innerRef.current.focus()
-					}}>
-					{props.iconPrefix !== undefined ? (
-						typeof props.iconPrefix === 'boolean' ? (
-							<FontAwesomeIcon icon={faSearch} />
-						) : (
-							<FontAwesomeIcon {...props.iconPrefix} />
-						)
-					) : (
-						props.reactPrefix
-					)}
-				</InputGroupText>
-			)}
-			<input {...inputProps} />
-			{(!!props.iconSuffix || !!props.reactSuffix) && (
-				<InputGroupText
-					onClick={() => {
-						const innerRef = ref as any
-						if (!!innerRef?.current?.focus) innerRef.current.focus()
-					}}>
-					{props.iconSuffix !== undefined ? (
-						typeof props.iconSuffix === 'boolean' ? (
-							<FontAwesomeIcon icon={faSearch} />
-						) : (
-							<FontAwesomeIcon {...props.iconSuffix} />
-						)
-					) : (
-						props.reactSuffix
-					)}
-				</InputGroupText>
-			)}
-		</InputGroup>
+			<InputGroup className={`searchGroup ${props.inputGroupClass ?? ''} ${props.bordered ? '' : 'transparent'}`}>
+				{(!!props.iconPrefix || !!props.reactPrefix) && (
+						<InputGroupText
+								onClick={() => {
+									const innerRef = ref as any
+									if (!!innerRef?.current?.focus) innerRef.current.focus()
+								}}>
+							{props.iconPrefix !== undefined ? (
+									typeof props.iconPrefix === 'boolean' ? (
+											<FontAwesomeIcon icon={faSearch as IconProp} />
+									) : (
+											<FontAwesomeIcon {...props.iconPrefix} />
+									)
+							) : (
+									props.reactPrefix
+							)}
+						</InputGroupText>
+				)}
+				<input {...inputProps} />
+				{(!!props.iconSuffix || !!props.reactSuffix) && (
+						<InputGroupText
+								onClick={() => {
+									const innerRef = ref as any
+									if (!!innerRef?.current?.focus) innerRef.current.focus()
+								}}>
+							{props.iconSuffix !== undefined ? (
+									typeof props.iconSuffix === 'boolean' ? (
+											<FontAwesomeIcon icon={faSearch as IconProp} />
+									) : (
+											<FontAwesomeIcon {...props.iconSuffix} />
+									)
+							) : (
+									props.reactSuffix
+							)}
+						</InputGroupText>
+				)}
+			</InputGroup>
 	) : (
-		<input {...inputProps} />
+			<input {...inputProps} />
 	)
 })

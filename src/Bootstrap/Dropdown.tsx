@@ -6,6 +6,7 @@ import {FontAwesomeIcon, FontAwesomeIconProps} from '@fortawesome/react-fontawes
 import {faCog} from '@fortawesome/pro-regular-svg-icons'
 import {DropdownItem} from './DropdownItem'
 import {EllipsesTruncate} from '../WebControls/EllipsesTruncate'
+import {IconProp} from '@fortawesome/fontawesome-svg-core'
 
 export type Direction = 'up' | 'down' | 'left' | 'right'
 
@@ -218,8 +219,9 @@ export const Dropdown = (props: IWDropdownProps) => {
 						// ref={buttonRef}
 				>
 					{!!props.maxWidth ?
-							<EllipsesTruncate text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />} />
-							: (props.buttonLabel ?? <FontAwesomeIcon icon={faCog} />)
+							<EllipsesTruncate
+									text={props.buttonLabel ?? <FontAwesomeIcon icon={faCog as IconProp} />} />
+							: (props.buttonLabel ?? <FontAwesomeIcon icon={faCog as IconProp} />)
 					}
 				</Button>
 				<div
@@ -263,7 +265,7 @@ export const Dropdown = (props: IWDropdownProps) => {
 															}}>
 														{showFAProps && (
 																<FontAwesomeIcon
-																		icon={faCog}
+																		icon={faCog as IconProp}
 																		{...ddAction.faProps}
 																		className={!ddAction.faProps || ddAction.faPropHidden ? 'invisible' : ''}
 																		fixedWidth
