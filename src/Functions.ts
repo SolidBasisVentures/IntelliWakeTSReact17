@@ -1,6 +1,5 @@
 import React, {LegacyRef, MutableRefObject} from 'react'
-import {CleanNumber, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
-import {MomentFormatString} from './Moment'
+import {CleanNumber, DateFormatAny, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
 
 export const KEY_UP_ARROW = 38
 export const KEY_DOWN_ARROW = 40
@@ -45,7 +44,7 @@ export const ElementCustomValue = (e: React.ChangeEvent<any>): any => {
 	return null
 }
 
-export type TClassNames = {[key: string]: boolean}
+export type TClassNames = { [key: string]: boolean }
 
 export const ClassNames = (classes: TClassNames, fixedClasses = ''): string => {
 	return `${(Object.keys(classes).filter((classitem) => classes[classitem]) ?? []).join(' ')} ${fixedClasses}`.trim()
@@ -75,9 +74,9 @@ export const HasPathComponent = (search: string): boolean => {
  *
  * @constructor
  */
-export const GetPathComponentsActiveInactive = (): {active: string[], inactive: string[]} => {
+export const GetPathComponentsActiveInactive = (): { active: string[], inactive: string[] } => {
 	let tildeFound = false
-	return window.location.pathname.split('/').reduce<{active: string[], inactive: string[]}>((results, component) => {
+	return window.location.pathname.split('/').reduce<{ active: string[], inactive: string[] }>((results, component) => {
 		if (component === '~') {
 			tildeFound = true
 			return results
@@ -199,10 +198,10 @@ export const CaptureGPS = (): Promise<GeolocationPosition | null> => {
 	return new Promise(async (resolve) => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
-				function(position) {
+				function (position) {
 					resolve(position)
 				},
-				function() {
+				function () {
 					resolve(null)
 				}
 			)
@@ -325,7 +324,7 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 
 export const TableIDToExcel = (tableID: string, fileName?: string, appendDateTime = true) => {
 	const downloadName = `${fileName ?? tableID}${
-		appendDateTime ? `-${MomentFormatString(new Date(), 'YYYY-MM-DD_HH-mm-ss')}.xls` : ''
+		appendDateTime ? `-${DateFormatAny('YYYY-MM-DD_HH-mm-ss', 'now')}.xls` : ''
 	}`
 	// const dataType = 'application/vnd.ms-excel'
 	const dataType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

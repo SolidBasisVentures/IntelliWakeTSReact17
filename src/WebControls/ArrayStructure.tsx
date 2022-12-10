@@ -1,6 +1,7 @@
 import {ISortProperties, SetSort} from './ArrayManipulators'
 import React from 'react'
 import {
+	DateFormatAny,
 	ToCurrency,
 	ToCurrencyBlank,
 	ToCurrencyDash,
@@ -9,7 +10,6 @@ import {
 	ToDigitsDash
 } from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames, TBootStrapExtendedSizes, TBootStrapSizes} from '../Functions'
-import moment from 'moment-timezone'
 
 /**
  * Functions to write Table rows and columns
@@ -70,7 +70,7 @@ export const FormatValue = (value: any | null | undefined, column: IArrayColumn)
 	if (column.dayjsTSFormat) {
 		if (value) {
 			if (!isNaN(parseInt(value))) {
-				value = moment(value).format(column.dayjsTSFormat)
+				value = DateFormatAny(column.dayjsTSFormat, value)
 			}
 		} else {
 			value = null

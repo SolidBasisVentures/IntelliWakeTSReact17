@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {InputSelect, IPropsSelect} from './InputSelect'
 import {HandleChangeValue, IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {IANAZoneAbbr, TimeZoneOlsons} from '../Moment'
+import {IANAZoneAbbr, TimeZoneOlsonsAmerica} from '@solidbasisventures/intelliwaketsfoundation'
 
 export function InputTimeZone<T>(props: IIWInputProps<T>) {
 	const inputProps = useMemo(() => {
@@ -18,10 +18,10 @@ export function InputTimeZone<T>(props: IIWInputProps<T>) {
 	}, [props])
 
 	const timeZonesList = useMemo(() => {
-		let tzItems = TimeZoneOlsons()
+		let tzItems = TimeZoneOlsonsAmerica()
 
-		if (!!props.value && !tzItems.map((tzItem) => tzItem.olson).includes(props.value as string)) {
-			tzItems.push({zone: '', olson: props.value as string, hours: ''})
+		if (!!props.value && !tzItems.includes(props.value as string)) {
+			tzItems.push(props.value as string)
 		}
 
 		return tzItems
@@ -30,46 +30,46 @@ export function InputTimeZone<T>(props: IIWInputProps<T>) {
 	const valueTZ = useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.value as string)), [props.value])
 
 	return (
-		<>
-			{!!props.plainText ? (
-				!!props.plainTextURL ? (
-					<Link to={props.plainTextURL}>
-						<div className="form-control-plaintext" {...props.plainTextProps}>
-							{!!props.value ? (
-								<>
-									{valueTZ}:<span className="text-muted"> {props.value}</span>
-								</>
-							) : (
-								<span className="text-danger">No Timezone set</span>
-							)}
-						</div>
-					</Link>
-				) : (
-					<div className="form-control-plaintext" {...props.plainTextProps}>
-						{!!props.value ? (
-							<>
-								{valueTZ}:<span className="text-muted"> {props.value}</span>
-							</>
+			<>
+				{!!props.plainText ? (
+						!!props.plainTextURL ? (
+								<Link to={props.plainTextURL}>
+									<div className='form-control-plaintext' {...props.plainTextProps}>
+										{!!props.value ? (
+												<>
+													{valueTZ}:<span className='text-muted'> {props.value}</span>
+												</>
+										) : (
+												<span className='text-danger'>No Timezone set</span>
+										)}
+									</div>
+								</Link>
 						) : (
-							<span className="text-danger">No Timezone set</span>
-						)}
-					</div>
-				)
-			) : (
-				<>
-					<InputSelect
-						{...inputProps}
-						isStringOrNull
-						onChange={(e: any) => HandleChangeValue(e, props.changeValue, props.onChange)}>
-						<option />
-						{timeZonesList.map((tzItem) => (
-							<option key={tzItem.olson} value={tzItem.olson}>
-								{tzItem.zone}: {tzItem.olson}
-							</option>
-						))}
-					</InputSelect>
-				</>
-			)}
-		</>
+								<div className='form-control-plaintext' {...props.plainTextProps}>
+									{!!props.value ? (
+											<>
+												{valueTZ}:<span className='text-muted'> {props.value}</span>
+											</>
+									) : (
+											<span className='text-danger'>No Timezone set</span>
+									)}
+								</div>
+						)
+				) : (
+						<>
+							<InputSelect
+									{...inputProps}
+									isStringOrNull
+									onChange={(e: any) => HandleChangeValue(e, props.changeValue, props.onChange)}>
+								<option />
+								{timeZonesList.map((tzItem) => (
+										<option key={tzItem} value={tzItem}>
+											{IANAZoneAbbr('now', tzItem)}: {tzItem}
+										</option>
+								))}
+							</InputSelect>
+						</>
+				)}
+			</>
 	)
 }

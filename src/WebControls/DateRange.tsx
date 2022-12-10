@@ -2,8 +2,14 @@ import React, {useEffect, useRef, useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCalendarAlt} from '@fortawesome/pro-regular-svg-icons'
 import {ClassNames} from '../Functions'
-import moment, {Moment} from 'moment-timezone'
-import {MomentDateString} from '../Moment'
+import {
+	DateCompare,
+	DateDayOfWeek,
+	DateFormatAny,
+	DateIsWeekend,
+	DateOnly,
+	DateWeekNumber
+} from '@solidbasisventures/intelliwaketsfoundation'
 
 export const customRangeName = 'Custom Range'
 
@@ -13,69 +19,45 @@ export interface IDateRangeString {
 	end: string
 }
 
-export const CreateCustomDateRange = (dateStart: Moment | string, dateEnd: Moment | string): IDateRangeString => {
+export const CreateCustomDateRange = (dateStart: string, dateEnd: string): IDateRangeString => {
 	return {
 		name: customRangeName,
-		start: DateRangeDateMomentToString(dateStart),
-		end: DateRangeDateMomentToString(dateEnd)
+		start: dateStart,
+		end: dateEnd
 	}
 }
 
-export const DateRangeDateMomentToString = (date: Moment | string): string => typeof date === 'string' ? date : MomentDateString(date.startOf('day')) ?? moment().format('YYYY-MM-DD')
-
-export const DateRangeDateStringToMoment = (date: Moment | string): Moment => typeof date === 'string' ? moment(date) ?? moment() : date
-
-export const DateRangeToMoment = (dateRange: IDateRange | IDateRangeString): IDateRange => ({
-	name: dateRange.name,
-	start: DateRangeDateStringToMoment(dateRange.start),
-	end: DateRangeDateStringToMoment(dateRange.end)
-})
-
-export const DateRangeToString = (dateRange: IDateRange | IDateRangeString): IDateRangeString => ({
-	name: dateRange.name,
-	start: DateRangeDateMomentToString(dateRange.start),
-	end: DateRangeDateMomentToString(dateRange.end)
-})
-
-export interface IDateRange {
-	name: string,
-	start: Moment,
-	end: Moment
-}
-
-export const InitialDateRange = (): IDateRange => ({
+export const InitialDateRangeString = (): IDateRangeString => ({
 	name: customRangeName,
-	start: moment(),
-	end: moment()
+	start: DateOnly('now'),
+	end: DateOnly('now')
 })
-
-export const InitialDateRangeString: IDateRangeString = DateRangeToString(InitialDateRange())
 
 interface IPropsCalendar {
-	month: Moment,
-	startSelected: Moment,
-	endSelected: Moment,
-	dateClick: ((date: Moment) => void),
+	month: string,
+	startSelected: string,
+	endSelected: string,
+	dateClick: ((date: string) => void),
 	prevMonth?: Function,
 	nextMonth?: Function
 }
 
 export const DateRangeCalendar = (props: IPropsCalendar) => {
-	let moments: (Moment[])[] = []
+	let dates: (string[])[] = []
 
-	let firstDay = props.month.clone().startOf('month')
-	let currentDay = firstDay.clone().startOf('week')
-	let lastDay = props.month.clone().endOf('month')
+	let firstDay = DateOnly(props.month, {month: 'StartOf'})
+	let currentDay = DateOnly(props.month, {week: 'StartOf'})
+	let lastDay = DateOnly(props.month, {month: 'EndOf'})
 
-	while (currentDay.isBefore(lastDay)) {
-		let week: Moment[] = []
+	while (DateCompare(currentDay, 'IsBefore', lastDay, 'day')) {
+		let week: string[] = []
 
 		do {
-			week.push(currentDay.clone())
-			currentDay.add(1, 'day')
-		} while (currentDay.weekday() > 0)
+			week.push(currentDay)
+			currentDay = DateOnly(currentDay, {day: 1})
+		} while ((DateDayOfWeek(currentDay) ?? 0) > 0)
 
-		moments.push(week)
+		dates.push(week)
 	}
 
 	const prev = () => {
@@ -100,7 +82,7 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 							:
 							<th />
 					}
-					<th colSpan={5} className='month'>{firstDay.format('MMM YYYY')}</th>
+					<th colSpan={5} className='month'>{DateFormatAny('MMM YYYY', firstDay)}</th>
 					{props.nextMonth !== undefined
 							?
 							<th className='next available' onClick={next}><span> </span></th>
@@ -119,18 +101,23 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 				</tr>
 				</thead>
 				<tbody>
-				{moments.map((week, idx: number) =>
+				{dates.map((week, idx: number) =>
 						<tr key={idx}>
 							{week.map((day) =>
 									<td className={
-											(day.format('dd') === 'Sa' || day.format('dd') === 'Su' ? 'weekend ' : '') +
-											((day.isBefore(firstDay, 'day') || day.isAfter(lastDay, 'day')) && !day.isBetween(props.startSelected, props.endSelected, 'day', '[]') ? 'off ends ' : '') +
-											(day.isSame(props.startSelected, 'day') ? 'active start-date ' : '') +
-											(day.isBetween(props.startSelected, props.endSelected, 'day') ? 'in-range ' : '') +
-											(day.isSame(props.endSelected, 'day') ? 'active end-date ' : '') +
-											'available '
-									} key={day.format()} onClick={() => props.dateClick(day)}>
-										{day.format('D')}
+										ClassNames({
+											weekend: DateIsWeekend(day),
+											'off ends': (DateCompare(day, 'IsBefore', firstDay, 'day')
+															|| DateCompare(day, 'IsAfter', lastDay, 'day'))
+													&& !(DateCompare(day, 'IsSameOrAfter', props.startSelected, 'day')
+															&& DateCompare(day, 'IsSameOrBefore', props.endSelected, 'day')),
+											'active start-date': DateCompare(day, 'IsSame', props.startSelected, 'day'),
+											'in-range': DateCompare(day, 'IsAfter', props.startSelected, 'day')
+													&& DateCompare(day, 'IsBefore', props.endSelected, 'day'),
+											'active end-date': DateCompare(day, 'IsSame', props.endSelected, 'day')
+										}, 'available')
+									} key={day} onClick={() => props.dateClick(day)}>
+										{DateFormatAny('D', day)}
 									</td>
 							)}
 						</tr>
@@ -141,10 +128,9 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 }
 
 export interface IPropsDateRange {
-	selectRange?: ((range: IDateRange) => void),
 	selectRangeString?: ((range: IDateRangeString) => void),
-	presetRanges?: (IDateRange | IDateRangeString)[],
-	defaultRange?: IDateRange | IDateRangeString,
+	presetRanges?: IDateRangeString[],
+	defaultRange?: IDateRangeString,
 	showCaret?: boolean,
 	faIcon?: any | undefined | null,
 	borderless?: boolean,
@@ -157,17 +143,17 @@ export const DateRange = (props: IPropsDateRange) => {
 	const nodeParent: any = useRef()
 	const nodeBody: any = useRef()
 
-	const getStartRange = (): IDateRange => {
+	const getStartRange = (): IDateRangeString => {
 		if (props.defaultRange && props.defaultRange.name) {
 			if (props.defaultRange.name === customRangeName) {
-				return DateRangeToMoment(props.defaultRange)
+				return props.defaultRange
 			}
 
 			if (!!props.presetRanges) {
-				const presetRanges = props.presetRanges.map(range => DateRangeToMoment(range))
+				const presetRanges = props.presetRanges
 
 				if (presetRanges.length > 0) {
-					const foundItem = presetRanges.find((item: IDateRange) => props.defaultRange!.name === item.name)
+					const foundItem = presetRanges.find((item: IDateRangeString) => props.defaultRange!.name === item.name)
 					if (foundItem) {
 						return foundItem
 					}
@@ -180,22 +166,22 @@ export const DateRange = (props: IPropsDateRange) => {
 			}
 		}
 
-		if (props.presetRanges && props.presetRanges.length > 0) return DateRangeToMoment(props.presetRanges[0])
+		if (props.presetRanges && props.presetRanges.length > 0) return props.presetRanges[0]
 
-		return InitialDateRange()
+		return InitialDateRangeString()
 	}
 
 	const [state, setState] = useState({
 		isOpen: false,
 		selectedRange: getStartRange(),
 		selectedText: '',
-		prevPreset: null as IDateRange | null,
-		customRange: InitialDateRange(),
+		prevPreset: null as IDateRangeString | null,
+		customRange: InitialDateRangeString(),
 		monthToShow: getStartRange().start,
 		applyToFirst: true
 	})
 
-	const getCurrentRange = (): IDateRange => {
+	const getCurrentRange = (): IDateRangeString => {
 		if (state.selectedRange) return state.selectedRange
 
 		return getStartRange()
@@ -203,8 +189,8 @@ export const DateRange = (props: IPropsDateRange) => {
 
 	const currentRange = getCurrentRange()
 
-	const rangeDescription = (range: IDateRange): string => {
-		return (range.name === customRangeName ? (moment(range.start).format('L') + ' - ' + moment(range.end).format('L')) : range.name)
+	const rangeDescription = (range: IDateRangeString): string => {
+		return (range.name === customRangeName ? (DateOnly(range.start, {formatLocale: true}) + ' - ' + DateOnly(range.end, {formatLocale: true})) : range.name)
 	}
 
 	const setOpen = (e: any) => {
@@ -219,18 +205,16 @@ export const DateRange = (props: IPropsDateRange) => {
 		}
 	}
 
-	const handlePresetClick = (range: IDateRange) => {
+	const handlePresetClick = (range: IDateRangeString) => {
 		setState({...state, isOpen: false, selectedRange: range})
 
-		if (!!props.selectRange) props.selectRange(range)
-		if (!!props.selectRangeString) props.selectRangeString(DateRangeToString(range))
+		if (!!props.selectRangeString) props.selectRangeString(range)
 	}
 
 	const handleCustomApplyClick = () => {
 		setState({...state, isOpen: false, selectedRange: state.customRange})
 
-		if (!!props.selectRange) props.selectRange(state.customRange)
-		if (!!props.selectRangeString) props.selectRangeString(DateRangeToString(state.customRange))
+		if (!!props.selectRangeString) props.selectRangeString(state.customRange)
 	}
 
 	const handleCustomClick = () => {
@@ -245,7 +229,7 @@ export const DateRange = (props: IPropsDateRange) => {
 		setState({...state, prevPreset: null, customRange: customRange})
 	}
 
-	const handleDateClick = (day: Moment) => {
+	const handleDateClick = (day: string) => {
 		let newState = {...state}
 
 		if (newState.applyToFirst) {
@@ -254,7 +238,7 @@ export const DateRange = (props: IPropsDateRange) => {
 			newState.customRange.end = day
 		}
 
-		if (newState.customRange.start.isAfter(newState.customRange.end)) {
+		if (DateCompare(newState.customRange.start, 'IsAfter', newState.customRange.end, 'day')) {
 			[newState.customRange.start, newState.customRange.end] = [newState.customRange.end, newState.customRange.start]
 		}
 
@@ -263,15 +247,9 @@ export const DateRange = (props: IPropsDateRange) => {
 		setState(newState)
 	}
 
-	const prevMonth = () => {
-		const prev = state.monthToShow.clone().subtract(1, 'month')
-		setState({...state, monthToShow: prev})
-	}
+	const prevMonth = () => setState({...state, monthToShow: DateOnly(state.monthToShow, {month: -1})})
 
-	const nextMonth = () => {
-		const next = state.monthToShow.clone().add(1, 'month')
-		setState({...state, monthToShow: next})
-	}
+	const nextMonth = () => setState({...state, monthToShow: DateOnly(state.monthToShow, {month: 1})})
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClick)
@@ -282,7 +260,7 @@ export const DateRange = (props: IPropsDateRange) => {
 
 	useEffect(() => {
 		if (!!props.defaultRange) {
-			setState({...state, selectedRange: DateRangeToMoment(props.defaultRange)})
+			setState({...state, selectedRange: props.defaultRange})
 		}
 	}, [props.defaultRange])
 
@@ -296,7 +274,7 @@ export const DateRange = (props: IPropsDateRange) => {
 				     ref={nodeBody}>
 					<div className={'ranges' + (state.prevPreset ? ' d-none' : '')}>
 						<ul>
-							{props.presetRanges!.map((preset: IDateRange, idx: number) =>
+							{props.presetRanges!.map((preset: IDateRangeString, idx: number) =>
 									<li key={idx} onClick={() => handlePresetClick(preset)}
 									    className={(preset.name === currentRange.name ? 'active' : '')}>
 										{preset.name}
@@ -332,145 +310,139 @@ export const DateRange = (props: IPropsDateRange) => {
 	)
 }
 
-export const DefaultRanges = (): IDateRange[] => [
+export const DefaultRangeStrings = (): IDateRangeString[] => [
 	{
-		name: 'This Week #' + moment().format('w'),
-		start: moment().startOf('week'),
-		end: moment().endOf('week')
+		name: `This Week #${DateWeekNumber('now')?.week ?? 0}`,
+		start: DateOnly('now', {week: 'StartOf'}),
+		end: DateOnly('now', {week: 'EndOf'})
 	},
 	{
-		name: 'Last Week #' + moment().subtract(1, 'week').format('w'),
-		start: moment().subtract(1, 'week').startOf('week'),
-		end: moment().subtract(1, 'week').endOf('week')
+		name: `Last Week #${DateWeekNumber('now', {week: -1})?.week ?? 0}`,
+		start: DateOnly('now', {weeks: -1, week: 'StartOf'}),
+		end: DateOnly('now', {weeks: -1, week: 'EndOf'})
 	},
 	{
 		name: 'Previous 4 Weeks',
-		start: moment().subtract(4, 'week').startOf('week'),
-		end: moment().subtract(1, 'week').endOf('week')
+		start: DateOnly('now', {weeks: -4, week: 'StartOf'}),
+		end: DateOnly('now', {weeks: -1, week: 'EndOf'})
 	},
 	{
 		name: 'This Month',
-		start: moment().startOf('month'),
-		end: moment().endOf('month')
+		start: DateOnly('now', {month: 'StartOf'}),
+		end: DateOnly('now', {month: 'EndOf'})
 	},
 	{
 		name: 'Last Month',
-		start: moment().subtract(1, 'month').startOf('month'),
-		end: moment().subtract(1, 'month').endOf('month')
+		start: DateOnly('now', {months: -1, month: 'StartOf'}),
+		end: DateOnly('now', {months: -1, month: 'EndOf'})
 	},
 	{
 		name: 'Last 7 Days',
-		start: moment().subtract(6, 'days').startOf('day'),
-		end: moment().endOf('day')
+		start: DateOnly('now', {days: -6}),
+		end: DateOnly('now')
 	},
 	{
 		name: 'Last 30 Days',
-		start: moment().subtract(29, 'days').startOf('day'),
-		end: moment().endOf('day')
+		start: DateOnly('now', {days: -30}),
+		end: DateOnly('now')
 	}
 ]
 
-export const DefaultRangeStrings = (): IDateRangeString[] => DefaultRanges().map(range => DateRangeToString(range))
-
-export const DefaultRangesReport = (): IDateRange[] => [
+export const DefaultRangeStringsReport = (): IDateRangeString[] => [
 	{
 		name: 'This Week',
-		start: moment().startOf('week'),
-		end: moment().endOf('week')
+		start: DateOnly('now', {week: 'StartOf'}),
+		end: DateOnly('now', {week: 'EndOf'})
 	},
 	{
 		name: 'Last Week',
-		start: moment().subtract(1, 'week').startOf('week'),
-		end: moment().subtract(1, 'week').endOf('week')
+		start: DateOnly('now', {weeks: -1, week: 'StartOf'}),
+		end: DateOnly('now', {weeks: -1, week: 'EndOf'})
 	},
 	{
 		name: 'This Month',
-		start: moment().startOf('month'),
-		end: moment().endOf('month')
+		start: DateOnly('now', {month: 'StartOf'}),
+		end: DateOnly('now', {month: 'EndOf'})
 	},
 	{
 		name: 'Last Month',
-		start: moment().subtract(1, 'month').startOf('month'),
-		end: moment().subtract(1, 'month').endOf('month')
+		start: DateOnly('now', {months: -1, month: 'StartOf'}),
+		end: DateOnly('now', {months: -1, month: 'EndOf'})
 	},
 	{
 		name: 'Year-to-Date',
-		start: moment().startOf('year'),
-		end: moment().endOf('year')
+		start: DateOnly('now', {year: 'StartOf'}),
+		end: DateOnly('now', {year: 'EndOf'})
 	},
 	{
 		name: 'Last Year',
-		start: moment().subtract(1, 'year').startOf('year'),
-		end: moment().subtract(1, 'year').endOf('year')
+		start: DateOnly('now', {years: -1, year: 'StartOf'}),
+		end: DateOnly('now', {years: -1, year: 'EndOf'})
 	}
 ]
 
-export const DefaultRangeStringsReport = (): IDateRangeString[] => DefaultRangesReport().map(range => DateRangeToString(range))
-
-export const DefaultRangesReportQuarterly = (): IDateRange[] => [
+export const DefaultRangeStringsReportQuarterly = (): IDateRangeString[] => [
 	{
 		name: 'This Month',
-		start: moment().startOf('month'),
-		end: moment().endOf('month')
+		start: DateOnly('now', {month: 'StartOf'}),
+		end: DateOnly('now', {month: 'EndOf'})
 	},
 	{
 		name: 'Last Month',
-		start: moment().subtract(1, 'month').startOf('month'),
-		end: moment().subtract(1, 'month').endOf('month')
+		start: DateOnly('now', {months: -1, month: 'StartOf'}),
+		end: DateOnly('now', {months: -1, month: 'EndOf'})
 	},
 	{
 		name: 'This Quarter',
-		start: moment().startOf('quarter'),
-		end: moment().endOf('quarter')
+		start: DateOnly('now', {quarter: 'StartOf'}),
+		end: DateOnly('now', {quarter: 'EndOf'})
 	},
 	{
 		name: 'Last Quarter',
-		start: moment().subtract(1, 'quarter').startOf('quarter'),
-		end: moment().subtract(1, 'quarter').endOf('quarter')
+		start: DateOnly('now', {quarters: -1, quarter: 'StartOf'}),
+		end: DateOnly('now', {quarters: -1, quarter: 'EndOf'})
 	},
 	{
 		name: '2 Quarters ago',
-		start: moment().subtract(2, 'quarter').startOf('quarter'),
-		end: moment().subtract(2, 'quarter').endOf('quarter')
+		start: DateOnly('now', {quarters: -2, quarter: 'StartOf'}),
+		end: DateOnly('now', {quarters: -2, quarter: 'EndOf'})
 	},
 	{
 		name: '3 Quarters ago',
-		start: moment().subtract(3, 'quarter').startOf('quarter'),
-		end: moment().subtract(3, 'quarter').endOf('quarter')
+		start: DateOnly('now', {quarters: -3, quarter: 'StartOf'}),
+		end: DateOnly('now', {quarters: -3, quarter: 'EndOf'})
 	},
 	{
 		name: '4 Quarters ago',
-		start: moment().subtract(4, 'quarter').startOf('quarter'),
-		end: moment().subtract(4, 'quarter').endOf('quarter')
+		start: DateOnly('now', {quarters: -4, quarter: 'StartOf'}),
+		end: DateOnly('now', {quarters: -4, quarter: 'EndOf'})
 	},
 	{
 		name: 'Year to Date',
-		start: moment().startOf('year'),
-		end: moment()
+		start: DateOnly('now', {year: 'StartOf'}),
+		end: DateOnly('now')
 	},
 	{
 		name: 'This Year',
-		start: moment().startOf('year'),
-		end: moment().endOf('year')
+		start: DateOnly('now', {year: 'StartOf'}),
+		end: DateOnly('now', {year: 'EndOf'})
 	},
 	{
 		name: 'Last Year',
-		start: moment().subtract(1, 'year').startOf('year'),
-		end: moment().subtract(1, 'year').endOf('year')
+		start: DateOnly('now', {years: -1, year: 'StartOf'}),
+		end: DateOnly('now', {years: -1, year: 'EndOf'})
 	}
 ]
-
-export const DefaultRangeStringsReportQuarterly = (): IDateRangeString[] => DefaultRangesReportQuarterly().map(range => DateRangeToString(range))
 
 /**
  * Default to this month
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-export const DefaultRange = (): IDateRange => ({
+export const DefaultRangeString = (): IDateRangeString => ({
 	name: 'This Month',
-	start: moment().startOf('month'),
-	end: moment().endOf('month')
+	start: DateOnly('now', {month: 'StartOf'}),
+	end: DateOnly('now', {month: 'EndOf'})
 })
 
 /**
@@ -478,10 +450,10 @@ export const DefaultRange = (): IDateRange => ({
  *
  * Use DateRangeToString(defaultRange) to get a string of it
  */
-export const DefaultRangeLastMonth = (): IDateRange => ({
+export const DefaultRangeLastMonth = (): IDateRangeString => ({
 	name: 'Last Month',
-	start: moment().subtract(1, 'month').startOf('month'),
-	end: moment().subtract(1, 'month').endOf('month')
+	start: DateOnly('now', {months: -1, month: 'StartOf'}),
+	end: DateOnly('now', {months: -1, month: 'EndOf'})
 })
 
 /**
@@ -489,10 +461,10 @@ export const DefaultRangeLastMonth = (): IDateRange => ({
  *
  * Use DateRangeToString(defaultRangeWeek) to get a string of it
  */
-export const DefaultRangeWeek = (): IDateRange => ({
+export const DefaultRangeWeek = (): IDateRangeString => ({
 	name: 'This Week',
-	start: moment().startOf('week'),
-	end: moment().endOf('week')
+	start: DateOnly('now', {week: 'StartOf'}),
+	end: DateOnly('now', {week: 'EndOf'})
 })
 
 /**
@@ -500,10 +472,10 @@ export const DefaultRangeWeek = (): IDateRange => ({
  *
  * Use DateRangeToString(defaultRangeLast4Weeks) to get a string of it
  */
-export const DefaultRangeLast4Weeks = (): IDateRange => ({
+export const DefaultRangeLast4Weeks = (): IDateRangeString => ({
 	name: 'Last 4 Weeks',
-	start: moment().subtract(3, 'week').startOf('week'),
-	end: moment().endOf('week')
+	start: DateOnly('now', {weeks: -3, week: 'StartOf'}),
+	end: DateOnly('now', {week: 'EndOf'})
 })
 
 /**
@@ -511,16 +483,8 @@ export const DefaultRangeLast4Weeks = (): IDateRange => ({
  *
  * Use DateRangeToString(defaultRangeYear) to get a string of it
  */
-export const DefaultRangeYear = (): IDateRange => ({
+export const DefaultRangeYear = (): IDateRangeString => ({
 	name: 'Year-to-Date',
-	start: moment().startOf('year'),
-	end: moment().endOf('year')
+	start: DateOnly('now', {year: 'StartOf'}),
+	end: DateOnly('now')
 })
-
-export const DefaultRangeString = () => DateRangeToString(DefaultRange())
-
-// DateRange.defaultProps = {
-// 	presetRanges: defaultRanges,
-// 	showCaret: true,
-// 	borderless: false
-// } as Partial<IPropsDateRange>

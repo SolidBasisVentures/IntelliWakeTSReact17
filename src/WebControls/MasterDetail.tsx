@@ -1,13 +1,10 @@
 import React, {ReactNode, useContext, useEffect, useMemo, useRef} from 'react'
 import {Redirect, useHistory} from 'react-router-dom'
-// AddMenuBackItem, CleanMenuBackItem,
-// import {useDispatch} from "react-redux";
 import {GetPathComponentAfter, GetPathThrough, SizeAtMin, TBootStrapExtendedSizes} from '../Functions'
 import {RandomString, ReplaceAll} from '@solidbasisventures/intelliwaketsfoundation'
 import {StyleControl} from './StyleControl'
 import {TBadgeValues} from '../Bootstrap/ListGroupItem'
 import {BadgeItem} from '../Bootstrap/BadgeItem'
-import moment from 'moment-timezone'
 import {SetterOrUpdater} from 'recoil'
 
 export interface MenuBackItem {
@@ -60,7 +57,7 @@ export interface IMasterDetailProps {
 export const MasterDetail = (props: IMasterDetailProps) => {
 	const lastRedirectTS = useRef<number | null>(null)
 	const mdContextParent_RAW = useContext(MDContext)
-	
+
 	const mdContextParent = mdContextParent_RAW.baseFullPath ? mdContextParent_RAW : undefined
 	// const basePath = mdContextParent_RAW.baseFullPath ?
 	//     mdContextParent_RAW.baseFullPath + props.mdPath
@@ -68,7 +65,7 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 	//     window.location.pathname.substr(0, window.location.pathname.indexOf(props.mdPath)) + props.mdPath;
 	const basePath = GetPathThrough(props.mdPath) ?? window.location.pathname + '/' + props.mdPath
 	const isOpen = window.location.pathname.length > basePath.length && GetPathComponentAfter(basePath) !== '~'
-	
+
 	const mdContext: IMDContext = {
 		breakAt: props.breakAt,
 		mdPath: props.mdPath,
@@ -78,16 +75,16 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 		parentMDContext: mdContextParent,
 		setMenuBackItemState: props.setMenuBackItemState
 	}
-	
+
 	const previousDashboardLastURL = window.sessionStorage.getItem(basePath + '-LastURL')
 	if (
-		props.rememberLast &&
-		!GetPathComponentAfter(basePath) &&
-		previousDashboardLastURL &&
-		previousDashboardLastURL !== window.location.pathname
+			props.rememberLast &&
+			!GetPathComponentAfter(basePath) &&
+			previousDashboardLastURL &&
+			previousDashboardLastURL !== window.location.pathname
 	) {
-		const currentTS = moment().valueOf()
-		
+		const currentTS = new Date().valueOf()
+
 		if (!lastRedirectTS.current || (currentTS - lastRedirectTS.current) > 2000) {
 			lastRedirectTS.current = currentTS
 			return <Redirect to={previousDashboardLastURL} />
@@ -99,11 +96,11 @@ export const MasterDetail = (props: IMasterDetailProps) => {
 		if (props.rememberLast) {
 			window.sessionStorage.setItem(basePath + '-LastURL', window.location.pathname)
 		}
-		
+
 		return (
-			<MDContext.Provider value={mdContext}>
-				<div className={(props.className ?? '') + ' masterDetail masterDetail-' + props.breakAt}>{props.children}</div>
-			</MDContext.Provider>
+				<MDContext.Provider value={mdContext}>
+					<div className={(props.className ?? '') + ' masterDetail masterDetail-' + props.breakAt}>{props.children}</div>
+				</MDContext.Provider>
 		)
 	}
 }
@@ -117,31 +114,31 @@ interface IPropsMaster {
 
 export const MDMaster = (props: IPropsMaster) => {
 	const mdContext = useContext(MDContext)
-	
+
 	const id = useMemo(() => `mdm-id-${RandomString(5)}`.toLowerCase(), [])
-	
+
 	let css: string | null = null
-	
+
 	if (props.width) {
 		css = `@media (min-width: ${SizeAtMin(mdContext.breakAt)}px) { #${id} {width: ${props.width}; min-width: ${
-			props.width
+				props.width
 		};}}`
 	}
-	
+
 	return (
-		<>
-			<StyleControl css={css} />
-			<div
-				className={
-					(!!props.includePrint ? '' : 'd-print-none ') +
-					props.className +
-					' masterDetailMaster' +
-					(mdContext.isOpen ? ' isOpen' : '')
-				}
-				id={id}>
-				{props.children}
-			</div>
-		</>
+			<>
+				<StyleControl css={css} />
+				<div
+						className={
+								(!!props.includePrint ? '' : 'd-print-none ') +
+								props.className +
+								' masterDetailMaster' +
+								(mdContext.isOpen ? ' isOpen' : '')
+						}
+						id={id}>
+					{props.children}
+				</div>
+			</>
 	)
 }
 
@@ -170,25 +167,25 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	const history = useHistory()
 	const mdContext = useContext(MDContext)
 	const selectedRow = useRef(null as any | null)
-	
+
 	const panelURLAddOn =
-		mdContext.baseFullPath +
-		(props.panel ? '/' + panelClean(props.panel) : '') +
-		(props.id ? '/' + props.id : '') +
-		(!!props.postPath ? '/' + props.postPath : '')
+			mdContext.baseFullPath +
+			(props.panel ? '/' + panelClean(props.panel) : '') +
+			(props.id ? '/' + props.id : '') +
+			(!!props.postPath ? '/' + props.postPath : '')
 	const linkActive =
-		(!props.blockActivate &&
-			props.panel &&
-			(window.location.pathname.startsWith(panelURLAddOn + '/') || window.location.pathname === panelURLAddOn)) ||
-		(!props.panel && window.location.pathname === panelURLAddOn)
-	
+			(!props.blockActivate &&
+					props.panel &&
+					(window.location.pathname.startsWith(panelURLAddOn + '/') || window.location.pathname === panelURLAddOn)) ||
+			(!props.panel && window.location.pathname === panelURLAddOn)
+
 	let displayProps = {...props}
 	let classNames: string[] = ['cursor-pointer']
 	if (displayProps.className) classNames.push(displayProps.className)
 	if (linkActive) classNames.push('active')
 	if (linkActive && props.activeClassName) classNames.push(props.activeClassName)
 	// if (!!props.badge || props.badge === null) classNames.push('d-flex justify-content-between align-items-center')
-	
+
 	displayProps.className = classNames.join(' ')
 	delete displayProps.postPath
 	delete displayProps.id
@@ -197,80 +194,80 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	delete displayProps.badgeColor
 	delete displayProps.badgeClass
 	delete displayProps.color
-	
+
 	const selectItem = () => {
 		if (!props.blockActivate) {
 			window.sessionStorage.removeItem(mdContext.baseFullPath + '-LastURL')
 			history.push(linkActive ? mdContext.baseFullPath : panelURLAddOn)
 		}
 	}
-	
+
 	useEffect(() => {
 		if (!!selectedRow.current) {
 			selectedRow.current?.scrollIntoView({block: 'nearest'})
-			
+
 			selectedRow.current = null
 		}
 	}, [props.children])
-	
+
 	switch (props.tag) {
 		case 'li':
 			return (
-				<li
-					{...displayProps}
-					onClick={() => {
-						if (!!props.onClick) {
-							if (props.onClick() === true) selectItem()
-						} else {
-							selectItem()
-						}
-					}}
-					onDoubleClick={props.onDoubleClick}
-					style={props.style}
-					title={props.title}
-					ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
-					{props.children}
-					<BadgeItem
-						badge={props.badge}
-						color={props.badgeColor}
-						className={'float-end ' + (props.badgeClass ?? '')}
-						style={{marginTop: '0.2rem'}}
-					/>
-				</li>
+					<li
+							{...displayProps}
+							onClick={() => {
+								if (!!props.onClick) {
+									if (props.onClick() === true) selectItem()
+								} else {
+									selectItem()
+								}
+							}}
+							onDoubleClick={props.onDoubleClick}
+							style={props.style}
+							title={props.title}
+							ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
+						{props.children}
+						<BadgeItem
+								badge={props.badge}
+								color={props.badgeColor}
+								className={'float-end ' + (props.badgeClass ?? '')}
+								style={{marginTop: '0.2rem'}}
+						/>
+					</li>
 			)
 		case 'tr':
 			return (
-				<tr
-					{...displayProps}
-					onClick={props.onClick ?? selectItem}
-					onDoubleClick={props.onDoubleClick}
-					style={props.style}
-					title={props.title}
-					ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
-					{props.children}
-				</tr>
+					<tr
+							{...displayProps}
+							onClick={props.onClick ?? selectItem}
+							onDoubleClick={props.onDoubleClick}
+							style={props.style}
+							title={props.title}
+							ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
+						{props.children}
+					</tr>
 			)
 		case 'div':
 			return (
-				<div
-					{...displayProps}
-					onClick={props.onClick ?? selectItem}
-					onDoubleClick={props.onDoubleClick}
-					style={props.style}
-					title={props.title}
-					ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
-					{props.children}
-				</div>
+					<div
+							{...displayProps}
+							onClick={props.onClick ?? selectItem}
+							onDoubleClick={props.onDoubleClick}
+							style={props.style}
+							title={props.title}
+							ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
+						{props.children}
+					</div>
 			)
 		default:
 			return (
-				<span
-					{...displayProps}
-					onClick={props.onClick ?? selectItem}
-					onDoubleClick={props.onDoubleClick}
-					style={props.style}
-					title={props.title}
-					ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
+					<span
+							{...displayProps}
+							onClick={props.onClick ?? selectItem}
+							onDoubleClick={props.onDoubleClick}
+							style={props.style}
+							title={props.title}
+							ref={!props.noAutoScroll && linkActive ? selectedRow : null}>
 					{props.children}
 				</span>
 			)
@@ -290,15 +287,15 @@ interface IPropsDetail {
 export const MDDetail = (props: IPropsDetail) => {
 	// const dispatch = useDispatch();
 	const mdContext = useContext(MDContext)
-	
+
 	const checkPath = mdContext.baseFullPath + '/' + panelClean(props.panel)
-	
+
 	const activated =
-		(props.panel &&
-			!props.hidden &&
-			props.panel === true || (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
-		(!props.panel && window.location.pathname === mdContext.baseFullPath)
-	
+			(props.panel &&
+					!props.hidden &&
+					props.panel === true || (window.location.pathname.startsWith(checkPath + '/') || window.location.pathname === checkPath)) ||
+			(!props.panel && window.location.pathname === mdContext.baseFullPath)
+
 	useEffect(() => {
 		if (activated) {
 			if (props.panel) {
@@ -307,7 +304,7 @@ export const MDDetail = (props: IPropsDetail) => {
 				}
 				mdContext.setMenuBackItemState((prevState) => {
 					const location = window.location.pathname
-					
+
 					const newMenuBackItem: MenuBackItem = {
 						menuBackActive: activated,
 						menuBackButtonTitle: props.backText ?? mdContext.backText ?? 'Back',
@@ -315,20 +312,20 @@ export const MDDetail = (props: IPropsDetail) => {
 						menuPageTitle: props.titleText,
 						menuDisplaySize: mdContext.breakAt
 					}
-					
+
 					return [...prevState, newMenuBackItem].filter((item) => {
 						return item.menuBackButtonURL.length < location.length
 					})
 				})
-				
+
 				// AddMenuBackItem(menuBackItem)(dispatch)
 			}
 		}
-		
+
 		return () => {
 			mdContext.setMenuBackItemState((prevState) => {
 				const location = window.location.pathname
-				
+
 				return [...prevState].filter((item) => {
 					return item.menuBackButtonURL.length < location.length
 				})
@@ -344,18 +341,18 @@ export const MDDetail = (props: IPropsDetail) => {
 		mdContext.baseFullPath,
 		mdContext.breakAt
 	])
-	
+
 	if (activated) {
 		return (
-			<div
-				className={
-					(props.className ?? '') +
-					' masterDetailDetail' +
-					(window.location.pathname === mdContext.baseFullPath ? ' hideWhenSmall' : '')
-				}
-				hidden={props.hidden}>
-				{props.children}
-			</div>
+				<div
+						className={
+								(props.className ?? '') +
+								' masterDetailDetail' +
+								(window.location.pathname === mdContext.baseFullPath ? ' hideWhenSmall' : '')
+						}
+						hidden={props.hidden}>
+					{props.children}
+				</div>
 		)
 	} else {
 		return null
