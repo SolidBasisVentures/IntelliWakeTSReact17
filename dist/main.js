@@ -2692,7 +2692,6 @@ function InputDate(props) {
     const handleInputChange = (e) => {
         var _a, _b, _c, _d, _e;
         nextDateValue.current = (_b = (_a = intelliwaketsfoundation.DateISO(e.target.value)) === null || _a === void 0 ? void 0 : _a.substring(0, 10)) !== null && _b !== void 0 ? _b : '';
-        console.log(e.target.value, nextDateValue.current, intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: 'UTC' }));
         setOverrideValue(e.target.value);
         if (intelliwaketsfoundation.CleanNumber((_c = nextDateValue.current) === null || _c === void 0 ? void 0 : _c.substring(0, 4)) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
@@ -2722,24 +2721,23 @@ function InputDate(props) {
     };
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
-        var _a, _b;
+        var _a, _b, _c;
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
-            let date = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', nextDateValue.current);
-            const enteredYear = intelliwaketsfoundation.CleanNumber(date === null || date === void 0 ? void 0 : date.substring(0, 4));
-            if (date) {
+            if (nextDateValue.current) {
+                const enteredYear = intelliwaketsfoundation.CleanNumber((_a = nextDateValue.current) === null || _a === void 0 ? void 0 : _a.substring(0, 4));
                 if (enteredYear < 100) {
                     const currentYear = new Date().getUTCFullYear();
                     const currentCentury = Math.floor(currentYear / 100) * 100;
                     let newYear = enteredYear + currentCentury;
                     if (newYear > currentYear + 20)
                         newYear -= 100;
-                    date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`;
+                    let date = `${newYear.toString().padStart(4, '0')}${nextDateValue.current.substring(4)}`;
                     if (props.changeValue) {
-                        props.changeValue(`${date} ${(_a = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _a !== void 0 ? _a : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                        props.changeValue(`${date} ${(_b = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _b !== void 0 ? _b : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                     }
                     if (props.changeValueLate) {
                         clearTimeout(changeTimeout.current);
-                        props.changeValueLate(`${date} ${(_b = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _b !== void 0 ? _b : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                        props.changeValueLate(`${date} ${(_c = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _c !== void 0 ? _c : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                     }
                     if (!!props.setChanges) {
                         props.setChanges(prevState => {

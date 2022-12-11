@@ -3,7 +3,6 @@ import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
 	CleanNumber,
 	DateFormat,
-	DateFormatAny,
 	DateISO,
 	DateOnlyNull,
 	OmitProperty,
@@ -42,8 +41,6 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateISO(e.target.value)?.substring(0, 10) ?? ''
-
-		console.log(e.target.value, nextDateValue.current, DateOnlyNull(e.target.value, {timezoneDisplay: 'UTC'}))
 
 		setOverrideValue(e.target.value)
 
@@ -99,16 +96,15 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 		// nextDateValue.current = MomentDateString(e.target.value) ?? ''
 
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
-			let date = DateFormatAny('YYYY-MM-DD', nextDateValue.current)
-			const enteredYear = CleanNumber(date?.substring(0, 4))
+			if (nextDateValue.current) {
+				const enteredYear = CleanNumber(nextDateValue.current?.substring(0, 4))
 
-			if (date) {
 				if (enteredYear < 100) {
 					const currentYear = new Date().getUTCFullYear()
 					const currentCentury = Math.floor(currentYear / 100) * 100
 					let newYear = enteredYear + currentCentury
 					if (newYear > currentYear + 20) newYear -= 100
-					date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`
+					let date = `${newYear.toString().padStart(4, '0')}${nextDateValue.current.substring(4)}`
 					if (props.changeValue) {
 						props.changeValue(
 								`${date} ${TimeOnly(props.value as string) ?? ''}`.trim() as any,
