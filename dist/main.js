@@ -2693,7 +2693,7 @@ function InputDate(props) {
         var _a, _b, _c, _d, _e, _f;
         nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        console.log('Year', (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear());
+        console.log(nextDateValue.current, 'Year', (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear());
         if (((_d = (_c = intelliwaketsfoundation.DateObject(e.target.value)) === null || _c === void 0 ? void 0 : _c.getFullYear()) !== null && _d !== void 0 ? _d : 0) > ((_e = props.validIfYearGreaterThan) !== null && _e !== void 0 ? _e : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_f = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _f !== void 0 ? _f : '')).trim();
             if (!!props.onChange) {
