@@ -1,10 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
-	CurrentTimeZone,
+	CleanNumber,
 	DateFormat,
-	DateObject,
-	DateOnlyNull,
+	DateFormatAny,
 	OmitProperty,
 	RandomString,
 	TimeOnly
@@ -27,7 +26,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'onBlur'))
 			, [props])
 
-	const inputValue = useMemo(() => DateOnlyNull(props.value, {timezoneDisplay: CurrentTimeZone()}) ?? '', [props.value])
+	const inputValue = useMemo(() => DateFormatAny('YYYY-MM-DD', props.value) ?? '', [props.value])
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
@@ -42,13 +41,13 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	}, [inputValue])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		nextDateValue.current = DateOnlyNull(e.target.value, {timezoneDisplay: CurrentTimeZone()}) ?? ''
+		nextDateValue.current = DateFormatAny('YYYY-MM-DD', e.target.value) ?? ''
 
-		console.log('HIC', e.target.value, nextDateValue.current, overrideValue)
+		console.log('HIC', e.target.value, nextDateValue.current, overrideValue, nextDateValue.current?.substring(0, 3))
 
 		setOverrideValue(e.target.value)
 
-		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 99)) {
+		if (CleanNumber(nextDateValue.current?.substring(0, 3)) > (props.validIfYearGreaterThan ?? 99)) {
 			const customValue: string | null = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
 
 			if (!!props.onChange) {
@@ -102,19 +101,21 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 		console.log('Blurring')
 
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
-			const dateObj = DateObject(nextDateValue.current)
-			const enteredYear = dateObj?.getUTCFullYear() ?? 0
+			let date = DateFormatAny('YYYY-MM-DD', nextDateValue.current)
+			const enteredYear = CleanNumber(date?.substring(0, 3))
 
-			if (dateObj) {
+			if (date) {
 				if (enteredYear < 100) {
 					const currentYear = new Date().getUTCFullYear()
 					const currentCentury = Math.floor(currentYear / 100) * 100
-					let newYear = dateObj.getUTCFullYear() + currentCentury
+					let newYear = enteredYear + currentCentury
 					if (newYear > currentYear + 20) newYear -= 100
-					dateObj.setUTCFullYear(newYear)
+					console.log('Pre', date, newYear)
+					date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`
+					console.log('Post', date)
 					if (props.changeValue) {
 						props.changeValue(
-								((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim() as any,
+								`${date} ${TimeOnly(props.value as string) ?? ''}`.trim() as any,
 								e.target.name as any,
 								(e.nativeEvent as any).shiftKey,
 								(e.nativeEvent as any).ctrlKey,
@@ -124,7 +125,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 					if (props.changeValueLate) {
 						clearTimeout(changeTimeout.current)
 						props.changeValueLate(
-								((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim() as any,
+								`${date} ${TimeOnly(props.value as string) ?? ''}`.trim() as any,
 								e.target.name as any,
 								(e.nativeEvent as any).shiftKey,
 								(e.nativeEvent as any).ctrlKey,
@@ -134,7 +135,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 					if (!!props.setChanges) {
 						props.setChanges(prevState => ({
 							...prevState,
-							[e.target.name as any]: ((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
+							[e.target.name as any]: `${date} ${TimeOnly(props.value as string) ?? ''}`.trim() as any
 						}))
 					}
 				}
@@ -176,7 +177,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 					<div className='form-control-plaintext' {...props.plainTextProps}>
 						{!!props.showTime && !!TimeOnly(props.value as string)
 								? DateFormat('LocalDateTime', props.value as string)
-								: DateOnlyNull(props.value as string, {formatLocale: true})}
+								: DateFormatAny('YYYY-MM-DD', props.value as string)}
 					</div>
 			) : (
 					<input

@@ -2678,7 +2678,7 @@ function InputDate(props) {
     const changeTimeout = React.useRef(setTimeout(() => {
     }, 100));
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'onBlur')), [props]);
-    const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateOnlyNull(props.value, { timezoneDisplay: intelliwaketsfoundation.CurrentTimeZone() })) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
+    const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', props.value)) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
     React.useEffect(() => {
         if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
             console.log('Effecting Last', lastDateValue.current, 'Next', nextDateValue.current, 'Input', inputValue);
@@ -2693,10 +2693,10 @@ function InputDate(props) {
     }, [inputValue]);
     const handleInputChange = (e) => {
         var _a, _b, _c, _d, _e;
-        nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: intelliwaketsfoundation.CurrentTimeZone() })) !== null && _a !== void 0 ? _a : '';
-        console.log('HIC', e.target.value, nextDateValue.current, overrideValue);
+        nextDateValue.current = (_a = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', e.target.value)) !== null && _a !== void 0 ? _a : '';
+        console.log('HIC', e.target.value, nextDateValue.current, overrideValue, (_b = nextDateValue.current) === null || _b === void 0 ? void 0 : _b.substring(0, 3));
         setOverrideValue(e.target.value);
-        if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
+        if (intelliwaketsfoundation.CleanNumber((_c = nextDateValue.current) === null || _c === void 0 ? void 0 : _c.substring(0, 3)) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
             if (!!props.onChange) {
                 e.target.customValue = customValue;
@@ -2724,30 +2724,32 @@ function InputDate(props) {
     };
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
-        var _a, _b, _c, _d, _e;
+        var _a, _b;
         console.log('Blurring');
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
-            const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
-            const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
-            if (dateObj) {
+            let date = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', nextDateValue.current);
+            const enteredYear = intelliwaketsfoundation.CleanNumber(date === null || date === void 0 ? void 0 : date.substring(0, 3));
+            if (date) {
                 if (enteredYear < 100) {
                     const currentYear = new Date().getUTCFullYear();
                     const currentCentury = Math.floor(currentYear / 100) * 100;
-                    let newYear = dateObj.getUTCFullYear() + currentCentury;
+                    let newYear = enteredYear + currentCentury;
                     if (newYear > currentYear + 20)
                         newYear -= 100;
-                    dateObj.setUTCFullYear(newYear);
+                    console.log('Pre', date, newYear);
+                    date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`;
+                    console.log('Post', date);
                     if (props.changeValue) {
-                        props.changeValue((((_b = intelliwaketsfoundation.DateOnlyNull(dateObj)) !== null && _b !== void 0 ? _b : '') + ' ' + ((_c = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _c !== void 0 ? _c : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                        props.changeValue(`${date} ${(_a = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _a !== void 0 ? _a : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                     }
                     if (props.changeValueLate) {
                         clearTimeout(changeTimeout.current);
-                        props.changeValueLate((((_d = intelliwaketsfoundation.DateOnlyNull(dateObj)) !== null && _d !== void 0 ? _d : '') + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
+                        props.changeValueLate(`${date} ${(_b = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _b !== void 0 ? _b : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                     }
                     if (!!props.setChanges) {
                         props.setChanges(prevState => {
-                            var _a, _b;
-                            return (Object.assign(Object.assign({}, prevState), { [e.target.name]: (((_a = intelliwaketsfoundation.DateOnlyNull(dateObj)) !== null && _a !== void 0 ? _a : '') + ' ' + ((_b = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _b !== void 0 ? _b : '')).trim() }));
+                            var _a;
+                            return (Object.assign(Object.assign({}, prevState), { [e.target.name]: `${date} ${(_a = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _a !== void 0 ? _a : ''}`.trim() }));
                         });
                     }
                 }
@@ -2771,7 +2773,7 @@ function InputDate(props) {
     const className = React.useMemo(() => !inputProps.className ? 'inputDate form-control' : `${inputProps.className} inputDate form-control`, [inputProps.className]);
     return (!!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.TimeOnly(props.value)
         ? intelliwaketsfoundation.DateFormat('LocalDateTime', props.value)
-        : intelliwaketsfoundation.DateOnlyNull(props.value, { formatLocale: true }))) : (React__default["default"].createElement("input", Object.assign({ type: 'date' }, inputProps, { className: className, 
+        : intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date' }, inputProps, { className: className, 
         // placeholder='yyyy-mm-dd'
         value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, onBlur: handleBlur, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` }))));
 }
