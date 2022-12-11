@@ -9,14 +9,14 @@ import {
 	TimeOnly
 } from '@solidbasisventures/intelliwaketsfoundation'
 
-interface IProps extends IIWInputProps<Record<string, any>, string | null> {
+interface IProps<T> extends IIWInputProps<T, string | null> {
 	showTime?: boolean
 	validIfYearGreaterThan?: number
 }
 
 const originalValue = ''
 
-export function InputDate(props: IProps) {
+export function InputDate<T>(props: IProps<T>) {
 	const lastDateValue = useRef(originalValue)
 	const nextDateValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
@@ -30,7 +30,7 @@ export function InputDate(props: IProps) {
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
-			console.log('Effecting 1', lastDateValue.current, nextDateValue.current, inputValue)
+			console.log('Effecting Last', lastDateValue.current, 'Next', nextDateValue.current, 'Input', inputValue)
 			lastDateValue.current = inputValue
 			nextDateValue.current = lastDateValue.current
 			setOverrideValue(lastDateValue.current)
@@ -48,7 +48,7 @@ export function InputDate(props: IProps) {
 		setOverrideValue(e.target.value)
 
 		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 99)) {
-			const customValue = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
+			const customValue: string | null = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
 
 			if (!!props.onChange) {
 				;(e.target as any).customValue = customValue

@@ -2681,7 +2681,7 @@ function InputDate(props) {
     const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateOnlyNull(props.value)) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
     React.useEffect(() => {
         if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
-            console.log('Effecting 1', lastDateValue.current, nextDateValue.current, inputValue);
+            console.log('Effecting Last', lastDateValue.current, 'Next', nextDateValue.current, 'Input', inputValue);
             lastDateValue.current = inputValue;
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
