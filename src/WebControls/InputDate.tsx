@@ -30,20 +30,16 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
-			console.log('Effecting Last', lastDateValue.current, 'Next', nextDateValue.current, 'Input', inputValue)
 			lastDateValue.current = inputValue
 			nextDateValue.current = lastDateValue.current
 			setOverrideValue(lastDateValue.current)
 		} else {
-			console.log('Effecting 2')
 			lastDateValue.current = inputValue
 		}
 	}, [inputValue])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateFormatAny('YYYY-MM-DD', e.target.value) ?? ''
-
-		console.log('HIC', e.target.value, nextDateValue.current, overrideValue, nextDateValue.current?.substring(0, 3))
 
 		setOverrideValue(e.target.value)
 
@@ -98,11 +94,11 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 		// nextDateValue.current = MomentDateString(e.target.value) ?? ''
 
-		console.log('Blurring')
-
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
 			let date = DateFormatAny('YYYY-MM-DD', nextDateValue.current)
 			const enteredYear = CleanNumber(date?.substring(0, 3))
+
+			console.log('Entered', enteredYear, 'Subset', date?.substring(0, 3))
 
 			if (date) {
 				if (enteredYear < 100) {
@@ -110,7 +106,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 					const currentCentury = Math.floor(currentYear / 100) * 100
 					let newYear = enteredYear + currentCentury
 					if (newYear > currentYear + 20) newYear -= 100
-					console.log('Pre', date, newYear)
+					console.log('Pre', date, 'New', newYear, 'Year', currentYear, 'Cent', currentCentury)
 					date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`
 					console.log('Post', date)
 					if (props.changeValue) {
