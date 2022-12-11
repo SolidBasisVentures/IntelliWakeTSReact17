@@ -3413,15 +3413,14 @@ function InputTime(props) {
     const [overrideValue, setOverrideValue] = React.useState(originalValue);
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
     React.useEffect(() => {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
+        var _a, _b, _c, _d, _e, _f;
         if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            console.log('Time Here', props.value, (_c = intelliwaketsfoundation.TimeOnly(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '');
-            lastTimeValue.current = (_e = intelliwaketsfoundation.TimeOnly(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
+            lastTimeValue.current = (_c = intelliwaketsfoundation.TimeOnly(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextTimeValue.current = lastTimeValue.current;
-            setOverrideValue((_f = intelliwaketsfoundation.TimeOnly(lastTimeValue.current)) !== null && _f !== void 0 ? _f : '');
+            setOverrideValue((_d = intelliwaketsfoundation.TimeOnly(lastTimeValue.current)) !== null && _d !== void 0 ? _d : '');
         }
         else {
-            lastTimeValue.current = (_h = intelliwaketsfoundation.TimeOnly(((_g = props.value) !== null && _g !== void 0 ? _g : ''))) !== null && _h !== void 0 ? _h : '';
+            lastTimeValue.current = (_f = intelliwaketsfoundation.TimeOnly(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
@@ -3429,6 +3428,7 @@ function InputTime(props) {
         nextTimeValue.current = (_a = intelliwaketsfoundation.TimeOnly(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
         const customValue = `${(_c = (_b = intelliwaketsfoundation.DateISO(props.value)) === null || _b === void 0 ? void 0 : _b.substring(0, 10)) !== null && _c !== void 0 ? _c : ''} ${nextTimeValue.current}`.trim();
+        console.log(customValue);
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);

@@ -18,7 +18,6 @@ export function InputTime<T, N extends string | (string | null)>(props: IProps<T
 
 	useEffect(() => {
 		if (![lastTimeValue.current, nextTimeValue.current].includes(TimeOnly(props.value as string) ?? '')) {
-			console.log('Time Here', props.value, TimeOnly((props.value ?? '') as string) ?? '')
 			lastTimeValue.current = TimeOnly((props.value ?? '') as string) ?? ''
 			nextTimeValue.current = lastTimeValue.current
 			setOverrideValue(
@@ -35,6 +34,8 @@ export function InputTime<T, N extends string | (string | null)>(props: IProps<T
 		setOverrideValue(e.target.value)
 
 		const customValue =`${DateISO(props.value)?.substring(0, 10) ?? ''} ${nextTimeValue.current}`.trim()
+
+		console.log(customValue)
 
 		if (!!props.onChange) {
 			;(e.target as any).customValue = customValue
