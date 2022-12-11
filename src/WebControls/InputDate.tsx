@@ -41,9 +41,11 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateFormatAny('YYYY-MM-DD', e.target.value) ?? ''
 
+		console.log('HIC', e.target.value, nextDateValue.current)
+
 		setOverrideValue(e.target.value)
 
-		if (CleanNumber(nextDateValue.current?.substring(0, 3)) > (props.validIfYearGreaterThan ?? 99)) {
+		if (CleanNumber(nextDateValue.current?.substring(0, 4)) > (props.validIfYearGreaterThan ?? 99)) {
 			const customValue: string | null = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
 
 			if (!!props.onChange) {
@@ -96,9 +98,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
 			let date = DateFormatAny('YYYY-MM-DD', nextDateValue.current)
-			const enteredYear = CleanNumber(date?.substring(0, 3))
-
-			console.log('Entered', enteredYear, 'Subset', date?.substring(0, 3))
+			const enteredYear = CleanNumber(date?.substring(0, 4))
 
 			if (date) {
 				if (enteredYear < 100) {
@@ -106,9 +106,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 					const currentCentury = Math.floor(currentYear / 100) * 100
 					let newYear = enteredYear + currentCentury
 					if (newYear > currentYear + 20) newYear -= 100
-					console.log('Pre', date, 'New', newYear, 'Year', currentYear, 'Cent', currentCentury)
 					date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`
-					console.log('Post', date)
 					if (props.changeValue) {
 						props.changeValue(
 								`${date} ${TimeOnly(props.value as string) ?? ''}`.trim() as any,

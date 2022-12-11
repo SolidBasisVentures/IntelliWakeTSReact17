@@ -2692,8 +2692,9 @@ function InputDate(props) {
     const handleInputChange = (e) => {
         var _a, _b, _c, _d;
         nextDateValue.current = (_a = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', e.target.value)) !== null && _a !== void 0 ? _a : '';
+        console.log('HIC', e.target.value, nextDateValue.current);
         setOverrideValue(e.target.value);
-        if (intelliwaketsfoundation.CleanNumber((_b = nextDateValue.current) === null || _b === void 0 ? void 0 : _b.substring(0, 3)) > ((_c = props.validIfYearGreaterThan) !== null && _c !== void 0 ? _c : 99)) {
+        if (intelliwaketsfoundation.CleanNumber((_b = nextDateValue.current) === null || _b === void 0 ? void 0 : _b.substring(0, 4)) > ((_c = props.validIfYearGreaterThan) !== null && _c !== void 0 ? _c : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_d = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _d !== void 0 ? _d : '')).trim();
             if (!!props.onChange) {
                 e.target.customValue = customValue;
@@ -2724,8 +2725,7 @@ function InputDate(props) {
         var _a, _b;
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
             let date = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', nextDateValue.current);
-            const enteredYear = intelliwaketsfoundation.CleanNumber(date === null || date === void 0 ? void 0 : date.substring(0, 3));
-            console.log('Entered', enteredYear, 'Subset', date === null || date === void 0 ? void 0 : date.substring(0, 3));
+            const enteredYear = intelliwaketsfoundation.CleanNumber(date === null || date === void 0 ? void 0 : date.substring(0, 4));
             if (date) {
                 if (enteredYear < 100) {
                     const currentYear = new Date().getUTCFullYear();
@@ -2733,9 +2733,7 @@ function InputDate(props) {
                     let newYear = enteredYear + currentCentury;
                     if (newYear > currentYear + 20)
                         newYear -= 100;
-                    console.log('Pre', date, 'New', newYear, 'Year', currentYear, 'Cent', currentCentury);
                     date = `${newYear.toString().padStart(4, '0')}${date.substring(4)}`;
-                    console.log('Post', date);
                     if (props.changeValue) {
                         props.changeValue(`${date} ${(_a = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _a !== void 0 ? _a : ''}`.trim(), e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
                     }
