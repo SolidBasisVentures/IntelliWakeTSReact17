@@ -2681,19 +2681,21 @@ function InputDate(props) {
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
         if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.DateOnlyNull(props.value)) !== null && _a !== void 0 ? _a : '')) {
+            console.log('Effecting 1');
             lastDateValue.current = (_c = intelliwaketsfoundation.DateOnlyNull(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }
         else {
+            console.log('Effecting 2');
             lastDateValue.current = (_e = intelliwaketsfoundation.DateOnlyNull(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
         }
     }, [props.value]);
     const handleInputChange = (e) => {
         var _a, _b, _c, _d, _e;
         nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        console.log('HIC', e.target.value, nextDateValue.current, overrideValue);
         setOverrideValue(e.target.value);
-        console.log('HIC', e.target.value, nextDateValue.current);
         if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
             if (!!props.onChange) {
@@ -2723,6 +2725,7 @@ function InputDate(props) {
     const handleBlur = (e) => {
         // nextDateValue.current = MomentDateString(e.target.value) ?? ''
         var _a, _b, _c, _d, _e;
+        console.log('Blurring');
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;

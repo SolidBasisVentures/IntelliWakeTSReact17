@@ -28,10 +28,12 @@ export function InputDate<T>(props: IProps<T>) {
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(DateOnlyNull(props.value as string) ?? '')) {
+			console.log('Effecting 1')
 			lastDateValue.current = DateOnlyNull((props.value ?? '') as string) ?? ''
 			nextDateValue.current = lastDateValue.current
 			setOverrideValue(lastDateValue.current)
 		} else {
+			console.log('Effecting 2')
 			lastDateValue.current = DateOnlyNull((props.value ?? '') as string) ?? ''
 		}
 	}, [props.value])
@@ -39,9 +41,9 @@ export function InputDate<T>(props: IProps<T>) {
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateOnlyNull(e.target.value) ?? ''
 
-		setOverrideValue(e.target.value)
+		console.log('HIC', e.target.value, nextDateValue.current, overrideValue)
 
-		console.log('HIC', e.target.value, nextDateValue.current)
+		setOverrideValue(e.target.value)
 
 		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 99)) {
 			const customValue = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
@@ -93,6 +95,8 @@ export function InputDate<T>(props: IProps<T>) {
 
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
 		// nextDateValue.current = MomentDateString(e.target.value) ?? ''
+
+		console.log('Blurring')
 
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
 			const dateObj = DateObject(nextDateValue.current)
