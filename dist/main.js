@@ -2693,6 +2693,7 @@ function InputDate(props) {
         var _a, _b, _c, _d, _e;
         nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
+        console.log('HIC', e.target.value, nextDateValue.current);
         if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
             if (!!props.onChange) {
@@ -2725,7 +2726,6 @@ function InputDate(props) {
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
             const dateObj = intelliwaketsfoundation.DateObject(nextDateValue.current);
             const enteredYear = (_a = dateObj === null || dateObj === void 0 ? void 0 : dateObj.getUTCFullYear()) !== null && _a !== void 0 ? _a : 0;
-            console.log('Blurring', nextDateValue.current, 'Year', enteredYear);
             if (dateObj) {
                 if (enteredYear < 100) {
                     const currentYear = new Date().getUTCFullYear();
