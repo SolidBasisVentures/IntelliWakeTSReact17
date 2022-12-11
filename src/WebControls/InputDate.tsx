@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
-	CleanNumber,
+	CleanNumber, CurrentTimeZone,
 	DateFormat,
-	DateFormatAny, DateOnlyNull,
+	DateFormatAny, DateISO, DateOnlyNull,
 	OmitProperty,
 	RandomString,
 	TimeOnly
@@ -41,7 +41,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateOnlyNull(e.target.value, {timezoneDisplay: 'UTC'}) ?? ''
 
-		console.log('HIC', e.target.value, nextDateValue.current)
+		console.log('HIC', e.target.value, nextDateValue.current, DateISO(e.target.value), DateFormatAny('YYYY-MM-DD', e.target.value), DateOnlyNull(e.target.value, {timezoneDisplay: CurrentTimeZone()}))
 
 		setOverrideValue(e.target.value)
 
