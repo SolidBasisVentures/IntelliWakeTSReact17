@@ -2681,8 +2681,8 @@ function InputDate(props) {
     React.useEffect(() => {
         var _a, _b, _c, _d, _e;
         if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.DateOnlyNull(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            console.log('Effecting 1');
             lastDateValue.current = (_c = intelliwaketsfoundation.DateOnlyNull(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+            console.log('Effecting 1', props.value, lastDateValue.current);
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }

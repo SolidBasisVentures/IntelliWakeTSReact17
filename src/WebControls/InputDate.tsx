@@ -28,8 +28,8 @@ export function InputDate<T>(props: IProps<T>) {
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(DateOnlyNull(props.value as string) ?? '')) {
-			console.log('Effecting 1')
 			lastDateValue.current = DateOnlyNull((props.value ?? '') as string) ?? ''
+			console.log('Effecting 1', props.value, lastDateValue.current)
 			nextDateValue.current = lastDateValue.current
 			setOverrideValue(lastDateValue.current)
 		} else {
