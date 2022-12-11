@@ -41,6 +41,8 @@ export function InputDate<T>(props: IProps<T>) {
 
 		setOverrideValue(e.target.value)
 
+		console.log('Year', DateObject(e.target.value)?.getFullYear())
+
 		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 99)) {
 			const customValue = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
 
