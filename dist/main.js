@@ -2669,7 +2669,7 @@ function InputColor(props) {
         props.value))) : (React__default["default"].createElement("input", Object.assign({ type: "color", className: (_c = 'inputText ' + props.className) !== null && _c !== void 0 ? _c : '' }, inputProps, { onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) })))));
 }
 
-const originalValue$1 = ' ';
+const originalValue$1 = '';
 function InputDate(props) {
     var _a;
     const lastDateValue = React.useRef(originalValue$1);
@@ -2678,19 +2678,19 @@ function InputDate(props) {
     const changeTimeout = React.useRef(setTimeout(() => {
     }, 100));
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'onBlur')), [props]);
+    const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateOnlyNull(props.value)) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
     React.useEffect(() => {
-        var _a, _b, _c, _d, _e;
-        if (![lastDateValue.current, nextDateValue.current].includes((_a = intelliwaketsfoundation.DateOnlyNull(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastDateValue.current = (_c = intelliwaketsfoundation.DateOnlyNull(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
-            console.log('Effecting 1', props.value, lastDateValue.current);
+        if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
+            console.log('Effecting 1', lastDateValue.current, nextDateValue.current, inputValue);
+            lastDateValue.current = inputValue;
             nextDateValue.current = lastDateValue.current;
             setOverrideValue(lastDateValue.current);
         }
         else {
             console.log('Effecting 2');
-            lastDateValue.current = (_e = intelliwaketsfoundation.DateOnlyNull(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
+            lastDateValue.current = inputValue;
         }
-    }, [props.value]);
+    }, [inputValue]);
     const handleInputChange = (e) => {
         var _a, _b, _c, _d, _e;
         nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value)) !== null && _a !== void 0 ? _a : '';
@@ -2769,11 +2769,11 @@ function InputDate(props) {
             props.onBlur(e);
     };
     const className = React.useMemo(() => !inputProps.className ? 'inputDate form-control' : `${inputProps.className} inputDate form-control`, [inputProps.className]);
-    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.TimeOnly(props.value)
+    return (!!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.TimeOnly(props.value)
         ? intelliwaketsfoundation.DateFormat('LocalDateTime', props.value)
         : intelliwaketsfoundation.DateOnlyNull(props.value, { formatLocale: true }))) : (React__default["default"].createElement("input", Object.assign({ type: 'date' }, inputProps, { className: className, 
         // placeholder='yyyy-mm-dd'
-        value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, onBlur: handleBlur, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` })))));
+        value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, onBlur: handleBlur, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` }))));
 }
 
 function ViewEmail(props) {

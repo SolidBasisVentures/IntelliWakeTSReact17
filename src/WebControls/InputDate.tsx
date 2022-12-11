@@ -9,14 +9,14 @@ import {
 	TimeOnly
 } from '@solidbasisventures/intelliwaketsfoundation'
 
-interface IProps<T = unknown> extends IIWInputProps<T> {
+interface IProps extends IIWInputProps<Record<string, any>, string | null> {
 	showTime?: boolean
 	validIfYearGreaterThan?: number
 }
 
-const originalValue = ' '
+const originalValue = ''
 
-export function InputDate<T>(props: IProps<T>) {
+export function InputDate(props: IProps) {
 	const lastDateValue = useRef(originalValue)
 	const nextDateValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
@@ -26,17 +26,19 @@ export function InputDate<T>(props: IProps<T>) {
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'onBlur'))
 			, [props])
 
+	const inputValue = useMemo(() => DateOnlyNull(props.value) ?? '', [props.value])
+
 	useEffect(() => {
-		if (![lastDateValue.current, nextDateValue.current].includes(DateOnlyNull(props.value as string) ?? '')) {
-			lastDateValue.current = DateOnlyNull((props.value ?? '') as string) ?? ''
-			console.log('Effecting 1', props.value, lastDateValue.current)
+		if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
+			console.log('Effecting 1', lastDateValue.current, nextDateValue.current, inputValue)
+			lastDateValue.current = inputValue
 			nextDateValue.current = lastDateValue.current
 			setOverrideValue(lastDateValue.current)
 		} else {
 			console.log('Effecting 2')
-			lastDateValue.current = DateOnlyNull((props.value ?? '') as string) ?? ''
+			lastDateValue.current = inputValue
 		}
-	}, [props.value])
+	}, [inputValue])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateOnlyNull(e.target.value) ?? ''
@@ -169,26 +171,23 @@ export function InputDate<T>(props: IProps<T>) {
 
 	const className = useMemo(() => !inputProps.className ? 'inputDate form-control' : `${inputProps.className} inputDate form-control`, [inputProps.className])
 
-	return (
-			<>
-				{!!props.plainText ? (
-						<div className='form-control-plaintext' {...props.plainTextProps}>
-							{!!props.showTime && !!TimeOnly(props.value as string)
-									? DateFormat('LocalDateTime', props.value as string)
-									: DateOnlyNull(props.value as string, {formatLocale: true})}
-						</div>
-				) : (
-						<input
-								type='date'
-								{...inputProps}
-								className={className}
-								// placeholder='yyyy-mm-dd'
-								value={overrideValue ?? ''}
-								onChange={handleInputChange}
-								onBlur={handleBlur}
-								autoComplete={props.autoCompleteOn ? 'on' : `AC_${props.name ?? ''}_${RandomString(5)}`}
-						/>
-				)}
-			</>
+	return (!!props.plainText ? (
+					<div className='form-control-plaintext' {...props.plainTextProps}>
+						{!!props.showTime && !!TimeOnly(props.value as string)
+								? DateFormat('LocalDateTime', props.value as string)
+								: DateOnlyNull(props.value as string, {formatLocale: true})}
+					</div>
+			) : (
+					<input
+							type='date'
+							{...inputProps}
+							className={className}
+							// placeholder='yyyy-mm-dd'
+							value={overrideValue ?? ''}
+							onChange={handleInputChange}
+							onBlur={handleBlur}
+							autoComplete={props.autoCompleteOn ? 'on' : `AC_${props.name ?? ''}_${RandomString(5)}`}
+					/>
+			)
 	)
 }
