@@ -3406,21 +3406,22 @@ function InputTextArea(props) {
             React__default["default"].createElement("textarea", Object.assign({}, inputProps, { ref: props.innerRef, onKeyDown: keyDown })))));
 }
 
-const originalValue = ' ';
+const originalValue = '';
 function InputTime(props) {
     const lastTimeValue = React.useRef(originalValue);
     const nextTimeValue = React.useRef(originalValue);
     const [overrideValue, setOverrideValue] = React.useState(originalValue);
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'editSeconds')), [props]);
     React.useEffect(() => {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         if (![lastTimeValue.current, nextTimeValue.current].includes((_a = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _a !== void 0 ? _a : '')) {
-            lastTimeValue.current = (_c = intelliwaketsfoundation.TimeOnly(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '';
+            console.log('Time Here', props.value, (_c = intelliwaketsfoundation.TimeOnly(((_b = props.value) !== null && _b !== void 0 ? _b : ''))) !== null && _c !== void 0 ? _c : '');
+            lastTimeValue.current = (_e = intelliwaketsfoundation.TimeOnly(((_d = props.value) !== null && _d !== void 0 ? _d : ''))) !== null && _e !== void 0 ? _e : '';
             nextTimeValue.current = lastTimeValue.current;
-            setOverrideValue((_d = intelliwaketsfoundation.TimeOnly(lastTimeValue.current)) !== null && _d !== void 0 ? _d : '');
+            setOverrideValue((_f = intelliwaketsfoundation.TimeOnly(lastTimeValue.current)) !== null && _f !== void 0 ? _f : '');
         }
         else {
-            lastTimeValue.current = (_f = intelliwaketsfoundation.TimeOnly(((_e = props.value) !== null && _e !== void 0 ? _e : ''))) !== null && _f !== void 0 ? _f : '';
+            lastTimeValue.current = (_h = intelliwaketsfoundation.TimeOnly(((_g = props.value) !== null && _g !== void 0 ? _g : ''))) !== null && _h !== void 0 ? _h : '';
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
@@ -3436,7 +3437,7 @@ function InputTime(props) {
             props.changeValue(customValue, e.target.name, e.nativeEvent.shiftKey, e.nativeEvent.ctrlKey, e.nativeEvent.altKey);
         }
     };
-    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), intelliwaketsfoundation.TimeOnly(props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'time', className: 'inputTime form-control' }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
+    return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), intelliwaketsfoundation.TimeOnly(props.value, { formatLocale: true }))) : (React__default["default"].createElement("input", Object.assign({ type: 'time', className: 'inputTime form-control' }, inputProps, { value: overrideValue, onChange: handleInputChange, step: !!props.editSeconds ? 1 : 60 })))));
 }
 
 function InputTimeZone(props) {

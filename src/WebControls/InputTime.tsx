@@ -7,7 +7,7 @@ interface IProps<T = unknown> extends IIWInputProps<T> {
 	editSeconds?: boolean
 }
 
-const originalValue = ' '
+const originalValue = ''
 
 export function InputTime<T>(props: IProps<T>) {
 	const lastTimeValue = useRef(originalValue)
@@ -18,11 +18,11 @@ export function InputTime<T>(props: IProps<T>) {
 
 	useEffect(() => {
 		if (![lastTimeValue.current, nextTimeValue.current].includes(TimeOnly(props.value as string) ?? '')) {
+			console.log('Time Here', props.value, TimeOnly((props.value ?? '') as string) ?? '')
 			lastTimeValue.current = TimeOnly((props.value ?? '') as string) ?? ''
 			nextTimeValue.current = lastTimeValue.current
 			setOverrideValue(
-					TimeOnly(
-							lastTimeValue.current) ?? ''
+					TimeOnly(lastTimeValue.current) ?? ''
 			)
 		} else {
 			lastTimeValue.current = TimeOnly((props.value ?? '') as string) ?? ''
@@ -57,7 +57,7 @@ export function InputTime<T>(props: IProps<T>) {
 			<>
 				{!!props.plainText ? (
 						<div className='form-control-plaintext' {...props.plainTextProps}>
-							{TimeOnly(props.value as string)}
+							{TimeOnly(props.value as string, {formatLocale: true})}
 						</div>
 				) : (
 						<input
