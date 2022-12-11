@@ -2678,7 +2678,7 @@ function InputDate(props) {
     const changeTimeout = React.useRef(setTimeout(() => {
     }, 100));
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'onBlur')), [props]);
-    const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateOnlyNull(props.value)) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
+    const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateOnlyNull(props.value, { timezoneDisplay: intelliwaketsfoundation.CurrentTimeZone() })) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
     React.useEffect(() => {
         if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
             console.log('Effecting Last', lastDateValue.current, 'Next', nextDateValue.current, 'Input', inputValue);
@@ -2693,7 +2693,7 @@ function InputDate(props) {
     }, [inputValue]);
     const handleInputChange = (e) => {
         var _a, _b, _c, _d, _e;
-        nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: intelliwaketsfoundation.CurrentTimeZone() })) !== null && _a !== void 0 ? _a : '';
         console.log('HIC', e.target.value, nextDateValue.current, overrideValue);
         setOverrideValue(e.target.value);
         if (((_c = (_b = intelliwaketsfoundation.DateObject(e.target.value)) === null || _b === void 0 ? void 0 : _b.getFullYear()) !== null && _c !== void 0 ? _c : 0) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {

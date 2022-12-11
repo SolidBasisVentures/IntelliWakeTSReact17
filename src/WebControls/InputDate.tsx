@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
+	CurrentTimeZone,
 	DateFormat,
 	DateObject,
 	DateOnlyNull,
@@ -26,7 +27,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'onBlur'))
 			, [props])
 
-	const inputValue = useMemo(() => DateOnlyNull(props.value) ?? '', [props.value])
+	const inputValue = useMemo(() => DateOnlyNull(props.value, {timezoneDisplay: CurrentTimeZone()}) ?? '', [props.value])
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
@@ -41,7 +42,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	}, [inputValue])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		nextDateValue.current = DateOnlyNull(e.target.value) ?? ''
+		nextDateValue.current = DateOnlyNull(e.target.value, {timezoneDisplay: CurrentTimeZone()}) ?? ''
 
 		console.log('HIC', e.target.value, nextDateValue.current, overrideValue)
 
