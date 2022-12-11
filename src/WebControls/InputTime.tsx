@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {OmitProperty, TimeOnly} from '@solidbasisventures/intelliwaketsfoundation'
+import {DateISO, OmitProperty, TimeOnly} from '@solidbasisventures/intelliwaketsfoundation'
 
 interface IProps<T = unknown> extends IIWInputProps<T> {
 	includeDate?: boolean
@@ -34,7 +34,7 @@ export function InputTime<T>(props: IProps<T>) {
 
 		setOverrideValue(e.target.value)
 
-		const customValue = ((TimeOnly(props.value as string) ?? '') + ' ' + nextTimeValue.current).trim()
+		const customValue =`${DateISO(props.value)?.substring(0, 10) ?? ''} ${nextTimeValue.current}`.trim()
 
 		if (!!props.onChange) {
 			;(e.target as any).customValue = customValue

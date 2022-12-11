@@ -3424,10 +3424,10 @@ function InputTime(props) {
         }
     }, [props.value, props.editSeconds]);
     const handleInputChange = (e) => {
-        var _a, _b;
+        var _a, _b, _c;
         nextTimeValue.current = (_a = intelliwaketsfoundation.TimeOnly(e.target.value)) !== null && _a !== void 0 ? _a : '';
         setOverrideValue(e.target.value);
-        const customValue = (((_b = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _b !== void 0 ? _b : '') + ' ' + nextTimeValue.current).trim();
+        const customValue = `${(_c = (_b = intelliwaketsfoundation.DateISO(props.value)) === null || _b === void 0 ? void 0 : _b.substring(0, 10)) !== null && _c !== void 0 ? _c : ''} ${nextTimeValue.current}`.trim();
         if (!!props.onChange) {
             e.target.customValue = customValue;
             props.onChange(e);
