@@ -2691,7 +2691,7 @@ function InputDate(props) {
     }, [inputValue]);
     const handleInputChange = (e) => {
         var _a, _b, _c, _d;
-        nextDateValue.current = (_a = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', e.target.value)) !== null && _a !== void 0 ? _a : '';
+        nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: 'UTC' })) !== null && _a !== void 0 ? _a : '';
         console.log('HIC', e.target.value, nextDateValue.current);
         setOverrideValue(e.target.value);
         if (intelliwaketsfoundation.CleanNumber((_b = nextDateValue.current) === null || _b === void 0 ? void 0 : _b.substring(0, 4)) > ((_c = props.validIfYearGreaterThan) !== null && _c !== void 0 ? _c : 99)) {
@@ -2768,7 +2768,7 @@ function InputDate(props) {
     const className = React.useMemo(() => !inputProps.className ? 'inputDate form-control' : `${inputProps.className} inputDate form-control`, [inputProps.className]);
     return (!!props.plainText ? (React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.showTime && !!intelliwaketsfoundation.TimeOnly(props.value)
         ? intelliwaketsfoundation.DateFormat('LocalDateTime', props.value)
-        : intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', props.value))) : (React__default["default"].createElement("input", Object.assign({ type: 'date' }, inputProps, { className: className, 
+        : intelliwaketsfoundation.DateOnlyNull(props.value, { formatLocale: true, timezoneDisplay: 'UTC' }))) : (React__default["default"].createElement("input", Object.assign({ type: 'date' }, inputProps, { className: className, 
         // placeholder='yyyy-mm-dd'
         value: overrideValue !== null && overrideValue !== void 0 ? overrideValue : '', onChange: handleInputChange, onBlur: handleBlur, autoComplete: props.autoCompleteOn ? 'on' : `AC_${(_a = props.name) !== null && _a !== void 0 ? _a : ''}_${intelliwaketsfoundation.RandomString(5)}` }))));
 }

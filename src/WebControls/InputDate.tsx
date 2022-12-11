@@ -3,7 +3,7 @@ import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {
 	CleanNumber,
 	DateFormat,
-	DateFormatAny,
+	DateFormatAny, DateOnlyNull,
 	OmitProperty,
 	RandomString,
 	TimeOnly
@@ -39,7 +39,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	}, [inputValue])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		nextDateValue.current = DateFormatAny('YYYY-MM-DD', e.target.value) ?? ''
+		nextDateValue.current = DateOnlyNull(e.target.value, {timezoneDisplay: 'UTC'}) ?? ''
 
 		console.log('HIC', e.target.value, nextDateValue.current)
 
@@ -171,7 +171,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 					<div className='form-control-plaintext' {...props.plainTextProps}>
 						{!!props.showTime && !!TimeOnly(props.value as string)
 								? DateFormat('LocalDateTime', props.value as string)
-								: DateFormatAny('YYYY-MM-DD', props.value as string)}
+								: DateOnlyNull(props.value as string, {formatLocale: true, timezoneDisplay: 'UTC'})}
 					</div>
 			) : (
 					<input
