@@ -35,8 +35,6 @@ export function InputTime<T, N extends string | (string | null)>(props: IProps<T
 
 		const customValue =`${DateISO(props.value)?.substring(0, 10) ?? ''} ${nextTimeValue.current}`.trim()
 
-		console.log(customValue)
-
 		if (!!props.onChange) {
 			;(e.target as any).customValue = customValue
 
