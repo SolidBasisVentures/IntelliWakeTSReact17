@@ -2690,12 +2690,12 @@ function InputDate(props) {
         }
     }, [inputValue]);
     const handleInputChange = (e) => {
-        var _a, _b, _c, _d;
-        nextDateValue.current = (_a = intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: 'UTC' })) !== null && _a !== void 0 ? _a : '';
-        console.log('HIC', e.target.value, nextDateValue.current, intelliwaketsfoundation.DateISO(e.target.value), intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', e.target.value), intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: intelliwaketsfoundation.CurrentTimeZone() }));
+        var _a, _b, _c, _d, _e;
+        nextDateValue.current = (_b = (_a = intelliwaketsfoundation.DateISO(e.target.value)) === null || _a === void 0 ? void 0 : _a.substring(0, 10)) !== null && _b !== void 0 ? _b : '';
+        console.log('HIC', e.target.value, nextDateValue.current);
         setOverrideValue(e.target.value);
-        if (intelliwaketsfoundation.CleanNumber((_b = nextDateValue.current) === null || _b === void 0 ? void 0 : _b.substring(0, 4)) > ((_c = props.validIfYearGreaterThan) !== null && _c !== void 0 ? _c : 99)) {
-            const customValue = (nextDateValue.current + ' ' + ((_d = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _d !== void 0 ? _d : '')).trim();
+        if (intelliwaketsfoundation.CleanNumber((_c = nextDateValue.current) === null || _c === void 0 ? void 0 : _c.substring(0, 4)) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
+            const customValue = (nextDateValue.current + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
             if (!!props.onChange) {
                 e.target.customValue = customValue;
                 props.onChange(e);
