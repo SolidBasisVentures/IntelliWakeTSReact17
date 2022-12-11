@@ -41,8 +41,6 @@ export function InputDate<T>(props: IProps<T>) {
 
 		setOverrideValue(e.target.value)
 
-		console.log(nextDateValue.current, 'Year', DateObject(e.target.value)?.getFullYear())
-
 		if ((DateObject(e.target.value)?.getFullYear() ?? 0) > (props.validIfYearGreaterThan ?? 99)) {
 			const customValue = (nextDateValue.current + ' ' + (TimeOnly(props.value as string) ?? '')).trim()
 
@@ -97,6 +95,9 @@ export function InputDate<T>(props: IProps<T>) {
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
 			const dateObj = DateObject(nextDateValue.current)
 			const enteredYear = dateObj?.getUTCFullYear() ?? 0
+
+			console.log('Blurring', nextDateValue.current, 'Year', enteredYear)
+
 			if (dateObj) {
 				if (enteredYear < 100) {
 					const currentYear = new Date().getUTCFullYear()
