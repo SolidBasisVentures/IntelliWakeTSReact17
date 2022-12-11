@@ -1,7 +1,7 @@
 import { IIWInputProps } from './IWInputProps';
-interface IProps<T = unknown> extends IIWInputProps<T> {
+interface IProps<T, N> extends IIWInputProps<T, N> {
     includeDate?: boolean;
     editSeconds?: boolean;
 }
-export declare function InputTime<T>(props: IProps<T>): JSX.Element;
+export declare function InputTime<T, N extends string | (string | null)>(props: IProps<T, N>): JSX.Element;
 export {};

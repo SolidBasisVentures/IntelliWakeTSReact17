@@ -2,14 +2,14 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {IIWInputProps, ReduceInputProps} from './IWInputProps'
 import {DateISO, OmitProperty, TimeOnly} from '@solidbasisventures/intelliwaketsfoundation'
 
-interface IProps<T = unknown> extends IIWInputProps<T> {
+interface IProps<T, N> extends IIWInputProps<T, N> {
 	includeDate?: boolean
 	editSeconds?: boolean
 }
 
 const originalValue = ''
 
-export function InputTime<T>(props: IProps<T>) {
+export function InputTime<T, N extends string | (string | null)>(props: IProps<T, N>) {
 	const lastTimeValue = useRef(originalValue)
 	const nextTimeValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
@@ -44,7 +44,7 @@ export function InputTime<T>(props: IProps<T>) {
 
 		if (!!props.changeValue) {
 			props.changeValue(
-					customValue,
+					customValue as any,
 					e.target.name as any,
 					(e.nativeEvent as any).shiftKey,
 					(e.nativeEvent as any).ctrlKey,
