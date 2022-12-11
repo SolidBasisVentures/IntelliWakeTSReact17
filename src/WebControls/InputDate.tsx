@@ -28,7 +28,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const inputProps = useMemo(() => ReduceInputProps(OmitProperty(props, 'value', 'onChange', 'onBlur'))
 			, [props])
 
-	const inputValue = useMemo(() => DateFormatAny('YYYY-MM-DD', props.value) ?? '', [props.value])
+	const inputValue = useMemo(() => DateISO(props.value)?.substring(0, 10) ?? '', [props.value])
 
 	useEffect(() => {
 		if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
@@ -43,7 +43,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		nextDateValue.current = DateISO(e.target.value)?.substring(0, 10) ?? ''
 
-		console.log('HIC', e.target.value, nextDateValue.current)
+		console.log(e.target.value, nextDateValue.current, DateOnlyNull(e.target.value, {timezoneDisplay: 'UTC'}))
 
 		setOverrideValue(e.target.value)
 

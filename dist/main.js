@@ -2678,7 +2678,7 @@ function InputDate(props) {
     const changeTimeout = React.useRef(setTimeout(() => {
     }, 100));
     const inputProps = React.useMemo(() => ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'value', 'onChange', 'onBlur')), [props]);
-    const inputValue = React.useMemo(() => { var _a; return (_a = intelliwaketsfoundation.DateFormatAny('YYYY-MM-DD', props.value)) !== null && _a !== void 0 ? _a : ''; }, [props.value]);
+    const inputValue = React.useMemo(() => { var _a, _b; return (_b = (_a = intelliwaketsfoundation.DateISO(props.value)) === null || _a === void 0 ? void 0 : _a.substring(0, 10)) !== null && _b !== void 0 ? _b : ''; }, [props.value]);
     React.useEffect(() => {
         if (![lastDateValue.current, nextDateValue.current].includes(inputValue)) {
             lastDateValue.current = inputValue;
@@ -2692,7 +2692,7 @@ function InputDate(props) {
     const handleInputChange = (e) => {
         var _a, _b, _c, _d, _e;
         nextDateValue.current = (_b = (_a = intelliwaketsfoundation.DateISO(e.target.value)) === null || _a === void 0 ? void 0 : _a.substring(0, 10)) !== null && _b !== void 0 ? _b : '';
-        console.log('HIC', e.target.value, nextDateValue.current);
+        console.log(e.target.value, nextDateValue.current, intelliwaketsfoundation.DateOnlyNull(e.target.value, { timezoneDisplay: 'UTC' }));
         setOverrideValue(e.target.value);
         if (intelliwaketsfoundation.CleanNumber((_c = nextDateValue.current) === null || _c === void 0 ? void 0 : _c.substring(0, 4)) > ((_d = props.validIfYearGreaterThan) !== null && _d !== void 0 ? _d : 99)) {
             const customValue = (nextDateValue.current + ' ' + ((_e = intelliwaketsfoundation.TimeOnly(props.value)) !== null && _e !== void 0 ? _e : '')).trim();
