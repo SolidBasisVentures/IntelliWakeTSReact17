@@ -9,14 +9,14 @@ import {
 	TimeOnly
 } from '@solidbasisventures/intelliwaketsfoundation'
 
-interface IProps<T> extends IIWInputProps<T, string | null> {
+interface IProps<T, N> extends IIWInputProps<T, N> {
 	showTime?: boolean
 	validIfYearGreaterThan?: number
 }
 
 const originalValue = ''
 
-export function InputDate<T>(props: IProps<T>) {
+export function InputDate<T, N extends (string | (string | null))>(props: IProps<T, N>) {
 	const lastDateValue = useRef(originalValue)
 	const nextDateValue = useRef(originalValue)
 	const [overrideValue, setOverrideValue] = useState(originalValue)
@@ -58,7 +58,7 @@ export function InputDate<T>(props: IProps<T>) {
 
 			if (!!props.changeValue) {
 				props.changeValue(
-						customValue,
+						customValue as any,
 						e.target.name as any,
 						(e.nativeEvent as any).shiftKey,
 						(e.nativeEvent as any).ctrlKey,
@@ -76,7 +76,7 @@ export function InputDate<T>(props: IProps<T>) {
 				changeTimeout.current = setTimeout(() => {
 					if (!!props.changeValueLate) {
 						props.changeValueLate(
-								customValue,
+								customValue as any,
 								name,
 								shiftKey,
 								ctrlKey,
@@ -113,7 +113,7 @@ export function InputDate<T>(props: IProps<T>) {
 					dateObj.setUTCFullYear(newYear)
 					if (props.changeValue) {
 						props.changeValue(
-								((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim(),
+								((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim() as any,
 								e.target.name as any,
 								(e.nativeEvent as any).shiftKey,
 								(e.nativeEvent as any).ctrlKey,
@@ -123,7 +123,7 @@ export function InputDate<T>(props: IProps<T>) {
 					if (props.changeValueLate) {
 						clearTimeout(changeTimeout.current)
 						props.changeValueLate(
-								((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim(),
+								((DateOnlyNull(dateObj) ?? '') + ' ' + (TimeOnly(props.value as string) ?? '')).trim() as any,
 								e.target.name as any,
 								(e.nativeEvent as any).shiftKey,
 								(e.nativeEvent as any).ctrlKey,
@@ -140,7 +140,7 @@ export function InputDate<T>(props: IProps<T>) {
 			} else {
 				if (props.changeValue) {
 					props.changeValue(
-							null,
+							null as any,
 							e.target.name as any,
 							(e.nativeEvent as any).shiftKey,
 							(e.nativeEvent as any).ctrlKey,
@@ -150,7 +150,7 @@ export function InputDate<T>(props: IProps<T>) {
 				if (props.changeValueLate) {
 					clearTimeout(changeTimeout.current)
 					props.changeValueLate(
-							null,
+							null as any,
 							e.target.name as any,
 							(e.nativeEvent as any).shiftKey,
 							(e.nativeEvent as any).ctrlKey,

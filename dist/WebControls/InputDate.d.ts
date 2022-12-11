@@ -1,7 +1,7 @@
 import { IIWInputProps } from './IWInputProps';
-interface IProps<T> extends IIWInputProps<T, string | null> {
+interface IProps<T, N> extends IIWInputProps<T, N> {
     showTime?: boolean;
     validIfYearGreaterThan?: number;
 }
-export declare function InputDate<T>(props: IProps<T>): JSX.Element;
+export declare function InputDate<T, N extends (string | (string | null))>(props: IProps<T, N>): JSX.Element;
 export {};
