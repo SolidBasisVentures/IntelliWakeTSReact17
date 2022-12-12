@@ -2720,7 +2720,6 @@ function InputDate(props) {
         }
     };
     const handleBlur = (e) => {
-        // nextDateValue.current = MomentDateString(e.target.value) ?? ''
         var _a, _b, _c;
         if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
             if (nextDateValue.current) {
@@ -3456,7 +3455,7 @@ function InputTimeZone(props) {
         }
         return tzItems;
     }, []);
-    const valueTZ = React.useMemo(() => (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr(props.value)), [props.value]);
+    const valueTZ = React.useMemo(() => { var _a; return (!props.value ? '' : intelliwaketsfoundation.IANAZoneAbbr((_a = props.relativeDate) !== null && _a !== void 0 ? _a : 'now', props.value)); }, [props.value]);
     return (React__default["default"].createElement(React__default["default"].Fragment, null, !!props.plainText ? (!!props.plainTextURL ? (React__default["default"].createElement(reactRouterDom.Link, { to: props.plainTextURL },
         React__default["default"].createElement("div", Object.assign({ className: 'form-control-plaintext' }, props.plainTextProps), !!props.value ? (React__default["default"].createElement(React__default["default"].Fragment, null,
             valueTZ,
@@ -3471,10 +3470,13 @@ function InputTimeZone(props) {
             props.value))) : (React__default["default"].createElement("span", { className: 'text-danger' }, "No Timezone set"))))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
         React__default["default"].createElement(InputSelect, Object.assign({}, inputProps, { isStringOrNull: true, onChange: (e) => HandleChangeValue(e, props.changeValue, props.onChange) }),
             React__default["default"].createElement("option", null),
-            timeZonesList.map((tzItem) => (React__default["default"].createElement("option", { key: tzItem, value: tzItem },
-                intelliwaketsfoundation.IANAZoneAbbr('now', tzItem),
-                ": ",
-                tzItem))))))));
+            timeZonesList.map((tzItem) => {
+                var _a;
+                return (React__default["default"].createElement("option", { key: tzItem, value: tzItem },
+                    intelliwaketsfoundation.IANAZoneAbbr((_a = props.relativeDate) !== null && _a !== void 0 ? _a : 'now', tzItem),
+                    ": ",
+                    tzItem));
+            }))))));
 }
 
 function InputUrl(props) {

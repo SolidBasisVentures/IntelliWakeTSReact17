@@ -93,8 +93,6 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 	}
 
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-		// nextDateValue.current = MomentDateString(e.target.value) ?? ''
-
 		if ((props.changeValue || props.setChanges) && (nextDateValue.current || nextDateValue.current !== props.value)) {
 			if (nextDateValue.current) {
 				const enteredYear = CleanNumber(nextDateValue.current?.substring(0, 4))

@@ -2,9 +2,13 @@ import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {InputSelect, IPropsSelect} from './InputSelect'
 import {HandleChangeValue, IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {IANAZoneAbbr, TimeZoneOlsonsAmerica} from '@solidbasisventures/intelliwaketsfoundation'
+import {IANAZoneAbbr, TDateAny, TimeZoneOlsonsAmerica} from '@solidbasisventures/intelliwaketsfoundation'
 
-export function InputTimeZone<T>(props: IIWInputProps<T>) {
+export interface IInputTimeZoneProps<T> extends IIWInputProps<T> {
+	relativeDate?: TDateAny
+}
+
+export function InputTimeZone<T>(props: IInputTimeZoneProps<T>) {
 	const inputProps = useMemo(() => {
 		const subset = ReduceInputProps(props)
 
@@ -27,7 +31,7 @@ export function InputTimeZone<T>(props: IIWInputProps<T>) {
 		return tzItems
 	}, [])
 
-	const valueTZ = useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.value as string)), [props.value])
+	const valueTZ = useMemo(() => (!props.value ? '' : IANAZoneAbbr(props.relativeDate ?? 'now', props.value as string)), [props.value])
 
 	return (
 			<>
@@ -64,7 +68,7 @@ export function InputTimeZone<T>(props: IIWInputProps<T>) {
 								<option />
 								{timeZonesList.map((tzItem) => (
 										<option key={tzItem} value={tzItem}>
-											{IANAZoneAbbr('now', tzItem)}: {tzItem}
+											{IANAZoneAbbr(props.relativeDate ?? 'now', tzItem)}: {tzItem}
 										</option>
 								))}
 							</InputSelect>
