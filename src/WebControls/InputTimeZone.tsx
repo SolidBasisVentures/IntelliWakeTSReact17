@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {InputSelect, IPropsSelect} from './InputSelect'
 import {HandleChangeValue, IIWInputProps, ReduceInputProps} from './IWInputProps'
-import {IANAZoneAbbr, TDateAny, TimeZoneOlsonsAmerica} from '@solidbasisventures/intelliwaketsfoundation'
+import {IANAZoneAbbr, OmitProperty, TDateAny, TimeZoneOlsonsAmerica} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IInputTimeZoneProps<T> extends IIWInputProps<T> {
 	relativeDate?: TDateAny
@@ -10,7 +10,7 @@ export interface IInputTimeZoneProps<T> extends IIWInputProps<T> {
 
 export function InputTimeZone<T>(props: IInputTimeZoneProps<T>) {
 	const inputProps = useMemo(() => {
-		const subset = ReduceInputProps(props)
+		const subset = ReduceInputProps(OmitProperty(props, 'relativeDate'))
 
 		subset.value = subset.value ?? ''
 

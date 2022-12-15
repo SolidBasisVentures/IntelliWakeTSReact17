@@ -3441,7 +3441,7 @@ function InputTime(props) {
 function InputTimeZone(props) {
     const inputProps = React.useMemo(() => {
         var _a;
-        const subset = ReduceInputProps(props);
+        const subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'relativeDate'));
         subset.value = (_a = subset.value) !== null && _a !== void 0 ? _a : '';
         if (subset.autoComplete === undefined) {
             subset.autoComplete = 'off';
