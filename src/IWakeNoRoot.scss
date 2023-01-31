@@ -174,7 +174,7 @@ table.table-hover tbody tr,
 }
 
 .table-hover tbody tr:hover:hover {
-	td {
+	td:not(.noHover) {
 		color: #212529 !important;
 		background-color: rgba(0, 0, 0, 0.075) !important;
 	}
