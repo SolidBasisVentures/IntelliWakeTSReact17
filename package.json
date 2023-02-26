@@ -1,6 +1,6 @@
 {
 	"name": "@solidbasisventures/intelliwaketsreact17",
-	"version": "4.0.287",
+	"version": "4.0.288",
 	"description": "NPM package for IntelliWake React 17 Components",
 	"main": "dist/main.js",
 	"types": "dist/main.d.ts",
@@ -43,7 +43,7 @@
 		"axios": "^0.21.1",
 		"babel-core": "^6.26.3",
 		"babel-runtime": "^6.26.0",
-		"bootstrap": "^5.1.0",
+		"bootstrap": "^5.2.2",
 		"cleave.js": "^1.6.0",
 		"jest": "^26.6.1",
 		"prettier": "^2.3.2",
