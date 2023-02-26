@@ -178,7 +178,7 @@ export function InputDate<T, N extends (string | (string | null))>(props: IProps
 							value={overrideValue ?? ''}
 							onChange={handleInputChange}
 							onBlur={handleBlur}
-							autoComplete={props.autoCompleteOn ? 'on' : `AC_${props.name ?? ''}_${RandomString(5)}`}
+							autoComplete={props.autoCompleteOn ? 'on' : `AC_${props.name ?? '' as any}_${RandomString(5)}`}
 					/>
 			)
 	)

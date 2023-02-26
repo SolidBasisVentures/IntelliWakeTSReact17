@@ -97,7 +97,7 @@ export const FilterObjects = <T>(objects: T[], filter: string): T[] => {
 		.map((filterItem) => filterItem.toString().toLowerCase())
 
 	return objects.filter((object) => {
-		const values = Object.values(object).join('}{').toLowerCase()
+		const values = Object.values(object as any).join('}{').toLowerCase()
 
 		return filterItems.length === filterItems.filter((filterItem) => values.includes(filterItem)).length
 	})
