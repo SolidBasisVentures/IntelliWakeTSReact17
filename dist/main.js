@@ -1054,7 +1054,7 @@ const initialFieldSetContext = () => ({
     hidden: false,
     breakAt: 'xs',
     groupings: exports.EFieldSetGroupings.Half,
-    uuid: intelliwaketsfoundation.RandomString(5),
+    uuid: '',
     condensed: false,
     fluid: false,
     fillHeight: false,

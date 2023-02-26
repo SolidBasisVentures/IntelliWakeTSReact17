@@ -34,7 +34,7 @@ const initialFieldSetContext = (): IFieldSetContext => ({
 	hidden: false,
 	breakAt: 'xs',
 	groupings: EFieldSetGroupings.Half,
-	uuid: RandomString(5),
+	uuid: '',
 	condensed: false,
 	fluid: false,
 	fillHeight: false,
