@@ -30,7 +30,7 @@ interface IFieldSetContext extends Required<IFieldSetPropsAddOns> {
 	uuid: string
 }
 
-const initialFieldSetContext: IFieldSetContext = {
+const initialFieldSetContext = (): IFieldSetContext => ({
 	hidden: false,
 	breakAt: 'xs',
 	groupings: EFieldSetGroupings.Half,
@@ -39,27 +39,28 @@ const initialFieldSetContext: IFieldSetContext = {
 	fluid: false,
 	fillHeight: false,
 	fillHeightScroll: false
-}
+})
 
-export const FieldSetContext = createContext<IFieldSetContext>(initialFieldSetContext)
+export const FieldSetContext = createContext<IFieldSetContext>(initialFieldSetContext())
 
 export const FieldSet = (props: IFieldSetProps) => {
+	const iFSC = initialFieldSetContext()
 	const contextProps = useMemo<IFieldSetContext>(
 		() => ({
-			hidden: props.hidden ?? initialFieldSetContext.hidden,
-			breakAt: props.breakAt ?? initialFieldSetContext.breakAt,
-			groupings: props.groupings ?? initialFieldSetContext.groupings,
-			condensed: props.condensed ?? initialFieldSetContext.condensed,
-			fluid: props.fluid ?? initialFieldSetContext.fluid,
+			hidden: props.hidden ?? iFSC.hidden,
+			breakAt: props.breakAt ?? iFSC.breakAt,
+			groupings: props.groupings ?? iFSC.groupings,
+			condensed: props.condensed ?? iFSC.condensed,
+			fluid: props.fluid ?? iFSC.fluid,
 			uuid: RandomString(5),
 			fillHeight: !!props.fillHeight,
 			fillHeightScroll: !!props.fillHeightScroll
 		}),
 		[props]
 	)
-	
+
 	const fieldSetProps = useMemo<React.HTMLProps<HTMLFieldSetElement>>(() => OmitProperty(props, 'breakAt', 'groupings', 'condensed', 'fluid', 'fillHeight', 'fillHeightScroll'), [props])
-	
+
 	return (
 		<fieldset
 			{...fieldSetProps}

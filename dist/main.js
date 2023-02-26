@@ -1050,7 +1050,7 @@ exports.EFieldSetGroupings = void 0;
     EFieldSetGroupings[EFieldSetGroupings["QuartersSmallLabel"] = 4] = "QuartersSmallLabel";
     EFieldSetGroupings[EFieldSetGroupings["LabelOver"] = 5] = "LabelOver";
 })(exports.EFieldSetGroupings || (exports.EFieldSetGroupings = {}));
-const initialFieldSetContext = {
+const initialFieldSetContext = () => ({
     hidden: false,
     breakAt: 'xs',
     groupings: exports.EFieldSetGroupings.Half,
@@ -1059,18 +1059,19 @@ const initialFieldSetContext = {
     fluid: false,
     fillHeight: false,
     fillHeightScroll: false
-};
-const FieldSetContext = React.createContext(initialFieldSetContext);
+});
+const FieldSetContext = React.createContext(initialFieldSetContext());
 const FieldSet = (props) => {
     var _a;
+    const iFSC = initialFieldSetContext();
     const contextProps = React.useMemo(() => {
         var _a, _b, _c, _d, _e;
         return ({
-            hidden: (_a = props.hidden) !== null && _a !== void 0 ? _a : initialFieldSetContext.hidden,
-            breakAt: (_b = props.breakAt) !== null && _b !== void 0 ? _b : initialFieldSetContext.breakAt,
-            groupings: (_c = props.groupings) !== null && _c !== void 0 ? _c : initialFieldSetContext.groupings,
-            condensed: (_d = props.condensed) !== null && _d !== void 0 ? _d : initialFieldSetContext.condensed,
-            fluid: (_e = props.fluid) !== null && _e !== void 0 ? _e : initialFieldSetContext.fluid,
+            hidden: (_a = props.hidden) !== null && _a !== void 0 ? _a : iFSC.hidden,
+            breakAt: (_b = props.breakAt) !== null && _b !== void 0 ? _b : iFSC.breakAt,
+            groupings: (_c = props.groupings) !== null && _c !== void 0 ? _c : iFSC.groupings,
+            condensed: (_d = props.condensed) !== null && _d !== void 0 ? _d : iFSC.condensed,
+            fluid: (_e = props.fluid) !== null && _e !== void 0 ? _e : iFSC.fluid,
             uuid: intelliwaketsfoundation.RandomString(5),
             fillHeight: !!props.fillHeight,
             fillHeightScroll: !!props.fillHeightScroll
