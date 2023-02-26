@@ -19,11 +19,11 @@ export function InputSSN<T>(props: IProps<T>) {
 	}, [props])
 
 	return (
-		<InputWrapper
-			{...ReduceToInputAddProps(props)}
-			className="inputSSN form-control"
-			plainTextControl={!!props.plainTextLast4Only ? '...-' + (props.value ?? '').toString().substr(-4) : props.value}>
-			<input type="text" {...inputProps} pattern="\d{3}-?\d{2}-?\d{4}" />
-		</InputWrapper>
+			<InputWrapper
+					{...ReduceToInputAddProps(props)}
+					className='inputSSN form-control'
+					plainTextControl={!!props.plainTextLast4Only ? '...-' + (props.value ?? '').toString().substring(('...-' + (props.value ?? '').toString()).length - 4) : props.value}>
+				<input type='text' {...inputProps} pattern='\d{3}-?\d{2}-?\d{4}' />
+			</InputWrapper>
 	)
 }

@@ -132,7 +132,7 @@ export const GetPathComponentAfter = (search: string | undefined | null): string
 	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
 
 	if (startPos >= 0) {
-		const after = window.location.pathname.substr(startPos + searchCalc.length)
+		const after = window.location.pathname.substring(startPos + searchCalc.length)
 		const slashPos = after.toLowerCase().indexOf('/')
 		if (slashPos >= 0) {
 			return after.substring(0, slashPos)
@@ -155,7 +155,7 @@ export const GetPathComponentAt = (search: string | undefined | null, toEnd = tr
 	const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc)
 
 	if (startPos >= 0) {
-		let result = window.location.pathname.substr(startPos + 1)
+		let result = window.location.pathname.substring(startPos + 1)
 
 		if (toEnd) return result
 
@@ -178,13 +178,13 @@ export const GetPathThrough = (search: string | undefined | null): string | unde
 	const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/')
 
 	if (startPosSlash >= 0) {
-		return window.location.pathname.substr(0, startPosSlash + searchCalc.length)
+		return window.location.pathname.substring(0, startPosSlash + searchCalc.length)
 	}
 
 	const startPosNoSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc)
 
 	if (startPosNoSlash >= 0) {
-		const possibleComplete = window.location.pathname.substr(0, startPosNoSlash + searchCalc.length)
+		const possibleComplete = window.location.pathname.substring(0, startPosNoSlash + searchCalc.length)
 
 		if (possibleComplete.length === window.location.pathname.length) {
 			return possibleComplete

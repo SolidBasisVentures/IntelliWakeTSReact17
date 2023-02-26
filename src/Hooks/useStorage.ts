@@ -1,9 +1,32 @@
-import {JSONStringToObject, ObjectToJSONString} from '@solidbasisventures/intelliwaketsfoundation'
 import {SetStateAction, useCallback, useState} from 'react'
 
 export type TStorageStateType = null | string | object | number | boolean | any[]
 
 export type TStorageType = 'local' | 'session'
+
+const ObjectToJSONString = (val: any) => `json:${JSON.stringify(val)}`
+
+const JSONParse = <T = any>(json: any): T | null => {
+	if (!json) {
+		return null
+	}
+
+	if (typeof json === 'object') return json
+
+	let returnObj = null
+
+	try {
+		returnObj = JSON.parse(json)
+	} catch (err) {
+		// console.log('JSONParse', err)
+
+		return null
+	}
+
+	return returnObj
+}
+
+const JSONStringToObject = <T = any>(val: string): T => (!val ? undefined : val === 'json:undefined' ? undefined : val === 'json:null' ? null : JSONParse(val.toString().substring(5))) as T
 
 export const setStorage = <T>(key: string | null | undefined, newValue: T, remember: TStorageType, defaultValue: T) => {
 	if (!!key) {
@@ -41,8 +64,8 @@ export const getStorage = <T>(key: string | null | undefined, remember: TStorage
 		remember === 'local'
 			? window.localStorage.getItem(key) ?? defaultValue
 			: remember === 'session'
-			? window.sessionStorage.getItem(key) ?? defaultValue
-			: defaultValue
+				? window.sessionStorage.getItem(key) ?? defaultValue
+				: defaultValue
 	) as T
 
 	if (!!newValue && typeof newValue === 'string' && newValue.startsWith('json:')) {

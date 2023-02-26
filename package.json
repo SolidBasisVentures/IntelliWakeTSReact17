@@ -6,8 +6,8 @@
 	"types": "dist/main.d.ts",
 	"scripts": {
 		"BuildAndPublish": "rollup -c && npm version patch --no-git-tag-version && npm publish",
-		"YarnInstall": "yarn add @solidbasisventures/intelliwaketsfoundation -W && yarn install",
-		"YarnUpgrade": "yarn add @solidbasisventures/intelliwaketsfoundation -W && yarn upgrade",
+		"YarnInstall": "yarn add -D @solidbasisventures/intelliwaketsfoundation -W && yarn install",
+		"YarnUpgrade": "yarn add -D @solidbasisventures/intelliwaketsfoundation -W && yarn upgrade",
 		"YarnReactUpgrade": "yarn add -D typescript axios babel-core babel-runtime cleave.js prettier react react-datepicker react-dom react-router-dom react-switch recoil @types/cleave.js @types/react @types/react-datepicker @types/react-dom @types/react-router-dom",
 		"updateImports": "npx react-codemod update-react-imports .",
 		"Test": "jest",
@@ -24,9 +24,6 @@
 		"type": "git",
 		"url": "https://github.com/SolidBasisVentures/IntelliWakeTSReact17.git"
 	},
-	"dependencies": {
-		"@solidbasisventures/intelliwaketsfoundation": "^5.2.38"
-	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.2.1",
 		"@fortawesome/pro-duotone-svg-icons": "6.2.1",
@@ -35,6 +32,7 @@
 		"@fortawesome/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/react-fontawesome": "^0.1.18",
 		"@popperjs/core": "^2.4.0",
+		"@solidbasisventures/intelliwaketsfoundation": "^5.2.39",
 		"@types/cleave.js": "^1.4.2",
 		"@types/jest": "^26.0.15",
 		"@types/node": "^16.11.11",
