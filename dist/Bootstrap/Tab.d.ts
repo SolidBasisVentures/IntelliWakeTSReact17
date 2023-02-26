@@ -12,7 +12,7 @@ export interface IIWTab<T extends string = string> {
     ariaLabelTab?: string;
     ariaLabelPane?: string;
 }
-export declare type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded';
+export type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded';
 export interface IWTabProps<T extends string = string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
     tabs: IIWTab<T>[];
     paneLoading?: TPaneLoading;

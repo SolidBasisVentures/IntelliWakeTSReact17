@@ -1,4 +1,4 @@
-export declare type IWColumnProps = string | boolean | number | {
+export type IWColumnProps = string | boolean | number | {
     size?: boolean | number | string;
     offset?: string | number;
     order?: 'first' | 'last' | number;

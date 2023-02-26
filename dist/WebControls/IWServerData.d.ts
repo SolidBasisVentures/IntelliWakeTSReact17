@@ -10,7 +10,7 @@ import { ReactNode, ReactNodeArray } from 'react';
  *
  * Default the value to undefined to automatically trigger the API.
  */
-export declare type TServerData<RES = any> = RES | undefined | null;
+export type TServerData<RES = any> = RES | undefined | null;
 /**
  * An interface that allows for a script-driven API to occur.
  *
@@ -79,7 +79,7 @@ export interface IServerDataUpdatedState<REQ = any, RES = any> {
  *
  * <ServerData {...serverDataUpdateProps} setUpdateResponse={setServerDataUpdateProps} />
  */
-export declare type TServerDataUpdatedState<REQ = any, RES = any> = IServerDataUpdatedState<REQ, RES> | null;
+export type TServerDataUpdatedState<REQ = any, RES = any> = IServerDataUpdatedState<REQ, RES> | null;
 /**
  * Interface for the control, with the main REQuest and RESponse types.
  */

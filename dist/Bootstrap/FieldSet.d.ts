@@ -7,7 +7,7 @@ export declare enum EFieldSetGroupings {
     QuartersSmallLabel = 4,
     LabelOver = 5
 }
-export declare type TFieldSetBreakAt = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type TFieldSetBreakAt = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export interface IFieldSetPropsAddOns {
     breakAt?: TFieldSetBreakAt;
     groupings?: EFieldSetGroupings;

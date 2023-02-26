@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
-export declare type Direction = 'up' | 'down' | 'left' | 'right';
+export type Direction = 'up' | 'down' | 'left' | 'right';
 export interface IDDAction {
     hidden?: boolean;
     divider?: boolean;

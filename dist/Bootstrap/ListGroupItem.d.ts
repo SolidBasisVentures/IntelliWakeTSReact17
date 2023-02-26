@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
  * !value removes the badge
  * !!value shows the badge
  */
-export declare type TBadgeValues = null | string | number | ReactNode | boolean;
+export type TBadgeValues = null | string | number | ReactNode | boolean;
 export interface IWListGroupItemProps extends Omit<React.HTMLProps<HTMLLIElement>, 'ref' | 'action' | 'onClick'> {
     tag?: string | React.ReactType;
     active?: boolean;

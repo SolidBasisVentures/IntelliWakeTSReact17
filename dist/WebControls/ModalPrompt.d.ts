@@ -7,7 +7,7 @@ export interface IModalPromptResponse {
     outline?: boolean;
     disabled?: boolean;
 }
-export declare type TModalPromptResponse = null | IModalPromptResponse | IModalPromptResponse[];
+export type TModalPromptResponse = null | IModalPromptResponse | IModalPromptResponse[];
 export interface IModalPromptProps {
     size?: 'sm' | 'lg' | 'xl';
     title?: ReactNode;

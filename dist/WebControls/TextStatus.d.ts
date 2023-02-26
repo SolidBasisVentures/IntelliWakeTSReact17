@@ -5,7 +5,7 @@ export interface ITextStatusState {
     color?: string;
     className?: string;
 }
-export declare type TTextStatusState = ITextStatusState | string | null;
+export type TTextStatusState = ITextStatusState | string | null;
 export declare const initialTextStatusState: TTextStatusState;
 interface IProps {
     textStatus: TTextStatusState;
