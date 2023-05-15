@@ -238,7 +238,7 @@ const GetPathComponentAfter = (search) => {
     }
     const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc);
     if (startPos >= 0) {
-        const after = window.location.pathname.substr(startPos + searchCalc.length);
+        const after = window.location.pathname.substring(startPos + searchCalc.length);
         const slashPos = after.toLowerCase().indexOf('/');
         if (slashPos >= 0) {
             return after.substring(0, slashPos);
@@ -258,7 +258,7 @@ const GetPathComponentAt = (search, toEnd = true) => {
     }
     const startPos = window.location.pathname.toLowerCase().indexOf(searchCalc);
     if (startPos >= 0) {
-        let result = window.location.pathname.substr(startPos + 1);
+        let result = window.location.pathname.substring(startPos + 1);
         if (toEnd)
             return result;
         const slashPos = result.indexOf('/');
@@ -277,11 +277,11 @@ const GetPathThrough = (search) => {
     let searchCalc = search.toLowerCase();
     const startPosSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc + '/');
     if (startPosSlash >= 0) {
-        return window.location.pathname.substr(0, startPosSlash + searchCalc.length);
+        return window.location.pathname.substring(0, startPosSlash + searchCalc.length);
     }
     const startPosNoSlash = window.location.pathname.toLowerCase().lastIndexOf(searchCalc);
     if (startPosNoSlash >= 0) {
-        const possibleComplete = window.location.pathname.substr(0, startPosNoSlash + searchCalc.length);
+        const possibleComplete = window.location.pathname.substring(0, startPosNoSlash + searchCalc.length);
         if (possibleComplete.length === window.location.pathname.length) {
             return possibleComplete;
         }
@@ -1581,6 +1581,24 @@ const Progress = (props) => {
         ((_c = props.otherBars) !== null && _c !== void 0 ? _c : []).map((otherBar, idx) => React__default["default"].createElement("div", Object.assign({ key: otherBar.nowAmount + '-' + idx }, progressBarProps(otherBar)))));
 };
 
+const ObjectToJSONString = (val) => `json:${JSON.stringify(val)}`;
+const JSONParse = (json) => {
+    if (!json) {
+        return null;
+    }
+    if (typeof json === 'object')
+        return json;
+    let returnObj = null;
+    try {
+        returnObj = JSON.parse(json);
+    }
+    catch (err) {
+        // console.log('JSONParse', err)
+        return null;
+    }
+    return returnObj;
+};
+const JSONStringToObject = (val) => (!val ? undefined : val === 'json:undefined' ? undefined : val === 'json:null' ? null : JSONParse(val.toString().substring(5)));
 const setStorage = (key, newValue, remember, defaultValue) => {
     if (!!key) {
         switch (remember) {
@@ -1593,7 +1611,7 @@ const setStorage = (key, newValue, remember, defaultValue) => {
                         window.localStorage.setItem(key, newValue);
                     }
                     else {
-                        window.localStorage.setItem(key, intelliwaketsfoundation.ObjectToJSONString(newValue));
+                        window.localStorage.setItem(key, ObjectToJSONString(newValue));
                     }
                 }
                 break;
@@ -1606,7 +1624,7 @@ const setStorage = (key, newValue, remember, defaultValue) => {
                         window.sessionStorage.setItem(key, newValue);
                     }
                     else {
-                        window.sessionStorage.setItem(key, intelliwaketsfoundation.ObjectToJSONString(newValue));
+                        window.sessionStorage.setItem(key, ObjectToJSONString(newValue));
                     }
                 }
                 break;
@@ -1623,7 +1641,7 @@ const getStorage = (key, remember, defaultValue) => {
             ? (_b = window.sessionStorage.getItem(key)) !== null && _b !== void 0 ? _b : defaultValue
             : defaultValue);
     if (!!newValue && typeof newValue === 'string' && newValue.startsWith('json:')) {
-        return intelliwaketsfoundation.JSONStringToObject(newValue);
+        return JSONStringToObject(newValue);
     }
     return newValue;
 };
@@ -3326,7 +3344,7 @@ const InputSelectStep = (props) => {
 };
 
 function InputSSN(props) {
-    var _a;
+    var _a, _b;
     const inputProps = React.useMemo(() => {
         const subset = ReduceInputProps(intelliwaketsfoundation.OmitProperty(props, 'plainTextLast4Only'));
         if (subset.autoComplete === undefined) {
@@ -3334,8 +3352,8 @@ function InputSSN(props) {
         }
         return subset;
     }, [props]);
-    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: "inputSSN form-control", plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substr(-4) : props.value }),
-        React__default["default"].createElement("input", Object.assign({ type: "text" }, inputProps, { pattern: "\\d{3}-?\\d{2}-?\\d{4}" }))));
+    return (React__default["default"].createElement(InputWrapper, Object.assign({}, ReduceToInputAddProps(props), { className: 'inputSSN form-control', plainTextControl: !!props.plainTextLast4Only ? '...-' + ((_a = props.value) !== null && _a !== void 0 ? _a : '').toString().substring(('...-' + ((_b = props.value) !== null && _b !== void 0 ? _b : '').toString()).length - 4) : props.value }),
+        React__default["default"].createElement("input", Object.assign({ type: 'text' }, inputProps, { pattern: '\\d{3}-?\\d{2}-?\\d{4}' }))));
 }
 
 function InputState(props) {
