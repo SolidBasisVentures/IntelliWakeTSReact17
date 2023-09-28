@@ -32,7 +32,7 @@
 		"@fortawesome/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/react-fontawesome": "^0.1.18",
 		"@popperjs/core": "^2.4.0",
-		"@solidbasisventures/intelliwaketsfoundation": "^5.7.5",
+		"@solidbasisventures/intelliwaketsfoundation": "^5.9.22",
 		"@types/cleave.js": "^1.4.2",
 		"@types/jest": "^26.0.15",
 		"@types/node": "^16.11.11",
