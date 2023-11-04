@@ -1,6 +1,6 @@
 {
 	"name": "@solidbasisventures/intelliwaketsreact17",
-	"version": "4.0.294",
+	"version": "4.0.295",
 	"description": "NPM package for IntelliWake React 17 Components",
 	"main": "dist/main.js",
 	"types": "dist/main.d.ts",
@@ -32,7 +32,7 @@
 		"@fortawesome/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/react-fontawesome": "^0.1.18",
 		"@popperjs/core": "^2.4.0",
-		"@solidbasisventures/intelliwaketsfoundation": "^5.9.22",
+		"@solidbasisventures/intelliwaketsfoundation": "^5.10.2",
 		"@types/cleave.js": "^1.4.2",
 		"@types/jest": "^26.0.15",
 		"@types/node": "^16.11.11",
