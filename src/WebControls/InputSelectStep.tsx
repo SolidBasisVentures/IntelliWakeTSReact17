@@ -38,7 +38,7 @@ export const InputSelectStep = (props: IProps) => {
 			classNames += ' hoverUnderline ' + (props.color === '' ? '' : `text-${props.color ?? 'primary'} `)
 	}
 
-	classNames += ' ' + props.className ?? ''
+	classNames += ' ' + (props.className ?? '')
 
 	const currentOptionIDX = useMemo(() => props.options.findIndex((option) => option.key === props.value), [
 		props.options,
