@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWInputGroupTextProps extends Omit<React.HTMLProps<HTMLSpanElement>, 'ref'> {
+	key?: any
 	tag?: string | React.ReactType
 }
 

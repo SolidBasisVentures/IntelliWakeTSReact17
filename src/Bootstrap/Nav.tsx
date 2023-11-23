@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IIWNavProps extends React.HTMLProps<HTMLUListElement> {
+	key?: any
 	tabs?: boolean
 	pills?: boolean
 	vertical?: boolean | string

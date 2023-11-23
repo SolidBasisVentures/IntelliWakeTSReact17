@@ -5,6 +5,7 @@ import {Spinner} from '../WebControls/Spinner'
 import {EllipsesTruncate} from '../WebControls/EllipsesTruncate'
 
 export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElement>, 'ref'> {
+	key?: any
 	disabled?: boolean
 	tag?: string | React.ReactType
 	href?: string
@@ -17,7 +18,7 @@ export interface IWDropdownItemProps extends Omit<React.HTMLProps<HTMLBaseElemen
 
 export const DropdownItem = (props: IWDropdownItemProps) => {
 	const TagToUse = props.tag ?? (!!props.href ? ('a' as React.ReactType) : ('div' as React.ReactType))
-	
+
 	let classes = props.className ?? ''
 	classes +=
 		' ' +
@@ -28,7 +29,7 @@ export const DropdownItem = (props: IWDropdownItemProps) => {
 			'active': !!props.active,
 			disabled: !!props.disabled
 		})
-	
+
 	return (
 		<TagToUse
 			{...OmitProperty(

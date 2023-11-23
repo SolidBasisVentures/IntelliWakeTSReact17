@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWModalHeaderProps extends React.HTMLProps<HTMLDivElement> {
+	key?: any
 	color?: string
 }
 

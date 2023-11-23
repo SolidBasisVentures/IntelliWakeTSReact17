@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IIWNavbarProps extends React.HTMLProps<HTMLBaseElement> {
+	key?: any
 	light?: boolean
 	dark?: boolean
 	// full?: boolean

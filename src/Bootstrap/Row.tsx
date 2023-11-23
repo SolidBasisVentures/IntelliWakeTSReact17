@@ -3,6 +3,7 @@ import {ClassNames} from '../Functions'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IIWRowProps extends React.HTMLProps<HTMLDivElement> {
+	key?: any
 	noGutters?: boolean
 	className?: string
 	children?: any

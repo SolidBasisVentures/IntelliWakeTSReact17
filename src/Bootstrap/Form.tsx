@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IWFormProps extends React.HTMLProps<HTMLFormElement> {
+	key?: any
 	inline?: boolean
 	innerRef?: React.Ref<HTMLFormElement>
 	className?: string

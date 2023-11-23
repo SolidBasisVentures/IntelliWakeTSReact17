@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWNavLinkProps extends React.HTMLProps<HTMLAnchorElement> {
+	key?: any
 	tag?: string | React.ReactType
 }
 

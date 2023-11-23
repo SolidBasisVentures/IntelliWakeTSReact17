@@ -24,6 +24,7 @@ export interface IFieldSetPropsAddOns {
 }
 
 export interface IFieldSetProps extends React.HTMLProps<HTMLFieldSetElement>, IFieldSetPropsAddOns {
+	key?: any
 }
 
 interface IFieldSetContext extends Required<IFieldSetPropsAddOns> {

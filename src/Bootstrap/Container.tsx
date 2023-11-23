@@ -3,6 +3,7 @@ import {ClassNames} from '../Functions'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IIWContainerProps extends React.HTMLProps<HTMLDivElement> {
+	key?: any
 	fluid?: boolean | string
 	className?: string
 	children?: any

@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IIWCollapseProps extends React.HTMLProps<HTMLDivElement> {
+	key?: any
 	isOpen?: boolean
 	tag?: string | React.ReactType
 	navbar?: boolean

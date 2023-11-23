@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ApplyColumnProp, IWColumnProps} from './ColProp'
 
 export interface IIWLabelProps extends React.HTMLProps<HTMLLabelElement> {
+	key?: any
 	xs?: IWColumnProps
 	sm?: IWColumnProps
 	md?: IWColumnProps

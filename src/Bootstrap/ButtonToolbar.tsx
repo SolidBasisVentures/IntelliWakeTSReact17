@@ -5,6 +5,7 @@ import {ClassNames} from '../Functions'
 export interface IWButtonToolbarProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {}
 
 export const ButtonToolbar = (props: IWButtonToolbarProps) => {
+	key?: any
 	let classes = props.className ?? ''
 	classes +=
 		' ' +

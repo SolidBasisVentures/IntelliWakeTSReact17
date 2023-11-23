@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWNavItemProps extends React.HTMLProps<HTMLLIElement> {
+	key?: any
 	tag?: string | React.ReactType
 }
 

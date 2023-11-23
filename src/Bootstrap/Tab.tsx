@@ -20,6 +20,7 @@ export interface IIWTab<T extends string = string> {
 export type TPaneLoading = 'All' | 'OnlyActive' | 'KeepOnceLoaded'
 
 export interface IWTabProps<T extends string = string> extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+	key?: any
 	tabs: IIWTab<T>[]
 	paneLoading?: TPaneLoading
 	rememberKey?: string

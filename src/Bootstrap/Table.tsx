@@ -3,6 +3,7 @@ import {ClassNames} from '../Functions'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IIWTableProps extends Omit<React.HTMLProps<HTMLTableElement>, 'ref' | 'size'> {
+	key?: any
 	bordered?: boolean
 	borderless?: boolean
 	striped?: boolean

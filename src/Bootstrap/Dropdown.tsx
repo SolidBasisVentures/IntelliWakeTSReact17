@@ -27,6 +27,7 @@ export interface IDDAction {
 }
 
 export interface IWDropdownProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref' | 'size'> {
+	key?: any
 	disabled?: boolean
 	direction?: Direction
 	isOpen?: boolean
