@@ -28,7 +28,8 @@ export default defineConfig({
 				'reactRouterDom',
 				'react-switch',
 				'axios',
-				'faSpinnerThird']
+				'faSpinnerThird'
+			]
 		}
 	},
 	plugins: [
