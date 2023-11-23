@@ -17,12 +17,12 @@ export default defineConfig({
 		dts(),
 		viteStaticCopy({
 			targets: [
-				{src: 'src/IWake.scss', dest: 'dist'},
+				{src: 'src/IWake.scss', dest: '.'},
 				{
 					src: 'src/IWake-table-sticky.scss',
-					dest: 'dist'
+					dest: '.'
 				},
-				{src: 'src/IWakeNoRoot.scss', dest: 'dist'}
+				{src: 'src/IWakeNoRoot.scss', dest: '.'}
 			]
 		})
 	]
