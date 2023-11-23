@@ -1,6 +1,6 @@
 {
 	"name": "@solidbasisventures/intelliwaketsreact17",
-	"version": "4.1.7",
+	"version": "4.1.8",
 	"description": "NPM package for IntelliWake React 17 Components",
 	"type": "module",
 	"main": "dist/main.js",
