@@ -21,14 +21,14 @@ export default defineConfig({
 				'moment-timezone',
 				'readline',
 				'intelliwaketsfoundation',
-				'@fortawesome/react-fontawesome',
-				'@fortawesome/pro-regular-svg-icons',
-				'@fortawesome/pro-solid-svg-icons',
+				'reactFontawesome',
+				'proRegularSvgIcons',
+				'proSolidSvgIcons',
 				'cleave.js/react',
-				'react-router-dom',
+				'reactRouterDom',
 				'react-switch',
 				'axios',
-				'@fortawesome/pro-solid-svg-icons/faSpinnerThird']
+				'faSpinnerThird']
 		}
 	},
 	plugins: [
