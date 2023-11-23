@@ -34,7 +34,7 @@ export const ArrayTable = (props: IPropsArrayTable) => {
 			bordered={props.bordered}
 			className={ClassNames({
 				'table-scrollable': !!props.scrollable,
-				['table-col-min-' + props.arrayStructure.minColSize ?? '']: !!props.arrayStructure.minColSize
+				['table-col-min-' + (props.arrayStructure.minColSize ?? '')]: !!props.arrayStructure.minColSize
 			})}
 			style={styleSettings}
 			hover={!!props.arrayStructure.rowClick}>
