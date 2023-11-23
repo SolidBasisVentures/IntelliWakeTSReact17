@@ -15,7 +15,9 @@ export default defineConfig({
 		rollupOptions: {
 			external: [
 				'React',
+				'react',
 				'reactDom',
+				'react-dom',
 				'path',
 				'fs',
 				'moment-timezone',

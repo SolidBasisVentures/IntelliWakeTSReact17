@@ -61,7 +61,7 @@
 		"react-router-dom": "^5.2.0",
 		"react-switch": "^6.0.0",
 		"recoil": "^0.7.3",
-		"sass": "^1.35.2",
+		"sass": "^1.69.5",
 		"source-map-support": "^0.5.19",
 		"ts-jest": "^26.4.3",
 		"ts-node-dev": "^2.0.0"
