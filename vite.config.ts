@@ -15,7 +15,7 @@ export default defineConfig({
 		rollupOptions: {
 			external: [
 				'React',
-				'react-dom',
+				'reactDom',
 				'path',
 				'fs',
 				'moment-timezone',
@@ -24,9 +24,9 @@ export default defineConfig({
 				'reactFontawesome',
 				'proRegularSvgIcons',
 				'proSolidSvgIcons',
-				'cleave.js/react',
+				'Cleave',
 				'reactRouterDom',
-				'react-switch',
+				'reactSwitch',
 				'axios',
 				'faSpinnerThird'
 			]
