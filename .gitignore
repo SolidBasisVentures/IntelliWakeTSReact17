@@ -6,7 +6,6 @@
 composer.phar
 .sass-cache
 
-
 # testing
 /coverage
 
