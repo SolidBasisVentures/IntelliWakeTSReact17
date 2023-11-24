@@ -18,8 +18,8 @@ export interface IInputSwitchProps<T = unknown> {
 	hidden?: boolean
 	onColor?: string
 	offColor?: string
-	checkedIcon?: JSX.Element | boolean
-	uncheckedIcon?: JSX.Element | boolean
+	checkedIcon?: any | boolean
+	uncheckedIcon?: any | boolean
 	height?: number
 	width?: number
 	size?: 'sm' | 'lg'
