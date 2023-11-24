@@ -168,6 +168,8 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	const mdContext = useContext(MDContext)
 	const selectedRow = useRef(null as any | null)
 
+	console.log('Hist', history)
+
 	const panelURLAddOn =
 			mdContext.baseFullPath +
 			(props.panel ? '/' + panelClean(props.panel) : '') +
