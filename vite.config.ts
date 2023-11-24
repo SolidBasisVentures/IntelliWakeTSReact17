@@ -39,10 +39,7 @@ export default defineConfig({
 		viteStaticCopy({
 			targets: [
 				{src: 'src/IWake.scss', dest: '.'},
-				{
-					src: 'src/IWake-table-sticky.scss',
-					dest: '.'
-				},
+				{src: 'src/IWake-table-sticky.scss', dest: '.'},
 				{src: 'src/IWakeNoRoot.scss', dest: '.'}
 			]
 		})
