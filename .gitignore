@@ -5,7 +5,7 @@
 /vendor
 composer.phar
 .sass-cache
-
+/dist
 
 # testing
 /coverage
