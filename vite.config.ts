@@ -31,7 +31,15 @@ export default defineConfig({
 				'reactRouterDom',
 				'reactSwitch',
 				'axios',
-				'faSpinnerThird'
+				'faSpinnerThird',
+				'moment-timezone',
+				'@solidbasisventures/intelliwaketsfoundation',
+				'@fortawesome/react-fontawesome',
+				'@fortawesome/pro-regular-svg-icons',
+				'@fortawesome/pro-solid-svg-icons',
+				'cleave.js/react',
+				'react-switch',
+				'@fortawesome/pro-solid-svg-icons/faSpinnerThird'
 			]
 		}
 	},
