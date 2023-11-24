@@ -9,6 +9,7 @@ export interface IInputSwitchProps<T = unknown> {
 	label: any
 	className?: string
 	switchClassName?: string
+	title?: string
 	// id?: string
 	plainText?: boolean
 	plainTextProps?: boolean
@@ -34,40 +35,41 @@ export function InputSwitch<T>(props: IInputSwitchProps<T>) {
 		// if (!!props.onChange) {
 		// 	props.onChange(e)
 		// }
-		
+
 		if (!!props.changeValue) {
 			props.changeValue(checked, props.name, !!e.shiftKey, !!e.ctrlKey, !!e.altKey)
 		}
 	}
-	
+
 	const height = props.height ?? props.size === 'sm' ? 12 : props.size === 'lg' ? 18 : 14
 	const width = props.width ?? props.size === 'sm' ? 22 : props.size === 'lg' ? 30 : 26
-	
+
 	return (
-		<label
-			style={props.style}
-			className={'inputSwitch ' + (!props.noReduceWidth ? '' : 'inputSwitchFullWidth ') + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
-			hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
-			{(!props.plainText || !props.plainTextLabelOnly) &&
-				<Switch
-					onChange={(checked, e) => {
-						if (!props.plainText) {
-							handleInputChange(checked, e)
-						}
-					}}
-					name={props.name as string}
-					className={'react-switch ' + (props.noPadding ? '' : 'me-2 ') + (props.switchClassName ?? '')}
-					checked={props.checked}
-					disabled={props.plainText}
-					onColor={props.onColor}
-					offColor={props.offColor}
-					checkedIcon={props.checkedIcon ?? false}
-					uncheckedIcon={props.uncheckedIcon ?? false}
-					height={height}
-					width={width}
-				/>}
-			{props.label}
-		</label>
-	
+			<label
+					title={props.title}
+					style={props.style}
+					className={'inputSwitch ' + (!props.noReduceWidth ? '' : 'inputSwitchFullWidth ') + (props.ignoreNoWrap ? '' : 'text-nowrap ') + (props.noFormControlPlainText ? '' : 'form-control-plaintext ') + (props.plainText ? `plainText ` : '') + (props.className ?? '')}
+					hidden={props.hidden || (props.plainText && !props.checked && props.plainTextLabelOnly)}>
+				{(!props.plainText || !props.plainTextLabelOnly) &&
+						<Switch
+								onChange={(checked, e) => {
+									if (!props.plainText) {
+										handleInputChange(checked, e)
+									}
+								}}
+								name={props.name as string}
+								className={'react-switch ' + (props.noPadding ? '' : 'me-2 ') + (props.switchClassName ?? '')}
+								checked={props.checked}
+								disabled={props.plainText}
+								onColor={props.onColor}
+								offColor={props.offColor}
+								checkedIcon={props.checkedIcon ?? false}
+								uncheckedIcon={props.uncheckedIcon ?? false}
+								height={height}
+								width={width}
+						/>}
+				{props.label}
+			</label>
+
 	)
 }

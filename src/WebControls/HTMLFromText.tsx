@@ -2,6 +2,7 @@ import {OmitProperty, TextToHTML} from '@solidbasisventures/intelliwaketsfoundat
 import React from 'react'
 
 interface IProps extends React.HTMLProps<HTMLSpanElement> {
+	key?: any
 	text: string | null | undefined
 }
 

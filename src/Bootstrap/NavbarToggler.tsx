@@ -1,6 +1,8 @@
 import React from 'react'
 
-export interface IIWNavbarTogglerProps extends React.HTMLProps<HTMLButtonElement> {}
+export interface IIWNavbarTogglerProps extends React.HTMLProps<HTMLButtonElement> {
+	key?: any
+}
 
 export const NavbarToggler = (props: IIWNavbarTogglerProps) => {
 	return (

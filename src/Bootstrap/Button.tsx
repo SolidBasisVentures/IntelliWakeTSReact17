@@ -18,6 +18,7 @@ export interface IWButtonLightProps {
 }
 
 export interface IIWButtonProps extends IWButtonLightProps, Omit<React.HTMLProps<HTMLButtonElement>, 'size' | 'ref'> {
+	key?: any
 	tag?: string | React.ReactType
 	// type?: 'button' | 'submit' | 'reset'
 	autoFocus?: boolean

@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IWListGroupProps extends Omit<React.HTMLProps<HTMLUListElement>, 'ref'> {
+	key?: any
 	tag?: string | React.ReactType
 	flush?: boolean
 	// horizontal?: boolean | string

@@ -75,7 +75,7 @@ export const SelectDD = (props: IPropsSelectDD) => {
 						<FontAwesomeIcon
 							icon={item.faIcon}
 							fixedWidth
-							className={ClassNames({['text-' + item.faIconColor ?? '']: !!item.faIconColor})}
+							className={ClassNames({['text-' + (item.faIconColor ?? '')]: !!item.faIconColor})}
 						/>
 					)}
 					{item.name}

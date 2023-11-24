@@ -6,7 +6,6 @@
 composer.phar
 .sass-cache
 
-
 # testing
 /coverage
 
@@ -19,7 +18,7 @@ composer.phar
 .env
 .env.local
 .env.development.local
-.env.test.local
+.env.test.localgit
 .env.production.local
 Thumbs.db
 .sass-cache/
@@ -37,3 +36,5 @@ yarn-error.log*
 
 # npm
 .npmrc
+
+/dist

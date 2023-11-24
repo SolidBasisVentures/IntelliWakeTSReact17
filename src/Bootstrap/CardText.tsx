@@ -2,6 +2,7 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 
 export interface IWCardTextProps extends Omit<React.HTMLProps<HTMLParagraphElement>, 'ref'> {
+	key?: any
 	tag?: string | React.ReactType
 	className?: string
 }

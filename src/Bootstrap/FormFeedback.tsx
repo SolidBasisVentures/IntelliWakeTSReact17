@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IWFormFeedbackProps extends React.HTMLProps<HTMLDivElement> {
+	key?: any
 	valid?: boolean
 	tag?: string | React.ReactType
 }

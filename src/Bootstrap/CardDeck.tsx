@@ -4,6 +4,7 @@ import {TFieldSetBreakAt} from './FieldSet'
 import {ClassNames} from '../Functions'
 
 export interface IWCardDeckProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+	key?: any
 	tag?: string | React.ReactType
 	breakAt?: TFieldSetBreakAt
 	smallRows?: number
@@ -14,7 +15,7 @@ export interface IWCardDeckProps extends Omit<React.HTMLProps<HTMLDivElement>, '
 
 export const CardDeck = (props: IWCardDeckProps) => {
 	const TagToUse = props.tag ?? ('div' as React.ReactType)
-	
+
 	return (
 		<TagToUse {...OmitProperty(props, 'tag', 'className', 'breakAt', 'smallRows', 'largeRows', 'fillHeight', 'fillHeightScroll')}
 		          className={`card-deck ${!props.breakAt ? `row-cols-${props.smallRows ?? 'auto'}` : `row-cols-${props.breakAt}-${props.largeRows ?? 'auto'} row-cols-${props.smallRows ?? 'auto'}`} row ${props.className ?? ''} ${ClassNames({

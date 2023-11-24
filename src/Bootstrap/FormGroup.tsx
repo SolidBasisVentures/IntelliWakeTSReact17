@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IWFormGroupProps extends React.HTMLProps<HTMLDivElement> {
+	key?: any
 	className?: string
 }
 

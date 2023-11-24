@@ -3,6 +3,7 @@ import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
 export interface IWAlertProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+	key?: any
 	color?: string
 	tag?: string | React.ReactType
 	isOpen?: boolean
@@ -15,7 +16,7 @@ export const Alert = (props: IWAlertProps) => {
 	}, 100))
 	const isMounted = useRef(false)
 	const [showState, setShowState] = useState<IWAlertProps | null>(null)
-	
+
 	let classes = showState?.className ?? ''
 	classes += !!showState?.color ? ` alert-${showState?.color}` : ''
 	classes +=
@@ -27,7 +28,7 @@ export const Alert = (props: IWAlertProps) => {
 			'fade': true,
 			'show': !!props.isOpen
 		})
-	
+
 	useEffect(() => {
 		isMounted.current = true
 		if (!!props.isOpen) {
@@ -42,12 +43,12 @@ export const Alert = (props: IWAlertProps) => {
 				}, 1500)
 			}
 		}
-		
+
 		return () => {
 			isMounted.current = false
 		}
 	}, [props.isOpen])
-	
+
 	return <TagToUse {...OmitProperty(props, 'tag', 'color', 'isOpen', 'toggle', 'className')}
 	                 className={classes.trim()}
 	                 onClick={() => {

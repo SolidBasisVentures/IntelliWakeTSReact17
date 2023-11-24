@@ -2,7 +2,9 @@ import React from 'react'
 import {OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {ClassNames} from '../Functions'
 
-export interface IWButtonToolbarProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {}
+export interface IWButtonToolbarProps extends Omit<React.HTMLProps<HTMLDivElement>, 'ref'> {
+	key?: any
+}
 
 export const ButtonToolbar = (props: IWButtonToolbarProps) => {
 	let classes = props.className ?? ''
