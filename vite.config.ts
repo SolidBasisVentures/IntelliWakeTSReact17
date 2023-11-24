@@ -18,6 +18,7 @@ export default defineConfig({
 				'react',
 				'reactDom',
 				'react-dom',
+				'react-router-dom',
 				'path',
 				'fs',
 				'moment-timezone',
