@@ -1,6 +1,7 @@
 import React from 'react';
 import { IWColumnProps } from './ColProp';
 export interface IIWColProps extends React.HTMLProps<HTMLDivElement> {
+    key?: any;
     xs?: IWColumnProps;
     sm?: IWColumnProps;
     md?: IWColumnProps;
