@@ -2,7 +2,7 @@ import typescript from 'rollup-plugin-typescript2'
 
 import scss from 'rollup-plugin-scss'
 import copy from 'rollup-plugin-copy'
-import pkg from './package.json'
+import pkg from './package.json' assert {type: 'json'}
 
 export default {
 	input: ['src/main.ts'],

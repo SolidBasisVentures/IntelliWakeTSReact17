@@ -26,6 +26,9 @@ devDependencies:
   '@popperjs/core':
     specifier: ^2.4.0
     version: 2.11.8
+  '@rollup/plugin-terser':
+    specifier: ^0.4.4
+    version: registry.npmjs.org/@rollup/plugin-terser@0.4.4(rollup@4.5.1)
   '@solidbasisventures/intelliwaketsfoundation':
     specifier: ^5.10.8
     version: 5.10.8
@@ -84,20 +87,17 @@ devDependencies:
     specifier: ^0.7.3
     version: 0.7.7(react-dom@17.0.2)(react@17.0.2)
   rollup:
-    specifier: ^2.10.8
-    version: registry.npmjs.org/rollup@2.79.1
+    specifier: ^4.5.1
+    version: registry.npmjs.org/rollup@4.5.1
   rollup-plugin-copy:
-    specifier: ^3.4.0
+    specifier: ^3.5.0
     version: registry.npmjs.org/rollup-plugin-copy@3.5.0
   rollup-plugin-scss:
-    specifier: ^3.0.0
-    version: registry.npmjs.org/rollup-plugin-scss@3.0.0
-  rollup-plugin-terser:
-    specifier: ^7.0.2
-    version: registry.npmjs.org/rollup-plugin-terser@7.0.2(rollup@2.79.1)
+    specifier: ^4.0.0
+    version: registry.npmjs.org/rollup-plugin-scss@4.0.0
   rollup-plugin-typescript2:
-    specifier: ^0.30.0
-    version: registry.npmjs.org/rollup-plugin-typescript2@0.30.0(rollup@2.79.1)(typescript@4.9.5)
+    specifier: ^0.36.0
+    version: registry.npmjs.org/rollup-plugin-typescript2@0.36.0(rollup@4.5.1)(typescript@4.9.5)
   sass:
     specifier: ^1.69.5
     version: 1.69.5
@@ -113,6 +113,9 @@ devDependencies:
   ts-node-dev:
     specifier: ^2.0.0
     version: 2.0.0(@types/node@16.18.64)(typescript@4.9.5)
+  tslib:
+    specifier: ^2.6.2
+    version: registry.npmjs.org/tslib@2.6.2
   typescript:
     specifier: ^4.9.5
     version: 4.9.5
@@ -2136,6 +2139,24 @@ packages:
       fastq: registry.npmjs.org/fastq@1.15.0
     dev: true
 
+  registry.npmjs.org/@rollup/plugin-terser@0.4.4(rollup@4.5.1):
+    resolution: {integrity: sha512-XHeJC5Bgvs8LfukDwWZp7yeqin6ns8RTl2B9avbejt6tZqsqvVoWI7ZTQrcNsfKEDWBTnTxM8nMDkO2IFFbd0A==, tarball: https://registry.npmjs.org/@rollup/plugin-terser/-/plugin-terser-0.4.4.tgz}
+    id: registry.npmjs.org/@rollup/plugin-terser/0.4.4
+    name: '@rollup/plugin-terser'
+    version: 0.4.4
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: registry.npmjs.org/rollup@4.5.1
+      serialize-javascript: registry.npmjs.org/serialize-javascript@6.0.1
+      smob: registry.npmjs.org/smob@1.4.1
+      terser: registry.npmjs.org/terser@5.24.0
+    dev: true
+
   registry.npmjs.org/@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==, tarball: https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-4.2.1.tgz}
     name: '@rollup/pluginutils'
@@ -2145,6 +2166,126 @@ packages:
       estree-walker: registry.npmjs.org/estree-walker@2.0.2
       picomatch: registry.npmjs.org/picomatch@2.3.1
     dev: true
+
+  registry.npmjs.org/@rollup/rollup-android-arm-eabi@4.5.1:
+    resolution: {integrity: sha512-YaN43wTyEBaMqLDYeze+gQ4ZrW5RbTEGtT5o1GVDkhpdNcsLTnLRcLccvwy3E9wiDKWg9RIhuoy3JQKDRBfaZA==, tarball: https://registry.npmjs.org/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.5.1.tgz}
+    name: '@rollup/rollup-android-arm-eabi'
+    version: 4.5.1
+    cpu: [arm]
+    os: [android]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-android-arm64@4.5.1:
+    resolution: {integrity: sha512-n1bX+LCGlQVuPlCofO0zOKe1b2XkFozAVRoczT+yxWZPGnkEAKTTYVOGZz8N4sKuBnKMxDbfhUsB1uwYdup/sw==, tarball: https://registry.npmjs.org/@rollup/rollup-android-arm64/-/rollup-android-arm64-4.5.1.tgz}
+    name: '@rollup/rollup-android-arm64'
+    version: 4.5.1
+    cpu: [arm64]
+    os: [android]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-darwin-arm64@4.5.1:
+    resolution: {integrity: sha512-QqJBumdvfBqBBmyGHlKxje+iowZwrHna7pokj/Go3dV1PJekSKfmjKrjKQ/e6ESTGhkfPNLq3VXdYLAc+UtAQw==, tarball: https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.5.1.tgz}
+    name: '@rollup/rollup-darwin-arm64'
+    version: 4.5.1
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-darwin-x64@4.5.1:
+    resolution: {integrity: sha512-RrkDNkR/P5AEQSPkxQPmd2ri8WTjSl0RYmuFOiEABkEY/FSg0a4riihWQGKDJ4LnV9gigWZlTMx2DtFGzUrYQw==, tarball: https://registry.npmjs.org/@rollup/rollup-darwin-x64/-/rollup-darwin-x64-4.5.1.tgz}
+    name: '@rollup/rollup-darwin-x64'
+    version: 4.5.1
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-linux-arm-gnueabihf@4.5.1:
+    resolution: {integrity: sha512-ZFPxvUZmE+fkB/8D9y/SWl/XaDzNSaxd1TJUSE27XAKlRpQ2VNce/86bGd9mEUgL3qrvjJ9XTGwoX0BrJkYK/A==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm-gnueabihf/-/rollup-linux-arm-gnueabihf-4.5.1.tgz}
+    name: '@rollup/rollup-linux-arm-gnueabihf'
+    version: 4.5.1
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-linux-arm64-gnu@4.5.1:
+    resolution: {integrity: sha512-FEuAjzVIld5WVhu+M2OewLmjmbXWd3q7Zcx+Rwy4QObQCqfblriDMMS7p7+pwgjZoo9BLkP3wa9uglQXzsB9ww==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.5.1.tgz}
+    name: '@rollup/rollup-linux-arm64-gnu'
+    version: 4.5.1
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-linux-arm64-musl@4.5.1:
+    resolution: {integrity: sha512-f5Gs8WQixqGRtI0Iq/cMqvFYmgFzMinuJO24KRfnv7Ohi/HQclwrBCYkzQu1XfLEEt3DZyvveq9HWo4bLJf1Lw==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.5.1.tgz}
+    name: '@rollup/rollup-linux-arm64-musl'
+    version: 4.5.1
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-linux-x64-gnu@4.5.1:
+    resolution: {integrity: sha512-CWPkPGrFfN2vj3mw+S7A/4ZaU3rTV7AkXUr08W9lNP+UzOvKLVf34tWCqrKrfwQ0NTk5GFqUr2XGpeR2p6R4gw==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.5.1.tgz}
+    name: '@rollup/rollup-linux-x64-gnu'
+    version: 4.5.1
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-linux-x64-musl@4.5.1:
+    resolution: {integrity: sha512-ZRETMFA0uVukUC9u31Ed1nx++29073goCxZtmZARwk5aF/ltuENaeTtRVsSQzFlzdd4J6L3qUm+EW8cbGt0CKQ==, tarball: https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.5.1.tgz}
+    name: '@rollup/rollup-linux-x64-musl'
+    version: 4.5.1
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-win32-arm64-msvc@4.5.1:
+    resolution: {integrity: sha512-ihqfNJNb2XtoZMSCPeoo0cYMgU04ksyFIoOw5S0JUVbOhafLot+KD82vpKXOurE2+9o/awrqIxku9MRR9hozHQ==, tarball: https://registry.npmjs.org/@rollup/rollup-win32-arm64-msvc/-/rollup-win32-arm64-msvc-4.5.1.tgz}
+    name: '@rollup/rollup-win32-arm64-msvc'
+    version: 4.5.1
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-win32-ia32-msvc@4.5.1:
+    resolution: {integrity: sha512-zK9MRpC8946lQ9ypFn4gLpdwr5a01aQ/odiIJeL9EbgZDMgbZjjT/XzTqJvDfTmnE1kHdbG20sAeNlpc91/wbg==, tarball: https://registry.npmjs.org/@rollup/rollup-win32-ia32-msvc/-/rollup-win32-ia32-msvc-4.5.1.tgz}
+    name: '@rollup/rollup-win32-ia32-msvc'
+    version: 4.5.1
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  registry.npmjs.org/@rollup/rollup-win32-x64-msvc@4.5.1:
+    resolution: {integrity: sha512-5I3Nz4Sb9TYOtkRwlH0ow+BhMH2vnh38tZ4J4mggE48M/YyJyp/0sPSxhw1UeS1+oBgQ8q7maFtSeKpeRJu41Q==, tarball: https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.5.1.tgz}
+    name: '@rollup/rollup-win32-x64-msvc'
+    version: 4.5.1
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
 
   registry.npmjs.org/@sinonjs/commons@1.8.6:
     resolution: {integrity: sha512-Ky+XkAkqPZSm3NLBeUng77EBQl3cmeJhITaGHdYH8kjVB+aun3S4XBRti2zt17mtt0mIUDiNxYeoJm6drVvBJQ==, tarball: https://registry.npmjs.org/@sinonjs/commons/-/commons-1.8.6.tgz}
@@ -3366,6 +3507,17 @@ packages:
       map-cache: registry.npmjs.org/map-cache@0.2.2
     dev: true
 
+  registry.npmjs.org/fs-extra@10.1.0:
+    resolution: {integrity: sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==, tarball: https://registry.npmjs.org/fs-extra/-/fs-extra-10.1.0.tgz}
+    name: fs-extra
+    version: 10.1.0
+    engines: {node: '>=12'}
+    dependencies:
+      graceful-fs: registry.npmjs.org/graceful-fs@4.2.11
+      jsonfile: registry.npmjs.org/jsonfile@6.1.0
+      universalify: registry.npmjs.org/universalify@2.0.1
+    dev: true
+
   registry.npmjs.org/fs-extra@8.1.0:
     resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==, tarball: https://registry.npmjs.org/fs-extra/-/fs-extra-8.1.0.tgz}
     name: fs-extra
@@ -4553,6 +4705,16 @@ packages:
       graceful-fs: registry.npmjs.org/graceful-fs@4.2.11
     dev: true
 
+  registry.npmjs.org/jsonfile@6.1.0:
+    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==, tarball: https://registry.npmjs.org/jsonfile/-/jsonfile-6.1.0.tgz}
+    name: jsonfile
+    version: 6.1.0
+    dependencies:
+      universalify: registry.npmjs.org/universalify@2.0.1
+    optionalDependencies:
+      graceful-fs: registry.npmjs.org/graceful-fs@4.2.11
+    dev: true
+
   registry.npmjs.org/kind-of@3.2.2:
     resolution: {integrity: sha512-NOW9QQXMoZGg/oqnVNoNTTIFEIid1627WCffUBJEdMxYApq7mNE7CpzucIPc+ZQg25Phej7IJSmX3hO+oblOtQ==, tarball: https://registry.npmjs.org/kind-of/-/kind-of-3.2.2.tgz}
     name: kind-of
@@ -5240,15 +5402,6 @@ packages:
     deprecated: https://github.com/lydell/resolve-url#deprecated
     dev: true
 
-  registry.npmjs.org/resolve@1.20.0:
-    resolution: {integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==, tarball: https://registry.npmjs.org/resolve/-/resolve-1.20.0.tgz}
-    name: resolve
-    version: 1.20.0
-    dependencies:
-      is-core-module: registry.npmjs.org/is-core-module@2.13.1
-      path-parse: registry.npmjs.org/path-parse@1.0.7
-    dev: true
-
   registry.npmjs.org/resolve@1.22.8:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==, tarball: https://registry.npmjs.org/resolve/-/resolve-1.22.8.tgz}
     name: resolve
@@ -5296,45 +5449,29 @@ packages:
       is-plain-object: registry.npmjs.org/is-plain-object@3.0.1
     dev: true
 
-  registry.npmjs.org/rollup-plugin-scss@3.0.0:
-    resolution: {integrity: sha512-UldNaNHEon2a5IusHvj/Nnwc7q13YDvbFxz5pfNbHBNStxGoUNyM+0XwAA/UafJ1u8XRPGdBMrhWFthrrGZdWQ==, tarball: https://registry.npmjs.org/rollup-plugin-scss/-/rollup-plugin-scss-3.0.0.tgz}
+  registry.npmjs.org/rollup-plugin-scss@4.0.0:
+    resolution: {integrity: sha512-wxasNXDYC2m+fDxCMgK00WebVWYmeFvShyNABmjvSJZ6D1/SepwqFeaMFMQromveI79gfvb64yJjiZZxSZxEIA==, tarball: https://registry.npmjs.org/rollup-plugin-scss/-/rollup-plugin-scss-4.0.0.tgz}
     name: rollup-plugin-scss
-    version: 3.0.0
+    version: 4.0.0
     dependencies:
       rollup-pluginutils: registry.npmjs.org/rollup-pluginutils@2.8.2
     dev: true
 
-  registry.npmjs.org/rollup-plugin-terser@7.0.2(rollup@2.79.1):
-    resolution: {integrity: sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==, tarball: https://registry.npmjs.org/rollup-plugin-terser/-/rollup-plugin-terser-7.0.2.tgz}
-    id: registry.npmjs.org/rollup-plugin-terser/7.0.2
-    name: rollup-plugin-terser
-    version: 7.0.2
-    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
-    peerDependencies:
-      rollup: ^2.0.0
-    dependencies:
-      '@babel/code-frame': registry.npmjs.org/@babel/code-frame@7.23.4
-      jest-worker: registry.npmjs.org/jest-worker@26.6.2
-      rollup: registry.npmjs.org/rollup@2.79.1
-      serialize-javascript: registry.npmjs.org/serialize-javascript@4.0.0
-      terser: registry.npmjs.org/terser@5.24.0
-    dev: true
-
-  registry.npmjs.org/rollup-plugin-typescript2@0.30.0(rollup@2.79.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-NUFszIQyhgDdhRS9ya/VEmsnpTe+GERDMmFo0Y+kf8ds51Xy57nPNGglJY+W6x1vcouA7Au7nsTgsLFj2I0PxQ==, tarball: https://registry.npmjs.org/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.30.0.tgz}
-    id: registry.npmjs.org/rollup-plugin-typescript2/0.30.0
+  registry.npmjs.org/rollup-plugin-typescript2@0.36.0(rollup@4.5.1)(typescript@4.9.5):
+    resolution: {integrity: sha512-NB2CSQDxSe9+Oe2ahZbf+B4bh7pHwjV5L+RSYpCu7Q5ROuN94F9b6ioWwKfz3ueL3KTtmX4o2MUH2cgHDIEUsw==, tarball: https://registry.npmjs.org/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.36.0.tgz}
+    id: registry.npmjs.org/rollup-plugin-typescript2/0.36.0
     name: rollup-plugin-typescript2
-    version: 0.30.0
+    version: 0.36.0
     peerDependencies:
       rollup: '>=1.26.3'
       typescript: '>=2.4.0'
     dependencies:
       '@rollup/pluginutils': registry.npmjs.org/@rollup/pluginutils@4.2.1
       find-cache-dir: registry.npmjs.org/find-cache-dir@3.3.2
-      fs-extra: registry.npmjs.org/fs-extra@8.1.0
-      resolve: registry.npmjs.org/resolve@1.20.0
-      rollup: registry.npmjs.org/rollup@2.79.1
-      tslib: registry.npmjs.org/tslib@2.1.0
+      fs-extra: registry.npmjs.org/fs-extra@10.1.0
+      rollup: registry.npmjs.org/rollup@4.5.1
+      semver: registry.npmjs.org/semver@7.5.4
+      tslib: registry.npmjs.org/tslib@2.6.2
       typescript: 4.9.5
     dev: true
 
@@ -5346,13 +5483,25 @@ packages:
       estree-walker: registry.npmjs.org/estree-walker@0.6.1
     dev: true
 
-  registry.npmjs.org/rollup@2.79.1:
-    resolution: {integrity: sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==, tarball: https://registry.npmjs.org/rollup/-/rollup-2.79.1.tgz}
+  registry.npmjs.org/rollup@4.5.1:
+    resolution: {integrity: sha512-0EQribZoPKpb5z1NW/QYm3XSR//Xr8BeEXU49Lc/mQmpmVVG5jPUVrpc2iptup/0WMrY9mzas0fxH+TjYvG2CA==, tarball: https://registry.npmjs.org/rollup/-/rollup-4.5.1.tgz}
     name: rollup
-    version: 2.79.1
-    engines: {node: '>=10.0.0'}
+    version: 4.5.1
+    engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
+      '@rollup/rollup-android-arm-eabi': registry.npmjs.org/@rollup/rollup-android-arm-eabi@4.5.1
+      '@rollup/rollup-android-arm64': registry.npmjs.org/@rollup/rollup-android-arm64@4.5.1
+      '@rollup/rollup-darwin-arm64': registry.npmjs.org/@rollup/rollup-darwin-arm64@4.5.1
+      '@rollup/rollup-darwin-x64': registry.npmjs.org/@rollup/rollup-darwin-x64@4.5.1
+      '@rollup/rollup-linux-arm-gnueabihf': registry.npmjs.org/@rollup/rollup-linux-arm-gnueabihf@4.5.1
+      '@rollup/rollup-linux-arm64-gnu': registry.npmjs.org/@rollup/rollup-linux-arm64-gnu@4.5.1
+      '@rollup/rollup-linux-arm64-musl': registry.npmjs.org/@rollup/rollup-linux-arm64-musl@4.5.1
+      '@rollup/rollup-linux-x64-gnu': registry.npmjs.org/@rollup/rollup-linux-x64-gnu@4.5.1
+      '@rollup/rollup-linux-x64-musl': registry.npmjs.org/@rollup/rollup-linux-x64-musl@4.5.1
+      '@rollup/rollup-win32-arm64-msvc': registry.npmjs.org/@rollup/rollup-win32-arm64-msvc@4.5.1
+      '@rollup/rollup-win32-ia32-msvc': registry.npmjs.org/@rollup/rollup-win32-ia32-msvc@4.5.1
+      '@rollup/rollup-win32-x64-msvc': registry.npmjs.org/@rollup/rollup-win32-x64-msvc@4.5.1
       fsevents: registry.npmjs.org/fsevents@2.3.3
     dev: true
 
@@ -5445,10 +5594,10 @@ packages:
       lru-cache: registry.npmjs.org/lru-cache@6.0.0
     dev: true
 
-  registry.npmjs.org/serialize-javascript@4.0.0:
-    resolution: {integrity: sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==, tarball: https://registry.npmjs.org/serialize-javascript/-/serialize-javascript-4.0.0.tgz}
+  registry.npmjs.org/serialize-javascript@6.0.1:
+    resolution: {integrity: sha512-owoXEFjWRllis8/M1Q+Cw5k8ZH40e3zhp/ovX+Xr/vi1qj6QesbyXXViFbpNvWvPNAD62SutwEXavefrLJWj7w==, tarball: https://registry.npmjs.org/serialize-javascript/-/serialize-javascript-6.0.1.tgz}
     name: serialize-javascript
-    version: 4.0.0
+    version: 6.0.1
     dependencies:
       randombytes: registry.npmjs.org/randombytes@2.1.0
     dev: true
@@ -5528,6 +5677,12 @@ packages:
     name: slash
     version: 3.0.0
     engines: {node: '>=8'}
+    dev: true
+
+  registry.npmjs.org/smob@1.4.1:
+    resolution: {integrity: sha512-9LK+E7Hv5R9u4g4C3p+jjLstaLe11MDsL21UpYaCNmapvMkYhqCV4A/f/3gyH8QjMyh6l68q9xC85vihY9ahMQ==, tarball: https://registry.npmjs.org/smob/-/smob-1.4.1.tgz}
+    name: smob
+    version: 1.4.1
     dev: true
 
   registry.npmjs.org/snapdragon-node@2.1.1:
@@ -5888,10 +6043,10 @@ packages:
       punycode: registry.npmjs.org/punycode@2.3.1
     dev: true
 
-  registry.npmjs.org/tslib@2.1.0:
-    resolution: {integrity: sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==, tarball: https://registry.npmjs.org/tslib/-/tslib-2.1.0.tgz}
+  registry.npmjs.org/tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==, tarball: https://registry.npmjs.org/tslib/-/tslib-2.6.2.tgz}
     name: tslib
-    version: 2.1.0
+    version: 2.6.2
     dev: true
 
   registry.npmjs.org/type-detect@4.0.8:
@@ -5954,6 +6109,13 @@ packages:
     name: universalify
     version: 0.2.0
     engines: {node: '>= 4.0.0'}
+    dev: true
+
+  registry.npmjs.org/universalify@2.0.1:
+    resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==, tarball: https://registry.npmjs.org/universalify/-/universalify-2.0.1.tgz}
+    name: universalify
+    version: 2.0.1
+    engines: {node: '>= 10.0.0'}
     dev: true
 
   registry.npmjs.org/unset-value@1.0.0:
