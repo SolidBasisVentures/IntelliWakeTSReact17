@@ -34,7 +34,7 @@ export type TServerData<RES = any> = RES | undefined | null
  *     name: 'Bob Smith'
  *   },
  *   updatedAction: (response) => {
- *   		console.log(response)
+ *   		console.info(response)
  *   }
  * } as TServerDataUpdatedStateLocal<API_Employee_Update_Request, API_Employee_Update_Response>)
  *
@@ -83,7 +83,7 @@ export interface IServerDataUpdatedState<REQ = any, RES = any> {
  *     name: 'Bob Smith'
  *   },
  *   updatedAction: (response) => {
- *   		console.log(response)
+ *   		console.info(response)
  *   }
  * } as TServerDataUpdatedStateLocal<API_Employee_Update_Request, API_Employee_Update_Response>)
  *
@@ -181,7 +181,7 @@ export interface IIWQueryProps<REQ = any, RES = any> {
  *     name: 'Bob Smith'
  *   },
  *   updatedAction: (response) => {
- *   		console.log(response)
+ *   		console.info(response)
  *   }
  * } as TServerDataUpdatedStateLocal<API_Employee_Update_Request, API_Employee_Update_Response>)
  *
@@ -258,7 +258,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 	)
 
 	if (props.verboseConsole && (props.superVerboseConsole || ((isGet || isUpdate) && !inProgress.current)))
-		console.log(
+		console.info(
 			'IWServerData-Local',
 			props.item,
 			props.verb,
@@ -296,12 +296,12 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 					const currentTS = Date.now()
 
 					if (lastTS.current > currentTS - 1000) {
-						console.log('!WARNING!', props.item, props.verb ?? props.updateVerb, 'processed less than a second ago!', 'Last: ', lastVerb.current)
-						if (props.response === undefined) console.log('Get re-run due to undefined response')
-						if (forceRefreshRef.current !== props.forceRefresh) console.log('Get re-run due to forceRefresh flag')
+						console.warn('!WARNING!', props.item, props.verb ?? props.updateVerb, 'processed less than a second ago!', 'Last: ', lastVerb.current)
+						if (props.response === undefined) console.info('Get re-run due to undefined response')
+						if (forceRefreshRef.current !== props.forceRefresh) console.info('Get re-run due to forceRefresh flag')
 						if (!props.noRefreshOnRequestChange && !DeepEqual(props.request, lastRequest.current))
-							console.log('Get re-run due to request change')
-						if (isUpdate) console.log('Update re-run')
+							console.info('Get re-run due to request change')
+						if (isUpdate) console.info('Update re-run')
 					}
 
 					if (isGet) {
@@ -322,7 +322,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 						...props.authorizationHeader
 					} as any
 
-					if (!!props.superVerboseConsole) console.log('aH', authorizationHeader)
+					if (!!props.superVerboseConsole) console.info('aH', authorizationHeader)
 
 					let headers: any = {
 						Authorization: JSON.stringify(authorizationHeader)
@@ -347,7 +347,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 					// 	config.baseURL = `${window.location.origin ?? ''}`
 					// }
 					if (!!props.verboseConsole) {
-						console.log(`API Request for ${props.urlPrefix ?? ''}/${props.item}/${verb}`, request, config)
+						console.info(`API Request for ${props.urlPrefix ?? ''}/${props.item}/${verb}`, request, config)
 					}
 
 					axios
@@ -355,8 +355,8 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 						.then((response: any) => {
 							if (isMounted.current) {
 								if (!!props.verboseConsole)
-									console.log(`API Response for ${props.urlPrefix ?? ''}/${props.item}/${verb}`, response)
-								if (!!props.superVerboseConsole) console.log('headers', response.headers)
+									console.info(`API Response for ${props.urlPrefix ?? ''}/${props.item}/${verb}`, response)
+								if (!!props.superVerboseConsole) console.info('headers', response.headers)
 
 								!!axiosResponseAction && axiosResponseAction(response)
 
@@ -378,7 +378,7 @@ export const IWServerData = <REQ, RES>(props: IIWQueryProps<REQ, RES>) => {
 								if (isMounted.current) {
 									if (!!serverStatus) {
 										if (IsStageDevFocused() && serverStatus.dev_message) {
-											console.log(serverStatus.dev_message)
+											console.info(serverStatus.dev_message)
 										}
 
 										if (serverStatus.success) {

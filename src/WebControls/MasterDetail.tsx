@@ -168,8 +168,6 @@ export const MDLink = (props: IPropsMasterLink | any) => {
 	const mdContext = useContext(MDContext)
 	const selectedRow = useRef(null as any | null)
 
-	console.log('Hist', history)
-
 	const panelURLAddOn =
 			mdContext.baseFullPath +
 			(props.panel ? '/' + panelClean(props.panel) : '') +
@@ -302,7 +300,7 @@ export const MDDetail = (props: IPropsDetail) => {
 		if (activated) {
 			if (props.panel) {
 				if (!props.titleText) {
-					console.log('titleText not set on MDDetail!')
+					console.warn('titleText not set on MDDetail!')
 				}
 				mdContext.setMenuBackItemState((prevState) => {
 					const location = window.location.pathname

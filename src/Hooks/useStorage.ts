@@ -18,7 +18,7 @@ const JSONParse = <T = any>(json: any): T | null => {
 	try {
 		returnObj = JSON.parse(json)
 	} catch (err) {
-		// console.log('JSONParse', err)
+		// console.info('JSONParse', err)
 
 		return null
 	}
