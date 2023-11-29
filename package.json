@@ -44,7 +44,7 @@
 		"@fortawesome/pro-solid-svg-icons": "6.2.1",
 		"@fortawesome/react-fontawesome": "^0.1.18",
 		"@popperjs/core": "^2.4.0",
-		"@solidbasisventures/intelliwaketsfoundation": "^5.10.8",
+		"@solidbasisventures/intelliwaketsfoundation": "^5.11.1",
 		"@types/cleave.js": "^1.4.2",
 		"@types/node": "^18.18.13",
 		"@types/qrcode.react": "^1.0.1",

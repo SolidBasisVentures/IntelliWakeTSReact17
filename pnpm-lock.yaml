@@ -27,8 +27,8 @@ devDependencies:
     specifier: ^2.4.0
     version: 2.11.8
   '@solidbasisventures/intelliwaketsfoundation':
-    specifier: ^5.10.8
-    version: 5.10.8
+    specifier: ^5.11.1
+    version: 5.11.1
   '@types/cleave.js':
     specifier: ^1.4.2
     version: 1.4.12
@@ -648,8 +648,8 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
-  /@solidbasisventures/intelliwaketsfoundation@5.10.8:
-    resolution: {integrity: sha512-oO1AYdbLhhi1xjwEDVAeRZuvHR4ycHfOIAO40rAhWltc1tWK4a9Y7PPI88TC7nxFq4AmfDnZQqgMbbXSG6fEVQ==}
+  /@solidbasisventures/intelliwaketsfoundation@5.11.1:
+    resolution: {integrity: sha512-jPoUE15WUGi9g2ptjuS+CYdBErC/5wzZ15FxZqK/SI6phqCHfug1xXzC5FEPaKeerQG7GPSah2nU3fSPTrImuQ==}
     dev: true
 
   /@tsconfig/node10@1.0.9:

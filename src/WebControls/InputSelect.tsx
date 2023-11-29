@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {CleanNumber, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
+import {CleanNumber, CleanNumberNull, OmitProperty} from '@solidbasisventures/intelliwaketsfoundation'
 import {
 	IIWInputAddProps,
 	IIWInputProps,
@@ -14,6 +14,7 @@ export interface IPropsSelect<T = any, V = any, H = HTMLSelectElement> extends I
 	children?: any
 	isNumeric?: boolean
 	isNumericOrNull?: boolean
+	isNumericZeroOrNull?: boolean
 	isStringOrNull?: boolean
 	plainOnClick?: () => void
 	multiple?: boolean
@@ -21,11 +22,11 @@ export interface IPropsSelect<T = any, V = any, H = HTMLSelectElement> extends I
 }
 
 export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
-	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps<T, V, HTMLSelectElement>(OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'plainOnClick', 'isStringOrNull'))
+	const inputProps = useMemo<ILegacyInputProps>(() => ReduceInputProps<T, V, HTMLSelectElement>(OmitProperty(props, 'isNumeric', 'isNumericOrNull', 'isNumericZeroOrNull', 'plainOnClick', 'isStringOrNull'))
 		, [props])
-	
+
 	const wrapperProps = useMemo<IIWInputAddProps>(() => ReduceToInputAddProps(OmitProperty(props, 'plainTextURL', 'plainText', 'plainTextProps')), [props])
-	
+
 	return (
 		<InputWrapper
 			{...wrapperProps}
@@ -43,16 +44,18 @@ export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 					}
 				} else if (!!props.isNumeric || !!props.isNumericOrNull) {
 					const value = CleanNumber(val)
-					
+
 					if (!!props.isNumericOrNull && value === 0) {
 						return null
 					} else {
 						return value
 					}
+				} else if (!!props.isNumericZeroOrNull) {
+					return CleanNumberNull(val)
 				} else if (!!props.isStringOrNull && !val) {
 					return null
 				}
-				
+
 				return val
 			}}
 			internalStateValue={(val, e) => {
@@ -67,7 +70,7 @@ export function InputSelect<T, V>(props: IPropsSelect<T, V>) {
 							.map((child) => child.value)
 					}
 				}
-				
+
 				return val
 			}}>
 			<select
