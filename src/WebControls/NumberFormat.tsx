@@ -26,7 +26,7 @@ export function NumberFormat(props: IProps) {
 	return (
 		<span
 			className={
-				(props.className ?? '') + ' ' + ((props.value ?? 0) < 0 ? props.classNameAddOnNegative ?? 'text-danger' : '')
+				(props.className ?? '') + ' ' + ((props.value ?? 0) < 0 ? props.classNameAddOnNegative ?? 'text-danger screen-bold' : '')
 			}>
 			{props.percent
 				? props.blank
