@@ -232,6 +232,11 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 				el.classList.add('noCopyActive')
 			}
 
+			const buttonsNoCopy = ref.current.getElementsByTagName('button')
+			for (let el of buttonsNoCopy) {
+				el.classList.add('noCopyActive')
+			}
+
 			const elsOnlyCopy = ref.current.getElementsByClassName('onlyCopy')
 			for (let el of elsOnlyCopy) {
 				el.classList.add('onlyCopyActive')
@@ -300,6 +305,10 @@ export const CopyRefToClipboard = (ref: any, tryFormatted = true): boolean => {
 			// 	}
 			// }
 			for (let el of elsNoCopy) {
+				el.classList.remove('noCopyActive')
+			}
+
+			for (let el of buttonsNoCopy) {
 				el.classList.remove('noCopyActive')
 			}
 
