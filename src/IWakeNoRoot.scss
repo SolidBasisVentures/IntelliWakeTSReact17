@@ -1773,7 +1773,7 @@ p {
 }
 
 .noCopyActive {
-	display: none;
+	display: none !important;
 }
 
 .form-condensed {
