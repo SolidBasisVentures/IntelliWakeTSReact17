@@ -8,7 +8,7 @@ import {
 	DateFormatAny,
 	DateIsWeekend,
 	DateOnly,
-	DateWeekNumber
+	DateWeekISONumber
 } from '@solidbasisventures/intelliwaketsfoundation'
 
 export const customRangeName = 'Custom Range'
@@ -312,12 +312,12 @@ export const DateRange = (props: IPropsDateRange) => {
 
 export const DefaultRangeStrings = (): IDateRangeString[] => [
 	{
-		name: `This Week #${DateWeekNumber('now')?.week ?? 0}`,
+		name: `This Week #${DateWeekISONumber('now')?.week ?? 0}`,
 		start: DateOnly('now', {week: 'StartOf'}),
 		end: DateOnly('now', {week: 'EndOf'})
 	},
 	{
-		name: `Last Week #${DateWeekNumber('now', {week: -1})?.week ?? 0}`,
+		name: `Last Week #${DateWeekISONumber('now', {week: -1})?.week ?? 0}`,
 		start: DateOnly('now', {weeks: -1, week: 'StartOf'}),
 		end: DateOnly('now', {weeks: -1, week: 'EndOf'})
 	},
