@@ -39,7 +39,7 @@ export interface IWModalProps {
 export const Modal = (props: IWModalProps) => {
 	const okButtonRef = useRef<HTMLButtonElement>(null)
 	const contentRef = useRef<HTMLDivElement>(null)
-	
+
 	const toggle = useCallback(
 		(e: any) => {
 			if (!!props.toggle && !props.noCancel) {
@@ -48,7 +48,7 @@ export const Modal = (props: IWModalProps) => {
 		},
 		[props]
 	)
-	
+
 	const okAction = useCallback(
 		(e: any) => {
 			if (!!props.okAction) {
@@ -62,11 +62,11 @@ export const Modal = (props: IWModalProps) => {
 		},
 		[props]
 	)
-	
+
 	const keyDown = (e: any) => {
 		if (props.isOpen) {
 			e.stopPropagation()
-			
+
 			switch (e.keyCode) {
 				case KEY_ESCAPE:
 					toggle(e)
@@ -79,14 +79,14 @@ export const Modal = (props: IWModalProps) => {
 			}
 		}
 	}
-	
+
 	useEffect(() => {
 		window.addEventListener('keydown', keyDown)
 		return () => {
 			window.removeEventListener('keydown', keyDown)
 		}
 	})
-	
+
 	useEffect(() => {
 		if (props.isOpen) {
 			if (!!props.autoFocusElement?.current) {
@@ -108,10 +108,10 @@ export const Modal = (props: IWModalProps) => {
 			}
 		}
 	}, [props.isOpen, props.autoFocusElement])
-	
+
 	const showOK = useMemo(() => !!props.okAction && props.okLabel !== null && props.okLabel !== false && props.okLabel !== '',
 		[!!props.okAction, props.okLabel])
-	
+
 	return (
 		<Portal>
 			<div
@@ -124,7 +124,7 @@ export const Modal = (props: IWModalProps) => {
 				onMouseDown={e => {
 					if (props.isOpen) {
 						e.stopPropagation()
-						
+
 						toggle(e)
 					}
 				}}
@@ -190,7 +190,9 @@ export const Modal = (props: IWModalProps) => {
 													{props.cancelLabel ?? 'Cancel'}
 												</button>
 											)}
-											{(props.leftButtons ?? []).map((leftButton, idx) => (
+											{(props.leftButtons ?? [])
+													.filter(leftButton => !leftButton.hidden)
+													.map((leftButton, idx) => (
 												<Button key={idx + NowISOString()} {...leftButton}
 												        className={(leftButton.className ?? '') + ' ' + 'me-1'} />
 											))}
@@ -198,7 +200,9 @@ export const Modal = (props: IWModalProps) => {
 										</div>
 										<div className='text-end'>
 											{props.footerRight}
-											{(props.rightButtons ?? []).map((rightButton, idx) => (
+											{(props.rightButtons ?? [])
+													.filter(rightButton => !rightButton.hidden)
+													.map((rightButton, idx) => (
 												<Button key={idx + NowISOString()} {...rightButton}
 												        className={(rightButton.className ?? '') + ' ms-1'} />
 											))}
