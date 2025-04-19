@@ -73,57 +73,57 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 	}
 
 	return (
-			<table>
-				<thead>
-				<tr>
-					{props.prevMonth !== undefined
-							?
-							<th className='prev available' onClick={prev}><span> </span></th>
-							:
-							<th />
-					}
-					<th colSpan={5} className='month'>{DateFormatAny('MMM YYYY', firstDay)}</th>
-					{props.nextMonth !== undefined
-							?
-							<th className='next available' onClick={next}><span> </span></th>
-							:
-							<th />
-					}
+		<table>
+			<thead>
+			<tr>
+				{props.prevMonth !== undefined
+					?
+					<th className='prev available' onClick={prev}><span> </span></th>
+					:
+					<th />
+				}
+				<th colSpan={5} className='month'>{DateFormatAny('MMM YYYY', firstDay)}</th>
+				{props.nextMonth !== undefined
+					?
+					<th className='next available' onClick={next}><span> </span></th>
+					:
+					<th />
+				}
+			</tr>
+			<tr>
+				<th>Su</th>
+				<th>Mo</th>
+				<th>Tu</th>
+				<th>We</th>
+				<th>Th</th>
+				<th>Fr</th>
+				<th>Sa</th>
+			</tr>
+			</thead>
+			<tbody>
+			{dates.map((week, idx: number) =>
+				<tr key={idx}>
+					{week.map((day) =>
+						<td className={
+							ClassNames({
+								weekend: DateIsWeekend(day),
+								'off ends': (DateCompare(day, 'IsBefore', firstDay, 'day')
+										|| DateCompare(day, 'IsAfter', lastDay, 'day'))
+									&& !(DateCompare(day, 'IsSameOrAfter', props.startSelected, 'day')
+										&& DateCompare(day, 'IsSameOrBefore', props.endSelected, 'day')),
+								'active start-date': DateCompare(day, 'IsSame', props.startSelected, 'day'),
+								'in-range': DateCompare(day, 'IsAfter', props.startSelected, 'day')
+									&& DateCompare(day, 'IsBefore', props.endSelected, 'day'),
+								'active end-date': DateCompare(day, 'IsSame', props.endSelected, 'day')
+							}, 'available')
+						} key={day} onClick={() => props.dateClick(day)}>
+							{DateFormatAny('D', day)}
+						</td>
+					)}
 				</tr>
-				<tr>
-					<th>Su</th>
-					<th>Mo</th>
-					<th>Tu</th>
-					<th>We</th>
-					<th>Th</th>
-					<th>Fr</th>
-					<th>Sa</th>
-				</tr>
-				</thead>
-				<tbody>
-				{dates.map((week, idx: number) =>
-						<tr key={idx}>
-							{week.map((day) =>
-									<td className={
-										ClassNames({
-											weekend: DateIsWeekend(day),
-											'off ends': (DateCompare(day, 'IsBefore', firstDay, 'day')
-															|| DateCompare(day, 'IsAfter', lastDay, 'day'))
-													&& !(DateCompare(day, 'IsSameOrAfter', props.startSelected, 'day')
-															&& DateCompare(day, 'IsSameOrBefore', props.endSelected, 'day')),
-											'active start-date': DateCompare(day, 'IsSame', props.startSelected, 'day'),
-											'in-range': DateCompare(day, 'IsAfter', props.startSelected, 'day')
-													&& DateCompare(day, 'IsBefore', props.endSelected, 'day'),
-											'active end-date': DateCompare(day, 'IsSame', props.endSelected, 'day')
-										}, 'available')
-									} key={day} onClick={() => props.dateClick(day)}>
-										{DateFormatAny('D', day)}
-									</td>
-							)}
-						</tr>
-				)}
-				</tbody>
-			</table>
+			)}
+			</tbody>
+		</table>
 	)
 }
 
@@ -206,13 +206,15 @@ export const DateRange = (props: IPropsDateRange) => {
 	}
 
 	const handlePresetClick = (range: IDateRangeString) => {
-		setState({...state, isOpen: false, selectedRange: range})
+		setState(prevState => ({...prevState, isOpen: false, selectedRange: range}))
 
 		if (!!props.selectRangeString) props.selectRangeString(range)
 	}
 
 	const handleCustomApplyClick = () => {
-		setState({...state, isOpen: false, selectedRange: state.customRange})
+		setState(prevState => ({...prevState, isOpen: false, selectedRange: state.customRange}))
+
+		console.log('Apply', state.customRange)
 
 		if (!!props.selectRangeString) props.selectRangeString(state.customRange)
 	}
@@ -220,13 +222,13 @@ export const DateRange = (props: IPropsDateRange) => {
 	const handleCustomClick = () => {
 		const customRange = {...getCurrentRange(), name: customRangeName}
 
-		setState({...state, prevPreset: currentRange, customRange: customRange})
+		setState(prevState => ({...prevState, prevPreset: currentRange, customRange: customRange}))
 	}
 
 	const handleUnCustomClick = () => {
 		const customRange = {...getCurrentRange(), name: customRangeName}
 
-		setState({...state, prevPreset: null, customRange: customRange})
+		setState(prevState => ({...prevState, prevPreset: null, customRange: customRange}))
 	}
 
 	const handleDateClick = (day: string) => {
@@ -247,9 +249,15 @@ export const DateRange = (props: IPropsDateRange) => {
 		setState(newState)
 	}
 
-	const prevMonth = () => setState({...state, monthToShow: DateOnly(state.monthToShow, {month: -1})})
+	const prevMonth = () => setState(prevState => ({
+		...prevState,
+		monthToShow: DateOnly(state.monthToShow, {month: -1})
+	}))
 
-	const nextMonth = () => setState({...state, monthToShow: DateOnly(state.monthToShow, {month: 1})})
+	const nextMonth = () => setState(prevState => ({
+		...prevState,
+		monthToShow: DateOnly(state.monthToShow, {month: 1})
+	}))
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClick)
@@ -260,53 +268,54 @@ export const DateRange = (props: IPropsDateRange) => {
 
 	useEffect(() => {
 		if (!!props.defaultRange) {
-			setState({...state, selectedRange: props.defaultRange})
+			setState(prevState => ({...prevState, selectedRange: props.defaultRange!}))
 		}
 	}, [props.defaultRange])
 
 	return (
-			<div className={'DateRangeDD ' + (props.className ?? '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : '')}
-			     onClick={setOpen} ref={nodeParent} color={props.color}>
-				{props.faIcon !== null &&
-						<FontAwesomeIcon icon={props.faIcon ? props.faIcon : faCalendarAlt} fixedWidth />
-				} {rangeDescription(state.selectedRange!)}
-				<div className={ClassNames({DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen})}
-				     ref={nodeBody}>
-					<div className={'ranges' + (state.prevPreset ? ' d-none' : '')}>
-						<ul>
-							{props.presetRanges!.map((preset: IDateRangeString, idx: number) =>
-									<li key={idx} onClick={() => handlePresetClick(preset)}
-									    className={(preset.name === currentRange.name ? 'active' : '')}>
-										{preset.name}
-									</li>
-							)}
-							<li onClick={handleCustomClick}>
-								{customRangeName}
-								<span className='float-end'>&gt;</span>
+		<div
+			className={'DateRangeDD ' + (props.className ?? '') + (props.borderless ? '' : ' border') + (props.showCaret ? ' dropdown-toggle' : '')}
+			onClick={setOpen} ref={nodeParent} color={props.color}>
+			{props.faIcon !== null &&
+				<FontAwesomeIcon icon={props.faIcon ? props.faIcon : faCalendarAlt} fixedWidth />
+			} {rangeDescription(state.selectedRange!)}
+			<div className={ClassNames({DateRangeLB: true, OpensRight: !props.rightAlign, 'd-none': !state.isOpen})}
+			     ref={nodeBody}>
+				<div className={'ranges' + (state.prevPreset ? ' d-none' : '')}>
+					<ul>
+						{props.presetRanges!.map((preset: IDateRangeString, idx: number) =>
+							<li key={idx} onClick={() => handlePresetClick(preset)}
+							    className={(preset.name === currentRange.name ? 'active' : '')}>
+								{preset.name}
 							</li>
-						</ul>
-					</div>
-					<div className={'drp-headers' + (!state.prevPreset ? ' d-none' : '')} onClick={handleUnCustomClick}>
+						)}
+						<li onClick={handleCustomClick}>
+							{customRangeName}
+							<span className='float-end'>&gt;</span>
+						</li>
+					</ul>
+				</div>
+				<div className={'drp-headers' + (!state.prevPreset ? ' d-none' : '')} onClick={handleUnCustomClick}>
                     <span>
                         &lt; Presets
                     </span>
-					</div>
-					<div className={'drp-calendar left' + (!state.prevPreset ? ' d-none' : '')}>
-						<div className='calendar-table'>
+				</div>
+				<div className={'drp-calendar left' + (!state.prevPreset ? ' d-none' : '')}>
+					<div className='calendar-table'>
 
-							<DateRangeCalendar month={state.monthToShow} startSelected={state.customRange.start}
-							                   endSelected={state.customRange.end} prevMonth={prevMonth}
-							                   nextMonth={nextMonth} dateClick={handleDateClick} />
-						</div>
-					</div>
-					<div className={'drp-buttons' + (!state.prevPreset ? ' d-none' : '')}>
-						<span className='drp-selected'>{rangeDescription(state.customRange)}</span>
-						<button className='btn btn-sm btn-primary' type='button'
-						        onClick={handleCustomApplyClick}>Apply
-						</button>
+						<DateRangeCalendar month={state.monthToShow} startSelected={state.customRange.start}
+						                   endSelected={state.customRange.end} prevMonth={prevMonth}
+						                   nextMonth={nextMonth} dateClick={handleDateClick} />
 					</div>
 				</div>
+				<div className={'drp-buttons' + (!state.prevPreset ? ' d-none' : '')}>
+					<span className='drp-selected'>{rangeDescription(state.customRange)}</span>
+					<button className='btn btn-sm btn-primary' type='button'
+					        onClick={handleCustomApplyClick}>Apply
+					</button>
+				</div>
 			</div>
+		</div>
 	)
 }
 
