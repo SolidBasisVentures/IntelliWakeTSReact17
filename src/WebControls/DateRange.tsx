@@ -208,7 +208,7 @@ export const DateRange = (props: IPropsDateRange) => {
 	const handlePresetClick = (range: IDateRangeString) => {
 		setState(prevState => ({...prevState, isOpen: false, selectedRange: range}))
 
-		if (!!props.selectRangeString) props.selectRangeString(range)
+		if (!!props.selectRangeString) props.selectRangeString({...range})
 	}
 
 	const handleCustomApplyClick = () => {
@@ -216,7 +216,7 @@ export const DateRange = (props: IPropsDateRange) => {
 
 		console.log('Apply', state.customRange)
 
-		if (!!props.selectRangeString) props.selectRangeString(state.customRange)
+		if (!!props.selectRangeString) props.selectRangeString({...state.customRange})
 	}
 
 	const handleCustomClick = () => {
