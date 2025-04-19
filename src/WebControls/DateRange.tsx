@@ -214,8 +214,6 @@ export const DateRange = (props: IPropsDateRange) => {
 	const handleCustomApplyClick = () => {
 		setState(prevState => ({...prevState, isOpen: false, selectedRange: state.customRange}))
 
-		console.log('Apply', state.customRange)
-
 		if (!!props.selectRangeString) props.selectRangeString({...state.customRange})
 	}
 
