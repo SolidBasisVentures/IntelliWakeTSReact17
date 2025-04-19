@@ -46,10 +46,10 @@ export const DateRangeCalendar = (props: IPropsCalendar) => {
 	let dates: (string[])[] = []
 
 	let firstDay = DateOnly(props.month, {month: 'StartOf'})
-	let currentDay = DateOnly(props.month, {week: 'StartOf'})
+	let currentDay = DateOnly(firstDay, {week: 'StartOf'})
 	let lastDay = DateOnly(props.month, {month: 'EndOf'})
 
-	while (DateCompare(currentDay, 'IsBefore', lastDay, 'day')) {
+	while (DateCompare(currentDay, 'IsSameOrBefore', lastDay, 'day')) {
 		let week: string[] = []
 
 		do {

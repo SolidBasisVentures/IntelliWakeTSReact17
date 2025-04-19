@@ -1,0 +1,8 @@
+onlyBuiltDependencies:
+  - '@fortawesome/fontawesome-common-types'
+  - '@fortawesome/pro-duotone-svg-icons'
+  - '@fortawesome/pro-light-svg-icons'
+  - '@fortawesome/pro-regular-svg-icons'
+  - '@fortawesome/pro-solid-svg-icons'
+  - '@parcel/watcher'
+  - esbuild
