@@ -486,6 +486,28 @@ export const DefaultRangeLast4Weeks = (): IDateRangeString => ({
 })
 
 /**
+ * Default to last Quarter
+ *
+ * Use DateRangeToString(defaultRangeYear) to get a string of it
+ */
+export const DefaultRangeLastQuarter = (): IDateRangeString => ({
+	name: 'Last Quarter',
+	start: DateOnly('now', {quarters: -1, quarter: 'StartOf'}),
+	end: DateOnly('now', {quarters: -1, quarter: 'EndOf'})
+})
+
+/**
+ * Default to this Quarter
+ *
+ * Use DateRangeToString(defaultRangeYear) to get a string of it
+ */
+export const DefaultRangeThisQuarter = (): IDateRangeString => ({
+	name: 'This Quarter',
+	start: DateOnly('now', {quarter: 'StartOf'}),
+	end: DateOnly('now', {quarter: 'EndOf'})
+})
+
+/**
  * Default to this year
  *
  * Use DateRangeToString(defaultRangeYear) to get a string of it
